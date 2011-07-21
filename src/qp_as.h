@@ -35,6 +35,7 @@
  * INCLUDES 
  ****************************************/
 #include "smpc_common.h"
+#include "chol_solve.h"
 
 #include <vector>
 
@@ -46,16 +47,17 @@
 #define REGULARIZATION 0.01
 
 
+using namespace std;
+
+
 /** \brief Defines simple bounds associated on a variable. */
 class bound
 {
     public:
-        /** Constructor */
-        bound (int, double, double);
-        set (double, double, int);
+        void set (int, double, double, int);
 
 
-    private:
+
         /** Variable number (on which to impose the bounds). */
         int var_num;
 
@@ -81,17 +83,18 @@ class bound
 class qp_as
 {
     public:
-        qp_as(int, double, double, double);
+        qp_as(int N_, double Alpha = 150.0, double Beta = 2000.0, double Gamma = 1.0);
         ~qp_as();
 
 #ifdef QPAS_VARIABLE_AB
-        init(double*, double*, double*, double*, double*, double*, double*, double*);
+        void init(double*, double*, double*, double*, double*, double*, double*, double*);
 #else
-        init(double, double, double*, double*, double*, double*, double*, double*);
+        void init(double, double, double*, double*, double*, double*, double*, double*);
 #endif
+    
+        ///@todo return W
+        int solve ();
 
-        /// @todo solve()
-        /// @todo add CholSolve member
 
 #ifndef SMPC_DEBUG
     private:
@@ -101,8 +104,7 @@ class qp_as
         void form_iHg(double *, double *);
         void initialize_bounds();
         void form_bounds(double *, double *);
-        void check_blocking_bounds();
-        void apply_dx ();
+        int check_blocking_bounds();
 
 
 // variables
@@ -111,6 +113,10 @@ class qp_as
 
         /// Parameters, which are fed to the methods of #chol_solve class.
         chol_solve_param chol_param;
+
+        /// An instance of #chol_solve class.
+        chol_solve chol;
+
 
     // gains        
         double gain_alpha;
@@ -140,11 +146,8 @@ class qp_as
             index of the last inequality constraint added to #W. */
         int nW;
 
-        /** Index to include in the working set #W. Used as a flag. */
-        int ind_include;
-
         /// Vector of bounds.
-        std::vector <SimpleBound> Bounds;
+        std::vector <bound> Bounds;
 };
 
 

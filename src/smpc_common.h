@@ -19,6 +19,7 @@
  * INCLUDES 
  ****************************************/
 
+#include <cstddef>
 
 
 /****************************************
@@ -28,6 +29,7 @@
 #define NUM_CONTROL_VAR 2
 #define NUM_VAR 8
 
+#define QPAS_VARIABLE_AB
 
 /****************************************
  * TYPEDEFS 

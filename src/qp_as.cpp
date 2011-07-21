@@ -23,35 +23,17 @@
 
 //==============================================
 // bound
-
-/**
- * @brief Constructor
- *
- * @param[in] var_num_ index of variable in vector
- * @param[in] lb_ lower bound
- * @param[in] ub_ upper bound
- */
-bound::bound(int var_num_, double lb_, double ub_) : var_num(var_num_), lb(lb_), ub(ub_)
-{
-    // check whether the bounds make sense 
-    if (lb > ub)
-    {
-        printf("\n The bounds for variable %i are inconsistent \n", var_num);
-        exit(0);
-    }
-    isActive = 0;
-}
-
-
 /**
  * @brief Set parameters of the bound
  *
+ * @param[in] var_num_ index of variable in the vector of states
  * @param[in] lb_ lower bound
  * @param[in] ub_ upper bound
  * @param[in] active activity of the bound
  */
-bound::set(double lb_, double ub_, int active)
+void bound::set(int var_num_, double lb_, double ub_, int active)
 {
+    var_num = var_num_;
     lb = lb_;
     ub = ub_;
     isActive = active;
@@ -69,11 +51,7 @@ bound::set(double lb_, double ub_, int active)
     @param[in] Beta Position gain
     @param[in] Gamma Jerk gain
 */
-qp_as::qp_as(
-        int N_, 
-        double Alpha = 150.0, 
-        double Beta = 2000.0, 
-        double Gamma = 1.0)
+qp_as::qp_as(int N_, double Alpha, double Beta, double Gamma) : chol (N_)
 {
     N = N_;
 
@@ -90,7 +68,9 @@ qp_as::qp_as(
     chol_param.iHg = new double[NUM_VAR*N]();
 
 #ifdef QPAS_VARIABLE_AB
-    chol_param.dh == NULL;
+    chol_param.T = NULL;
+    chol_param.h = NULL;
+    chol_param.dh = NULL;
 #endif
 
     chol_param.angle_cos = NULL;
@@ -98,15 +78,12 @@ qp_as::qp_as(
 
 
     // there are no inequality constraints in the initial working set (no hot-starting for the moment)
-    nW = 0;       
     W = new int[2*N];
     alpha = 1;
-    ind_include = -1; // the value will be changed the first time it is used. 
     
     dX = new double[NUM_VAR*N]();
 
     Bounds.resize(2*N);
-    initialize_bounds();
 }
 
 
@@ -119,18 +96,18 @@ qp_as::~qp_as()
     if (dX  != NULL)
         delete [] dX;
 
-    if (angle_cos != NULL)
-        delete angle_cos;
+    if (chol_param.angle_cos != NULL)
+        delete chol_param.angle_cos;
 
-    if (angle_sin != NULL)
-        delete angle_sin;
+    if (chol_param.angle_sin != NULL)
+        delete chol_param.angle_sin;
 
     if (chol_param.iHg != NULL)
-        delete iHg;
+        delete chol_param.iHg;
 
 #ifdef QPAS_VARIABLE_AB
     if (chol_param.dh != NULL)
-        delete dh;
+        delete chol_param.dh;
 #endif
 };
 
@@ -146,7 +123,7 @@ qp_as::~qp_as()
     @param[in] ub array of upper bounds for z
     @param[in,out] X_ initial guess / solution of optimization problem
 */
-qp_as::init(
+void qp_as::init(
 #ifdef QPAS_VARIABLE_AB
         double* T_, 
         double* h_, 
@@ -169,11 +146,10 @@ qp_as::init(
     chol_param.dh = new double[N-1]();
     for (int i = 0; i < N-1; i++)
     {
-        chol_param.dh[i] = h[i+1] - h[i];
+        chol_param.dh[i] = chol_param.h[i+1] - chol_param.h[i];
     }
 #endif
 
-    form_iHg(zref_x, zref_y);
 
     X = X_;
 
@@ -187,6 +163,8 @@ qp_as::init(
         chol_param.angle_cos[i] = cos(angle[i]);
         chol_param.angle_sin[i] = sin(angle[i]);
     }
+
+    form_iHg(zref_x, zref_y);
 }
 
 
@@ -219,19 +197,6 @@ void qp_as::form_iHg(double *zref_x, double *zref_y)
 }
 
 
-/** \brief Initializes the upper and lower bounds. */
-void qp_as::initialize_bounds()
-{
-    int k=0;
-    for (int i=0; i < N; i++)
-    {
-        Bounds[k] = 
-            SimpleBound(NUM_STATE_VAR*(i+1)-6 , -1000000, 1000000);
-        Bounds[k+1] = 
-            SimpleBound(NUM_STATE_VAR*(i+1)-3 , -1000000, 1000000);
-        k += 2;
-    }
-}
 
 
 /**
@@ -242,65 +207,95 @@ void qp_as::initialize_bounds()
  */
 void qp_as::form_bounds(double *lb, double *ub)
 {
-    int k = 0;
     for (int i=0; i < N; i++)
     {
-        Bounds[k].set(lb[k], ub[k], 0);
-        Bounds[k+].set(lb[k+1], ub[k+1], 0);
-        k += 2;
+        Bounds[i*2].set(NUM_STATE_VAR*i, lb[i*2], ub[i*2], 0);
+        Bounds[i*2+1].set(NUM_STATE_VAR*i+3, lb[i*2+1], ub[i*2+1], 0);
     }
 }
 
 
-/** \brief Check for blocking bounds. */
-void qp_as::check_blocking_bounds()
+/**
+ * @brief Check for blocking bounds.
+ *
+ * @return index of constraint to be added, -1 if no constraints.
+ */
+int qp_as::check_blocking_bounds()
 {
     double t = 1;
     alpha = 1;
 
-    ind_include = -1;
-    for (int i=0; i < 2*N; i++)
+    /** Index to include in the working set #W, -1 if no constraint have to be included. */
+    int ind_include = -1;
+
+
+    for (int i = 0; i < 2*N; i++)
     {
         // Check only inactive constraints for violation. The constraints in the working set will
         // not be violated regardless of the step size
         if (Bounds[i].isActive == 0)
         {
-            if ( dX[Bounds[i].var_num] < -TOL )
-                t = (Bounds[i].lb - X[Bounds[i].var_num])/dX[Bounds[i].var_num];
-            else if ( dX[Bounds[i].var_num] > TOL ) 
-                t = (Bounds[i].ub - X[Bounds[i].var_num])/dX[Bounds[i].var_num];
+            int ind = Bounds[i].var_num;
+
+            if ( dX[ind] < -TOL )
+            {
+                t = (Bounds[i].lb - X[ind])/dX[ind];
+            }
+            else if ( dX[ind] > TOL ) 
+            {
+                t = (Bounds[i].ub - X[ind])/dX[ind];
+            }
             else
             {
                 // do nothing because dX[Bounds[i].var_num] = 0 (numerically speaking)
                 t = 1;
             }
 
-            if (t > TOL)
+            if ((t > TOL) && (t < alpha))
             {
-                if (t < alpha)
-                {
-                    alpha = t;
-                    ind_include = i;
-                }
+                alpha = t;
+                ind_include = i;
             }
         }
     }
     if (ind_include != -1)
     {
-          W[nW] = ind_include;    
-          nW++;
-          Bounds[ind_include].isActive = 1;
+        W[nW] = ind_include;    
+        nW++;
+        Bounds[ind_include].isActive = 1;
     }
+
+    return (ind_include);
 }  
 
 
 /**
- * @brief Move in the feasible descent direction
+ * @brief Solve QP problem.
  */
-void qp_as::apply_dx ()
+int qp_as::solve ()
 {
-    for (int i = 0; i < n; i++)
+    // obtain dX
+    chol.solve(chol_param, X, dX);
+
+    for (;;)
     {
-        X[i] += alpha * dX[i];
+        int ind_include = check_blocking_bounds();
+        // Move in the feasible descent direction
+        for (int i = 0; i < N*NUM_VAR ; i++)
+        {
+            X[i] += alpha * dX[i];
+        }
+
+        // no new inequality constraints
+        if (ind_include == -1)
+        {
+            break;
+        }
+
+        // add row to the L matrix and find new dX
+        chol.add_L_row (chol_param, nW, W);
+        chol.resolve (chol_param, nW, W, X, dX);
     }
-}  
+
+    return (nW);
+}

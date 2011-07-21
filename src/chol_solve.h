@@ -23,6 +23,7 @@
 #define MATRIX_DIM_SIZE 3
 #define MATRIX_SIZE 9
 
+using namespace std;
 
 /**
  * @brief 

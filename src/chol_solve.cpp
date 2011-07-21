@@ -15,12 +15,13 @@
 
 #include "chol_solve.h"
 
+#include <cmath> // sqrt
+#include <cstring> // memset
+
 
 /****************************************
  * FUNCTIONS 
  ****************************************/
-
-using namespace std;
 
 //==============================================
 // constructors / destructors
@@ -211,19 +212,13 @@ void chol_solve::form_ETnu (chol_solve_param csp, double *nu, double *result)
             res[4] +=      T * nuc[3] + nuc[4];
             res[5] +=     A6 * nuc[3] + T * nuc[4] + nuc[5]; 
         }
-    }
 
 
-    // result = B' * nu // the lower part of E' corresponding to control inputs
-    for (i = 0; i < N; i++)
-    {
+        res = &result[i*NUM_CONTROL_VAR + N*NUM_STATE_VAR];
+        nuc = &nu[i*NUM_STATE_VAR];
 #ifdef QPAS_VARIABLE_AB
-        double T = csp.T[i];
-        double T2 = T*T/2;
         double B0 = T2*T/3 - csp.h[i]*T;
 #endif
-        double *res = &result[i*NUM_CONTROL_VAR + N*NUM_STATE_VAR];
-        double *nuc = &nu[i*NUM_STATE_VAR];
 
         // result = B' * nu
         res[0] = B0 * nuc[0] + T2 * nuc[1] + T * nuc[2];
@@ -403,7 +398,7 @@ void chol_solve::form_L_diag(double *ecLp, double *ecLc)
     }
 
     // chol (L(k+1,k+1))
-    CholDec (ecLc);
+    chol_dec (ecLc);
 }
 
 
@@ -431,15 +426,15 @@ void chol_solve::form_L(chol_solve_param csp)
 #endif
 
     // form all matrices
-    FormiQBiPB (B, csp.i2Q, csp.iP);
+    form_iQBiPB (B, csp.i2Q, csp.iP);
 #ifndef QPAS_VARIABLE_AB
-    FormiQAT (T, A6, csp.i2Q);
-    FormAiQATiQBiPB (T, A6);
+    form_iQAT (T, A6, csp.i2Q);
+    form_AiQATiQBiPB (T, A6);
 #endif
 
 
     // the first matrix on diagonal
-    FormLDiag(NULL, ecL);
+    form_L_diag(NULL, ecL);
 
     // offsets
     cur_offset = MATRIX_SIZE;
@@ -453,19 +448,19 @@ void chol_solve::form_L(chol_solve_param csp)
         double A6 = T2 - csp.dh[i-1];
 
         // form all matrices
-        FormiQBiPB (B, csp.i2Q, csp.iP);
-        FormiQAT (T, A6, csp.i2Q);
-        FormAiQATiQBiPB (T, A6);
+        form_iQBiPB (B, csp.i2Q, csp.iP);
+        form_iQAT (T, A6, csp.i2Q);
+        form_AiQATiQBiPB (T, A6);
 #endif
 
         // form (b), (d), (f) ... 
-        FormLNonDiag(&ecL[prev_offset], &ecL[cur_offset]);
+        form_L_non_diag(&ecL[prev_offset], &ecL[cur_offset]);
         // update offsets
         cur_offset += MATRIX_SIZE;
         prev_offset += MATRIX_SIZE;
 
         // form (c), (e), (g) ...
-        FormLDiag(&ecL[prev_offset], &ecL[cur_offset]);
+        form_L_diag(&ecL[prev_offset], &ecL[cur_offset]);
         // update offsets
         cur_offset += MATRIX_SIZE;
         prev_offset += MATRIX_SIZE;
@@ -491,14 +486,20 @@ void chol_solve::solve_forward(double *x)
 
 
     // compute the first 6 elements using forward substitution
-    xc[0] = xc[0] / cur_ecL[0];
-    xc[1] = (xc[1] - xc[0] * cur_ecL[1]) / cur_ecL[4];
-    xc[2] = (xc[2] - xc[0] * cur_ecL[2] - xc[1] * cur_ecL[5]) / cur_ecL[8];
+    xc[0] /= cur_ecL[0];
+    xc[3] /= cur_ecL[0];
 
-    xc[3] = xc[3] / cur_ecL[0];
-    xc[4] = (xc[4] - xc[3] * cur_ecL[1]) / cur_ecL[4];
-    xc[5] = (xc[5] - xc[3] * cur_ecL[2] - xc[4] * cur_ecL[5]) / cur_ecL[8];
+    xc[1] -= xc[0] * cur_ecL[1];
+    xc[1] /= cur_ecL[4];
 
+    xc[4] -= xc[3] * cur_ecL[1];
+    xc[4] /= cur_ecL[4];
+
+    xc[2] -= xc[0] * cur_ecL[2] + xc[1] * cur_ecL[5];
+    xc[2] /= cur_ecL[8];
+
+    xc[5] -= xc[3] * cur_ecL[2] + xc[4] * cur_ecL[5];
+    xc[5] /= cur_ecL[8];
 
 
     for (i = 1; i < N; i++)
@@ -510,24 +511,26 @@ void chol_solve::solve_forward(double *x)
         prev_ecL = &ecL[i * 2 * MATRIX_SIZE] - MATRIX_SIZE;
 
 
-        // update the right part of the equation
+        // update the right part of the equation and compute elements
         xc[0] -= xp[0] * prev_ecL[0] + xp[1] * prev_ecL[3] + xp[2] * prev_ecL[6];
-        xc[1] -= xp[1] * prev_ecL[4] + xp[2] * prev_ecL[7];
-        xc[2] -= xp[2] * prev_ecL[8];
+        xc[0] /= cur_ecL[0];
 
         xc[3] -= xp[3] * prev_ecL[0] + xp[4] * prev_ecL[3] + xp[5] * prev_ecL[6];
-        xc[4] -= xp[4] * prev_ecL[4] + xp[5] * prev_ecL[7];
-        xc[5] -= xp[5] * prev_ecL[8];
+        xc[3] /= cur_ecL[0];
 
 
-        // compute elements using forward substitution
-        xc[0] = xc[0] / cur_ecL[0];
-        xc[1] = (xc[1] - xc[0] * cur_ecL[1]) / cur_ecL[4];
-        xc[2] = (xc[2] - xc[0] * cur_ecL[2] - xc[1] * cur_ecL[5]) / cur_ecL[8];
+        xc[1] -= xp[1] * prev_ecL[4] + xp[2] * prev_ecL[7] + xc[0] * cur_ecL[1];
+        xc[1] /= cur_ecL[4];
 
-        xc[3] = xc[3] / cur_ecL[0];
-        xc[4] = (xc[4] - xc[3] * cur_ecL[1]) / cur_ecL[4];
-        xc[5] = (xc[5] - xc[3] * cur_ecL[2] - xc[4] * cur_ecL[5]) / cur_ecL[8];
+        xc[4] -= xp[4] * prev_ecL[4] + xp[5] * prev_ecL[7] + xc[3] * cur_ecL[1];
+        xc[4] /= cur_ecL[4];
+
+
+        xc[2] -= xp[2] * prev_ecL[8] + xc[0] * cur_ecL[2] + xc[1] * cur_ecL[5];
+        xc[2] /= cur_ecL[8];
+
+        xc[5] -= xp[5] * prev_ecL[8] + xc[3] * cur_ecL[2] + xc[4] * cur_ecL[5];
+        xc[5] /= cur_ecL[8];
     }
 }
 
@@ -552,13 +555,18 @@ void chol_solve::solve_backward(double *x)
 
 
     // compute the last 6 elements using backward substitution
-    xc[2] = xc[2] / cur_ecL[8];
-    xc[1] = (xc[1] - xc[2] * cur_ecL[5]) / cur_ecL[4];
-    xc[0] = (xc[0] - xc[2] * cur_ecL[2] - xc[1] * cur_ecL[1]) / cur_ecL[0];
+    xc[2] /= cur_ecL[8];
+    xc[5] /= cur_ecL[8];
 
-    xc[5] = xc[5] / cur_ecL[8];
-    xc[4] = (xc[4] - xc[5] * cur_ecL[5]) / cur_ecL[4];
-    xc[3] = (xc[3] - xc[5] * cur_ecL[2] - xc[4] * cur_ecL[1]) / cur_ecL[0];
+    xc[1] -= xc[2] * cur_ecL[5];
+    xc[1] /= cur_ecL[4];
+    xc[4] -= xc[5] * cur_ecL[5];
+    xc[4] /= cur_ecL[4];
+
+    xc[0] -= xc[2] * cur_ecL[2] + xc[1] * cur_ecL[1];
+    xc[0] /= cur_ecL[0];
+    xc[3] -= xc[5] * cur_ecL[2] + xc[4] * cur_ecL[1];
+    xc[3] /= cur_ecL[0];
 
 
     for (i = N-2; i >= 0 ; i--)
@@ -570,23 +578,26 @@ void chol_solve::solve_backward(double *x)
         prev_ecL = &ecL[2 * i * MATRIX_SIZE + MATRIX_SIZE];
 
 
-        // update the right part of the equation
+        // update the right part of the equation and compute elements
         xc[2] -= xp[0] * prev_ecL[6] + xp[1] * prev_ecL[7] + xp[2] * prev_ecL[8];
-        xc[1] -= xp[0] * prev_ecL[3] + xp[1] * prev_ecL[4];
-        xc[0] -= xp[0] * prev_ecL[0];
+        xc[2] /= cur_ecL[8];
 
         xc[5] -= xp[3] * prev_ecL[6] + xp[4] * prev_ecL[7] + xp[5] * prev_ecL[8];
-        xc[4] -= xp[3] * prev_ecL[3] + xp[4] * prev_ecL[4];
-        xc[3] -= xp[3] * prev_ecL[0];
+        xc[5] /= cur_ecL[8];
 
-        // compute elements using backward substitution
-        xc[2] = xc[2] / cur_ecL[8];
-        xc[1] = (xc[1] - xc[2] * cur_ecL[5]) / cur_ecL[4];
-        xc[0] = (xc[0] - xc[2] * cur_ecL[2] - xc[1] * cur_ecL[1]) / cur_ecL[0];
 
-        xc[5] = xc[5] / cur_ecL[8];
-        xc[4] = (xc[4] - xc[5] * cur_ecL[5]) / cur_ecL[4];
-        xc[3] = (xc[3] - xc[5] * cur_ecL[2] - xc[4] * cur_ecL[1]) / cur_ecL[0];
+        xc[1] -= xp[0] * prev_ecL[3] + xp[1] * prev_ecL[4] + xc[2] * cur_ecL[5];
+        xc[1] /= cur_ecL[4];
+
+        xc[4] -= xp[3] * prev_ecL[3] + xp[4] * prev_ecL[4] + xc[5] * cur_ecL[5];
+        xc[4] /= cur_ecL[4];
+
+
+        xc[0] -= xp[0] * prev_ecL[0] + xc[2] * cur_ecL[2] + xc[1] * cur_ecL[1];
+        xc[0] /= cur_ecL[0];
+
+        xc[3] -= xp[3] * prev_ecL[0] + xc[5] * cur_ecL[2] + xc[4] * cur_ecL[1];
+        xc[3] /= cur_ecL[0];
     }
 }
 
@@ -693,10 +704,11 @@ void chol_solve::solve(chol_solve_param csp, double *ix, double *dx)
 {
     double *s_nu = nu;
     int i;
+    double i2Q[3] = {csp.i2Q[0], csp.i2Q[1], csp.i2Q[2]};
 
 
     // generate L
-    FormL(csp);
+    form_L(csp);
 
     // -(V + inv(H) * g)
     //  V - initial feasible point
@@ -706,19 +718,19 @@ void chol_solve::solve(chol_solve_param csp, double *ix, double *dx)
     }
 
     // obtain s = E * x;
-    FormEx (csp, ViHg, s_nu);
+    form_Ex (csp, ViHg, s_nu);
 
     // obtain nu
-    SolveForward(s_nu);
+    solve_forward(s_nu);
     // make copy of z - it is constant
     for (i= 0; i < NUM_STATE_VAR * N; i++)
     {
         z[i] = s_nu[i];
     }
-    SolveBackward(s_nu);
+    solve_backward(s_nu);
 
     // E' * nu
-    FormETnu (csp, s_nu, dx);
+    form_ETnu (csp, s_nu, dx);
 
     
     // dx = -iH*(grad + E'*nu)
@@ -731,7 +743,7 @@ void chol_solve::solve(chol_solve_param csp, double *ix, double *dx)
         if (i < N*NUM_STATE_VAR)
         {
             // dx for state variables
-            dx[i] = -(-ViHg[i] + csp.i2Q[i%3] * dx[i]);
+            dx[i] = -(-ViHg[i] + i2Q[i%3] * dx[i]);
         }
         else
         {
@@ -769,7 +781,7 @@ void chol_solve::add_L_row (chol_solve_param csp, int nW, int *W)
 
 
     // form row 'a' in the current row of icL
-    FormARow(csp, ic_num, W[ic_num], new_row);
+    form_a_row(csp, ic_num, W[ic_num], new_row);
 
     // update elements starting from the first non-zero
     // element in the row to NUM_STATE_VAR * N (size of ecL)
@@ -779,18 +791,14 @@ void chol_solve::add_L_row (chol_solve_param csp, int nW, int *W)
     {
         cur_el = new_row[i];
 
-        // determine number in the row of L
-        cur_el /= ecL_diag[(i%3)*4];
-
-        // update the last (diagonal) number in the row
-        new_row[last_num] -= cur_el * cur_el;
-
         // propagate update in the row
         // each number in row 'a' causes update of only 3 elements following
         // it, they can be 1,2,6; 1,5,6; 4,5,6
         switch (i % 3)  // variables corresponding to x and y are computed
         {               // using the same matrices
             case 0:
+                // determine number in the row of L
+                cur_el /= ecL_diag[0];
                 new_row[i + 1] -= cur_el * ecL_diag[1];
                 new_row[i + 2] -= cur_el * ecL_diag[2];
                 if (step_num != N-1) // this is not needed in the end of ecL
@@ -800,6 +808,8 @@ void chol_solve::add_L_row (chol_solve_param csp, int nW, int *W)
                 break;
 
             case 1:
+                // determine number in the row of L
+                cur_el /= ecL_diag[4];
                 new_row[i + 1] -= cur_el * ecL_diag[5];
                 if (step_num != N-1) // this is not needed in the end of ecL
                 {
@@ -809,6 +819,8 @@ void chol_solve::add_L_row (chol_solve_param csp, int nW, int *W)
                 break;
 
             case 2:
+                // determine number in the row of L
+                cur_el /= ecL_diag[8];
                 if (step_num != N-1) // this is not needed in the end of ecL
                 {
                     new_row[i + 4] -= cur_el * ecL_ndiag[6];
@@ -817,6 +829,9 @@ void chol_solve::add_L_row (chol_solve_param csp, int nW, int *W)
                 }
                 break;
         }
+
+        // update the last (diagonal) number in the row
+        new_row[last_num] -= cur_el * cur_el;
 
         // update elements after N*NUM_STATE_VAR using the previously added rows
         // in icL
@@ -876,6 +891,7 @@ void chol_solve::resolve (chol_solve_param csp, int nW, int *W, double *x, doubl
 
     int ic_num = nW-1;
     int zind = N*NUM_STATE_VAR + ic_num;
+    double i2Q[3] = {csp.i2Q[0], csp.i2Q[1], csp.i2Q[2]};
 
 
     // sn
@@ -903,11 +919,11 @@ void chol_solve::resolve (chol_solve_param csp, int nW, int *W, double *x, doubl
         nu[i] = nui;
     }
     // backward substituition for ecL
-    SolveBackward(nu);
+    solve_backward(nu);
 
 
     // E' * nu
-    FormETnu (csp, nu, dx);
+    form_ETnu (csp, nu, dx);
 
     // dx = -iH*(grad + E'*nu  + A(W,:)'*lambda)
     //
@@ -919,7 +935,7 @@ void chol_solve::resolve (chol_solve_param csp, int nW, int *W, double *x, doubl
         if (i < N*NUM_STATE_VAR)
         {
             // dx for state variables
-            dx[i] = -(x[i] + csp.iHg[i] + csp.i2Q[i%3] * dx[i]);
+            dx[i] = -(x[i] + csp.iHg[i] + i2Q[i%3] * dx[i]);
         }
         else
         {
@@ -931,6 +947,6 @@ void chol_solve::resolve (chol_solve_param csp, int nW, int *W, double *x, doubl
     // -iH * A(W,:)' * lambda
     for (i = 0; i < nW; i++)
     {
-        dx[W[i]*3] -= csp.i2Q[0] * nu[N*NUM_STATE_VAR + i];
+        dx[W[i]*3] -= i2Q[0] * nu[N*NUM_STATE_VAR + i];
     }
 }
