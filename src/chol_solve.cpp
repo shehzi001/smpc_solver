@@ -151,13 +151,13 @@ void chol_solve::form_Ex (chol_solve_param csp, double *x, double *result)
 
 
 /**
- * @brief Forms E' * nu
+ * @brief Forms E' * x
  *
  * @param[in] csp parameters.
- * @param[in] nu vector nu (NUM_STATE_VAR * N).
+ * @param[in] x vector x (NUM_STATE_VAR * N).
  * @param[out] result vector E' * nu (NUM_VAR * N)
  */
-void chol_solve::form_ETnu (chol_solve_param csp, double *nu, double *result)
+void chol_solve::form_ETx (chol_solve_param csp, double *x, double *result)
 {
     int i;
 
@@ -166,6 +166,7 @@ void chol_solve::form_ETnu (chol_solve_param csp, double *nu, double *result)
     double T = csp.T;
     double T2 = T*T/2;
     double B0 = T2*T/3 - csp.h*T;
+    double A3 = T;
     double A6 = T2;
 #endif
 
@@ -175,54 +176,53 @@ void chol_solve::form_ETnu (chol_solve_param csp, double *nu, double *result)
         double cosA = csp.angle_cos[i];
         double sinA = csp.angle_sin[i];
 
-#ifdef QPAS_VARIABLE_AB
-        double T = csp.T[i];
-        double T2 = T*T/2;
-#endif
 
         // a pointer to 6 current elements of result
         double *res = &result[i*NUM_STATE_VAR];
         // a pointer to 6 current elements of nu
-        double *nuc = &nu[i*NUM_STATE_VAR];
+        double *xc = &x[i*NUM_STATE_VAR];
 
 
         // result = -R' * nu
-        res[0] = -(cosA * nuc[0] + sinA * nuc[3]);
-        res[1] = -nuc[1];
-        res[2] = -nuc[2];
-        res[3] = -(- sinA * nuc[0] + cosA * nuc[3]);
-        res[4] = -nuc[4];
-        res[5] = -nuc[5];
+        res[0] = -(cosA * xc[0] + sinA * xc[3]);
+        res[1] = -xc[1];
+        res[2] = -xc[2];
+        res[3] = -(- sinA * xc[0] + cosA * xc[3]);
+        res[4] = -xc[4];
+        res[5] = -xc[5];
 
 
         if (i != N-1) // no multiplication by A on the last iteration
         {
 #ifdef QPAS_VARIABLE_AB
-            double A6 = T2 - csp.dh[i];
+            double A3 = csp.T[i+1];
+            double A6 = A3*A3/2 - csp.dh[i];
 #endif
 
-            nuc = &nu[i*NUM_STATE_VAR + NUM_STATE_VAR];
+            xc = &x[i*NUM_STATE_VAR + NUM_STATE_VAR];
 
-            // result += R' * A' * nu
-            res[0] += cosA * nuc[0] + sinA * nuc[3];
-            res[1] +=    T * nuc[0] + nuc[1];
-            res[2] +=   A6 * nuc[0] + T * nuc[1] + nuc[2];
+            // result += R' * A' * x
+            res[0] += cosA * xc[0] + sinA * xc[3];
+            res[1] +=   A3 * xc[0] + xc[1];
+            res[2] +=   A6 * xc[0] + A3 * xc[1] + xc[2];
 
-            res[3] += - sinA * nuc[0] + cosA * nuc[3];
-            res[4] +=      T * nuc[3] + nuc[4];
-            res[5] +=     A6 * nuc[3] + T * nuc[4] + nuc[5]; 
+            res[3] += - sinA * xc[0] + cosA * xc[3];
+            res[4] +=     A3 * xc[3] + xc[4];
+            res[5] +=     A6 * xc[3] + A3 * xc[4] + xc[5]; 
         }
 
 
         res = &result[i*NUM_CONTROL_VAR + N*NUM_STATE_VAR];
-        nuc = &nu[i*NUM_STATE_VAR];
+        xc = &x[i*NUM_STATE_VAR];
 #ifdef QPAS_VARIABLE_AB
+        double T = csp.T[i];
+        double T2 = T*T/2;
         double B0 = T2*T/3 - csp.h[i]*T;
 #endif
 
-        // result = B' * nu
-        res[0] = B0 * nuc[0] + T2 * nuc[1] + T * nuc[2];
-        res[1] = B0 * nuc[3] + T2 * nuc[4] + T * nuc[5];
+        // result = B' * x
+        res[0] = B0 * xc[0] + T2 * xc[1] + T * xc[2];
+        res[1] = B0 * xc[3] + T2 * xc[4] + T * xc[5];
     }
 }
 
@@ -730,7 +730,7 @@ void chol_solve::solve(chol_solve_param csp, double *ix, double *dx)
     solve_backward(s_nu);
 
     // E' * nu
-    form_ETnu (csp, s_nu, dx);
+    form_ETx (csp, s_nu, dx);
 
     
     // dx = -iH*(grad + E'*nu)
@@ -923,7 +923,7 @@ void chol_solve::resolve (chol_solve_param csp, int nW, int *W, double *x, doubl
 
 
     // E' * nu
-    form_ETnu (csp, nu, dx);
+    form_ETx (csp, nu, dx);
 
     // dx = -iH*(grad + E'*nu  + A(W,:)'*lambda)
     //

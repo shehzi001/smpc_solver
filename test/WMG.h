@@ -17,7 +17,7 @@
 // 3. Currently no double support is considered (when forming the preview window).
 //
 // [2011/07/02] DD
-//
+// This file was originally written by Dimitar Dimitrov.
 
 // --------------------
 // TODO:
@@ -31,6 +31,7 @@
 
 #include <vector>
 #include <math.h> // for cos and sin
+
 
 // ============================================================================================
 // Utility functions 
@@ -521,17 +522,17 @@ class WMG
           FP_init = NULL;
         }
 
-      if (Tk != NULL)
+      if (T != NULL)
       {
-          delete Tk;
+          delete T;
       }
-      if (hk != NULL)
+      if (h != NULL)
       {
-          delete hk;
+          delete h;
       }
-      if (dhk != NULL)
+      if (dh != NULL)
       {
-          delete dhk;
+          delete dh;
       }
       /* ----------------------------- */
     }
@@ -553,29 +554,15 @@ class WMG
       gravity = 9.81; // hard-coded
 
       N = _N;
-      T = _T;
       hCoM = _hCoM;      
-      h = hCoM/gravity;
 
       Gains.set(Alpha, Beta, Gamma); 
     
-      A[0] = 1.0; A[3]  = T;   A[6] = T*T/2;
-      A[1] = 0.0; A[4]  = 1.0; A[7] = T;    
-      A[2] = 0.0; A[5]  = 0.0; A[8] = 1.0;  
-
-      B[0] = T*T*T/6 - h*T; 
-      B[1] = T*T/2;         
-      B[2] = T;             
 
       ZMP_ref = new double[2*N];
       ind = new int[N];
       FP_init = new double[8*N];
 
-      iCpB = 1/(T*T*T/6 - h*T);
-
-      iCpB_CpA[0] = iCpB;
-      iCpB_CpA[1] = iCpB*T;
-      iCpB_CpA[2] = iCpB*T*T/2;
 
       for (int i=0; i<N; i++)
         ind[i] = 0;
@@ -583,13 +570,13 @@ class WMG
       for(int i=0; i<6; i++)
         X[i] = 0.0;
 
-      Tk = new double[N];
-      hk = new double[N];
-      dhk = new double[N-1]();
+      T = new double[N];
+      h = new double[N];
+      dh = new double[N-1]();
       for (int i = 0; i < N; i++)
       {
-          Tk[i] = T;
-          hk[i] = h;
+          T[i] = _T;
+          h[i] = hCoM/gravity;
       }
     }
 
@@ -603,11 +590,8 @@ class WMG
   int N;
 
   /** \brief Preview sampling time  */
-  double T;
+  double *T;
 
-  double *Tk;
-  double *hk;
-  double *dhk;
 
   /** \brief Height of the CoM. */
   double hCoM;
@@ -616,37 +600,14 @@ class WMG
   double gravity;
   
   /** \brief h = #hCoM/#gravity. */
-  double h;
+  double *h;
+  double *dh;
   
   /** \brief Contains the reference profile for the ZMP. */
   double *ZMP_ref;
 
   /** \brief Initial feasible point with respect to the equality and inequality constraints. */
   double *FP_init;
-
-  /** \brief inv(Cp*B). This is a [2 x 2] diagonal matrix (which is invertible if #T^3/6-#h*#T is
-      not equal to zero). The two elements one the main diagonal are equal, and only one of them is stored, which is equal to
-
-      \verbatim
-      1/(T^3/6 - h*T)
-      \endverbatim      
-  */
-  double iCpB;
-
-  /** \brief inv(Cp*B)*Cp*A. This is a [2 x 6] matrix with the following structure
-      
-      \verbatim
-      iCpB_CpA = [a b c 0 0 0;
-                  0 0 0 a b c];
-
-      a = iCpB
-      b = iCpB*T
-      c = iCpB*T^2/2      
-      \endverbatim
-
-      Only a,b and c are stored.
-  */      
-  double iCpB_CpA[3];
 
   /** \brief Indexes of footsteps appearing in the current preview window
    */
@@ -671,7 +632,7 @@ class WMG
       \verbatim
       X[0] - x ZMP position [meter]
       X[1] - x CoM velocity [meter/s]
-      X[2] - x XoM acceleration [meter/s^2]
+      X[2] - x CoM acceleration [meter/s^2]
       X[3] - y ZMP position [meter]
       X[4] - y CoM velocity [meter/s]
       X[5] - y CoM acceleration [meter/s^2]
@@ -686,12 +647,6 @@ class WMG
 
   /** \brief Position of the ZMP. */
   Point2D ZMP;
-
-  /** \brief State transition matrix. */
-  double A[3*3];
-
-  /** \brief Control matrix. */
-  double B[3];
 
   /** \brief The angle of the first footprint in the previous preview window [rad.]. */
   double first_angle_old;
@@ -969,6 +924,35 @@ class WMG
   */
   void form_FP_init(int output_flag = 0)
   {
+    /** \brief State transition matrix. */
+    double A[3*3];
+
+    /** \brief Control matrix. */
+    double B[3];
+
+    /** \brief inv(Cp*B). This is a [2 x 2] diagonal matrix (which is invertible if #T^3/6-#h*#T is
+     * not equal to zero). The two elements one the main diagonal are equal, and only one of them 
+     * is stored, which is equal to
+      \verbatim
+      1/(T^3/6 - h*T)
+      \endverbatim      
+     */
+    double iCpB;
+
+    /** \brief inv(Cp*B)*Cp*A. This is a [2 x 6] matrix with the following structure
+      \verbatim
+      iCpB_CpA = [a b c 0 0 0;
+                  0 0 0 a b c];
+
+      a = iCpB
+      b = iCpB*T
+      c = iCpB*T^2/2      
+      \endverbatim
+
+     * Only a,b and c are stored.
+     */      
+    double iCpB_CpA[3];
+
 
     int k, k1, k2, k3=0;
     double tmp;
@@ -976,17 +960,34 @@ class WMG
     k  = 6*N; 
     k1 = k + 1;
 
+    //------------------------------------
+    /*A[0] = 1.0;*/  A[3]  = T[0];   A[6] = T[0]*T[0]/2;
+    /*A[1] = 0.0;    A[4]  = 1.0;*/  A[7] = T[0];    
+    /*A[2] = 0.0;    A[5]  = 0.0;    A[8] = 1.0;*/
+
+    B[0] = T[0]*T[0]*T[0]/6 - h[0]*T[0]; 
+    B[1] = T[0]*T[0]/2;         
+    B[2] = T[0];             
+
+    iCpB = 1/(T[0]*T[0]*T[0]/6 - h[0]*T[0]);
+
+    iCpB_CpA[0] = iCpB;
+    iCpB_CpA[1] = iCpB*T[0];
+    iCpB_CpA[2] = iCpB*T[0]*T[0]/2;
+    //------------------------------------
+    
+
     //Vu(1:2)
     FP_init[k]  = -iCpB_CpA[0]*X_tilde[0] - iCpB_CpA[1]*X_tilde[1] - iCpB_CpA[2]*X_tilde[2] + iCpB*FS[ind[0]].p.x;
     FP_init[k1] = -iCpB_CpA[0]*X_tilde[3] - iCpB_CpA[1]*X_tilde[4] - iCpB_CpA[2]*X_tilde[5] + iCpB*FS[ind[0]].p.y;
    
     //Vc(1:6)
     FP_init[0] = X_tilde[0] + A[3]*X_tilde[1] + A[6]*X_tilde[2] + B[0]*FP_init[k];
-    FP_init[1] =              A[4]*X_tilde[1] + A[7]*X_tilde[2] + B[1]*FP_init[k];
-    FP_init[2] =                                A[8]*X_tilde[2] + B[2]*FP_init[k];
+    FP_init[1] =                   X_tilde[1] + A[7]*X_tilde[2] + B[1]*FP_init[k];
+    FP_init[2] =                                     X_tilde[2] + B[2]*FP_init[k];
     FP_init[3] = X_tilde[3] + A[3]*X_tilde[4] + A[6]*X_tilde[5] + B[0]*FP_init[k1];
-    FP_init[4] =              A[4]*X_tilde[4] + A[7]*X_tilde[5] + B[1]*FP_init[k1];
-    FP_init[5] =                                A[8]*X_tilde[5] + B[2]*FP_init[k1];
+    FP_init[4] =                   X_tilde[4] + A[7]*X_tilde[5] + B[1]*FP_init[k1];
+    FP_init[5] =                                     X_tilde[5] + B[2]*FP_init[k1];
     
     for (int i=1; i<N; i++)
       {
@@ -995,15 +996,32 @@ class WMG
         k2 = 6*i - 6;
         k3 = 6*i; //6*(i+1) - 6
 
+        //------------------------------------
+        /*A[0] = 1.0;*/  A[3]  = T[i];   A[6] = T[i]*T[i]/2;
+        /*A[1] = 0.0;    A[4]  = 1.0;*/  A[7] = T[i];    
+        /*A[2] = 0.0;    A[5]  = 0.0;    A[8] = 1.0;*/
+
+        B[0] = T[i]*T[i]*T[i]/6 - h[i]*T[i]; 
+        B[1] = T[i]*T[i]/2;         
+        B[2] = T[i];             
+
+        iCpB = 1/(T[i]*T[i]*T[i]/6 - h[i]*T[i]);
+
+        iCpB_CpA[0] = iCpB;
+        iCpB_CpA[1] = iCpB*T[i];
+        iCpB_CpA[2] = iCpB*T[i]*T[i]/2;
+        //------------------------------------
+
+
         FP_init[k]  = -iCpB_CpA[0]*FP_init[k2]   - iCpB_CpA[1]*FP_init[k2+1] - iCpB_CpA[2]*FP_init[k2+2] + iCpB*FS[ind[i]].p.x;
         FP_init[k1] = -iCpB_CpA[0]*FP_init[k2+3] - iCpB_CpA[1]*FP_init[k2+4] - iCpB_CpA[2]*FP_init[k2+5] + iCpB*FS[ind[i]].p.y;
 
         FP_init[k3]   = FP_init[k2]   + A[3]*FP_init[k2+1] + A[6]*FP_init[k2+2] + B[0]*FP_init[k];
-        FP_init[k3+1] =                 A[4]*FP_init[k2+1] + A[7]*FP_init[k2+2] + B[1]*FP_init[k];
-        FP_init[k3+2] =                                      A[8]*FP_init[k2+2] + B[2]*FP_init[k];
+        FP_init[k3+1] =                      FP_init[k2+1] + A[7]*FP_init[k2+2] + B[1]*FP_init[k];
+        FP_init[k3+2] =                                           FP_init[k2+2] + B[2]*FP_init[k];
         FP_init[k3+3] = FP_init[k2+3] + A[3]*FP_init[k2+4] + A[6]*FP_init[k2+5] + B[0]*FP_init[k1];
-        FP_init[k3+4] =                 A[4]*FP_init[k2+4] + A[7]*FP_init[k2+5] + B[1]*FP_init[k1];
-        FP_init[k3+5] =                                      A[8]*FP_init[k2+5] + B[2]*FP_init[k1];
+        FP_init[k3+4] =                      FP_init[k2+4] + A[7]*FP_init[k2+5] + B[1]*FP_init[k1];
+        FP_init[k3+5] =                                           FP_init[k2+5] + B[2]*FP_init[k1];
 
         // go back to bar states
         tmp           =  FS[ind[i-1]].ca*FP_init[k2] + FS[ind[i-1]].sa*FP_init[k2+3];

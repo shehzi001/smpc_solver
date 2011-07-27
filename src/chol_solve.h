@@ -58,7 +58,7 @@ class chol_solve
     private:
 #endif
         void form_Ex (chol_solve_param, double *, double *);
-        void form_ETnu (chol_solve_param, double *, double *);
+        void form_ETx (chol_solve_param, double *, double *);
 
         void chol_dec (double *);
 

@@ -109,7 +109,7 @@ qp_as::~qp_as()
     if (chol_param.dh != NULL)
         delete chol_param.dh;
 #endif
-};
+}
 
 
 /** @brief Initializes quadratic problem.

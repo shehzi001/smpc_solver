@@ -1,3 +1,4 @@
+#CXXFLAGS=-g -Wall -pedantic
 CXXFLAGS+=-O3 -Wall
 
 all: 

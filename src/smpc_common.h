@@ -9,6 +9,7 @@
  *
  * @todo add doxygen config
  * @todo add tests
+ * @todo add config.h
  */
 
 

@@ -1,15 +1,20 @@
+#CXXFLAGS=-g -Wall
 CXXFLAGS+=-O3 -Wall
 IFLAGS+=-I../src/
 OBJFILES=../src/chol_solve.o ../src/qp_as.o
+COMPILER=${CXX} ${CXXFLAGS} ${IFLAGS} ${OBJFILES}
 
 
-all: test_01 test_02
+all: test_01 test_02 test_03
 
 test_01: 
-	${CXX} ${CXXFLAGS} ${IFLAGS} ${OBJFILES} $@.cpp -o $@.a
+	${COMPILER} $@.cpp -o $@.a
 
 test_02: 
-	${CXX} ${CXXFLAGS} ${IFLAGS} ${OBJFILES} $@.cpp -o $@.a
+	${COMPILER} $@.cpp -o $@.a
+
+test_03: 
+	${COMPILER} $@.cpp -o $@.a
 
 clean:
 	rm -f ./*.a

@@ -17,7 +17,7 @@
 using namespace std;
 
 
-int main()
+int main(int argc, char **argv)
 {
     //-----------------------------------------------------------
     // initialize
@@ -63,7 +63,7 @@ int main()
     inFile.open ("./data/test_01_1_states.dat");
 
 
-    printf ("\n################################\n test 01\n################################\n");
+    printf ("\n################################\n %s \n################################\n", argv[0]);
     for(;;)
     {
         //------------------------------------------------------
@@ -94,9 +94,9 @@ int main()
 // SOLVER IS USED HERE
 //**************************************************************************
 #ifdef QPAS_VARIABLE_AB
-        solver.init(wmg.Tk, wmg.hk, angle, zref_x, zref_y, lb, ub, wmg.FP_init);
-#else
         solver.init(wmg.T, wmg.h, angle, zref_x, zref_y, lb, ub, wmg.FP_init);
+#else
+        solver.init(wmg.T[0], wmg.h[0], angle, zref_x, zref_y, lb, ub, wmg.FP_init);
 #endif
         solver.solve();
 //**************************************************************************
