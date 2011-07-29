@@ -130,13 +130,14 @@ void chol_solve::form_Ex (chol_solve_param csp, double *x, double *result)
 
         if (i != 0) // no multiplication by A on the first iteration
         {
+            int j = i-1;
 #ifdef QPAS_VARIABLE_AB
-            double A6 = T2 - csp.dh[i-1];
+            double A6 = T2 - csp.dh[j];
 #endif
-            xc = &x[i*NUM_STATE_VAR - NUM_STATE_VAR];
+            xc = &x[j*NUM_STATE_VAR];
 
-            cosA = csp.angle_cos[i - 1];
-            sinA = csp.angle_sin[i - 1];
+            cosA = csp.angle_cos[j];
+            sinA = csp.angle_sin[j];
 
             // result += A*R*x
             res[0] += cosA * xc[0] + T * xc[1] + A6 * xc[2] - sinA * xc[3];
@@ -272,7 +273,10 @@ void chol_solve::form_iQBiPB (double *B, double *i2Q, double iP)
     // symmetric elements
     iQBiPB[1] = iQBiPB[3] = 0.5*iP * B[0]*B[1];
     iQBiPB[2] = iQBiPB[6] = 0.5*iP * B[0]*B[2];
-    iQBiPB[5] = iQBiPB[5] = 0.5*iP * B[1]*B[2];
+
+    /// @todo There is no need to initialize all non-diagonal elements
+    ///       of symmetric matrices.
+    iQBiPB[5] = iQBiPB[7] = 0.5*iP * B[1]*B[2];
 }
 
 
@@ -508,7 +512,7 @@ void chol_solve::solve_forward(double *x)
         xc = &x[i * NUM_STATE_VAR];
         xp = &x[i * NUM_STATE_VAR - NUM_STATE_VAR];
         cur_ecL = &ecL[i * 2 * MATRIX_SIZE];
-        prev_ecL = &ecL[i * 2 * MATRIX_SIZE] - MATRIX_SIZE;
+        prev_ecL = &ecL[i * 2 * MATRIX_SIZE - MATRIX_SIZE];
 
 
         // update the right part of the equation and compute elements

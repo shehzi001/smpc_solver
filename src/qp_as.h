@@ -44,6 +44,7 @@
  * Defines
  ****************************************/
 #define TOL 1e-7 // tolerance
+
 #define REGULARIZATION 0.01
 
 
