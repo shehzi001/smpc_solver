@@ -67,7 +67,7 @@ qp_as::qp_as(int N_, double Alpha, double Beta, double Gamma) : chol (N_)
 
     chol_param.iHg = new double[NUM_VAR*N]();
 
-#ifdef QPAS_VARIABLE_AB
+#ifdef QPAS_VARIABLE_T_h
     chol_param.T = NULL;
     chol_param.h = NULL;
     chol_param.dh = NULL;
@@ -105,7 +105,7 @@ qp_as::~qp_as()
     if (chol_param.iHg != NULL)
         delete chol_param.iHg;
 
-#ifdef QPAS_VARIABLE_AB
+#ifdef QPAS_VARIABLE_T_h
     if (chol_param.dh != NULL)
         delete chol_param.dh;
 #endif
@@ -124,7 +124,7 @@ qp_as::~qp_as()
     @param[in,out] X_ initial guess / solution of optimization problem
 */
 void qp_as::init(
-#ifdef QPAS_VARIABLE_AB
+#ifdef QPAS_VARIABLE_T_h
         double* T_, 
         double* h_, 
 #else
@@ -142,7 +142,7 @@ void qp_as::init(
 
     chol_param.T = T_;
     chol_param.h = h_;
-#ifdef QPAS_VARIABLE_AB
+#ifdef QPAS_VARIABLE_T_h
     chol_param.dh = new double[N-1]();
     for (int i = 0; i < N-1; i++)
     {

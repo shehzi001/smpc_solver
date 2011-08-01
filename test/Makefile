@@ -1,26 +1,24 @@
-#CXXFLAGS=-g -Wall
-CXXFLAGS+=-O3 -Wall
+include ../common.mk
+
 IFLAGS+=-I../src/
-OBJFILES=../src/chol_solve.o ../src/qp_as.o
-COMPILER=${CXX} ${CXXFLAGS} ${IFLAGS} ${OBJFILES}
+LDFLAGS+=-L../src/ -lsmpc_solver
 
 
-all: test_01 test_02 test_03 test_04
+TESTS=\
+	  test_01 \
+	  test_02 \
+	  test_03 \
+	  test_04
 
-test_01: 
-	${COMPILER} $@.cpp -o $@.a
 
-test_02: 
-	${COMPILER} $@.cpp -o $@.a
+all: ${TESTS}
 
-test_03: 
-	${COMPILER} $@.cpp -o $@.a
-
-test_04: 
-	${COMPILER} $@.cpp -o $@.a
+${TESTS}:
+	${CXX} ${CXXFLAGS} ${IFLAGS} -c $@.cpp
+	${CXX} -o $@.a $@.o ${LDFLAGS}
 
 clean:
-	rm -f ./*.a
+	rm -f *.a *.o
 
 # dummy targets
 .PHONY: clean

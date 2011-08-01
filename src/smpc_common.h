@@ -30,7 +30,7 @@
 #define NUM_CONTROL_VAR 2
 #define NUM_VAR 8
 
-#define QPAS_VARIABLE_AB
+#define QPAS_VARIABLE_T_h
 
 /****************************************
  * TYPEDEFS 
@@ -58,7 +58,7 @@ struct chol_solve_param
 
 
 // parameters used in generation of A and B matrices
-#ifdef QPAS_VARIABLE_AB
+#ifdef QPAS_VARIABLE_T_h
     double *T;
     double *h;
     double *dh;

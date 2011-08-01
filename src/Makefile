@@ -1,11 +1,14 @@
-#CXXFLAGS=-g -Wall -pedantic
-CXXFLAGS+=-O3 -Wall
+include ../common.mk
+
 
 all: 
-	${CXX} -c ${CXXFLAGS} ${IFLAGS} *.cpp
+	${CXX} ${CXXFLAGS} ${IFLAGS} -c *.cpp
+	${AR} -rc libsmpc_solver.a *.o
+
 
 clean:
-	rm -f ./*.o
+	rm -f *.o *.a
+
 
 # dummy targets
 .PHONY: clean

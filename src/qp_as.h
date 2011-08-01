@@ -87,7 +87,7 @@ class qp_as
         qp_as(int N_, double Alpha = 150.0, double Beta = 2000.0, double Gamma = 1.0);
         ~qp_as();
 
-#ifdef QPAS_VARIABLE_AB
+#ifdef QPAS_VARIABLE_T_h
         void init(double*, double*, double*, double*, double*, double*, double*, double*);
 #else
         void init(double, double, double*, double*, double*, double*, double*, double*);

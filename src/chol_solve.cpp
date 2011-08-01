@@ -5,6 +5,7 @@
  * @author Alexander Sherikov
  * @date 19.07.2011 22:30:13 MSD
  * @todo add description
+ *  @todo steps
  */
 
 
@@ -88,7 +89,7 @@ void chol_solve::form_Ex (chol_solve_param csp, double *x, double *result)
     int i;
 
     // Matrices A and B are generated on the fly using these parameters.
-#ifndef QPAS_VARIABLE_AB
+#ifndef QPAS_VARIABLE_T_h
     double T = csp.T;
     double T2 = T*T/2;
     double B0 = T2*T/3 - csp.h*T;
@@ -101,7 +102,7 @@ void chol_solve::form_Ex (chol_solve_param csp, double *x, double *result)
         // cos and sin of the current angle to form R
         double cosA = csp.angle_cos[i];
         double sinA = csp.angle_sin[i];
-#ifdef QPAS_VARIABLE_AB
+#ifdef QPAS_VARIABLE_T_h
         double T = csp.T[i];
         double T2 = T*T/2;
         double B0 = T2*T/3 - csp.h[i]*T;
@@ -131,7 +132,7 @@ void chol_solve::form_Ex (chol_solve_param csp, double *x, double *result)
         if (i != 0) // no multiplication by A on the first iteration
         {
             int j = i-1;
-#ifdef QPAS_VARIABLE_AB
+#ifdef QPAS_VARIABLE_T_h
             double A6 = T2 - csp.dh[j];
 #endif
             xc = &x[j*NUM_STATE_VAR];
@@ -163,7 +164,7 @@ void chol_solve::form_ETx (chol_solve_param csp, double *x, double *result)
     int i;
 
     // Matrices A and B are generated on the fly using these parameters.
-#ifndef QPAS_VARIABLE_AB
+#ifndef QPAS_VARIABLE_T_h
     double T = csp.T;
     double T2 = T*T/2;
     double B0 = T2*T/3 - csp.h*T;
@@ -195,7 +196,7 @@ void chol_solve::form_ETx (chol_solve_param csp, double *x, double *result)
 
         if (i != N-1) // no multiplication by A on the last iteration
         {
-#ifdef QPAS_VARIABLE_AB
+#ifdef QPAS_VARIABLE_T_h
             double A3 = csp.T[i+1];
             double A6 = A3*A3/2 - csp.dh[i];
 #endif
@@ -215,7 +216,7 @@ void chol_solve::form_ETx (chol_solve_param csp, double *x, double *result)
 
         res = &result[i*NUM_CONTROL_VAR + N*NUM_STATE_VAR];
         xc = &x[i*NUM_STATE_VAR];
-#ifdef QPAS_VARIABLE_AB
+#ifdef QPAS_VARIABLE_T_h
         double T = csp.T[i];
         double T2 = T*T/2;
         double B0 = T2*T/3 - csp.h[i]*T;
@@ -418,7 +419,7 @@ void chol_solve::form_L(chol_solve_param csp)
     int cur_offset;
     int prev_offset;
 
-#ifdef QPAS_VARIABLE_AB
+#ifdef QPAS_VARIABLE_T_h
     double T = csp.T[0];
     double T2 = T*T/2;
     double B[3] = {T2*T/3 - csp.h[0]*T, T2, T};
@@ -431,7 +432,7 @@ void chol_solve::form_L(chol_solve_param csp)
 
     // form all matrices
     form_iQBiPB (B, csp.i2Q, csp.iP);
-#ifndef QPAS_VARIABLE_AB
+#ifndef QPAS_VARIABLE_T_h
     form_iQAT (T, A6, csp.i2Q);
     form_AiQATiQBiPB (T, A6);
 #endif
@@ -445,10 +446,12 @@ void chol_solve::form_L(chol_solve_param csp)
     prev_offset = 0;
     for (i = 1; i < N; i++)
     {
-#ifdef QPAS_VARIABLE_AB
-        double T = csp.T[i];
-        double T2 = T*T/2;
-        double B[3] = {T2*T/3 - csp.h[i]*T, T2, T};
+#ifdef QPAS_VARIABLE_T_h
+        T = csp.T[i];
+        T2 = T*T/2;
+        B[0] = T2*T/3 - csp.h[i]*T;
+        B[1] = T2;
+        B[2] = T;
         double A6 = T2 - csp.dh[i-1];
 
         // form all matrices

@@ -7,12 +7,14 @@
 
 #include "WMG.h"
 
-// QPAS_VARIABLE_AB is taken from this header, the results
+// QPAS_VARIABLE_T_h is taken from this header, the results
 // must be the same
 #include "smpc_common.h" 
 
 #include "qp_as.h"
 
+
+#define PREVIEW_SIZE 15 // Size of the preview window
 
 using namespace std;
 
@@ -21,7 +23,7 @@ int main(int argc, char **argv)
 {
     //-----------------------------------------------------------
     // initialize
-    WMG wmg(15, 0.1, 0.261);
+    WMG wmg(PREVIEW_SIZE, 0.1, 0.261);
 
     double d[4] = {0.09 , 0.025, 0.03, 0.075};
     wmg.AddFootstep(0.0, 0.05, 0.0, 3, 3, 1, d);
@@ -46,13 +48,13 @@ int main(int argc, char **argv)
   
 
 
-    qp_as solver(wmg.N);
+    qp_as solver(PREVIEW_SIZE);
 
-    double angle[wmg.N];
-    double zref_x[wmg.N];
-    double zref_y[wmg.N];
-    double lb[2*wmg.N];
-    double ub[2*wmg.N];
+    double angle[PREVIEW_SIZE];
+    double zref_x[PREVIEW_SIZE];
+    double zref_y[PREVIEW_SIZE];
+    double lb[2*PREVIEW_SIZE];
+    double ub[2*PREVIEW_SIZE];
 
     int nW;
   
@@ -67,7 +69,7 @@ int main(int argc, char **argv)
         {
             wmg.T[0] = 0.1;
         }
-        for (int i=0; i<wmg.N; i++)
+        for (int i=0; i<PREVIEW_SIZE; i++)
         {
             cout << wmg.T[i] << "   ";
         }
@@ -83,7 +85,7 @@ int main(int argc, char **argv)
 
         wmg.form_FP_init(); 
 
-        for (int i = 0; i < wmg.N; i++)
+        for (int i = 0; i < PREVIEW_SIZE; i++)
         {
             angle[i] = wmg.FS[wmg.ind[i]].angle;
             zref_x[i] = wmg.FS[wmg.ind[i]].p.x;
@@ -102,7 +104,7 @@ int main(int argc, char **argv)
 //**************************************************************************
 // SOLVER IS USED HERE
 //**************************************************************************
-#ifdef QPAS_VARIABLE_AB
+#ifdef QPAS_VARIABLE_T_h
         solver.init(wmg.T, wmg.h, angle, zref_x, zref_y, lb, ub, wmg.FP_init);
 #else
         return 1;
