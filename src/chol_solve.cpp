@@ -5,7 +5,6 @@
  * @author Alexander Sherikov
  * @date 19.07.2011 22:30:13 MSD
  * @todo add description
- *  @todo steps
  */
 
 
@@ -27,9 +26,9 @@
 //==============================================
 // constructors / destructors
 
-chol_solve::chol_solve (int steps)
+chol_solve::chol_solve (int preview_win_size)
 {
-    N = steps;
+    N = preview_win_size;
 
     ecL = new double[MATRIX_SIZE*N + MATRIX_SIZE*(N-1)]();
     iQBiPB = new double[MATRIX_SIZE];
@@ -485,7 +484,7 @@ void chol_solve::solve_forward(double *x)
 {
     int i;
     double *xc = &x[0]; // 6 current elements of x
-    double *xp; // 6 elements of x computed on the previous step
+    double *xp; // 6 elements of x computed on the previous iteration
     double *cur_ecL = &ecL[0];  // lower triangular matrix lying on the 
                                 // diagonal of L
     double *prev_ecL;   // upper triangular matrix lying to the left from
@@ -552,7 +551,7 @@ void chol_solve::solve_backward(double *x)
 {
     int i;
     double *xc = & x[(N-1)*NUM_STATE_VAR]; // current 6 elements of result
-    double *xp; // 6 elements computed on the previous step
+    double *xp; // 6 elements computed on the previous iteration
 
     // elements of these matrices accessed as if they were transposed
     // lower triangular matrix lying on the diagonal of L
@@ -641,7 +640,7 @@ void chol_solve::solve_backward(double *x)
     (of course a column with index in 1:3:6*N).
     Such a column can have at most 4 nonzero entries.
 
-    The row has 5 or 3 (for the last step) non-zero elements.
+    The row has 5 or 3 (for the last state in the preview window) non-zero elements.
     \endverbatim
  *
  * @param[in] csp parameters
@@ -652,8 +651,8 @@ void chol_solve::solve_backward(double *x)
 void chol_solve::form_a_row(chol_solve_param csp, int ic_num, int var_num, double *row)
 {
     double aiH = csp.i2Q[0]; // a'*inv(H) = a'*inv(H)*a
-    int step_num = var_num / 2; // step number
-    int first_num = step_num * NUM_STATE_VAR; // first !=0 element
+    int state_num = var_num / 2; // number of state in the preview window
+    int first_num = state_num * NUM_STATE_VAR; // first !=0 element
     double aiHcosA;
     double aiHsinA;
 
@@ -661,8 +660,8 @@ void chol_solve::form_a_row(chol_solve_param csp, int ic_num, int var_num, doubl
     // reset memory
     memset(row, 0, NUM_VAR * N *sizeof(double));
 
-    aiHcosA = aiH * csp.angle_cos[step_num];
-    aiHsinA = aiH * csp.angle_sin[step_num];
+    aiHcosA = aiH * csp.angle_cos[state_num];
+    aiHsinA = aiH * csp.angle_sin[state_num];
 
     // compute elements of 'a'
     if (var_num%2 == 0)   // constraint on z_x
@@ -672,7 +671,7 @@ void chol_solve::form_a_row(chol_solve_param csp, int ic_num, int var_num, doubl
         row[first_num + 3] = -aiHsinA;
 
         // a * A'*R'
-        if (step_num != N-1)
+        if (state_num != N-1)
         {
             row[first_num + 6] = aiHcosA;
             row[first_num + 9] = aiHsinA;
@@ -685,7 +684,7 @@ void chol_solve::form_a_row(chol_solve_param csp, int ic_num, int var_num, doubl
         row[first_num + 3] = -aiHcosA;
 
         // a * A'*R'
-        if (step_num != N-1)
+        if (state_num != N-1)
         {
             row[first_num + 6] = -aiHsinA;
             row[first_num + 9] = aiHcosA;
@@ -774,17 +773,17 @@ void chol_solve::add_L_row (chol_solve_param csp, int nW, int *W)
     int i, j;
 
     int ic_num = nW-1; // index of added constraint in W
-    int step_num = W[ic_num] / 2; // step number
+    int state_num = W[ic_num] / 2; // number of state in the preview window
     double cur_el; // temporary storage
     double *new_row = icL[ic_num]; // current row in icL
 
-    int first_num = step_num * NUM_STATE_VAR; // the first !=0 element
+    int first_num = state_num * NUM_STATE_VAR; // the first !=0 element
     int last_num = ic_num + N*NUM_STATE_VAR; // the last !=0 element
 
     // a matrix on diagonal of ecL
-    double* ecL_diag = &ecL[step_num * MATRIX_SIZE * 2];
+    double* ecL_diag = &ecL[state_num * MATRIX_SIZE * 2];
     // a matrix below the ecL_diag
-    double* ecL_ndiag = &ecL[step_num * MATRIX_SIZE * 2 + MATRIX_SIZE];
+    double* ecL_ndiag = &ecL[state_num * MATRIX_SIZE * 2 + MATRIX_SIZE];
 
 
     // form row 'a' in the current row of icL
@@ -808,7 +807,7 @@ void chol_solve::add_L_row (chol_solve_param csp, int nW, int *W)
                 cur_el /= ecL_diag[0];
                 new_row[i + 1] -= cur_el * ecL_diag[1];
                 new_row[i + 2] -= cur_el * ecL_diag[2];
-                if (step_num != N-1) // this is not needed in the end of ecL
+                if (state_num != N-1) // this is not needed in the end of ecL
                 {
                     new_row[i + 6] -= cur_el * ecL_ndiag[0];
                 }
@@ -818,7 +817,7 @@ void chol_solve::add_L_row (chol_solve_param csp, int nW, int *W)
                 // determine number in the row of L
                 cur_el /= ecL_diag[4];
                 new_row[i + 1] -= cur_el * ecL_diag[5];
-                if (step_num != N-1) // this is not needed in the end of ecL
+                if (state_num != N-1) // this is not needed in the end of ecL
                 {
                     new_row[i + 5] -= cur_el * ecL_ndiag[3];
                     new_row[i + 6] -= cur_el * ecL_ndiag[4];
@@ -828,7 +827,7 @@ void chol_solve::add_L_row (chol_solve_param csp, int nW, int *W)
             case 2:
                 // determine number in the row of L
                 cur_el /= ecL_diag[8];
-                if (step_num != N-1) // this is not needed in the end of ecL
+                if (state_num != N-1) // this is not needed in the end of ecL
                 {
                     new_row[i + 4] -= cur_el * ecL_ndiag[6];
                     new_row[i + 5] -= cur_el * ecL_ndiag[7];
@@ -850,9 +849,9 @@ void chol_solve::add_L_row (chol_solve_param csp, int nW, int *W)
         // jump to the next pair of matrices in ecL.
         if ((i+1)%6 == 0)
         {
-            step_num++;
-            ecL_diag = &ecL[step_num * MATRIX_SIZE * 2];
-            ecL_ndiag = &ecL[step_num * MATRIX_SIZE * 2 + MATRIX_SIZE];
+            state_num++;
+            ecL_diag = &ecL[state_num * MATRIX_SIZE * 2];
+            ecL_ndiag = &ecL[state_num * MATRIX_SIZE * 2 + MATRIX_SIZE];
         }
         new_row[i] = cur_el;
     }

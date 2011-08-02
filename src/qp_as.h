@@ -132,7 +132,7 @@ class qp_as
         /** Feasible descent direction (to be used for updating #X). */
         double *dX;
 
-        /** Step size #X = #X + #alpha*#dX. */
+        /** A number from 0 to 1, which controls depth of descent #X = #X + #alpha*#dX. */
         double alpha;
 
     // active set        

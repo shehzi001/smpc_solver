@@ -126,7 +126,7 @@ class chol_solve
         /** Vector #z = -[E;Aw]*inv(H)*(H*x+g) \ L. */
         double *z;
 
-        /// number of steps
+        /// number of states in the preview window
         int N;
 };
 #endif /*CHOL_SOLVE_H*/

@@ -116,7 +116,7 @@ qp_as::~qp_as()
 
     @param[in] T_ Sampling time (for the moment it is assumed to be constant) [sec.]
     @param[in] h_ Height of the Center of Mass divided by gravity
-    @param[in] angle Rotation angle for each step
+    @param[in] angle Rotation angle for each state in the preview window
     @param[in] zref_x reference values of z_x
     @param[in] zref_y reference values of z_y
     @param[in] lb array of lower bounds for z
@@ -231,8 +231,9 @@ int qp_as::check_blocking_bounds()
 
     for (int i = 0; i < 2*N; i++)
     {
-        // Check only inactive constraints for violation. The constraints in the working set will
-        // not be violated regardless of the step size
+        // Check only inactive constraints for violation. 
+        // The constraints in the working set will not be violated regardless of 
+        // the depth of descent
         if (Bounds[i].isActive == 0)
         {
             int ind = Bounds[i].var_num;
