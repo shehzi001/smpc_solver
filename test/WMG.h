@@ -729,8 +729,6 @@ class WMG
 
       \attention This function assumes that there is at least one footstep in FS.
 
-      \note #FootStep.nSS, #FootStep.n, #FootStep.RL, #RectangularConstraint_ZMP.d from FS.back() are used.
-
       \return void
   */
   void AddFootstep(double x_relative, double y_relative, double angle_relative, int _nSS, int _n)
@@ -757,8 +755,6 @@ class WMG
       "virtual" step angle_relative is with respect to the world frame.)
 
       \attention This function assumes that there is at least one footstep in FS.
-
-      \note #FootStep.nSS, #FootStep.n, #FootStep.RL, #RectangularConstraint_ZMP.d from FS.back() are used.
 
       \return void
   */

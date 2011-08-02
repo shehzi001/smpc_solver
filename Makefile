@@ -7,6 +7,7 @@ smpc_solver:
 clean:
 	cd test; ${MAKE} clean
 	cd src; ${MAKE} clean
+	rm -Rf docs
 
 # dummy targets
 .PHONY: clean

@@ -6,10 +6,6 @@
  * @date 19.07.2011 22:37:28 MSD
  *
  * @todo add description
- *
- * @todo add doxygen config
- * @todo add tests
- * @todo add config.h
  */
 
 
@@ -21,7 +17,7 @@
  ****************************************/
 
 #include <cstddef>
-
+#include "smpc_config.h"
 
 /****************************************
  * DEFINES
@@ -30,7 +26,6 @@
 #define NUM_CONTROL_VAR 2
 #define NUM_VAR 8
 
-#define QPAS_VARIABLE_T_h
 
 /****************************************
  * TYPEDEFS 

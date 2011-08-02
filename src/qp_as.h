@@ -137,10 +137,8 @@ class qp_as
 
     // active set        
         /** Working set (contains the indexes of only inequality constraints). It is assumed that
-            the only inequality constraints are simple bounds (i.e., 2*#n constraints, however, since both
-            the lower and upper bounds of a given variable can not be included in the working set together,
-            we can use a n-dimensional array). Furthermore, since only 2*#WMG.N variables in #X are
-            subjecto to bounds, #W is defined to have size 2* #WMG.N. */
+            the only inequality constraints are simple bounds. Since only 2*#N variables in #X are
+            subjecto to bounds, #W is defined to have size 2*#N. */
         int *W;
 
         /** Number of indexes of inequality constraints already included in #W. #W(#nW-1) is the
