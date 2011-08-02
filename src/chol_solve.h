@@ -112,6 +112,9 @@ class chol_solve
             (N*2)x(N*NUM_VAR) matrix */
         double **icL;   
 
+        /** All lines of #icL are stored in one chunk of memory. */
+        double *icL_mem;   
+
         // intermediate results used in computation of L
         double *iQBiPB;     /// inv(Q) + B * inv(P) * B'
         double *iQAT;       /// inv(Q) * A'

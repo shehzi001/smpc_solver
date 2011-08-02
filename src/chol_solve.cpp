@@ -41,10 +41,14 @@ chol_solve::chol_solve (int preview_win_size)
     z = new double[NUM_VAR*N]();
 
     icL = new double*[N*2];
-    icL[0] = new double[NUM_VAR*N*2*N];
-    for(int i = 1; i < N*2; i++)
+
+    /// @todo When downdate is performed we need only
+    /// half of this memory: upper and lower constraints
+    /// can not be active at the same time.
+    icL_mem = new double[NUM_VAR*N*2*N];
+    for(int i = 0; i < N*2; i++)
     {
-        icL[i] = &icL[0][i * NUM_VAR*N];
+        icL[i] = &icL_mem[i * NUM_VAR*N];
     }
 }
 
@@ -65,7 +69,7 @@ chol_solve::~chol_solve()
         delete ViHg;
     if (icL != NULL)
     {
-        delete icL[0];
+        delete icL_mem;
         delete icL;
     }
     if (z != NULL)
