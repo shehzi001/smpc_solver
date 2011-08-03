@@ -40,12 +40,9 @@ chol_solve::chol_solve (int preview_win_size)
 
     z = new double[NUM_VAR*N]();
 
-    icL = new double*[N*2];
 
-    /// @todo When downdate is performed we need only
-    /// half of this memory: upper and lower constraints
-    /// can not be active at the same time.
-    icL_mem = new double[NUM_VAR*N*2*N];
+    icL = new double*[N*2];
+    icL_mem = new double[NUM_VAR*N*N*2];
     for(int i = 0; i < N*2; i++)
     {
         icL[i] = &icL_mem[i * NUM_VAR*N];
@@ -655,6 +652,7 @@ void chol_solve::solve_backward(double *x)
 void chol_solve::form_a_row(chol_solve_param csp, int ic_num, int var_num, double *row)
 {
     double aiH = csp.i2Q[0]; // a'*inv(H) = a'*inv(H)*a
+    /// @todo rename
     int state_num = var_num / 2; // number of state in the preview window
     int first_num = state_num * NUM_STATE_VAR; // first !=0 element
     double aiHcosA;
@@ -772,7 +770,7 @@ void chol_solve::solve(chol_solve_param csp, double *ix, double *dx)
  * @param[in] nW number of added inequality constraints + 1.
  * @param[in] W indexes of added inequality constraints + one index to be added.
  */
-void chol_solve::add_L_row (chol_solve_param csp, int nW, int *W)
+void chol_solve::update (chol_solve_param csp, int nW, int *W)
 {
     int i, j;
 
@@ -894,8 +892,10 @@ void chol_solve::add_L_row (chol_solve_param csp, int nW, int *W)
  * @param[in] W     indicies of added constraints.
  * @param[in] x     initial guess.
  * @param[out] dx   feasible descent direction, must be allocated.
+ *
+ * @return index(in W) of constraint to be removed from active set.
  */
-void chol_solve::resolve (chol_solve_param csp, int nW, int *W, double *x, double *dx)
+int chol_solve::resolve (chol_solve_param csp, int nW, int *W, double *x, double *dx)
 {
     int i,j;
 
@@ -955,8 +955,85 @@ void chol_solve::resolve (chol_solve_param csp, int nW, int *W, double *x, doubl
     }
 
     // -iH * A(W,:)' * lambda
+    double min_lambda = 0;
+    int ind_exclude = -1;
     for (i = 0; i < nW; i++)
     {
         dx[W[i]*3] -= i2Q[0] * nu[N*NUM_STATE_VAR + i];
+
+        // schedule the constraint with the smallest lambda for removal
+        if ((nu[N*NUM_STATE_VAR + i] < 0) && (nu[N*NUM_STATE_VAR + i] < min_lambda))
+        {
+            min_lambda = nu[N*NUM_STATE_VAR + i];
+            ind_exclude = W[i];
+        }
     }
+
+    return (ind_exclude);
+}
+
+
+/**
+ * @brief Delete a line from icL.
+ *
+ * @param[in] seq_num sequential number of constraint in W.
+ * @param[in] nW total number of added inequality constraints.
+ */
+void chol_solve::downdate(int seq_num, int nW)
+{
+    for (int i = seq_num + 1; i < nW; i++)
+    {
+        int el_index = NUM_STATE_VAR*N + i - 1;
+        double x1 = icL[i][el_index];
+        double x2 = icL[i][el_index + 1];
+        double cosT, sinT;
+
+
+        // Givens rotation matrix
+        if (abs(x2) >= abs(x1))
+        {
+            double t = x1/x2;
+            sinT = 1/sqrt(1 + t*t);
+            cosT = sinT*t;
+        }
+        else
+        {
+            double t = x2/x1;
+            cosT = 1/sqrt(1 + t*t);
+            sinT = cosT*t;
+        }
+
+
+        // update elements in the current line
+        icL[i][el_index] = cosT*x1 + sinT*x2;
+        icL[i][el_index + 1] = 0;
+
+        // change sign if needed (diagonal elements of Cholesky 
+        // decomposition must be positive)
+        double sign = 1;
+        if (icL[i][el_index] < 0)
+        {
+            icL[i][el_index] = -icL[i][el_index];
+            sign = -1;
+        }
+
+        // update the lines below the current one.
+        for (int j = i + 1; j < nW; j++)
+        {
+            x1 = icL[j][el_index];
+            x2 = icL[j][el_index + 1];
+
+            icL[j][el_index] = sign * (cosT*x1 + sinT*x2);
+            icL[j][el_index + 1] = -sinT*x1 + cosT*x2;
+        }
+    }
+
+
+    // Shuffle memory pointers to avoid copying of the data.
+    double * downdate_row = icL[seq_num];
+    for (int i = seq_num + 1; i < nW; i++)
+    {
+        icL[i-1] = icL[i];
+    }
+    icL[nW-1] = downdate_row;
 }

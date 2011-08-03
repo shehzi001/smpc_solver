@@ -16,7 +16,11 @@
  * DEFINES
  ****************************************/
 
+// behaviour
 #define QPAS_VARIABLE_T_h
+
+// parameters
+#define TOL 1e-7 // tolerance
 
 
 #endif /*SMPC_CONFIG_H*/

@@ -84,7 +84,7 @@ class bound
 class qp_as
 {
     public:
-        qp_as(int N_, double Alpha = 150.0, double Beta = 2000.0, double Gamma = 1.0);
+        qp_as(int N_, bool, double Alpha = 150.0, double Beta = 2000.0, double Gamma = 1.0);
         ~qp_as();
 
 #ifdef QPAS_VARIABLE_T_h
@@ -109,6 +109,9 @@ class qp_as
 
 
 // variables
+
+        bool enable_downdate;
+
         /** Number of iterations in a preview window. */
         int N;
 

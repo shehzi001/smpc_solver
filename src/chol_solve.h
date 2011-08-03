@@ -50,8 +50,9 @@ class chol_solve
 
 
         void solve(chol_solve_param, double *, double *);
-        void add_L_row (chol_solve_param, int, int *);
-        void resolve (chol_solve_param, int, int *, double *, double *);
+        void update (chol_solve_param, int, int *);
+        void downdate (int, int);
+        int resolve (chol_solve_param, int, int *, double *, double *);
 
 
 #ifndef QPAS_DEBUG

@@ -16,7 +16,6 @@
 #include <string.h> // in order to use memcpy and memmove
 #include <cmath> // cos, sin
 
-
 /****************************************
  * FUNCTIONS
  ****************************************/
@@ -51,9 +50,10 @@ void bound::set(int var_num_, double lb_, double ub_, int active)
     @param[in] Beta Position gain
     @param[in] Gamma Jerk gain
 */
-qp_as::qp_as(int N_, double Alpha, double Beta, double Gamma) : chol (N_)
+qp_as::qp_as(int N_, bool enable_downdate_, double Alpha, double Beta, double Gamma) : chol (N_)
 {
     N = N_;
+    enable_downdate = enable_downdate_;
 
     gain_alpha = Alpha;
     gain_beta  = Beta;
@@ -222,7 +222,6 @@ void qp_as::form_bounds(double *lb, double *ub)
  */
 int qp_as::check_blocking_bounds()
 {
-    double t = 1;
     alpha = 1;
 
     /** Index to include in the working set #W, -1 if no constraint have to be included. */
@@ -237,6 +236,7 @@ int qp_as::check_blocking_bounds()
         if (Bounds[i].isActive == 0)
         {
             int ind = Bounds[i].var_num;
+            double t = 1;
 
             if ( dX[ind] < -TOL )
             {
@@ -281,6 +281,7 @@ int qp_as::solve ()
     for (;;)
     {
         int ind_include = check_blocking_bounds();
+
         // Move in the feasible descent direction
         for (int i = 0; i < N*NUM_VAR ; i++)
         {
@@ -293,9 +294,31 @@ int qp_as::solve ()
             break;
         }
 
+
         // add row to the L matrix and find new dX
-        chol.add_L_row (chol_param, nW, W);
-        chol.resolve (chol_param, nW, W, X, dX);
+        chol.update (chol_param, nW, W);
+        int ind_exclude = chol.resolve (chol_param, nW, W, X, dX);
+
+
+        // downdate if needed
+        if ((enable_downdate) && (ind_exclude != -1))
+        {
+            int seq_num;
+
+            Bounds[ind_exclude].isActive = 0;
+
+            // find index of constraint in W
+            for (seq_num = 0; W[seq_num] != ind_exclude; seq_num++);
+
+            chol.downdate (seq_num, nW);
+
+            // delete index of constraint from W
+            for (; seq_num < nW-1; seq_num++)
+            {
+                W[seq_num] = W[seq_num + 1];
+            }
+            nW--;
+        }
     }
 
     return (nW);

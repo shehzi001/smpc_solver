@@ -48,7 +48,7 @@ int main(int argc, char **argv)
   
 
 
-    qp_as solver(PREVIEW_SIZE, false);
+    qp_as solver(PREVIEW_SIZE, true);
 
     double err = 0;
     double max_err = 0;
