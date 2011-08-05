@@ -42,7 +42,7 @@ struct chol_solve_param
     double i2Q[3];
 
     /** Control related penalty. */
-    double iP;
+    double i2P;
 
     /** inv(H) * g */
     double *iHg;

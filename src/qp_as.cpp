@@ -63,7 +63,7 @@ qp_as::qp_as(int N_, bool enable_downdate_, double Alpha, double Beta, double Ga
     chol_param.i2Q[1] = 1/(2*(Alpha/2));
     chol_param.i2Q[2] = 1/(2*REGULARIZATION);
 
-    chol_param.iP = 1/(Gamma/2);
+    chol_param.i2P = 1/(2 * (Gamma/2));
 
     chol_param.iHg = new double[NUM_VAR*N]();
 
@@ -165,6 +165,8 @@ void qp_as::init(
     }
 
     form_iHg(zref_x, zref_y);
+    zx = zref_x;
+    zy = zref_y;
 }
 
 
@@ -280,6 +282,7 @@ int qp_as::solve ()
 
     for (;;)
     {
+        double obj = 0;
         int ind_include = check_blocking_bounds();
 
         // Move in the feasible descent direction
@@ -288,37 +291,63 @@ int qp_as::solve ()
             X[i] += alpha * dX[i];
         }
 
+        int k;
+        for (k = 0; k < N*NUM_STATE_VAR; k++)
+        {
+            obj += (2/chol_param.i2Q[k%3]) * X[k] * X[k];
+        }
+
+        for (; k < N*NUM_STATE_VAR; k++)
+        {
+            obj += (2/chol_param.i2P) * X[k] * X[k];
+        }
+
+        for (int i = 0; i < N; i++)
+        {
+            double cosA = chol_param.angle_cos[i];
+            double sinA = chol_param.angle_sin[i];
+
+            // zref
+            double p0 = zx[i];
+            double p1 = zy[i];
+
+            // inv (2*H) * R' * Cp' * zref
+            obj -= X[i*NUM_STATE_VAR + 0]*(cosA*p0 + sinA*p1)*gain_beta;
+            obj -= X[i*NUM_STATE_VAR + 3]*(-sinA*p0 + cosA*p1)*gain_beta; 
+        }
+
         // no new inequality constraints
         if (ind_include == -1)
         {
-            break;
+            if (enable_downdate)
+            {
+                int ind_exclude = chol.downdate (chol_param, nW, W, X);
+                if (ind_exclude != -1)
+                {
+                    Bounds[W[ind_exclude]].isActive = 0;
+                    for (; ind_exclude < nW-1; ind_exclude++)
+                    {
+                        W[ind_exclude] = W[ind_exclude + 1];
+                    }
+                    nW--;
+                    chol.resolve (chol_param, nW, W, X, dX, false);
+                    continue;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            else
+            {
+                break;
+            }
         }
 
 
         // add row to the L matrix and find new dX
         chol.update (chol_param, nW, W);
-        int ind_exclude = chol.resolve (chol_param, nW, W, X, dX);
-
-
-        // downdate if needed
-        if ((enable_downdate) && (ind_exclude != -1))
-        {
-            int seq_num;
-
-            Bounds[ind_exclude].isActive = 0;
-
-            // find index of constraint in W
-            for (seq_num = 0; W[seq_num] != ind_exclude; seq_num++);
-
-            chol.downdate (seq_num, nW);
-
-            // delete index of constraint from W
-            for (; seq_num < nW-1; seq_num++)
-            {
-                W[seq_num] = W[seq_num + 1];
-            }
-            nW--;
-        }
+        chol.resolve (chol_param, nW, W, X, dX);
     }
 
     return (nW);

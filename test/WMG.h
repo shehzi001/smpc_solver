@@ -84,7 +84,7 @@ void write_file(double *A, int row, int col, const char *output_file, const char
   if(!file_op)
     {
       std::cerr << "Cannot open file (for writing) " << output_file << std::endl;
-      std::exit(1);
+      return;
     }
   
   int i, j;
@@ -706,7 +706,7 @@ class WMG
             printf("------------------------------------------------------------\n");
             printf(" WARNING: Two consecutive right leg (or left leg) supports. \n");
             printf("------------------------------------------------------------\n");
-            std::exit(0);
+            return;
           }
 
         FS.push_back(FootStep(a, p, _nSS, _n, _RL, _d));
@@ -866,7 +866,7 @@ class WMG
     if(!file_op)
       {
         std::cerr << "Cannot open file (for writing) " << output_file << std::endl;
-        std::exit(1);
+        return;
       }
     
     fprintf(file_op,"%%\n%% Footsteps generated using the c++ version of the WMG\n%%\n\n");

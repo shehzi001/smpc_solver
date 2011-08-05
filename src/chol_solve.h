@@ -48,11 +48,10 @@ class chol_solve
         chol_solve (int);
         ~chol_solve();
 
-
         void solve(chol_solve_param, double *, double *);
         void update (chol_solve_param, int, int *);
-        void downdate (int, int);
-        int resolve (chol_solve_param, int, int *, double *, double *);
+        int downdate (chol_solve_param, int, int*, double *);
+        void resolve (chol_solve_param, int, int *, double *, double *, bool after_update = true);
 
 
 #ifndef QPAS_DEBUG

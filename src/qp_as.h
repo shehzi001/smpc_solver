@@ -150,6 +150,11 @@ class qp_as
 
         /// Vector of bounds.
         std::vector <bound> Bounds;
+
+/// @todo delete
+        double *zx;
+        double *zy;
+
 };
 
 
