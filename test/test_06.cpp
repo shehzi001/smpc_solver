@@ -44,11 +44,13 @@ int main(int argc, char **argv)
     wmg.AddFootstep(step_x, -step_y, z);
     wmg.AddFootstep(step_x,  step_y, 0.0, 30, 30);
     wmg.AddFootstep(0.0   , -step_y, 0.0);
+
+    //wmg.FS2file(); // output results for later use in Matlab/Octave
     //-----------------------------------------------------------
   
 
 
-    qp_as solver(PREVIEW_SIZE, true);
+    qp_as solver(PREVIEW_SIZE);
 
     double err = 0;
     double max_err = 0;
@@ -62,10 +64,16 @@ int main(int argc, char **argv)
     // reference states generated using thr implementation of
     // the algorithm in Octave/MATLAB
     ifstream inFile;
-    inFile.open ("./data/test_01_1_states.dat");
+    inFile.open ("./data/states_chol_downdate.dat");
 
 
     printf ("\n################################\n %s \n################################\n", argv[0]);
+#ifndef QPAS_DOWNDATE
+    printf ("!!! WARNING !!!\n");
+    printf ("Downdate of the active set is disabled.\n");
+    printf ("The reference data was generated with downdate.\n");
+    printf ("!!! WARNING !!!\n\n");
+#endif
     for(;;)
     {
         //------------------------------------------------------
@@ -106,22 +114,37 @@ int main(int argc, char **argv)
 
         //------------------------------------------------------
         // compare with reference results
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < wmg.N*NUM_VAR; i++)
         {
             double dataref;
 
-            wmg.X[i] = wmg.FP_init[i];
+            if (i < 6)
+            {
+                wmg.X[i] = wmg.FP_init[i];
+            }
 
             inFile >> dataref;
-            err = abs(wmg.X[i] - dataref);
+            err = abs(wmg.FP_init[i] - dataref);
             if (err > max_err)
             {
                 max_err = err;
             }
-            printf("value: % 8e   ref: % 8e   err: % 8e\n", wmg.X[i], dataref, err);
+            //printf("value: % 8e   ref: % 8e   err: % 8e\n", wmg.FP_init[i], dataref, err);
         }
         cout << "Max. error (over all steps): " << max_err << endl;
         //------------------------------------------------------
+        
+        /** @todo do something with this */
+        /*
+        wmg.CoM.x = wmg.X_tilde[0] + wmg.h[0]*(wmg.X_tilde[2]);
+        wmg.CoM.y = wmg.X_tilde[3] + wmg.h[0]*(wmg.X_tilde[5]);
+
+        wmg.ZMP.x = wmg.X_tilde[0];
+        wmg.ZMP.y = wmg.X_tilde[3];
+
+        wmg.output_CoM_ZMP();
+        */
+
 
         wmg.slide();
     }

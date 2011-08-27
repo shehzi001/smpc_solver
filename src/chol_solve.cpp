@@ -652,7 +652,6 @@ void chol_solve::solve_backward(double *x)
 void chol_solve::form_a_row(chol_solve_param csp, int ic_num, int var_num, double *row)
 {
     double aiH = csp.i2Q[0]; // a'*inv(H) = a'*inv(H)*a
-    /// @todo rename
     int state_num = var_num / 2; // number of state in the preview window
     int first_num = state_num * NUM_STATE_VAR; // first !=0 element
     double aiHcosA;
@@ -731,7 +730,7 @@ void chol_solve::solve(chol_solve_param csp, double *ix, double *dx)
     // obtain nu
     solve_forward(s_nu);
     // make copy of z - it is constant
-    for (i= 0; i < NUM_STATE_VAR * N; i++)
+    for (i = 0; i < NUM_STATE_VAR * N; i++)
     {
         z[i] = s_nu[i];
     }
@@ -746,18 +745,15 @@ void chol_solve::solve(chol_solve_param csp, double *ix, double *dx)
     // dx = -(V + inv(H) * g + inv(H) * E' * nu)
     //        ~~~~~~~~~~~~~~            ~~~~~~~
     // dx   -(   -ViHg       + inv(H) *   dx   ) 
-    for (i = 0; i < N*NUM_VAR; i++)
+    for (i = 0; i < N*NUM_STATE_VAR; i++)
     {
-        if (i < N*NUM_STATE_VAR)
-        {
-            // dx for state variables
-            dx[i] = -(-ViHg[i] + i2Q[i%3] * dx[i]);
-        }
-        else
-        {
-            // dx for control variables
-            dx[i] = -(-ViHg[i] + csp.i2P * dx[i]);
-        }
+        // dx for state variables
+        dx[i] = -(-ViHg[i] + i2Q[i%3] * dx[i]);
+    }
+    for (; i < N*NUM_VAR; i++)
+    {
+        // dx for control variables
+        dx[i] = -(-ViHg[i] + csp.i2P * dx[i]);
     }
 }
 
@@ -883,6 +879,35 @@ void chol_solve::update (chol_solve_param csp, int nW, int *W)
 }
 
 
+
+/**
+ * @brief Adjust vector 'z' after update.
+ *
+ * @param[in] csp   parameters.
+ * @param[in] nW    number of added constrains.
+ * @param[in] W     indicies of added constraints.
+ * @param[in] x     initial guess.
+ */
+void chol_solve::update_z (chol_solve_param csp, int nW, int *W, double *x)
+{
+    int ic_num = nW-1; // index of added constraint in W
+    // update lagrange multipliers
+    int zind = N*NUM_STATE_VAR + ic_num;
+    // sn
+    double zn = -(csp.iHg[W[ic_num]*3] + x[W[ic_num]*3]);
+
+    // zn
+    for (int i = 0; i < zind; i++)
+    {
+        zn -= z[i] * icL[ic_num][i];
+        nu[i] = z[i];
+    }
+    nu[zind] = z[zind] = zn/icL[ic_num][zind];
+    return;
+}
+
+
+
 /**
  * @brief Determines feasible descent direction with respect to added
  *  inequality constraints.
@@ -893,39 +918,15 @@ void chol_solve::update (chol_solve_param csp, int nW, int *W)
  * @param[in] x     initial guess.
  * @param[out] dx   feasible descent direction, must be allocated.
  */
-void chol_solve::resolve (chol_solve_param csp, int nW, int *W, double *x, double *dx, bool after_update)
+void chol_solve::resolve (chol_solve_param csp, int nW, int *W, double *x, double *dx)
 {
     int i,j;
 
-    int ic_num = nW-1;
-    int zind = N*NUM_STATE_VAR + ic_num;
     double i2Q[3] = {csp.i2Q[0], csp.i2Q[1], csp.i2Q[2]};
 
 
-    if (after_update)
-    {
-        // sn
-        double zn = -(csp.iHg[W[ic_num]*3] + x[W[ic_num]*3]);
-
-        // zn
-        for (i = 0; i < zind; i++)
-        {
-            zn -= z[i] * icL[ic_num][i];
-            nu[i] = z[i];
-        }
-        nu[zind] = z[zind] = zn/icL[ic_num][zind];
-    }
-    else
-    {
-        for (i = 0; i <= zind; i++)
-        {
-            nu[i] = z[i];
-        }
-    }
-
-
     // backward substituition for icL
-    for (i = zind; i >= NUM_STATE_VAR*N; i--)
+    for (i = NUM_STATE_VAR*N + nW-1; i >= NUM_STATE_VAR*N; i--)
     {
         double nui = nu[i];
 
@@ -948,18 +949,15 @@ void chol_solve::resolve (chol_solve_param csp, int nW, int *W, double *x, doubl
     // dx = -(V + inv(H) * g + inv(H) * E' * nu)
     //        ~~~~~~~~~~~~~~            ~~~~~~~
     // dx   -(x +  iHg       + inv(H) *   dx   ) 
-    for (i = 0; i < N*NUM_VAR; i++)
+    for (i = 0; i < N*NUM_STATE_VAR; i++)
     {
-        if (i < N*NUM_STATE_VAR)
-        {
-            // dx for state variables
-            dx[i] = -(x[i] + csp.iHg[i] + i2Q[i%3] * dx[i]);
-        }
-        else
-        {
-            // dx for control variables
-            dx[i] = -(x[i] + csp.iHg[i] + csp.i2P * dx[i]);
-        }
+        // dx for state variables
+        dx[i] = -(x[i] + csp.iHg[i] + i2Q[i%3] * dx[i]);
+    }
+    for (; i < N*NUM_VAR; i++)
+    {
+        // dx for control variables
+        dx[i] = -(x[i] + csp.iHg[i] + csp.i2P * dx[i]);
     }
 
     // -iH * A(W,:)' * lambda
@@ -970,102 +968,112 @@ void chol_solve::resolve (chol_solve_param csp, int nW, int *W, double *x, doubl
 }
 
 
+
+#ifdef QPAS_DOWNDATE
+/**
+ * @return a pointer to the memory where current lambdas are stored.
+ */
+double * chol_solve::get_lambda()
+{
+    return(&nu[NUM_STATE_VAR*N]);
+}
+
+
+/**
+ * @brief Adjust vector 'z' after downdate.
+ *
+ * @param[in] csp   parameters.
+ * @param[in] nW    number of added constrains.
+ * @param[in] W     indicies of added constraints.
+ * @param[in] x     initial guess.
+ * @param[in] ind_exclude index of excluded constraint.
+ */
+void chol_solve::downdate_z (chol_solve_param csp, int nW, int *W, double *x, int ind_exclude)
+{
+    for (int i = ind_exclude; i < nW; i++)
+    {
+        int zind = N*NUM_STATE_VAR + i;
+
+        // sn
+        double zn = -(csp.iHg[W[i]*3] + x[W[i]*3]);
+
+        // zn
+        // start from the first !=0 element
+        for (int j = W[i]/2*NUM_STATE_VAR; j < zind; j++)
+        {
+            zn -= z[j] * icL[i][j];
+        }
+        z[zind] = zn/icL[i][zind];
+    }
+
+    // update lagrange multipliers
+    for (int i = 0; i < N*NUM_STATE_VAR + nW; i++)
+    {
+        nu[i] = z[i];
+    }
+}
+
+
 /**
  * @brief Delete a line from icL.
  *
- * @param[in] nW total number of added inequality constraints.
+ * @param[in] csp   parameters.
+ * @param[in] nW    number of added constrains.
+ * @param[in] ind_exclude index of excluded constraint.
+ * @param[in] x     initial guess.
  */
-int chol_solve::downdate(chol_solve_param csp, int nW, int* W, double *x)
+void chol_solve::downdate(chol_solve_param csp, int nW, int ind_exclude, double *x)
 {
-    double min_lambda = TOL;
-    int ind_exclude = -1;
-
-    for (int i = 0; i < nW; i++)
+    // Shuffle memory pointers to avoid copying of the data.
+    double * downdate_row = icL[ind_exclude];
+    for (int i = ind_exclude + 1; i < nW + 1; i++)
     {
-        // schedule the constraint with the smallest lambda for removal
-        if (nu[N*NUM_STATE_VAR + i] > min_lambda) ///@todo sign?
+        icL[i-1] = icL[i];
+    }
+    icL[nW] = downdate_row;
+
+
+    for (int i = ind_exclude; i < nW; i++)
+    {
+        int el_index = NUM_STATE_VAR*N + i;
+        double x1 = icL[i][el_index];
+        double x2 = icL[i][el_index + 1];
+        double cosT, sinT;
+
+
+        // Givens rotation matrix
+        if (abs(x2) >= abs(x1))
         {
-            min_lambda = nu[N*NUM_STATE_VAR + i];
-            ind_exclude = i;
+            double t = x1/x2;
+            sinT = 1/sqrt(1 + t*t);
+            cosT = sinT*t;
+        }
+        else
+        {
+            double t = x2/x1;
+            cosT = 1/sqrt(1 + t*t);
+            sinT = cosT*t;
+        }
+
+
+        // update elements in the current line
+        icL[i][el_index] = cosT*x1 + sinT*x2;
+        icL[i][el_index + 1] = 0;
+
+        // change sign if needed (diagonal elements of Cholesky 
+        // decomposition must be positive)
+        double sign = copysign(1, icL[i][el_index]);
+        icL[i][el_index] = fabs(icL[i][el_index]);
+
+        // update the lines below the current one.
+        for (int j = i + 1; j < nW; j++)
+        {
+            x1 = icL[j][el_index];
+            x2 = icL[j][el_index + 1];
+
+            icL[j][el_index] = sign * (cosT*x1 + sinT*x2);
+            icL[j][el_index + 1] = -sinT*x1 + cosT*x2;
         }
     }
-
-    if (ind_exclude != -1)
-    {
-        for (int i = ind_exclude + 1; i < nW; i++)
-        {
-            int el_index = NUM_STATE_VAR*N + i - 1;
-            double x1 = icL[i][el_index];
-            double x2 = icL[i][el_index + 1];
-            double cosT, sinT;
-
-
-            // Givens rotation matrix
-            if (abs(x2) >= abs(x1))
-            {
-                double t = x1/x2;
-                sinT = 1/sqrt(1 + t*t);
-                cosT = sinT*t;
-            }
-            else
-            {
-                double t = x2/x1;
-                cosT = 1/sqrt(1 + t*t);
-                sinT = cosT*t;
-            }
-
-
-            // update elements in the current line
-            icL[i][el_index] = cosT*x1 + sinT*x2;
-            icL[i][el_index + 1] = 0;
-
-            // change sign if needed (diagonal elements of Cholesky 
-            // decomposition must be positive)
-            double sign = 1;
-            if (icL[i][el_index] < 0)
-            {
-                icL[i][el_index] = -icL[i][el_index];
-                sign = -1;
-            }
-
-            // update the lines below the current one.
-            for (int j = i + 1; j < nW; j++)
-            {
-                x1 = icL[j][el_index];
-                x2 = icL[j][el_index + 1];
-
-                icL[j][el_index] = sign * (cosT*x1 + sinT*x2);
-                icL[j][el_index + 1] = -sinT*x1 + cosT*x2;
-            }
-        }
-
-
-        // Shuffle memory pointers to avoid copying of the data.
-        double * downdate_row = icL[ind_exclude];
-        for (int i = ind_exclude + 1; i < nW; i++)
-        {
-            icL[i-1] = icL[i];
-        }
-        icL[nW-1] = downdate_row;
-
-    
-        for (int i = ind_exclude; i < nW - 1; i++)
-        {
-            int zind = N*NUM_STATE_VAR + i;
-
-            // sn
-            double zn = -(csp.iHg[W[i+1]*3] + x[W[i+1]*3]);
-
-            // zn
-            for (int j = 0; j < zind; j++)
-            {
-                /// @todo can be faster!!!
-                zn -= z[j] * icL[i][j];
-            }
-            z[zind] = zn/icL[i][zind];
-        }
-    }
-
-    ///@todo rename
-    return (ind_exclude);
 }
+#endif

@@ -54,7 +54,7 @@ int main(int argc, char **argv)
     //-----------------------------------------------------------
  
 
-    qp_as solver(PREVIEW_SIZE, true);
+    qp_as solver(PREVIEW_SIZE);
 
     double angle[PREVIEW_SIZE];
     double zref_x[PREVIEW_SIZE];

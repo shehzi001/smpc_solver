@@ -16,7 +16,7 @@
 #define PREVIEW_SIZE 15 // Size of the preview window
 
 using namespace std;
-
+/// @todo describe tests
 
 int main(int argc, char **argv)
 {
@@ -47,7 +47,7 @@ int main(int argc, char **argv)
   
 
 
-    qp_as solver(PREVIEW_SIZE, false);
+    qp_as solver(PREVIEW_SIZE);
 
     double angle[PREVIEW_SIZE];
     double zref_x[PREVIEW_SIZE];
@@ -80,7 +80,7 @@ int main(int argc, char **argv)
             wmg.T[j] = 0.1;
             j++;
         }
-        for (int i=0; i<PREVIEW_SIZE; i++)
+        for (int i=0; i < PREVIEW_SIZE; i++)
         {
             cout << wmg.T[i] << "   ";
         }

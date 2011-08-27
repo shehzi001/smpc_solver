@@ -50,10 +50,9 @@ void bound::set(int var_num_, double lb_, double ub_, int active)
     @param[in] Beta Position gain
     @param[in] Gamma Jerk gain
 */
-qp_as::qp_as(int N_, bool enable_downdate_, double Alpha, double Beta, double Gamma) : chol (N_)
+qp_as::qp_as(int N_, double Alpha, double Beta, double Gamma) : chol (N_)
 {
     N = N_;
-    enable_downdate = enable_downdate_;
 
     gain_alpha = Alpha;
     gain_beta  = Beta;
@@ -79,6 +78,9 @@ qp_as::qp_as(int N_, bool enable_downdate_, double Alpha, double Beta, double Ga
 
     // there are no inequality constraints in the initial working set (no hot-starting for the moment)
     W = new int[2*N];
+#ifdef QPAS_DOWNDATE
+    W_sign = new int[2*N];
+#endif
     alpha = 1;
     
     dX = new double[NUM_VAR*N]();
@@ -108,6 +110,10 @@ qp_as::~qp_as()
 #ifdef QPAS_VARIABLE_T_h
     if (chol_param.dh != NULL)
         delete chol_param.dh;
+#endif
+#ifdef QPAS_DOWNDATE
+    if (W_sign != NULL)
+        delete W_sign;
 #endif
 }
 
@@ -165,8 +171,10 @@ void qp_as::init(
     }
 
     form_iHg(zref_x, zref_y);
-    zx = zref_x;
-    zy = zref_y;
+#ifdef SMPCS_DEBUG
+    zref_x_copy = zref_x;
+    zref_y_copy = zref_y;
+#endif /*SMPCS_DEBUG*/
 }
 
 
@@ -220,14 +228,14 @@ void qp_as::form_bounds(double *lb, double *ub)
 /**
  * @brief Check for blocking bounds.
  *
- * @return index of constraint to be added, -1 if no constraints.
+ * @return sequential number of constraint to be added, -1 if no constraints.
  */
 int qp_as::check_blocking_bounds()
 {
     alpha = 1;
 
     /** Index to include in the working set #W, -1 if no constraint have to be included. */
-    int ind_include = -1;
+    int activated_var_num = -1;
 
 
     for (int i = 0; i < 2*N; i++)
@@ -238,11 +246,17 @@ int qp_as::check_blocking_bounds()
         if (Bounds[i].isActive == 0)
         {
             int ind = Bounds[i].var_num;
+#ifdef QPAS_DOWNDATE
+            int sign = 1;
+#endif
             double t = 1;
 
             if ( dX[ind] < -TOL )
             {
                 t = (Bounds[i].lb - X[ind])/dX[ind];
+#ifdef QPAS_DOWNDATE
+                sign = -1;
+#endif
             }
             else if ( dX[ind] > TOL ) 
             {
@@ -254,22 +268,57 @@ int qp_as::check_blocking_bounds()
                 t = 1;
             }
 
-            if ((t > TOL) && (t < alpha))
+            if (t < alpha)
             {
                 alpha = t;
-                ind_include = i;
+                activated_var_num = i;
+#ifdef QPAS_DOWNDATE
+                W_sign[nW] = sign;
+#endif
             }
         }
     }
-    if (ind_include != -1)
+    if (activated_var_num != -1)
     {
-        W[nW] = ind_include;    
+        W[nW] = activated_var_num;    
         nW++;
-        Bounds[ind_include].isActive = 1;
+        Bounds[activated_var_num].isActive = 1;
     }
 
-    return (ind_include);
+    return (activated_var_num);
 }  
+
+
+#ifdef QPAS_DOWNDATE
+int qp_as::choose_excl_constr (double *lambda)
+{
+    double min_lambda = -TOL;
+    int ind_exclude = -1;
+
+    // find the constraint with the smallest lambda
+    for (int i = 0; i < nW; i++)
+    {
+        if (lambda[i] * W_sign[i] < min_lambda)
+        {
+            min_lambda = lambda[i] * W_sign[i];
+            ind_exclude = i;
+        }
+    }
+
+    if (ind_exclude != -1)
+    {
+        Bounds[W[ind_exclude]].isActive = 0;
+        for (int i = ind_exclude; i < nW-1; i++)
+        {
+            W[i] = W[i + 1];
+            W_sign[i] = W_sign[i + 1];
+        }
+        nW--;
+    }
+
+    return (ind_exclude);
+}
+#endif /* QPAS_DOWNDATE */
 
 
 /**
@@ -282,8 +331,7 @@ int qp_as::solve ()
 
     for (;;)
     {
-        double obj = 0;
-        int ind_include = check_blocking_bounds();
+        int activated_var_num = check_blocking_bounds();
 
         // Move in the feasible descent direction
         for (int i = 0; i < N*NUM_VAR ; i++)
@@ -291,64 +339,78 @@ int qp_as::solve ()
             X[i] += alpha * dX[i];
         }
 
-        int k;
-        for (k = 0; k < N*NUM_STATE_VAR; k++)
-        {
-            obj += (2/chol_param.i2Q[k%3]) * X[k] * X[k];
-        }
-
-        for (; k < N*NUM_STATE_VAR; k++)
-        {
-            obj += (2/chol_param.i2P) * X[k] * X[k];
-        }
-
-        for (int i = 0; i < N; i++)
-        {
-            double cosA = chol_param.angle_cos[i];
-            double sinA = chol_param.angle_sin[i];
-
-            // zref
-            double p0 = zx[i];
-            double p1 = zy[i];
-
-            // inv (2*H) * R' * Cp' * zref
-            obj -= X[i*NUM_STATE_VAR + 0]*(cosA*p0 + sinA*p1)*gain_beta;
-            obj -= X[i*NUM_STATE_VAR + 3]*(-sinA*p0 + cosA*p1)*gain_beta; 
-        }
-
         // no new inequality constraints
-        if (ind_include == -1)
+        if (activated_var_num == -1)
         {
-            if (enable_downdate)
+#ifdef QPAS_DOWNDATE
+            int ind_exclude = choose_excl_constr (chol.get_lambda());
+            if (ind_exclude != -1)
             {
-                int ind_exclude = chol.downdate (chol_param, nW, W, X);
-                if (ind_exclude != -1)
-                {
-                    Bounds[W[ind_exclude]].isActive = 0;
-                    for (; ind_exclude < nW-1; ind_exclude++)
-                    {
-                        W[ind_exclude] = W[ind_exclude + 1];
-                    }
-                    nW--;
-                    chol.resolve (chol_param, nW, W, X, dX, false);
-                    continue;
-                }
-                else
-                {
-                    break;
-                }
+                chol.downdate (chol_param, nW, ind_exclude, X);
+                chol.downdate_z (chol_param, nW, W, X, ind_exclude);
+                chol.resolve (chol_param, nW, W, X, dX);
+                continue;
             }
             else
             {
                 break;
             }
+#else
+            break;
+#endif /*QPAS_DOWNDATE*/
         }
 
 
         // add row to the L matrix and find new dX
         chol.update (chol_param, nW, W);
+        chol.update_z (chol_param, nW, W, X);
         chol.resolve (chol_param, nW, W, X, dX);
     }
 
     return (nW);
 }
+
+
+#ifdef SMPCS_DEBUG
+/**
+ * @brief Prints value of  X'*H*X + X'*g
+ */
+void qp_as::print_objective()
+{
+    int i;
+    double obj = 0;
+
+
+    // H_c
+    for (i = 0; i < N*NUM_STATE_VAR; i++)
+    {
+        obj += (1/(2*chol_param.i2Q[i%3])) * X[i] * X[i];
+    }
+
+    // H_u
+    for (; i < N*NUM_VAR; i++)
+    {
+        obj += (1/(2*chol_param.i2P)) * X[i] * X[i];
+    }
+
+
+    // X'*g
+    for (i = 0; i < N; i++)
+    {
+        // rotation angle
+        double cosA = chol_param.angle_cos[i];
+        double sinA = chol_param.angle_sin[i];
+
+        // zref
+        double p0 = zref_x_copy[i];
+        double p1 = zref_y_copy[i];
+
+        // g = -[q_1 ... q_N]'
+        // q = beta * R' * Cp' * zref
+        obj -= X[i*NUM_STATE_VAR + 0]*(cosA*p0 + sinA*p1)*gain_beta;
+        obj -= X[i*NUM_STATE_VAR + 3]*(-sinA*p0 + cosA*p1)*gain_beta; 
+    }
+
+    printf ("DEBUG: objective function = % 8e\n", obj);
+}
+#endif /*SMPCS_DEBUG*/

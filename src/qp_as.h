@@ -58,7 +58,6 @@ class bound
         void set (int, double, double, int);
 
 
-
         /** Variable number (on which to impose the bounds). */
         int var_num;
 
@@ -84,7 +83,7 @@ class bound
 class qp_as
 {
     public:
-        qp_as(int N_, bool, double Alpha = 150.0, double Beta = 2000.0, double Gamma = 1.0);
+        qp_as(int N_, double Alpha = 150.0, double Beta = 2000.0, double Gamma = 1.0);
         ~qp_as();
 
 #ifdef QPAS_VARIABLE_T_h
@@ -97,9 +96,7 @@ class qp_as
         int solve ();
 
 
-#ifndef SMPC_DEBUG
     private:
-#endif
 
 // functions        
         void form_iHg(double *, double *);
@@ -107,11 +104,15 @@ class qp_as
         void form_bounds(double *, double *);
         int check_blocking_bounds();
 
+#ifdef QPAS_DOWNDATE
+        int choose_excl_constr (double *);
+#endif
+
+#ifdef SMPCS_DEBUG
+        void print_objective();
+#endif
 
 // variables
-
-        bool enable_downdate;
-
         /** Number of iterations in a preview window. */
         int N;
 
@@ -144,6 +145,15 @@ class qp_as
             subjecto to bounds, #W is defined to have size 2*#N. */
         int *W;
 
+#ifdef QPAS_DOWNDATE
+        /** 
+         * Since we do not distinguish lower/upper bounds of active constraints (<= and => 
+         * inequlities are treated in the same way), we have to adjust signs of lagrange 
+         * multipliers before downdate. 
+         */
+        int *W_sign;
+#endif
+
         /** Number of indexes of inequality constraints already included in #W. #W(#nW-1) is the
             index of the last inequality constraint added to #W. */
         int nW;
@@ -151,10 +161,10 @@ class qp_as
         /// Vector of bounds.
         std::vector <bound> Bounds;
 
-/// @todo delete
-        double *zx;
-        double *zy;
-
+#ifdef SMPCS_DEBUG
+        double *zref_x_copy;
+        double *zref_y_copy;
+#endif
 };
 
 

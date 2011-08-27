@@ -49,9 +49,17 @@ class chol_solve
         ~chol_solve();
 
         void solve(chol_solve_param, double *, double *);
+
         void update (chol_solve_param, int, int *);
-        int downdate (chol_solve_param, int, int*, double *);
-        void resolve (chol_solve_param, int, int *, double *, double *, bool after_update = true);
+        void update_z (chol_solve_param, int, int *, double *);
+
+#ifdef QPAS_DOWNDATE
+        double * get_lambda();
+        void downdate(chol_solve_param, int, int, double *);
+        void downdate_z (chol_solve_param, int, int *, double *, int);
+#endif
+
+        void resolve (chol_solve_param, int, int *, double *, double *);
 
 
 #ifndef QPAS_DEBUG

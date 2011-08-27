@@ -18,6 +18,7 @@
 
 // behaviour
 #define QPAS_VARIABLE_T_h
+#define QPAS_DOWNDATE
 
 // parameters
 #define TOL 1e-7 // tolerance

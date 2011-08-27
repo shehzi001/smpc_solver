@@ -858,20 +858,20 @@ class WMG
       
       \return void
   */
-  void FS2file(const char *output_file)
+  void FS2file()
   {
     
-    FILE *file_op = fopen(output_file, "w");
+    FILE *file_op = fopen("output/foot_steps_cpp.m", "w");
     
     if(!file_op)
       {
-        std::cerr << "Cannot open file (for writing) " << output_file << std::endl;
+        std::cerr << "Cannot open file (for writing) " << std::endl;
         return;
       }
     
     fprintf(file_op,"%%\n%% Footsteps generated using the c++ version of the WMG\n%%\n\n");
     
-    fprintf(file_op,"clear;clc;\n\n");
+    //fprintf(file_op,"clear;clc;\n\n");
     
     int i;
     for (i=0; i< (int) FS.size(); i++ )
