@@ -91,7 +91,9 @@ class qp_as
 #else
         void init(double, double, double*, double*, double*, double*, double*, double*);
 #endif
-    
+   
+        void get_ZMP_CoM (double *, double *, double *, double *);
+
         ///@todo return W
         int solve ();
 

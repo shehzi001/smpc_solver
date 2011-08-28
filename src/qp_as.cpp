@@ -367,6 +367,30 @@ int qp_as::solve ()
 }
 
 
+/**
+ * @brief Determines coordinates of ZMP and CoM.
+ *
+ * @param[out] ZMP_x x coordinate of ZMP.
+ * @param[out] ZMP_y y coordinate of ZMP.
+ * @param[out] CoM_x x coordinate of CoM.
+ * @param[out] CoM_y y coordinate of CoM.
+ */
+void qp_as::get_ZMP_CoM (double *ZMP_x, double *ZMP_y, double *CoM_x, double *CoM_y)
+{
+    *ZMP_x = chol_param.angle_cos[0] * X[0] - chol_param.angle_sin[0] * X[3];
+    *ZMP_y = chol_param.angle_sin[0] * X[0] + chol_param.angle_cos[0] * X[3];
+
+#ifdef QPAS_VARIABLE_T_h
+    *CoM_x = *ZMP_x + chol_param.h[0] * X[2];
+    *CoM_y = *ZMP_y + chol_param.h[0] * X[5];
+#else
+    *CoM_x = *ZMP_x + chol_param.h * X[2];
+    *CoM_y = *ZMP_y + chol_param.h * X[5];
+#endif
+}
+
+
+
 #ifdef SMPCS_DEBUG
 /**
  * @brief Prints value of  X'*H*X + X'*g

@@ -74,6 +74,10 @@ int main(int argc, char **argv)
     printf ("The reference data was generated with downdate.\n");
     printf ("!!! WARNING !!!\n\n");
 #endif
+
+
+    double ZMP_x, ZMP_y, CoM_x, CoM_y;
+
     for(;;)
     {
         //------------------------------------------------------
@@ -133,18 +137,30 @@ int main(int argc, char **argv)
         }
         cout << "Max. error (over all steps): " << max_err << endl;
         //------------------------------------------------------
-        
-        /** @todo do something with this */
-        /*
+
+
         wmg.CoM.x = wmg.X_tilde[0] + wmg.h[0]*(wmg.X_tilde[2]);
         wmg.CoM.y = wmg.X_tilde[3] + wmg.h[0]*(wmg.X_tilde[5]);
 
         wmg.ZMP.x = wmg.X_tilde[0];
         wmg.ZMP.y = wmg.X_tilde[3];
 
-        wmg.output_CoM_ZMP();
-        */
-
+        if (wmg.counter != 0)   // get_ZMP_CoM returns coordinates of ZMP and CoM
+        {                       // from the next simulation step
+            printf ("ZMP and CoM coordinates check: % 8e\n", 
+                    (wmg.CoM.x - CoM_x) + 
+                    (wmg.CoM.y - CoM_y) +
+                    (wmg.ZMP.x - ZMP_x) + 
+                    (wmg.ZMP.y - ZMP_y));
+            /*
+            printf ("CoM coord. check: % 6e  % 6e | % 6e  % 6e\n",
+                    wmg.CoM.x, CoM_x, wmg.CoM.y, CoM_y);
+                  
+            printf ("ZMP coord. check: % 6e  % 6e | % 6e  % 6e\n", 
+                    wmg.ZMP.x, ZMP_x, wmg.ZMP.y, ZMP_y);
+            */
+        }
+        solver.get_ZMP_CoM (&ZMP_x, &ZMP_y, &CoM_x, &CoM_y);
 
         wmg.slide();
     }
