@@ -15,13 +15,12 @@
  ****************************************/
 
 #include "smpc_common.h"
+#include "L_initializer.h"
 
 
 /****************************************
  * DEFINES
  ****************************************/
-#define MATRIX_DIM_SIZE 3
-#define MATRIX_SIZE 9
 
 using namespace std;
 
@@ -71,16 +70,6 @@ class chol_solve
         void form_Ex (chol_solve_param, double *, double *);
         void form_ETx (chol_solve_param, double *, double *);
 
-        void chol_dec (double *);
-
-        void form_iQBiPB (double *, double *, double);
-        void form_iQAT (double, double, double *);
-        void form_AiQATiQBiPB (double, double);
-
-        void form_L_non_diag(double *, double *);
-        void form_L_diag(double *, double *);
-        void form_L(chol_solve_param);
-
         void solve_forward(double *);
         void solve_backward(double *);
 
@@ -126,11 +115,6 @@ class chol_solve
         /** All lines of #icL are stored in one chunk of memory. */
         double *icL_mem;   
 
-        // intermediate results used in computation of L
-        double *iQBiPB;     /// inv(Q) + B * inv(P) * B'
-        double *iQAT;       /// inv(Q) * A'
-        double *AiQATiQBiPB;/// A * inv(Q) * A' + inv(Q) + B * inv(P) * B'
-
         // these vectors are used in ReSolve and Solve
         // respectively, the memory is allocated once in
         // constructor
@@ -142,5 +126,6 @@ class chol_solve
 
         /// number of states in the preview window
         int N;
+        L_initializer L_init;
 };
 #endif /*CHOL_SOLVE_H*/

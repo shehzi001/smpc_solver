@@ -26,6 +26,9 @@
 #define NUM_CONTROL_VAR 2
 #define NUM_VAR 8
 
+#define MATRIX_DIM_SIZE 3
+#define MATRIX_SIZE 9
+
 
 /****************************************
  * TYPEDEFS 

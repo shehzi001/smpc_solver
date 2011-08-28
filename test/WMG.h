@@ -852,12 +852,7 @@ class WMG
     printf("] (current_step_number = %i) (%i) \n", current_step_number, FS[current_step_number].n);    
   }
 
-  /** \brief Outputs the footsteps in FS to a file (forms a Matlab structure FS).  
-      
-      \param[in] output_file Name (and location) of the output file (note that the file can be executed as a Matlab script).
-      
-      \return void
-  */
+  /** \brief Outputs the footsteps in FS to a file (forms a Matlab structure FS). */
   void FS2file()
   {
     

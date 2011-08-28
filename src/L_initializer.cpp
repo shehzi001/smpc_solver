@@ -221,6 +221,8 @@ void L_initializer::form_L_diag(double *ecLp, double *ecLc)
  * @brief Builds matrix L.
  *
  * @param[in] csp parameters.
+ * @param[in] N number of states in preview window.
+ * @param[out] ecL the memory allocated for L.
  */
 void L_initializer::form_L(chol_solve_param csp, int N, double *ecL)
 {
