@@ -54,6 +54,7 @@ int main(int argc, char **argv)
 
     double err = 0;
     double max_err = 0;
+    double max_err_first_state = 0;
    
     double angle[PREVIEW_SIZE];
     double zref_x[PREVIEW_SIZE];
@@ -64,7 +65,7 @@ int main(int argc, char **argv)
     // reference states generated using thr implementation of
     // the algorithm in Octave/MATLAB
     ifstream inFile;
-    inFile.open ("./data/states_chol_downdate.dat");
+    inFile.open ("./data/states_inv_downdate.dat");
 
 
     printf ("\n################################\n %s \n################################\n", argv[0]);
@@ -127,13 +128,18 @@ int main(int argc, char **argv)
 
             inFile >> dataref;
             err = abs(wmg.FP_init[i] - dataref);
+            if ((i < 6) && (err > max_err_first_state))
+            {
+                max_err_first_state = err;
+            }
             if (err > max_err)
             {
                 max_err = err;
             }
             //printf("value: % 8e   ref: % 8e   err: % 8e\n", wmg.FP_init[i], dataref, err);
         }
-        cout << "Max. error (over all steps): " << max_err << endl;
+        cout << "Max. error (first state, all steps): " << max_err_first_state << endl;
+        cout << "Max. error (all states, all steps): " << max_err << endl;
         //------------------------------------------------------
 
         wmg.slide();

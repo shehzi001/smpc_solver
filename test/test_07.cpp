@@ -2,7 +2,6 @@
 #include <fstream>
 
 #include <cmath> // abs
-#include <cstdio>
 
 
 #include "WMG.h"
@@ -52,20 +51,12 @@ int main(int argc, char **argv)
 
     qp_as solver(PREVIEW_SIZE);
 
-    double err = 0;
-    double max_err = 0;
-   
     double angle[PREVIEW_SIZE];
     double zref_x[PREVIEW_SIZE];
     double zref_y[PREVIEW_SIZE];
     double lb[2*PREVIEW_SIZE];
     double ub[2*PREVIEW_SIZE];
   
-    // reference states generated using thr implementation of
-    // the algorithm in Octave/MATLAB
-    ifstream inFile;
-    inFile.open ("./data/states_chol_downdate.dat");
-
 
     printf ("\n################################\n %s \n################################\n", argv[0]);
 #ifndef QPAS_DOWNDATE
@@ -75,6 +66,8 @@ int main(int argc, char **argv)
     printf ("!!! WARNING !!!\n\n");
 #endif
 
+
+    double ZMP_x, ZMP_y, CoM_x, CoM_y;
 
     for(;;)
     {
@@ -116,29 +109,38 @@ int main(int argc, char **argv)
 
         //------------------------------------------------------
         // compare with reference results
-        for (int i = 0; i < wmg.N*NUM_VAR; i++)
+        for (int i = 0; i < 6; i++)
         {
-            double dataref;
-
-            if (i < 6)
-            {
-                wmg.X[i] = wmg.FP_init[i];
-            }
-
-            inFile >> dataref;
-            err = abs(wmg.FP_init[i] - dataref);
-            if (err > max_err)
-            {
-                max_err = err;
-            }
-            //printf("value: % 8e   ref: % 8e   err: % 8e\n", wmg.FP_init[i], dataref, err);
+            wmg.X[i] = wmg.FP_init[i];
         }
-        cout << "Max. error (over all steps): " << max_err << endl;
         //------------------------------------------------------
+
+
+        wmg.CoM.x = wmg.X_tilde[0] + wmg.h[0]*(wmg.X_tilde[2]);
+        wmg.CoM.y = wmg.X_tilde[3] + wmg.h[0]*(wmg.X_tilde[5]);
+
+        wmg.ZMP.x = wmg.X_tilde[0];
+        wmg.ZMP.y = wmg.X_tilde[3];
+
+        if (wmg.counter != 0)   // get_ZMP_CoM returns coordinates of ZMP and CoM
+        {                       // from the next simulation step
+            printf ("ZMP and CoM coordinates check: % 8e\n", 
+                    abs(wmg.CoM.x - CoM_x) + 
+                    abs(wmg.CoM.y - CoM_y) +
+                    abs(wmg.ZMP.x - ZMP_x) + 
+                    abs(wmg.ZMP.y - ZMP_y));
+            /*
+            printf ("CoM coord. check: % 6e  % 6e | % 6e  % 6e\n",
+                    wmg.CoM.x, CoM_x, wmg.CoM.y, CoM_y);
+                  
+            printf ("ZMP coord. check: % 6e  % 6e | % 6e  % 6e\n", 
+                    wmg.ZMP.x, ZMP_x, wmg.ZMP.y, ZMP_y);
+            */
+        }
+        solver.get_ZMP_CoM (&ZMP_x, &ZMP_y, &CoM_x, &CoM_y);
 
         wmg.slide();
     }
-    inFile.close();
     printf ("################################\n");
 
     return 0;
