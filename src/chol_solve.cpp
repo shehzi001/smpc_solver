@@ -75,8 +75,6 @@ chol_solve::~chol_solve()
 
 
 
-/*********** private functions ************/
-
 /**
  * @brief Forms E*x.
  *
@@ -698,8 +696,6 @@ void chol_solve::form_a_row(chol_solve_param csp, int ic_num, int var_num, doubl
 
 
 
-/*********** public functions ************/
-
 /**
  * @brief Determines feasible descent direction.
  *
@@ -757,6 +753,23 @@ void chol_solve::solve(chol_solve_param csp, double *ix, double *dx)
     }
 }
 
+
+/**
+ * @brief A wrapper around private functions, which update Cholesky factor and 
+ *  resolve the system.
+ *
+ * @param[in] csp   parameters.
+ * @param[in] nW    number of added constrains.
+ * @param[in] W     indicies of added constraints.
+ * @param[in] x     initial guess.
+ * @param[out] dx   feasible descent direction, must be allocated.
+ */
+void chol_solve::up_resolve(chol_solve_param csp, int nW, int *W, double *x, double *dx)
+{
+    update (csp, nW, W);
+    update_z (csp, nW, W, x);
+    resolve (csp, nW, W, x, dx);
+}
 
 
 /**
@@ -971,6 +984,26 @@ void chol_solve::resolve (chol_solve_param csp, int nW, int *W, double *x, doubl
 
 #ifdef QPAS_DOWNDATE
 /**
+ * @brief A wrapper around private functions, which downdate Cholesky factor and 
+ *  resolve the system.
+ *
+ * @param[in] csp   parameters.
+ * @param[in] nW    number of added constrains.
+ * @param[in] W     indicies of added constraints.
+ * @param[in] ind_exclude index of excluded constraint.
+ * @param[in] x     initial guess.
+ * @param[out] dx   feasible descent direction, must be allocated.
+ */
+void chol_solve::down_resolve(chol_solve_param csp, int nW, int *W, int ind_exclude, double *x, double *dx)
+{
+    downdate (csp, nW, ind_exclude, x);
+    downdate_z (csp, nW, W, ind_exclude, x);
+    resolve (csp, nW, W, x, dx);
+}
+
+
+
+/**
  * @return a pointer to the memory where current lambdas are stored.
  */
 double * chol_solve::get_lambda()
@@ -985,10 +1018,10 @@ double * chol_solve::get_lambda()
  * @param[in] csp   parameters.
  * @param[in] nW    number of added constrains.
  * @param[in] W     indicies of added constraints.
- * @param[in] x     initial guess.
  * @param[in] ind_exclude index of excluded constraint.
+ * @param[in] x     initial guess.
  */
-void chol_solve::downdate_z (chol_solve_param csp, int nW, int *W, double *x, int ind_exclude)
+void chol_solve::downdate_z (chol_solve_param csp, int nW, int *W, int ind_exclude, double *x)
 {
     for (int i = ind_exclude; i < nW; i++)
     {

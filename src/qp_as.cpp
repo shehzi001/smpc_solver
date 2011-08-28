@@ -346,10 +346,7 @@ int qp_as::solve ()
             int ind_exclude = choose_excl_constr (chol.get_lambda());
             if (ind_exclude != -1)
             {
-                chol.downdate (chol_param, nW, ind_exclude, X);
-                chol.downdate_z (chol_param, nW, W, X, ind_exclude);
-                chol.resolve (chol_param, nW, W, X, dX);
-                continue;
+                chol.down_resolve (chol_param, nW, W, ind_exclude, X, dX);
             }
             else
             {
@@ -359,12 +356,11 @@ int qp_as::solve ()
             break;
 #endif /*QPAS_DOWNDATE*/
         }
-
-
-        // add row to the L matrix and find new dX
-        chol.update (chol_param, nW, W);
-        chol.update_z (chol_param, nW, W, X);
-        chol.resolve (chol_param, nW, W, X, dX);
+        else
+        {
+            // add row to the L matrix and find new dX
+            chol.up_resolve (chol_param, nW, W, X, dX);
+        }
     }
 
     return (nW);
