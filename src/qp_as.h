@@ -89,11 +89,7 @@ class qp_as
                 double tol = 1e-7);
         ~qp_as();
 
-#ifdef QPAS_VARIABLE_T_h
         void init(double*, double*, double*, double*, double*, double*, double*, double*);
-#else
-        void init(double, double, double*, double*, double*, double*, double*, double*);
-#endif
    
         void get_ZMP_CoM (double *, double *, double *, double *);
 

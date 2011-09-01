@@ -9,10 +9,7 @@
 
 // QPAS_VARIABLE_T_h is taken from this header, the results
 // must be the same
-#include "smpc_common.h" 
-
-#include "qp_as.h"
-
+#include "smpc_solver.h" 
 
 #define PREVIEW_SIZE 15 // Size of the preview window
 
@@ -50,7 +47,7 @@ int main(int argc, char **argv)
   
 
 
-    qp_as solver(PREVIEW_SIZE);
+    smpc_solver solver(PREVIEW_SIZE);
 
     double err = 0;
     double max_err = 0;
@@ -67,12 +64,6 @@ int main(int argc, char **argv)
     inFile.open ("./data/states_chol_nodowndate.dat");
 
     printf ("\n################################\n %s \n################################\n", argv[0]);
-#ifdef QPAS_DOWNDATE
-    printf ("!!! WARNING !!!\n");
-    printf ("Downdate of the active set is enabled.\n");
-    printf ("The reference data was generated without downdate.\n");
-    printf ("!!! WARNING !!!\n\n");
-#endif
     for(;;)
     {
         //------------------------------------------------------
@@ -102,11 +93,7 @@ int main(int argc, char **argv)
 //**************************************************************************
 // SOLVER IS USED HERE
 //**************************************************************************
-#ifdef QPAS_VARIABLE_T_h
         solver.init(wmg.T, wmg.h, angle, zref_x, zref_y, lb, ub, wmg.FP_init);
-#else
-        solver.init(wmg.T[0], wmg.h[0], angle, zref_x, zref_y, lb, ub, wmg.FP_init);
-#endif
         solver.solve();
 //**************************************************************************
 

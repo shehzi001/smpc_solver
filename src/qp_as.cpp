@@ -133,13 +133,8 @@ qp_as::~qp_as()
     @param[in,out] X_ initial guess / solution of optimization problem
 */
 void qp_as::init(
-#ifdef QPAS_VARIABLE_T_h
         double* T_, 
         double* h_, 
-#else
-        double T_, 
-        double h_, 
-#endif
         double* angle,
         double* zref_x,
         double* zref_y,
@@ -149,14 +144,17 @@ void qp_as::init(
 {
     nW = 0;
 
+#ifdef QPAS_VARIABLE_T_h
     chol_param.T = T_;
     chol_param.h = h_;
-#ifdef QPAS_VARIABLE_T_h
     chol_param.dh = new double[N-1]();
     for (int i = 0; i < N-1; i++)
     {
         chol_param.dh[i] = chol_param.h[i+1] - chol_param.h[i];
     }
+#else
+    chol_param.T = T_[0];
+    chol_param.h = h_[0];
 #endif
 
 
@@ -326,6 +324,8 @@ int qp_as::choose_excl_constr (double *lambda)
 
 /**
  * @brief Solve QP problem.
+ *
+ * @return numebr of activated constraints
  */
 int qp_as::solve ()
 {

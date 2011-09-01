@@ -17,7 +17,6 @@
  ****************************************/
 
 #include <cstddef>
-#include "smpc_config.h"
 
 /****************************************
  * DEFINES
@@ -28,6 +27,9 @@
 
 #define MATRIX_DIM_SIZE 3
 #define MATRIX_SIZE 9
+
+
+#define QPAS_VARIABLE_T_h
 
 
 /****************************************

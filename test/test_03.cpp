@@ -9,9 +9,7 @@
 
 // QPAS_VARIABLE_T_h is taken from this header, the results
 // must be the same
-#include "smpc_common.h" 
-
-#include "qp_as.h"
+#include "smpc_solver.h" 
 
 #define PREVIEW_SIZE 15 // Size of the preview window
 
@@ -47,7 +45,7 @@ int main(int argc, char **argv)
   
 
 
-    qp_as solver(PREVIEW_SIZE);
+    smpc_solver solver(PREVIEW_SIZE);
 
     double angle[PREVIEW_SIZE];
     double zref_x[PREVIEW_SIZE];
@@ -115,11 +113,7 @@ int main(int argc, char **argv)
 //**************************************************************************
 // SOLVER IS USED HERE
 //**************************************************************************
-#ifdef QPAS_VARIABLE_T_h
         solver.init(wmg.T, wmg.h, angle, zref_x, zref_y, lb, ub, wmg.FP_init);
-#else
-        return 1;
-#endif
         nW = solver.solve();
 //**************************************************************************
 
