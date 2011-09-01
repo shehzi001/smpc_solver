@@ -49,10 +49,13 @@ void bound::set(int var_num_, double lb_, double ub_, int active)
     @param[in] Alpha Velocity gain
     @param[in] Beta Position gain
     @param[in] Gamma Jerk gain
+    @param[in] regularization regularization
+    @param[in] tol_ tolerance
 */
-qp_as::qp_as(int N_, double Alpha, double Beta, double Gamma) : chol (N_)
+qp_as::qp_as(int N_, double Alpha, double Beta, double Gamma, double regularization, double tol_) : chol (N_)
 {
     N = N_;
+    tol = tol_;
 
     gain_alpha = Alpha;
     gain_beta  = Beta;
@@ -60,7 +63,7 @@ qp_as::qp_as(int N_, double Alpha, double Beta, double Gamma) : chol (N_)
 
     chol_param.i2Q[0] = 1/(2*(Beta/2));
     chol_param.i2Q[1] = 1/(2*(Alpha/2));
-    chol_param.i2Q[2] = 1/(2*REGULARIZATION);
+    chol_param.i2Q[2] = 1/(2*regularization);
 
     chol_param.i2P = 1/(2 * (Gamma/2));
 
@@ -251,14 +254,14 @@ int qp_as::check_blocking_bounds()
 #endif
             double t = 1;
 
-            if ( dX[ind] < -TOL )
+            if ( dX[ind] < -tol )
             {
                 t = (Bounds[i].lb - X[ind])/dX[ind];
 #ifdef QPAS_DOWNDATE
                 sign = -1;
 #endif
             }
-            else if ( dX[ind] > TOL ) 
+            else if ( dX[ind] > tol ) 
             {
                 t = (Bounds[i].ub - X[ind])/dX[ind];
             }
@@ -292,7 +295,7 @@ int qp_as::check_blocking_bounds()
 #ifdef QPAS_DOWNDATE
 int qp_as::choose_excl_constr (double *lambda)
 {
-    double min_lambda = -TOL;
+    double min_lambda = -tol;
     int ind_exclude = -1;
 
     // find the constraint with the smallest lambda

@@ -43,9 +43,6 @@
 /****************************************
  * Defines
  ****************************************/
-#define TOL 1e-7 // tolerance
-
-#define REGULARIZATION 0.01
 
 
 using namespace std;
@@ -83,7 +80,13 @@ class bound
 class qp_as
 {
     public:
-        qp_as(int N_, double Alpha = 150.0, double Beta = 2000.0, double Gamma = 1.0);
+        qp_as(
+                int N_, 
+                double Alpha = 150.0, 
+                double Beta = 2000.0, 
+                double Gamma = 1.0,
+                double regularization = 0.01,
+                double tol = 1e-7);
         ~qp_as();
 
 #ifdef QPAS_VARIABLE_T_h
@@ -129,6 +132,9 @@ class qp_as
         double gain_alpha;
         double gain_beta;
         double gain_gamma;
+
+    // tolerance
+        double tol;
 
     // variables and descent direction
         /** Variables for the QP (contain the states + control variables).
