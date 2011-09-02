@@ -7,8 +7,6 @@
 
 #include "WMG.h"
 
-// QPAS_VARIABLE_T_h is taken from this header, the results
-// must be the same
 #include "smpc_solver.h" 
 
 #define PREVIEW_SIZE 15 // Size of the preview window
