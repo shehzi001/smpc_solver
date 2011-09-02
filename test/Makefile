@@ -18,8 +18,8 @@ TESTS=\
 all: ${TESTS}
 
 ${TESTS}:
-	${CXX} ${CXXFLAGS} ${IFLAGS} -c $@.cpp
-	${CXX} -o $@.a $@.o ${LDFLAGS}
+	${CXX} ${CXXFLAGS} ${IFLAGS} -c $@.cpp WMG.cpp
+	${CXX} -o $@.a $@.o WMG.o ${LDFLAGS}
 
 clean:
 	rm -f *.a *.o
