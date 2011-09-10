@@ -62,7 +62,8 @@ class Point2D
 /** \brief Defines rectangular constraints (of the form D*z <= d) for
     the ZMP.
 
-    \note D is a [4 x 2] matrix stored column-wise (Fortran style). D is always initialized as (later it couls be rotated using D*R'):
+    \note D is a [4 x 2] matrix stored column-wise (Fortran style). 
+    D is always initialized as (later it could be rotated using D*R'):
     \verbatim
     D[0] =  1.0; D[4] =  0.0;
     D[1] =  0.0; D[5] =  1.0;
@@ -209,7 +210,6 @@ class WMG
         
         /** \brief h = #hCoM/#gravity. */
         double *h;
-        double *dh;
         
         /** \brief Contains the reference profile for the ZMP. */
         double *ZMP_ref;

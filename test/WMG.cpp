@@ -364,10 +364,6 @@ WMG::~WMG()
     {
         delete h;
     }
-    if (dh != NULL)
-    {
-        delete dh;
-    }
     /* ----------------------------- */
 }
 
@@ -408,7 +404,6 @@ WMG::WMG(int _N, double _T, double _hCoM)
 
     T = new double[N];
     h = new double[N];
-    dh = new double[N-1]();
     for (int i = 0; i < N; i++)
     {
         T[i] = _T;
