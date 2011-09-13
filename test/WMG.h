@@ -268,6 +268,13 @@ class WMG
 
         /** \brief If halt = 1 then stop the execution (else keep going) */
         int halt;
+
+
+        double *angle;
+        double *zref_x;
+        double *zref_y;
+        double *lb;
+        double *ub;
 };
 
 

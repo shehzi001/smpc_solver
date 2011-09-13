@@ -326,14 +326,6 @@ void FootStep::print()
 // ============================================================================================
 
 
-/** \brief Default constructor (set some pointers to NULL). */
-WMG::WMG()
-{
-    ZMP_ref = NULL;
-    ind = NULL;
-    FP_init = NULL;
-}
-
 
 /** \brief Default destructor. */
 WMG::~WMG()
@@ -363,6 +355,27 @@ WMG::~WMG()
     if (h != NULL)
     {
         delete h;
+    }
+
+    if (angle != NULL)
+    {
+        delete angle;
+    }
+    if (zref_x != NULL)
+    {
+        delete zref_x;
+    }
+    if (zref_y != NULL)
+    {
+        delete zref_y;
+    }
+    if (lb != NULL)
+    {
+        delete lb;
+    }
+    if (ub != NULL)
+    {
+        delete ub;
     }
     /* ----------------------------- */
 }
@@ -409,6 +422,12 @@ WMG::WMG(int _N, double _T, double _hCoM)
         T[i] = _T;
         h[i] = hCoM/gravity;
     }
+
+    angle = new double[N];
+    zref_x = new double[N];
+    zref_y = new double[N];
+    lb = new double[2*N];
+    ub = new double[2*N];
 }
 
 
@@ -565,6 +584,20 @@ void WMG::FormPreviewWindow()
         printf(" WARNING: not enough steps in FS.");
         printf(" \n====================================\n\n ");        
     }
+
+
+    for (i = 0; i < N; i++)
+    {
+        angle[i] = FS[ind[i]].angle;
+        zref_x[i] = FS[ind[i]].p.x;
+        zref_y[i] = FS[ind[i]].p.y;
+
+        lb[i*2] = -FS[ind[i]].ctr.d[2];
+        ub[i*2] = FS[ind[i]].ctr.d[0];
+
+        lb[i*2 + 1] = -FS[ind[i]].ctr.d[3];
+        ub[i*2 + 1] = FS[ind[i]].ctr.d[1];
+    }
 }
 
 
@@ -684,7 +717,7 @@ void WMG::form_FP_init(int output_flag)
     /** \brief inv(Cp*B)*Cp*A. This is a [2 x 6] matrix with the following structure
         \verbatim
         iCpB_CpA = [a b c 0 0 0;
-                      0 0 0 a b c];
+                    0 0 0 a b c];
 
         a = iCpB
         b = iCpB*T

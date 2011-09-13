@@ -52,12 +52,6 @@ int main(int argc, char **argv)
 
     smpc_solver solver(PREVIEW_SIZE);
 
-    double angle[PREVIEW_SIZE];
-    double zref_x[PREVIEW_SIZE];
-    double zref_y[PREVIEW_SIZE];
-    double lb[2*PREVIEW_SIZE];
-    double ub[2*PREVIEW_SIZE];
-  
 
 
     printf ("\n################################\n %s \n################################\n", argv[0]);
@@ -71,19 +65,6 @@ int main(int argc, char **argv)
             break;
         }
         wmg.form_FP_init(); 
-
-        for (int i = 0; i < PREVIEW_SIZE; i++)
-        {
-            angle[i] = wmg.FS[wmg.ind[i]].angle;
-            zref_x[i] = wmg.FS[wmg.ind[i]].p.x;
-            zref_y[i] = wmg.FS[wmg.ind[i]].p.y;
-
-            lb[i*2] = -wmg.FS[wmg.ind[i]].ctr.d[2];
-            ub[i*2] = wmg.FS[wmg.ind[i]].ctr.d[0];
-
-            lb[i*2 + 1] = -wmg.FS[wmg.ind[i]].ctr.d[3];
-            ub[i*2 + 1] = wmg.FS[wmg.ind[i]].ctr.d[1];
-        }
         //------------------------------------------------------
 
 
@@ -97,7 +78,7 @@ int main(int argc, char **argv)
 //**************************************************************************
 // SOLVER IS USED HERE
 //**************************************************************************
-            solver.init(wmg.T, wmg.h, angle, zref_x, zref_y, lb, ub, wmg.FP_init);
+            solver.init(wmg.T, wmg.h, wmg.angle, wmg.zref_x, wmg.zref_y, wmg.lb, wmg.ub, wmg.FP_init);
             nW = solver.solve();
 //**************************************************************************
         }
