@@ -53,6 +53,7 @@ class smpc_solver
             @param[in] zref_y reference values of z_y
             @param[in] lb array of lower bounds for z
             @param[in] ub array of upper bounds for z
+            @param[in] X_tilde current state (#X_tilde)
             @param[in,out] X initial guess / solution of optimization problem
         */
         void init(
@@ -63,6 +64,7 @@ class smpc_solver
                 double* zref_y,
                 double* lb,
                 double* ub,
+                double* X_tilde,
                 double* X);
 
 

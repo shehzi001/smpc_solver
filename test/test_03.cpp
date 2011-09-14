@@ -89,8 +89,9 @@ int main(int argc, char **argv)
 //**************************************************************************
 // SOLVER IS USED HERE
 //**************************************************************************
-        solver.init(wmg.T, wmg.h, wmg.angle, wmg.zref_x, wmg.zref_y, wmg.lb, wmg.ub, wmg.FP_init);
+        solver.init(wmg.T, wmg.h, wmg.angle, wmg.zref_x, wmg.zref_y, wmg.lb, wmg.ub, wmg.X_tilde, wmg.X);
         nW = solver.solve();
+        solver.get_next_state_tilde (wmg.X_tilde);
 //**************************************************************************
 
 
@@ -99,7 +100,7 @@ int main(int argc, char **argv)
         printf("Num. of activated constraints: %d\n", nW);
         for (int i = 0; i < 6; i++)
         {
-            printf("value: % 8e\n", wmg.FP_init[i]);
+            printf("value: % 8e\n", wmg.X[i]);
         }
         //------------------------------------------------------
 

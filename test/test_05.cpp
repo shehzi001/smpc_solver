@@ -71,24 +71,16 @@ int main(int argc, char **argv)
         int NN = 1000;
         int nW;
         gettimeofday(&start,0);             
-        double X_tilde[NUM_STATE_VAR];
-        for (int i = 0; i < NUM_STATE_VAR; i++)
-        {
-            X_tilde[i] = wmg.FP_init[i];
-        }
         for(int kk=0; kk<NN ;kk++)
         {
-            for (int i = 0; i < NUM_STATE_VAR; i++)
-            {
-                wmg.FP_init[i] = X_tilde[i];
-            }
 //**************************************************************************
 // SOLVER IS USED HERE
 //**************************************************************************
-            solver.init(wmg.T, wmg.h, wmg.angle, wmg.zref_x, wmg.zref_y, wmg.lb, wmg.ub, wmg.FP_init);
+            solver.init(wmg.T, wmg.h, wmg.angle, wmg.zref_x, wmg.zref_y, wmg.lb, wmg.ub, wmg.X_tilde, wmg.X);
             nW = solver.solve();
 //**************************************************************************
         }
+        solver.get_next_state_tilde (wmg.X_tilde);
         gettimeofday(&end,0);             
         CurrentCPUTime = end.tv_sec - start.tv_sec + 0.000001 * (end.tv_usec - start.tv_usec);
         double TT = CurrentCPUTime/NN;

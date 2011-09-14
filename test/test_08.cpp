@@ -76,8 +76,9 @@ int main(int argc, char **argv)
 //**************************************************************************
 // SOLVER IS USED HERE
 //**************************************************************************
-        solver.init(wmg.T, wmg.h, wmg.angle, wmg.zref_x, wmg.zref_y, wmg.lb, wmg.ub, wmg.FP_init);
+        solver.init(wmg.T, wmg.h, wmg.angle, wmg.zref_x, wmg.zref_y, wmg.lb, wmg.ub, wmg.X_tilde, wmg.X);
         solver.solve();
+        solver.get_next_state_tilde (wmg.X_tilde);
 //**************************************************************************
 
 
@@ -88,7 +89,7 @@ int main(int argc, char **argv)
             double dataref;
 
             inFile >> dataref;
-            err = abs(wmg.FP_init[i] - dataref);
+            err = abs(wmg.X[i] - dataref);
             if ((i < 6) && (err > max_err_first_state))
             {
                 max_err_first_state = err;

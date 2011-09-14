@@ -342,10 +342,10 @@ WMG::~WMG()
         ind = NULL;
     }
 
-    if (FP_init != NULL)
+    if (X != NULL)
     {
-        delete [] FP_init;
-        FP_init = NULL;
+        delete [] X;
+        X = NULL;
     }
 
     if (T != NULL)
@@ -402,7 +402,7 @@ WMG::WMG(int _N, double _T, double _hCoM)
 
     ZMP_ref = new double[NUM_CONTROL_VAR*N];
     ind = new int[N];
-    FP_init = new double[NUM_VAR*N];
+    X = new double[NUM_VAR*N];
 
 
     for (int i=0; i<N; i++)
@@ -412,8 +412,9 @@ WMG::WMG(int _N, double _T, double _hCoM)
     
     for(int i=0; i<NUM_STATE_VAR; i++)
     {
-        FP_init[i] = 0.0;
+        X_tilde[i] = 0.0;
     }
+    init_angle = 0;
 
     T = new double[N];
     h = new double[N];
@@ -548,19 +549,7 @@ void WMG::AddFootstep(double x_relative, double y_relative, double angle_relativ
 void WMG::FormPreviewWindow()
 {
     int j, i=0, k = current_step_number;
-    double X[2] = {FP_init[0], FP_init[3]};
 
-    if (counter == 0)
-        first_angle_old = FS[current_step_number].angle;
-
-    double ca = cos(first_angle_old);
-    double sa = sin(first_angle_old);
- 
-    // update the tilde state (used when generating an initial feasible point in WMG.form_FP_init,
-    // and when updating the variables wmg->CoM and wmg->ZMP in form_problem_eigen.solve_QP)
-    FP_init[0] = ca*X[0] - sa*X[1];
-    FP_init[3] = sa*X[0] + ca*X[1];
-    
     while (i < N && k < (int) FS.size()-1) 
     {        
         j = 1;
@@ -608,8 +597,6 @@ void WMG::slide()
 {
     counter++;
     
-    first_angle_old = FS[current_step_number].angle;
-
     if (FS[current_step_number].n == 1)
     {
         FS[current_step_number].n--;

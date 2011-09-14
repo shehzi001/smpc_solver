@@ -131,6 +131,7 @@ qp_as::~qp_as()
     @param[in] zref_y reference values of z_y
     @param[in] lb array of lower bounds for z
     @param[in] ub array of upper bounds for z
+    @param[in] X_tilde current state
     @param[in,out] X_ initial guess / solution of optimization problem
 */
 void qp_as::init(
@@ -141,6 +142,7 @@ void qp_as::init(
         double* zref_y,
         double* lb,
         double* ub,
+        double* X_tilde,
         double* X_)
 {
     nW = 0;
@@ -169,7 +171,7 @@ void qp_as::init(
         chol_param.angle_sin[i] = sin(angle[i]);
     }
 
-    form_init_fp (zref_x, zref_y);
+    form_init_fp (zref_x, zref_y, X_tilde);
     form_iHg (zref_x, zref_y);
 #ifdef SMPCS_DEBUG
     zref_x_copy = zref_x;
@@ -184,11 +186,11 @@ void qp_as::init(
  * First we perform a change of variable to "tilde states",
  * generate a feasible point, and then we go back to "bar states".
  */
-void qp_as::form_init_fp(double *zref_x, double *zref_y)
+void qp_as::form_init_fp(double *zref_x, double *zref_y, double *X_tilde)
 {
     double *control = &X[NUM_STATE_VAR*N];
     double *cur_state = X;
-    double *prev_state = X;
+    double *prev_state = X_tilde;
 
 
     for (int i=0; i<N; i++)

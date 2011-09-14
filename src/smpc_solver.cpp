@@ -41,9 +41,10 @@ void smpc_solver::init(
         double* angle,
         double* zref_x, double* zref_y,
         double* lb, double* ub,
+        double* X_tilde,
         double* X)
 {
-    qpas_solver->init(T, h, angle, zref_x, zref_y, lb, ub, X);
+    qpas_solver->init(T, h, angle, zref_x, zref_y, lb, ub, X_tilde, X);
 }
 
 

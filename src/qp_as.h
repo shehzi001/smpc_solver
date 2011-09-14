@@ -90,7 +90,7 @@ class qp_as
                 double tol = 1e-7);
         ~qp_as();
 
-        void init(double*, double*, double*, double*, double*, double*, double*, double*);
+        void init(double*, double*, double*, double*, double*, double*, double*, double*, double*);
    
 
         ///@todo return W
@@ -112,7 +112,7 @@ class qp_as
     private:
 
 // functions        
-        void form_init_fp(double *, double *);
+        void form_init_fp(double *, double *, double *);
         void form_iHg(double *, double *);
         void initialize_bounds();
         void form_bounds(double *, double *);

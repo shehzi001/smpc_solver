@@ -214,7 +214,13 @@ class WMG
         double *ZMP_ref;
 
         /** \brief Initial feasible point with respect to the equality and inequality constraints. */
-        double *FP_init;
+        double *X;
+
+        /** \brief Initial state. */
+        double X_tilde[NUM_STATE_VAR];
+
+        /** \brief Initial angle */
+        double init_angle;
 
         /** \brief Indexes of footsteps appearing in the current preview window
          */
@@ -226,8 +232,6 @@ class WMG
         /** \brief Position of the ZMP. */
         Point2D ZMP;
 
-        /** \brief The angle of the first footprint in the previous preview window [rad.]. */
-        double first_angle_old;
 
         /** \brief This is the step in FS that is at the start of the current preview window. I don't need
         to pop_front steps from FS and that is why I use stl vector and not stl deque). */

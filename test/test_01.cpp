@@ -45,7 +45,7 @@ int main(int argc, char **argv)
   
 
 
-    smpc_solver solver(PREVIEW_SIZE);
+    smpc_solver solver(wmg.N);
 
     double err = 0;
     double max_err = 0;
@@ -72,8 +72,9 @@ int main(int argc, char **argv)
 //**************************************************************************
 // SOLVER IS USED HERE
 //**************************************************************************
-        solver.init(wmg.T, wmg.h, wmg.angle, wmg.zref_x, wmg.zref_y, wmg.lb, wmg.ub, wmg.FP_init);
+        solver.init(wmg.T, wmg.h, wmg.angle, wmg.zref_x, wmg.zref_y, wmg.lb, wmg.ub, wmg.X_tilde, wmg.X);
         solver.solve();
+        solver.get_next_state_tilde (wmg.X_tilde);
 //**************************************************************************
 
 
@@ -84,12 +85,12 @@ int main(int argc, char **argv)
             double dataref;
 
             inFile >> dataref;
-            err = abs(wmg.FP_init[i] - dataref);
+            err = abs(wmg.X[i] - dataref);
             if (err > max_err)
             {
                 max_err = err;
             }
-            //printf("value: % 8e   ref: % 8e   err: % 8e\n", wmg.FP_init[i], dataref, err);
+            //printf("value: % 8e   ref: % 8e   err: % 8e\n", wmg.X[i], dataref, err);
         }
         cout << "Max. error (over all steps): " << max_err << endl;
         //------------------------------------------------------
