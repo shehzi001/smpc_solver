@@ -171,11 +171,128 @@ void qp_as::init(
         chol_param.angle_sin[i] = sin(angle[i]);
     }
 
-    form_iHg(zref_x, zref_y);
+    form_init_fp (zref_x, zref_y);
+    form_iHg (zref_x, zref_y);
 #ifdef SMPCS_DEBUG
     zref_x_copy = zref_x;
     zref_y_copy = zref_y;
 #endif /*SMPCS_DEBUG*/
+}
+
+
+
+/** 
+ * @brief Generates an initial feasible point. 
+ * First we perform a change of variable to "tilde states",
+ * generate a feasible point, and then we go back to "bar states".
+ */
+        /** \brief The state of the linear model defined as follows 
+            
+            \verbatim
+            X[0] - x ZMP position [meter]
+            X[1] - x CoM velocity [meter/s]
+            X[2] - x CoM acceleration [meter/s^2]
+            X[3] - y ZMP position [meter]
+            X[4] - y CoM velocity [meter/s]
+            X[5] - y CoM acceleration [meter/s^2]
+            \endverbatim
+
+            \note This is tilde{c}_k in the paper. It is used when generating an initial feasible point.
+        */
+        /** \brief The state of the linear model defined as follows 
+            \verbatim
+            X[0] - x (bar) ZMP position [meter]
+            X[1] - x CoM velocity [meter/s]
+            X[2] - x XoM acceleration [meter/s^2]
+            X[3] - y (bar) ZMP position [meter]
+            X[4] - y CoM velocity [meter/s]
+            X[5] - y CoM acceleration [meter/s^2]
+            \endverbatim
+
+            \note This is bar{c}_k in the paper
+        */
+void qp_as::form_init_fp(double *zref_x, double *zref_y)
+{
+    double *control = &X[NUM_STATE_VAR*N];
+    double *cur_state = X;
+    double *prev_state = X;
+
+
+    for (int i=0; i<N; i++)
+    {
+        //------------------------------------
+    ///@todo constant T
+        double T = chol_param.T[i];
+        double T2 = T*T/2;
+        double h = chol_param.h[i];
+
+
+        /** \brief Control matrix. */
+        double B[3] = {T2*T/3 - h*T, T2, T};
+
+
+        /** \brief inv(Cp*B). This is a [2 x 2] diagonal matrix (which is invertible if #T^3/6-#h*#T is
+         * not equal to zero). The two elements one the main diagonal are equal, and only one of them 
+         * is stored, which is equal to
+            \verbatim
+            1/(T^3/6 - h*T)
+            \endverbatim      
+         */
+        double iCpB = 1/(B[0]);
+
+
+        /** \brief inv(Cp*B)*Cp*A. This is a [2 x 6] matrix with the following structure
+            \verbatim
+            iCpB_CpA = [a b c 0 0 0;
+                        0 0 0 a b c];
+
+            a = iCpB
+            b = iCpB*T
+            c = iCpB*T^2/2
+            \endverbatim
+
+         * Only a,b and c are stored.
+         */
+        double iCpB_CpA[3] = {iCpB, iCpB*T, iCpB*T2};
+        //------------------------------------
+
+
+        control[0] = -iCpB_CpA[0]*prev_state[0] - iCpB_CpA[1]*prev_state[1] - iCpB_CpA[2]*prev_state[2] + iCpB*zref_x[i];
+        control[1] = -iCpB_CpA[0]*prev_state[3] - iCpB_CpA[1]*prev_state[4] - iCpB_CpA[2]*prev_state[5] + iCpB*zref_y[i];
+
+        cur_state[0] = prev_state[0] + T*prev_state[1] + T2*prev_state[2] + B[0]*control[0];
+        cur_state[1] =                   prev_state[1] +  T*prev_state[2] + B[1]*control[0];
+        cur_state[2] =                                      prev_state[2] + B[2]*control[0];
+        cur_state[3] = prev_state[3] + T*prev_state[4] + T2*prev_state[5] + B[0]*control[1];
+        cur_state[4] =                   prev_state[4] +  T*prev_state[5] + B[1]*control[1];
+        cur_state[5] =                                      prev_state[5] + B[2]*control[1];
+
+
+        prev_state = &X[NUM_STATE_VAR*i];
+        cur_state = &X[NUM_STATE_VAR*(i+1)];
+        control = &control[NUM_CONTROL_VAR];
+    }
+
+
+    // go back to bar states
+    cur_state = X;
+    for (int i=0; i<N; i++)
+    {
+/*
+        double tmp   =  chol_param.angle_cos[i]*cur_state[0] + chol_param.angle_sin[i]*cur_state[3];
+        cur_state[3] = -chol_param.angle_sin[i]*cur_state[0] + chol_param.angle_cos[i]*cur_state[3];
+        cur_state[0] = tmp;
+*/
+        tilde_to_bar (cur_state, chol_param.angle_sin[i], chol_param.angle_cos[i]);
+        cur_state = &cur_state[NUM_STATE_VAR];
+    }
+}
+
+void qp_as::tilde_to_bar (double *state, double sinA, double cosA)
+{
+    double tmp =  cosA*state[0] + sinA*state[3];
+    state[3]   = -sinA*state[0] + cosA*state[3];
+    state[0]   = tmp;
 }
 
 

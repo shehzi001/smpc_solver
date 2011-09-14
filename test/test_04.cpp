@@ -72,8 +72,6 @@ int main(int argc, char **argv)
             cout << "EXIT (halt = 1)" << endl;
             break;
         }
-
-        wmg.form_FP_init(); 
         //------------------------------------------------------
 
 
@@ -90,7 +88,6 @@ int main(int argc, char **argv)
         printf("Num. of activated constraints: %d\n", nW);
         for (int i = 0; i < 6; i++)
         {
-            wmg.X[i] = wmg.FP_init[i];
             printf("value: % 8e\n", wmg.FP_init[i]);
         }
         //------------------------------------------------------

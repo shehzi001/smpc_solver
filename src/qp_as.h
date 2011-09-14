@@ -100,6 +100,11 @@ class qp_as
     private:
 
 // functions        
+///@todo move to other file/class
+        void form_init_fp(double *, double *);
+        void tilde_to_bar (double *, double, double);
+
+
         void form_iHg(double *, double *);
         void initialize_bounds();
         void form_bounds(double *, double *);

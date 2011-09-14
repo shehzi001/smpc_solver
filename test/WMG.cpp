@@ -412,7 +412,7 @@ WMG::WMG(int _N, double _T, double _hCoM)
     
     for(int i=0; i<NUM_STATE_VAR; i++)
     {
-        X[i] = 0.0;
+        FP_init[i] = 0.0;
     }
 
     T = new double[N];
@@ -548,7 +548,8 @@ void WMG::AddFootstep(double x_relative, double y_relative, double angle_relativ
 void WMG::FormPreviewWindow()
 {
     int j, i=0, k = current_step_number;
-    
+    double X[2] = {FP_init[0], FP_init[3]};
+
     if (counter == 0)
         first_angle_old = FS[current_step_number].angle;
 
@@ -557,12 +558,8 @@ void WMG::FormPreviewWindow()
  
     // update the tilde state (used when generating an initial feasible point in WMG.form_FP_init,
     // and when updating the variables wmg->CoM and wmg->ZMP in form_problem_eigen.solve_QP)
-    X_tilde[0] = ca*X[0] - sa*X[3];
-    X_tilde[1] = X[1];
-    X_tilde[2] = X[2];
-    X_tilde[3] = sa*X[0] + ca*X[3];
-    X_tilde[4] = X[4];
-    X_tilde[5] = X[5];
+    FP_init[0] = ca*X[0] - sa*X[1];
+    FP_init[3] = sa*X[0] + ca*X[1];
     
     while (i < N && k < (int) FS.size()-1) 
     {        
@@ -688,147 +685,6 @@ void WMG::FS2file()
     fprintf(file_op,"\n%% Note: the -FS(i).D is because Constraints2Vert expects constraints of the form D*z+d>=0.\n");
     
     fclose(file_op);  
-}
-
-
-
-/** \brief Generates an initial feasible point #FP_init. First we perform a change of variable to "tilde states",
-    generate a feasible point, and then we go back to "bar states".
-
-    \param[in] output_flag If output_flag = 1 outputs all initial guesses in a file output/FP.dat
-*/
-void WMG::form_FP_init(int output_flag)
-{
-    /** \brief State transition matrix. */
-    double A[3*3];
-
-    /** \brief Control matrix. */
-    double B[3];
-
-    /** \brief inv(Cp*B). This is a [2 x 2] diagonal matrix (which is invertible if #T^3/6-#h*#T is
-     * not equal to zero). The two elements one the main diagonal are equal, and only one of them 
-     * is stored, which is equal to
-        \verbatim
-        1/(T^3/6 - h*T)
-        \endverbatim      
-     */
-    double iCpB;
-
-    /** \brief inv(Cp*B)*Cp*A. This is a [2 x 6] matrix with the following structure
-        \verbatim
-        iCpB_CpA = [a b c 0 0 0;
-                    0 0 0 a b c];
-
-        a = iCpB
-        b = iCpB*T
-        c = iCpB*T^2/2      
-        \endverbatim
-
-     * Only a,b and c are stored.
-     */      
-    double iCpB_CpA[3];
-
-
-    int k, k1, k2, k3=0;
-    double tmp;
-
-    k  = NUM_STATE_VAR*N; 
-    k1 = k + 1;
-
-    //------------------------------------
-    /*A[0] = 1.0;*/  A[3]  = T[0];   A[6] = T[0]*T[0]/2;
-    /*A[1] = 0.0;    A[4]  = 1.0;*/  A[7] = T[0];    
-    /*A[2] = 0.0;    A[5]  = 0.0;    A[8] = 1.0;*/
-
-    B[0] = T[0]*T[0]*T[0]/6 - h[0]*T[0]; 
-    B[1] = T[0]*T[0]/2;         
-    B[2] = T[0];             
-
-    iCpB = 1/(T[0]*T[0]*T[0]/6 - h[0]*T[0]);
-
-    iCpB_CpA[0] = iCpB;
-    iCpB_CpA[1] = iCpB*T[0];
-    iCpB_CpA[2] = iCpB*T[0]*T[0]/2;
-    //------------------------------------
-    
-
-    //Vu(1:2)
-    FP_init[k]  = -iCpB_CpA[0]*X_tilde[0] - iCpB_CpA[1]*X_tilde[1] - iCpB_CpA[2]*X_tilde[2] + iCpB*FS[ind[0]].p.x;
-    FP_init[k1] = -iCpB_CpA[0]*X_tilde[3] - iCpB_CpA[1]*X_tilde[4] - iCpB_CpA[2]*X_tilde[5] + iCpB*FS[ind[0]].p.y;
- 
-    //Vc(1:6)
-    FP_init[0] = X_tilde[0] + A[3]*X_tilde[1] + A[6]*X_tilde[2] + B[0]*FP_init[k];
-    FP_init[1] =                   X_tilde[1] + A[7]*X_tilde[2] + B[1]*FP_init[k];
-    FP_init[2] =                                     X_tilde[2] + B[2]*FP_init[k];
-    FP_init[3] = X_tilde[3] + A[3]*X_tilde[4] + A[6]*X_tilde[5] + B[0]*FP_init[k1];
-    FP_init[4] =                   X_tilde[4] + A[7]*X_tilde[5] + B[1]*FP_init[k1];
-    FP_init[5] =                                     X_tilde[5] + B[2]*FP_init[k1];
-    
-    for (int i=1; i<N; i++)
-    {
-        k  = NUM_STATE_VAR*N + 2*i; 
-        k1 = k + 1;
-        k2 = NUM_STATE_VAR*i - NUM_STATE_VAR;
-        k3 = NUM_STATE_VAR*i; //6*(i+1) - 6
-
-        //------------------------------------
-        /*A[0] = 1.0;*/  A[3]  = T[i];   A[6] = T[i]*T[i]/2;
-        /*A[1] = 0.0;    A[4]  = 1.0;*/  A[7] = T[i];    
-        /*A[2] = 0.0;    A[5]  = 0.0;    A[8] = 1.0;*/
-
-        B[0] = T[i]*T[i]*T[i]/6 - h[i]*T[i]; 
-        B[1] = T[i]*T[i]/2;         
-        B[2] = T[i];             
-
-        iCpB = 1/(T[i]*T[i]*T[i]/6 - h[i]*T[i]);
-
-        iCpB_CpA[0] = iCpB;
-        iCpB_CpA[1] = iCpB*T[i];
-        iCpB_CpA[2] = iCpB*T[i]*T[i]/2;
-        //------------------------------------
-
-
-        FP_init[k]  = -iCpB_CpA[0]*FP_init[k2]   - iCpB_CpA[1]*FP_init[k2+1] - iCpB_CpA[2]*FP_init[k2+2] + iCpB*FS[ind[i]].p.x;
-        FP_init[k1] = -iCpB_CpA[0]*FP_init[k2+3] - iCpB_CpA[1]*FP_init[k2+4] - iCpB_CpA[2]*FP_init[k2+5] + iCpB*FS[ind[i]].p.y;
-
-        FP_init[k3]   = FP_init[k2]   + A[3]*FP_init[k2+1] + A[6]*FP_init[k2+2] + B[0]*FP_init[k];
-        FP_init[k3+1] =                      FP_init[k2+1] + A[7]*FP_init[k2+2] + B[1]*FP_init[k];
-        FP_init[k3+2] =                                           FP_init[k2+2] + B[2]*FP_init[k];
-        FP_init[k3+3] = FP_init[k2+3] + A[3]*FP_init[k2+4] + A[6]*FP_init[k2+5] + B[0]*FP_init[k1];
-        FP_init[k3+4] =                      FP_init[k2+4] + A[7]*FP_init[k2+5] + B[1]*FP_init[k1];
-        FP_init[k3+5] =                                           FP_init[k2+5] + B[2]*FP_init[k1];
-
-        // go back to bar states
-        tmp           =  FS[ind[i-1]].ca*FP_init[k2] + FS[ind[i-1]].sa*FP_init[k2+3];
-        FP_init[k2+3] = -FS[ind[i-1]].sa*FP_init[k2] + FS[ind[i-1]].ca*FP_init[k2+3];
-        FP_init[k2]   = tmp;        
-    }
-    // go back to bar states (terminal state)
-    tmp           =  FS[ind[N-1]].ca*FP_init[k3] + FS[ind[N-1]].sa*FP_init[k3+3];
-    FP_init[k3+3] = -FS[ind[N-1]].sa*FP_init[k3] + FS[ind[N-1]].ca*FP_init[k3+3];   
-    FP_init[k3]   = tmp; 
-
-
-    /* Another version for going back to bar states
-    for (int i=0; i<N; i++)
-    {
-        tmp                =  FS[ind[i]].ca*FP_init[6*(i+1)-6] + FS[ind[i]].sa*FP_init[6*(i+1)-3];
-        FP_init[6*(i+1)-3] = -FS[ind[i]].sa*FP_init[6*(i+1)-6] + FS[ind[i]].ca*FP_init[6*(i+1)-3];        
-        FP_init[6*(i+1)-6] =  tmp;        
-    }    
-    */
-
-    if (output_flag)
-    {
-        if (counter == 0)
-        {
-            write_file(FP_init, NUM_VAR*N, 1, "output/FP.dat", "w"); 
-        }
-        else
-        {
-            write_file(FP_init, NUM_VAR*N, 1, "output/FP.dat", "a"); 
-        }
-    }
 }
 
 

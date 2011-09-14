@@ -61,7 +61,6 @@ int main(int argc, char **argv)
             cout << "EXIT (halt = 1)" << endl;
             break;
         }
-        wmg.form_FP_init(); 
         //------------------------------------------------------
 
 
@@ -71,15 +70,6 @@ int main(int argc, char **argv)
         solver.init(wmg.T, wmg.h, wmg.angle, wmg.zref_x, wmg.zref_y, wmg.lb, wmg.ub, wmg.FP_init);
         solver.solve();
 //**************************************************************************
-
-
-        //------------------------------------------------------
-        // compare with reference results
-        for (int i = 0; i < 6; i++)
-        {
-            wmg.X[i] = wmg.FP_init[i];
-        }
-        //------------------------------------------------------
 
 
         wmg.CoM.x = wmg.X_tilde[0] + wmg.h[0]*(wmg.X_tilde[2]);

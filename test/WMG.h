@@ -186,7 +186,6 @@ class WMG
         void slide();
         void print_ind();
         void FS2file();
-        void form_FP_init(int output_flag = 0);
         void output_CoM_ZMP();
 
 
@@ -220,35 +219,6 @@ class WMG
         /** \brief Indexes of footsteps appearing in the current preview window
          */
         int *ind; 
-
-        /** \brief The state of the linear model defined as follows 
-            \verbatim
-            X[0] - x (bar) ZMP position [meter]
-            X[1] - x CoM velocity [meter/s]
-            X[2] - x XoM acceleration [meter/s^2]
-            X[3] - y (bar) ZMP position [meter]
-            X[4] - y CoM velocity [meter/s]
-            X[5] - y CoM acceleration [meter/s^2]
-            \endverbatim
-
-            \note This is bar{c}_k in the paper
-        */
-        double X[6];
-
-        /** \brief The state of the linear model defined as follows 
-            
-            \verbatim
-            X[0] - x ZMP position [meter]
-            X[1] - x CoM velocity [meter/s]
-            X[2] - x CoM acceleration [meter/s^2]
-            X[3] - y ZMP position [meter]
-            X[4] - y CoM velocity [meter/s]
-            X[5] - y CoM acceleration [meter/s^2]
-            \endverbatim
-
-            \note This is tilde{c}_k in the paper. It is used when generating an initial feasible point.
-        */
-        double X_tilde[6];
 
         /** \brief Position of the CoM (on the floor). */
         Point2D CoM;

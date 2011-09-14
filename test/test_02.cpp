@@ -64,17 +64,24 @@ int main(int argc, char **argv)
             cout << "EXIT (halt = 1)" << endl;
             break;
         }
-        wmg.form_FP_init(); 
         //------------------------------------------------------
 
 
 
         int NN = 1000;
         int nW;
-        gettimeofday(&start,0);             
+        gettimeofday(&start,0);
+        double X_tilde[NUM_STATE_VAR];
+        for (int i = 0; i < NUM_STATE_VAR; i++)
+        {
+            X_tilde[i] = wmg.FP_init[i];
+        }
         for(int kk=0; kk<NN ;kk++)
         {
-            wmg.form_FP_init(); // reset X
+            for (int i = 0; i < NUM_STATE_VAR; i++)
+            {
+                wmg.FP_init[i] = X_tilde[i];
+            }
 //**************************************************************************
 // SOLVER IS USED HERE
 //**************************************************************************
@@ -88,11 +95,6 @@ int main(int argc, char **argv)
         printf("(%i) time = % f (%i)\n", wmg.counter, TT, nW);
         //------------------------------------------------------
 
-
-        for (int i = 0; i < 6; i++)
-        {
-            wmg.X[i] = wmg.FP_init[i];
-        }
 
         wmg.slide();
     }

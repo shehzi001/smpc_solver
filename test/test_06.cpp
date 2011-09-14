@@ -70,7 +70,6 @@ int main(int argc, char **argv)
             cout << "EXIT (halt = 1)" << endl;
             break;
         }
-        wmg.form_FP_init(); 
         //------------------------------------------------------
 
 
@@ -87,11 +86,6 @@ int main(int argc, char **argv)
         for (int i = 0; i < wmg.N*NUM_VAR; i++)
         {
             double dataref;
-
-            if (i < 6)
-            {
-                wmg.X[i] = wmg.FP_init[i];
-            }
 
             inFile >> dataref;
             err = abs(wmg.FP_init[i] - dataref);
