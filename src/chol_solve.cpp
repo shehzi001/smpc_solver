@@ -87,6 +87,9 @@ void chol_solve::form_Ex (chol_solve_param csp, double *x, double *result)
 #endif
 
 
+    double *control = &x[N*NUM_STATE_VAR];
+    double *res = result;
+
     for (i = 0; i < N; i++)
     {
         // cos and sin of the current angle to form R
@@ -99,15 +102,10 @@ void chol_solve::form_Ex (chol_solve_param csp, double *x, double *result)
 #endif
 
         // a pointer to 6 current elements of result
-        double *res = &result[i*NUM_STATE_VAR];
 
         // a pointer to 6 current state variables
         double *xc = &x[i*NUM_STATE_VAR];
 
-        // two current control variables
-        double control[2] = {
-            x[N*NUM_STATE_VAR + i*NUM_CONTROL_VAR + 0], 
-            x[N*NUM_STATE_VAR + i*NUM_CONTROL_VAR + 1]};
 
 
         // result = -R * x + B * u
@@ -138,6 +136,10 @@ void chol_solve::form_Ex (chol_solve_param csp, double *x, double *result)
             res[4] +=                    xc[4] +  T * xc[5]; 
             res[5] +=                                 xc[5];
         }
+
+        // next control variables
+        control = &control[NUM_CONTROL_VAR];
+        res = &res[NUM_STATE_VAR];
     }
 }
 
@@ -162,6 +164,10 @@ void chol_solve::form_ETx (chol_solve_param csp, double *x, double *result)
     double A6 = T2;
 #endif
 
+
+    double *res = result;
+    double *control_res = &result[N*NUM_STATE_VAR];
+
     for (i = 0; i < N; i++)
     {
         // cos and sin of the current angle to form R
@@ -170,7 +176,6 @@ void chol_solve::form_ETx (chol_solve_param csp, double *x, double *result)
 
 
         // a pointer to 6 current elements of result
-        double *res = &result[i*NUM_STATE_VAR];
         // a pointer to 6 current elements of nu
         double *xc = &x[i*NUM_STATE_VAR];
 
@@ -204,7 +209,6 @@ void chol_solve::form_ETx (chol_solve_param csp, double *x, double *result)
         }
 
 
-        res = &result[i*NUM_CONTROL_VAR + N*NUM_STATE_VAR];
         xc = &x[i*NUM_STATE_VAR];
 #ifdef QPAS_VARIABLE_T_h
         double T = csp.T[i];
@@ -213,8 +217,12 @@ void chol_solve::form_ETx (chol_solve_param csp, double *x, double *result)
 #endif
 
         // result = B' * x
-        res[0] = B0 * xc[0] + T2 * xc[1] + T * xc[2];
-        res[1] = B0 * xc[3] + T2 * xc[4] + T * xc[5];
+        control_res[0] = B0 * xc[0] + T2 * xc[1] + T * xc[2];
+        control_res[1] = B0 * xc[3] + T2 * xc[4] + T * xc[5];
+
+
+        res = &res[NUM_STATE_VAR];
+        control_res = &control_res[NUM_CONTROL_VAR];
     }
 }
 
@@ -229,7 +237,7 @@ void chol_solve::form_ETx (chol_solve_param csp, double *x, double *result)
 void chol_solve::solve_forward(double *x)
 {
     int i;
-    double *xc = &x[0]; // 6 current elements of x
+    double *xc = x; // 6 current elements of x
     double *xp; // 6 elements of x computed on the previous iteration
     double *cur_ecL = &ecL[0];  // lower triangular matrix lying on the 
                                 // diagonal of L
@@ -257,10 +265,11 @@ void chol_solve::solve_forward(double *x)
     for (i = 1; i < N; i++)
     {
         // switch to the next level of L / next 6 elements
-        xc = &x[i * NUM_STATE_VAR];
-        xp = &x[i * NUM_STATE_VAR - NUM_STATE_VAR];
-        cur_ecL = &ecL[i * 2 * MATRIX_SIZE];
-        prev_ecL = &ecL[i * 2 * MATRIX_SIZE - MATRIX_SIZE];
+        xp = xc;
+        xc = &xc[NUM_STATE_VAR];
+
+        prev_ecL = &cur_ecL[MATRIX_SIZE];
+        cur_ecL = &cur_ecL[2 * MATRIX_SIZE];
 
 
         // update the right part of the equation and compute elements
@@ -323,11 +332,11 @@ void chol_solve::solve_backward(double *x)
 
     for (i = N-2; i >= 0 ; i--)
     {
+        xp = xc;
         xc = & x[i*NUM_STATE_VAR];
-        xp = & x[i*NUM_STATE_VAR + NUM_STATE_VAR];
 
         cur_ecL = &ecL[2 * i * MATRIX_SIZE];
-        prev_ecL = &ecL[2 * i * MATRIX_SIZE + MATRIX_SIZE];
+        prev_ecL = &cur_ecL[MATRIX_SIZE];
 
 
         // update the right part of the equation and compute elements
@@ -404,7 +413,7 @@ void chol_solve::form_a_row(chol_solve_param csp, int ic_num, int var_num, doubl
 
 
     // reset memory
-    memset(row, 0, NUM_VAR * N *sizeof(double));
+    memset(row, 0, (NUM_STATE_VAR * N + ic_num) * sizeof(double));
 
     aiHcosA = aiH * csp.angle_cos[state_num];
     aiHsinA = aiH * csp.angle_sin[state_num];
@@ -528,14 +537,12 @@ void chol_solve::up_resolve(chol_solve_param csp, int nW, int *W, double *x, dou
  */
 void chol_solve::update (chol_solve_param csp, int nW, int *W)
 {
-    int i, j;
+    int i, j, k;
 
     int ic_num = nW-1; // index of added constraint in W
     int state_num = W[ic_num] / 2; // number of state in the preview window
-    double cur_el; // temporary storage
     double *new_row = icL[ic_num]; // current row in icL
 
-    int first_num = state_num * NUM_STATE_VAR; // the first !=0 element
     int last_num = ic_num + N*NUM_STATE_VAR; // the last !=0 element
 
     // a matrix on diagonal of ecL
@@ -551,97 +558,78 @@ void chol_solve::update (chol_solve_param csp, int nW, int *W)
     // element in the row to NUM_STATE_VAR * N (size of ecL)
     // the calculation of the last elements is completed
     // in a separate loop
-    for(i = first_num; i < NUM_STATE_VAR * N; i++)
-    {
-        cur_el = new_row[i];
+    // each number in row 'a' causes update of only 3 elements following
+    // it, they can be 1,2,6; 1,5,6; 4,5,6
+    k = state_num*NUM_STATE_VAR;
+    double* cur_pos = &new_row[k];
+    for(i = state_num*2; i < N*2; i++) // variables corresponding to x and 
+    {                                  // y are computed using the same matrices
+        double tmp_copy_el[3];
 
-        // propagate update in the row
-        // each number in row 'a' causes update of only 3 elements following
-        // it, they can be 1,2,6; 1,5,6; 4,5,6
-        switch (i % 3)  // variables corresponding to x and y are computed
-        {               // using the same matrices
-            case 0:
-                // determine number in the row of L
-                cur_el /= ecL_diag[0];
-                new_row[i + 1] -= cur_el * ecL_diag[1];
-                new_row[i + 2] -= cur_el * ecL_diag[2];
-                break;
+        // ----------------------------------------------------------------
+        cur_pos[0] /= ecL_diag[0];
+        tmp_copy_el[0] = cur_pos[0];
+        cur_pos[1] -= tmp_copy_el[0] * ecL_diag[1];
+        cur_pos[1] /= ecL_diag[4];
+        tmp_copy_el[1] = cur_pos[1];
+        cur_pos[2] -= tmp_copy_el[0] * ecL_diag[2] + tmp_copy_el[1] * ecL_diag[5];
+        
 
-            case 1:
-                // determine number in the row of L
-                cur_el /= ecL_diag[4];
-                new_row[i + 1] -= cur_el * ecL_diag[5];
-                break;
+        // ----------------------------------------------------------------
+        cur_pos[2] /= ecL_diag[8];
+        tmp_copy_el[2] = cur_pos[2];
+        if (i < 2*(N - 1))  // non-diagonal matrix of ecL cannot be
+        {                   // used when the last state is processed
 
-            case 2:
-                // determine number in the row of L
-                cur_el /= ecL_diag[8];
-                break;
-        }
+            // these elements can be updated here, since they are not 
+            // used in computation of other elements on this iteration
+            cur_pos[6] -= tmp_copy_el[0] * ecL_ndiag[0] 
+                        + tmp_copy_el[1] * ecL_ndiag[3]
+                        + tmp_copy_el[2] * ecL_ndiag[6];
 
-        if (state_num != N-1)   // non-diagonal matrix of ecL cannot be
-        {                       // used when the last state is processed
-            // propagate update in the row
-            // each number in row 'a' causes update of only 3 elements following
-            // it, they can be 1,2,6; 1,5,6; 4,5,6
-            switch (i % 3)  // variables corresponding to x and y are computed
-            {               // using the same matrices
-                case 0:
-                    new_row[i + 6] -= cur_el * ecL_ndiag[0];
-                    break;
+            cur_pos[7] -= tmp_copy_el[1] * ecL_ndiag[4]
+                        + tmp_copy_el[2] * ecL_ndiag[7];
 
-                case 1:
-                    new_row[i + 5] -= cur_el * ecL_ndiag[3];
-                    new_row[i + 6] -= cur_el * ecL_ndiag[4];
-                    break;
+            cur_pos[8] -= tmp_copy_el[2] * ecL_ndiag[8];
 
-                case 2:
-                    new_row[i + 4] -= cur_el * ecL_ndiag[6];
-                    new_row[i + 5] -= cur_el * ecL_ndiag[7];
-                    new_row[i + 6] -= cur_el * ecL_ndiag[8];
-
-                    // jump to the next pair of matrices in ecL.
-                    if ((i+1)%6 == 0)
-                    {
-                        state_num++;
-                        ecL_diag = &ecL[state_num * MATRIX_SIZE * 2];
-                        ecL_ndiag = &ecL[state_num * MATRIX_SIZE * 2 + MATRIX_SIZE];
-                    }
-                    break;
+            if ((i+1)%2 == 0) // jump to the next pair of matrices in ecL.
+            {
+                ecL_diag = &ecL_diag[MATRIX_SIZE * 2];
+                ecL_ndiag = &ecL_ndiag[MATRIX_SIZE * 2];
             }
         }
-
         // update the last (diagonal) number in the row
-        new_row[last_num] -= cur_el * cur_el;
+        new_row[last_num] -= tmp_copy_el[0] * tmp_copy_el[0] 
+                           + tmp_copy_el[1] * tmp_copy_el[1] 
+                           + tmp_copy_el[2] * tmp_copy_el[2];
 
         // update elements after N*NUM_STATE_VAR using the previously added rows
         // in icL
         for (j = 0; j < ic_num; j++)
         {
-            new_row[N*NUM_STATE_VAR + j] -= cur_el * icL[j][i];
+            new_row[N*NUM_STATE_VAR + j] -= tmp_copy_el[0] * icL[j][k]
+                                          + tmp_copy_el[1] * icL[j][k+1]
+                                          + tmp_copy_el[2] * icL[j][k+2];
         }
-
-        new_row[i] = cur_el;
+        cur_pos = &cur_pos[3];
+        k += 3;
     }
-
 
     // update elements in the end of icL
     for(i = NUM_STATE_VAR * N; i < last_num; i++)
     {
-        cur_el = new_row[i];
+        new_row[i] /= icL[i - N*NUM_STATE_VAR][i];
+        double tmp_copy_el = new_row[i];
 
         // determine number in the row of L
-        cur_el /= icL[i - N*NUM_STATE_VAR][i];
 
         // update the last (diagonal) number in the row
-        new_row[last_num] -= cur_el * cur_el;
+        new_row[last_num] -= tmp_copy_el * tmp_copy_el;
 
         for (j = (i - N*NUM_STATE_VAR) + 1; j < ic_num; j++)
         {
-            new_row[N*NUM_STATE_VAR + j] -= cur_el * icL[j][i];
+            new_row[N*NUM_STATE_VAR + j] -= tmp_copy_el * icL[j][i];
         }
-
-        new_row[i] = cur_el;
     }
 
     // square root of the diagonal element
@@ -699,11 +687,12 @@ void chol_solve::resolve (chol_solve_param csp, int nW, int *W, double *x, doubl
     for (i = NUM_STATE_VAR*N + nW-1; i >= NUM_STATE_VAR*N; i--)
     {
         double nui = nu[i];
+        double *icL_row = icL[i-N*NUM_STATE_VAR];
 
-        nui = nui / icL[i-N*NUM_STATE_VAR][i];
+        nui = nui / icL_row[i];
         for (j = i - 1; j >= 0; j--)
         {
-            nu[j] -= nui * icL[i-N*NUM_STATE_VAR][j];
+            nu[j] -= nui * icL_row[j];
         }
         nu[i] = nui;
     }
@@ -731,9 +720,10 @@ void chol_solve::resolve (chol_solve_param csp, int nW, int *W, double *x, doubl
     }
 
     // -iH * A(W,:)' * lambda
+    double *lambda = &nu[N*NUM_STATE_VAR];
     for (i = 0; i < nW; i++)
     {
-        dx[W[i]*3] -= i2Q[0] * nu[N*NUM_STATE_VAR + i];
+        dx[W[i]*3] -= i2Q[0] * lambda[i];
     }
 }
 
@@ -826,8 +816,9 @@ void chol_solve::downdate(chol_solve_param csp, int nW, int ind_exclude, double 
     for (int i = ind_exclude; i < nW; i++)
     {
         int el_index = NUM_STATE_VAR*N + i;
-        double x1 = icL[i][el_index];
-        double x2 = icL[i][el_index + 1];
+        double *cur_el = &icL[i][el_index];
+        double x1 = cur_el[0];
+        double x2 = cur_el[1];
         double cosT, sinT;
 
 
@@ -847,13 +838,13 @@ void chol_solve::downdate(chol_solve_param csp, int nW, int ind_exclude, double 
 
 
         // update elements in the current line
-        icL[i][el_index] = cosT*x1 + sinT*x2;
-        icL[i][el_index + 1] = 0;
+        cur_el[0] = cosT*x1 + sinT*x2;
+        cur_el[1] = 0;
 
         // change sign if needed (diagonal elements of Cholesky 
         // decomposition must be positive)
-        double sign = copysign(1, icL[i][el_index]);
-        icL[i][el_index] = fabs(icL[i][el_index]);
+        double sign = copysign(1, cur_el[0]);
+        cur_el[0] = fabs(cur_el[0]);
 
         // update the lines below the current one.
         for (int j = i + 1; j < nW; j++)
