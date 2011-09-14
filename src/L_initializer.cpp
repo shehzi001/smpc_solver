@@ -230,20 +230,14 @@ void L_initializer::form_L(chol_solve_param csp, int N, double *ecL)
     int cur_offset;
     int prev_offset;
 
-#ifdef QPAS_VARIABLE_T_h
     double T = csp.T[0];
     double T2 = T*T/2;
     double B[3] = {T2*T/3 - csp.h[0]*T, T2, T};
-#else 
-    double T = csp.T;
-    double T2 = T*T/2;
-    double B[3] = {T2*T/3 - csp.h*T, T2, T};
-    double A6 = T2;
-#endif
 
     // form all matrices
     form_iQBiPB (B, csp.i2Q, csp.i2P);
 #ifndef QPAS_VARIABLE_T_h
+    double A6 = T2;
     form_iQAT (T, A6, csp.i2Q);
     form_AiQATiQBiPB (T, A6);
 #endif

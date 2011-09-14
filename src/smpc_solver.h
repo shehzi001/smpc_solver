@@ -76,17 +76,38 @@ class smpc_solver
 
         // -------------------------------
 
+        /**
+         * @brief Returns the next state as #X_tilde.
+         *  
+         * @param[in,out] state the state (#NUM_STATE_VAR elements).
+         *
+         *  \verbatim
+            state[0] - x ZMP position [meter]
+            state[1] - x CoM velocity [meter/s]
+            state[2] - x CoM acceleration [meter/s^2]
+            state[3] - y ZMP position [meter]
+            state[4] - y CoM velocity [meter/s]
+            state[5] - y CoM acceleration [meter/s^2]
+            \endverbatim
+         */
+        void get_next_state_tilde (double *state);
+
 
         /**
-         * @brief Determines coordinates of ZMP and CoM.
+         * @brief Returns the next state represented by original variables.
+         *  
+         * @param[in,out] state the state (#NUM_STATE_VAR elements).
          *
-         * @param[out] ZMP_x x coordinate of ZMP.
-         * @param[out] ZMP_y y coordinate of ZMP.
-         * @param[out] CoM_x x coordinate of CoM.
-         * @param[out] CoM_y y coordinate of CoM.
+         *  \verbatim
+            state[0] - x CoM position [meter]
+            state[1] - x CoM velocity [meter/s]
+            state[2] - x CoM acceleration [meter/s^2]
+            state[3] - y CoM position [meter]
+            state[4] - y CoM velocity [meter/s]
+            state[5] - y CoM acceleration [meter/s^2]
+            \endverbatim
          */
-        void get_ZMP_CoM (double *ZMP_x, double *ZMP_y, double *CoM_x, double *CoM_y);
-
+        void get_next_state (double *state);
 
         // -------------------------------
 

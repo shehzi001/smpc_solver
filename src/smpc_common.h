@@ -58,16 +58,13 @@ struct chol_solve_param
 
 
 // parameters used in generation of A and B matrices
-#ifdef QPAS_VARIABLE_T_h
-    double *T;
-    double *h;
-    double *dh;
-#else
     /** Preview sampling time  */
-    double T;
-
+    double *T;
     /** h = #hCoM/#gravity. */
-    double h;
+    double *h;
+
+#ifdef QPAS_VARIABLE_T_h
+    double *dh;
 #endif
 };
 

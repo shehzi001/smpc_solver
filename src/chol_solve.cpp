@@ -80,9 +80,9 @@ void chol_solve::form_Ex (chol_solve_param csp, double *x, double *result)
 
     // Matrices A and B are generated on the fly using these parameters.
 #ifndef QPAS_VARIABLE_T_h
-    double T = csp.T;
+    double T = csp.T[0];
     double T2 = T*T/2;
-    double B0 = T2*T/3 - csp.h*T;
+    double B0 = T2*T/3 - csp.h[0]*T;
     double A6 = T2;
 #endif
 
@@ -155,9 +155,9 @@ void chol_solve::form_ETx (chol_solve_param csp, double *x, double *result)
 
     // Matrices A and B are generated on the fly using these parameters.
 #ifndef QPAS_VARIABLE_T_h
-    double T = csp.T;
+    double T = csp.T[0];
     double T2 = T*T/2;
-    double B0 = T2*T/3 - csp.h*T;
+    double B0 = T2*T/3 - csp.h[0]*T;
     double A3 = T;
     double A6 = T2;
 #endif

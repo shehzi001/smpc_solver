@@ -12,6 +12,7 @@
  * INCLUDES 
  ****************************************/
 #include "qp_as.h"
+#include "state_handling.h"
 
 #include <string.h> // in order to use memcpy and memmove
 #include <cmath> // cos, sin
@@ -69,9 +70,9 @@ qp_as::qp_as(int N_, double Alpha, double Beta, double Gamma, double regularizat
 
     chol_param.iHg = new double[NUM_VAR*N]();
 
-#ifdef QPAS_VARIABLE_T_h
     chol_param.T = NULL;
     chol_param.h = NULL;
+#ifdef QPAS_VARIABLE_T_h
     chol_param.dh = NULL;
 #endif
 
@@ -144,17 +145,14 @@ void qp_as::init(
 {
     nW = 0;
 
-#ifdef QPAS_VARIABLE_T_h
     chol_param.T = T_;
     chol_param.h = h_;
+#ifdef QPAS_VARIABLE_T_h
     chol_param.dh = new double[N-1]();
     for (int i = 0; i < N-1; i++)
     {
         chol_param.dh[i] = chol_param.h[i+1] - chol_param.h[i];
     }
-#else
-    chol_param.T = T_[0];
-    chol_param.h = h_[0];
 #endif
 
 
@@ -186,31 +184,6 @@ void qp_as::init(
  * First we perform a change of variable to "tilde states",
  * generate a feasible point, and then we go back to "bar states".
  */
-        /** \brief The state of the linear model defined as follows 
-            
-            \verbatim
-            X[0] - x ZMP position [meter]
-            X[1] - x CoM velocity [meter/s]
-            X[2] - x CoM acceleration [meter/s^2]
-            X[3] - y ZMP position [meter]
-            X[4] - y CoM velocity [meter/s]
-            X[5] - y CoM acceleration [meter/s^2]
-            \endverbatim
-
-            \note This is tilde{c}_k in the paper. It is used when generating an initial feasible point.
-        */
-        /** \brief The state of the linear model defined as follows 
-            \verbatim
-            X[0] - x (bar) ZMP position [meter]
-            X[1] - x CoM velocity [meter/s]
-            X[2] - x XoM acceleration [meter/s^2]
-            X[3] - y (bar) ZMP position [meter]
-            X[4] - y CoM velocity [meter/s]
-            X[5] - y CoM acceleration [meter/s^2]
-            \endverbatim
-
-            \note This is bar{c}_k in the paper
-        */
 void qp_as::form_init_fp(double *zref_x, double *zref_y)
 {
     double *control = &X[NUM_STATE_VAR*N];
@@ -278,21 +251,9 @@ void qp_as::form_init_fp(double *zref_x, double *zref_y)
     cur_state = X;
     for (int i=0; i<N; i++)
     {
-/*
-        double tmp   =  chol_param.angle_cos[i]*cur_state[0] + chol_param.angle_sin[i]*cur_state[3];
-        cur_state[3] = -chol_param.angle_sin[i]*cur_state[0] + chol_param.angle_cos[i]*cur_state[3];
-        cur_state[0] = tmp;
-*/
-        tilde_to_bar (cur_state, chol_param.angle_sin[i], chol_param.angle_cos[i]);
+        state_handling::tilde_to_bar (cur_state, chol_param.angle_sin[i], chol_param.angle_cos[i]);
         cur_state = &cur_state[NUM_STATE_VAR];
     }
-}
-
-void qp_as::tilde_to_bar (double *state, double sinA, double cosA)
-{
-    double tmp =  cosA*state[0] + sinA*state[3];
-    state[3]   = -sinA*state[0] + cosA*state[3];
-    state[0]   = tmp;
 }
 
 
@@ -484,29 +445,6 @@ int qp_as::solve ()
     }
 
     return (nW);
-}
-
-
-/**
- * @brief Determines coordinates of ZMP and CoM.
- *
- * @param[out] ZMP_x x coordinate of ZMP.
- * @param[out] ZMP_y y coordinate of ZMP.
- * @param[out] CoM_x x coordinate of CoM.
- * @param[out] CoM_y y coordinate of CoM.
- */
-void qp_as::get_ZMP_CoM (double *ZMP_x, double *ZMP_y, double *CoM_x, double *CoM_y)
-{
-    *ZMP_x = chol_param.angle_cos[0] * X[0] - chol_param.angle_sin[0] * X[3];
-    *ZMP_y = chol_param.angle_sin[0] * X[0] + chol_param.angle_cos[0] * X[3];
-
-#ifdef QPAS_VARIABLE_T_h
-    *CoM_x = *ZMP_x + chol_param.h[0] * X[2];
-    *CoM_y = *ZMP_y + chol_param.h[0] * X[5];
-#else
-    *CoM_x = *ZMP_x + chol_param.h * X[2];
-    *CoM_y = *ZMP_y + chol_param.h * X[5];
-#endif
 }
 
 

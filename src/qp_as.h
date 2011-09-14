@@ -80,6 +80,7 @@ class bound
 class qp_as
 {
     public:
+// functions        
         qp_as(
                 int N_, 
                 double Alpha = 150.0, 
@@ -91,20 +92,27 @@ class qp_as
 
         void init(double*, double*, double*, double*, double*, double*, double*, double*);
    
-        void get_ZMP_CoM (double *, double *, double *, double *);
 
         ///@todo return W
         int solve ();
+
+        void get_next_state_tilde (double *);
+        void get_next_state (double *);
+
+
+// variables
+        /// Parameters, which are fed to the methods of #chol_solve class.
+        chol_solve_param chol_param;
+
+        /** Variables for the QP (contain the states + control variables).
+            Initial feasible point with respect to the equality and inequality constraints. */
+        double *X;
 
 
     private:
 
 // functions        
-///@todo move to other file/class
         void form_init_fp(double *, double *);
-        void tilde_to_bar (double *, double, double);
-
-
         void form_iHg(double *, double *);
         void initialize_bounds();
         void form_bounds(double *, double *);
@@ -122,8 +130,6 @@ class qp_as
         /** Number of iterations in a preview window. */
         int N;
 
-        /// Parameters, which are fed to the methods of #chol_solve class.
-        chol_solve_param chol_param;
 
         /// An instance of #chol_solve class.
         chol_solve chol;
@@ -138,9 +144,6 @@ class qp_as
         double tol;
 
     // variables and descent direction
-        /** Variables for the QP (contain the states + control variables).
-            Initial feasible point with respect to the equality and inequality constraints. */
-        double *X;
      
         /** Feasible descent direction (to be used for updating #X). */
         double *dX;

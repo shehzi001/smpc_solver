@@ -14,6 +14,8 @@
 
 #include "qp_as.h"
 #include "smpc_solver.h"
+#include "state_handling.h"
+
 
 /****************************************
  * FUNCTIONS 
@@ -51,7 +53,12 @@ int smpc_solver::solve()
 }
 
 
-void smpc_solver::get_ZMP_CoM (double *ZMP_x, double *ZMP_y, double *CoM_x, double *CoM_y)
+void smpc_solver::get_next_state_tilde (double *state)
 {
-    qpas_solver->get_ZMP_CoM (ZMP_x, ZMP_y, CoM_x, CoM_y);
+    state_handling::get_next_state_tilde (state, qpas_solver->X, qpas_solver->chol_param);
+}
+
+void smpc_solver::get_next_state (double *state)
+{
+    state_handling::get_next_state (state, qpas_solver->X, qpas_solver->chol_param);
 }
