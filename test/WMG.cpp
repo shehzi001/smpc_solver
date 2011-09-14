@@ -325,6 +325,23 @@ void FootStep::print()
 
 // ============================================================================================
 
+/** \brief Default constructor. */
+WMG::WMG()
+{
+    ZMP_ref = NULL;
+    ind = NULL;
+
+    X = NULL;
+
+    T = NULL;
+    h = NULL;
+
+    angle = NULL;
+    zref_x = NULL;
+    zref_y = NULL;
+    lb = NULL;
+    ub = NULL;
+}
 
 
 /** \brief Default destructor. */
@@ -388,7 +405,7 @@ WMG::~WMG()
     \param[in] _T Sampling time (for the moment it is assumed to be constant) [sec.]
     \param[in] _hCoM Height of the Center of Mass [meter]
  */
-WMG::WMG(int _N, double _T, double _hCoM)
+void WMG::init(int _N, double _T, double _hCoM)
 {
     current_step_number = 0;
     counter = 0;

@@ -17,8 +17,8 @@ TESTS=\
 all: ${TESTS}
 
 ${TESTS}:
-	${CXX} ${CXXFLAGS} ${IFLAGS} -c $@.cpp WMG.cpp
-	${CXX} -o $@.a $@.o WMG.o ${LDFLAGS}
+	${CXX} ${CXXFLAGS} ${IFLAGS} -c $@.cpp WMG.cpp init_WMG.cpp
+	${CXX} -o $@.a $@.o WMG.o init_WMG.o ${LDFLAGS}
 
 clean:
 	rm -f *.a *.o

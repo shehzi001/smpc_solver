@@ -178,7 +178,7 @@ class WMG
     public:
         WMG();
         ~WMG();
-        WMG(int _N, double _T, double _hCoM);
+        void init (int _N, double _T, double _hCoM);
         void AddFootstep(double x_relative, double y_relative, double angle_relative, int _nSS, int _n, int _RL, double *_d);
         void AddFootstep(double x_relative, double y_relative, double angle_relative, int _nSS, int _n);
         void AddFootstep(double x_relative, double y_relative, double angle_relative);
