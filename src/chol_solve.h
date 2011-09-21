@@ -1,10 +1,7 @@
 /**
  * @file
- * @brief 
- *
  * @author Alexander Sherikov
  * @date 19.07.2011 15:56:18 MSD
- * @todo add description
  */
 
 
@@ -24,21 +21,12 @@
 
 using namespace std;
 
+/// @addtogroup gINTERNALS
+/// @{
+
 /**
- * @brief 
- *
- *
- * It is implicitly supposed that we have 6 state variables and 2
- * control variables. Defines are used for convenience only.
- * The structure of matrices is also hardcoded. (refer to the paper
- * for more information).
- *
- * All matrices used in computations are of size 3x3, and are stored
- * as vectors. The elements are numerated in the following way:
- *  0   3   6
- *  1   4   7
- *  2   5   8
- *
+ * @brief Solves @ref pPD_KKT "KKT system" using 
+ * @ref pCholesky "Cholesky decomposition".
  */
 class chol_solve
 {
@@ -73,59 +61,35 @@ class chol_solve
         void solve_forward(double *);
         void solve_backward(double *);
 
-        void form_a_row(chol_solve_param, int, int, double *);
+        void form_sa_row(chol_solve_param, int, int, double *);
 
 
 // ----------------------------------------------
 // variables
 
-        /** L for equality constraints
-           full L                           |   L (ecL) in this class
-            a                               |
-            0   a                           |           a
-            b   0   c                   0   |           b   c
-            0   b   0   c                   |   ===>        d   e
-                    d   0   e               |   ===>            f   g
-                    0   d   0   e           |                       ...
-                0           f   0   g       |
-                            0   f   0   g   |
-                                    ....    |
-
-         Here a,c,e,g - lower diagonal 3x3 matrices; b,d,f - upper triangular
-         3x3 matrices.
-        ------------------------------------------------------------------
-          ecL is stored as a sequence of vectors of 9 elements:
-         
-        0  3  6 
-        1  4  7
-        2  5  8
-
-        9  12 15  18 21 24
-        10 13 16  19 22 25
-        11 14 17  20 23 26
-
-                    ...         ...
-        */
+        /// L for equality constraints, see '@ref pDetCholesky'
         double *ecL;
 
-        /** L for inequality constraints
-            (N*2)x(N*NUM_VAR) matrix */
+        /// L for inequality constraints, see '@ref pDetCholesky'
         double **icL;   
 
-        /** All lines of #icL are stored in one chunk of memory. */
+        /// All lines of #icL are stored in one chunk of memory.
         double *icL_mem;   
 
-        // these vectors are used in ReSolve and Solve
-        // respectively, the memory is allocated once in
-        // constructor
+        /// Vector of Lagrange multipliers
         double *nu;
-        double *ViHg;
 
-        /** Vector #z = -[E;Aw]*inv(H)*(H*x+g) \ L. */
+        /// - (X + chol_solve_param#iHg)
+        double *XiHg;
+
+        /// Vector @ref pz "z".
         double *z;
 
         /// number of states in the preview window
         int N;
+
+        /// An instance of #L_initializer class
         L_initializer L_init;
 };
+/// @}
 #endif /*CHOL_SOLVE_H*/

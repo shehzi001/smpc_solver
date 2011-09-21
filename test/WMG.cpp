@@ -32,6 +32,8 @@
 // ============================================================================================
 // Utility functions 
 // ============================================================================================
+///@addtogroup gTEST
+///@{
 
 /** \brief Print a [m by n] matrix in the terminal
 
@@ -94,6 +96,7 @@ void write_file(double *A, int row, int col, const char *output_file, const char
 
     fclose(file_op);
 }
+///@}
 
 // ============================================================================================
 // End utility functions 
@@ -601,6 +604,8 @@ void WMG::FormPreviewWindow()
         lb[i*2 + 1] = -FS[ind[i]].ctr.d[3];
         ub[i*2 + 1] = FS[ind[i]].ctr.d[1];
     }
+
+    this->slide();
 }
 
 

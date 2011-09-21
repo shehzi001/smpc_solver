@@ -1,7 +1,5 @@
 /** 
  * @file
- * @brief 
- *
  * @author Alexander Sherikov
  * @date 14.09.2011 16:55:42 MSD
  */
@@ -23,9 +21,9 @@
 namespace state_handling
 {
     /**
-     * @brief Converts state from #X_tilde to #X_bar.
+     * @brief Converts state from @ref pX_tilde "X_tilde" to @ref pX_bar "X_bar".
      *
-     * @param[in,out] state the state (#X_tilde).
+     * @param[in,out] state the state (@ref pX_tilde "X_tilde").
      * @param[in] sinA sin of the rotation angle.
      * @param[in] cosA cos of the rotation angle.
      */
@@ -37,9 +35,9 @@ namespace state_handling
     }
 
     /**
-     * @brief Converts state from #X_tilde to #X_bar.
+     * @brief Converts state from @ref pX_tilde "X_tilde" to @ref pX_bar "X_bar".
      *
-     * @param[in,out] state the state (#X_bar).
+     * @param[in,out] state the state (@ref pX_bar "X_bar").
      * @param[in] sinA sin of the rotation angle.
      * @param[in] cosA cos of the rotation angle.
      */
@@ -52,10 +50,10 @@ namespace state_handling
 
 
     /**
-     * @brief Converts state from #X_tilde to original variables.
+     * @brief Converts state from @ref pX_tilde "X_tilde" to original variables.
      *
-     * @param[in,out] state the state (#X_tilde).
-     * @param[in] h #hCoM/#gravity.
+     * @param[in,out] state the state (@ref pX_tilde "X_tilde").
+     * @param[in] h @ref ph "hCoM/gravity".
      */
     void tilde_to_orig (double *state, double h)
     {
@@ -65,7 +63,7 @@ namespace state_handling
 
 
     /**
-     * @brief Returns the next state as #X_tilde.
+     * @brief Returns the next state as @ref pX_tilde "X_tilde".
      *
      * @param[in,out] state the state (#NUM_STATE_VAR elements).
      * @param[in] X a solution.

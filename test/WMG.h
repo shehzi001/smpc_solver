@@ -33,6 +33,8 @@
 #include <iostream> // cerr, endl
 #include <math.h> // for cos and sin
 
+///@addtogroup gTEST
+///@{
 
 #define NUM_STATE_VAR 6
 #define NUM_CONTROL_VAR 2
@@ -251,5 +253,6 @@ class WMG
         double *ub;
 };
 
+///@}
 
 #endif

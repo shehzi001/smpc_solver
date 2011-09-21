@@ -1,10 +1,7 @@
 /** 
  * @file
- * @brief  
- *
  * @author Alexander Sherikov
  * @date 19.07.2011 22:30:13 MSD
- * @todo add description
  */
 
 
@@ -129,8 +126,8 @@ qp_as::~qp_as()
     @param[in] angle Rotation angle for each state in the preview window
     @param[in] zref_x reference values of z_x
     @param[in] zref_y reference values of z_y
-    @param[in] lb array of lower bounds for z
-    @param[in] ub array of upper bounds for z
+    @param[in] lb array of lower bounds for z_x and z_y
+    @param[in] ub array of upper bounds for z_x and z_y
     @param[in] X_tilde current state
     @param[in,out] X_ initial guess / solution of optimization problem
 */
@@ -173,18 +170,14 @@ void qp_as::init(
 
     form_init_fp (zref_x, zref_y, X_tilde);
     form_iHg (zref_x, zref_y);
-#ifdef SMPCS_DEBUG
-    zref_x_copy = zref_x;
-    zref_y_copy = zref_y;
-#endif /*SMPCS_DEBUG*/
 }
 
 
 
 /** 
  * @brief Generates an initial feasible point. 
- * First we perform a change of variable to "tilde states",
- * generate a feasible point, and then we go back to "bar states".
+ * First we perform a change of variable to @ref pX_tilde "X_tilde"
+ * generate a feasible point, and then we go back to @ref pX_bar "X_bar".
  */
 void qp_as::form_init_fp(double *zref_x, double *zref_y, double *X_tilde)
 {
@@ -192,44 +185,72 @@ void qp_as::form_init_fp(double *zref_x, double *zref_y, double *X_tilde)
     double *cur_state = X;
     double *prev_state = X_tilde;
 
+#ifndef QPAS_VARIABLE_T_h    
+    //------------------------------------
+    double T = chol_param.T[0];
+    double T2 = T*T/2;
+    double h = chol_param.h[0];
 
+
+    /* Control matrix. */
+    double B[3] = {T2*T/3 - h*T, T2, T};
+
+
+    /* inv(Cp*B). This is a [2 x 2] diagonal matrix (which is invertible if T^3/6-h*T is
+     * not equal to zero). The two elements one the main diagonal are equal, and only one of them 
+     * is stored, which is equal to
+        1/(T^3/6 - h*T)
+     */
+    double iCpB = 1/(B[0]);
+
+
+    /* inv(Cp*B)*Cp*A. This is a [2 x 6] matrix with the following structure
+        iCpB_CpA = [a b c 0 0 0;
+                    0 0 0 a b c];
+
+        a = iCpB
+        b = iCpB*T
+        c = iCpB*T^2/2
+     * Only a,b and c are stored.
+     */
+    double iCpB_CpA[3] = {iCpB, iCpB*T, iCpB*T2};
+    //------------------------------------
+#endif /*QPAS_VARIABLE_T_h*/
+
+    
     for (int i=0; i<N; i++)
     {
+#ifdef QPAS_VARIABLE_T_h
         //------------------------------------
-    ///@todo constant T
         double T = chol_param.T[i];
         double T2 = T*T/2;
         double h = chol_param.h[i];
 
 
-        /** \brief Control matrix. */
+        /* Control matrix. */
         double B[3] = {T2*T/3 - h*T, T2, T};
 
 
-        /** \brief inv(Cp*B). This is a [2 x 2] diagonal matrix (which is invertible if #T^3/6-#h*#T is
+        /* inv(Cp*B). This is a [2 x 2] diagonal matrix (which is invertible if T^3/6-h*T is
          * not equal to zero). The two elements one the main diagonal are equal, and only one of them 
          * is stored, which is equal to
-            \verbatim
             1/(T^3/6 - h*T)
-            \endverbatim      
          */
         double iCpB = 1/(B[0]);
 
 
-        /** \brief inv(Cp*B)*Cp*A. This is a [2 x 6] matrix with the following structure
-            \verbatim
+        /* inv(Cp*B)*Cp*A. This is a [2 x 6] matrix with the following structure
             iCpB_CpA = [a b c 0 0 0;
                         0 0 0 a b c];
 
             a = iCpB
             b = iCpB*T
             c = iCpB*T^2/2
-            \endverbatim
-
          * Only a,b and c are stored.
          */
         double iCpB_CpA[3] = {iCpB, iCpB*T, iCpB*T2};
         //------------------------------------
+#endif /*QPAS_VARIABLE_T_h*/
 
 
         control[0] = -iCpB_CpA[0]*prev_state[0] - iCpB_CpA[1]*prev_state[1] - iCpB_CpA[2]*prev_state[2] + iCpB*zref_x[i];
@@ -307,7 +328,7 @@ void qp_as::form_bounds(double *lb, double *ub)
 
 
 /**
- * @brief Check for blocking bounds.
+ * @brief Checks for blocking bounds.
  *
  * @return sequential number of constraint to be added, -1 if no constraints.
  */
@@ -315,7 +336,7 @@ int qp_as::check_blocking_bounds()
 {
     alpha = 1;
 
-    /** Index to include in the working set #W, -1 if no constraint have to be included. */
+    /* Index to include in the working set, -1 if no constraint have to be included. */
     int activated_var_num = -1;
 
 
@@ -371,6 +392,15 @@ int qp_as::check_blocking_bounds()
 
 
 #ifdef QPAS_DOWNDATE
+/**
+ * @brief Selects a constraint for removal from active set.
+ *
+ * @param[in] lambda vector of Lagrange multipliers corresponding
+ *  to inequality constraints.
+ *
+ * @return index of constraint in the active set, -1 if no constraint
+ *  can be removed.
+ */
 int qp_as::choose_excl_constr (double *lambda)
 {
     double min_lambda = -tol;
@@ -405,7 +435,7 @@ int qp_as::choose_excl_constr (double *lambda)
 /**
  * @brief Solve QP problem.
  *
- * @return numebr of activated constraints
+ * @return number of activated constraints
  */
 int qp_as::solve ()
 {
@@ -448,49 +478,3 @@ int qp_as::solve ()
 
     return (nW);
 }
-
-
-
-#ifdef SMPCS_DEBUG
-/**
- * @brief Prints value of  X'*H*X + X'*g
- */
-void qp_as::print_objective()
-{
-    int i;
-    double obj = 0;
-
-
-    // H_c
-    for (i = 0; i < N*NUM_STATE_VAR; i++)
-    {
-        obj += (1/(2*chol_param.i2Q[i%3])) * X[i] * X[i];
-    }
-
-    // H_u
-    for (; i < N*NUM_VAR; i++)
-    {
-        obj += (1/(2*chol_param.i2P)) * X[i] * X[i];
-    }
-
-
-    // X'*g
-    for (i = 0; i < N; i++)
-    {
-        // rotation angle
-        double cosA = chol_param.angle_cos[i];
-        double sinA = chol_param.angle_sin[i];
-
-        // zref
-        double p0 = zref_x_copy[i];
-        double p1 = zref_y_copy[i];
-
-        // g = -[q_1 ... q_N]'
-        // q = beta * R' * Cp' * zref
-        obj -= X[i*NUM_STATE_VAR + 0]*(cosA*p0 + sinA*p1)*gain_beta;
-        obj -= X[i*NUM_STATE_VAR + 3]*(-sinA*p0 + cosA*p1)*gain_beta; 
-    }
-
-    printf ("DEBUG: objective function = % 8e\n", obj);
-}
-#endif /*SMPCS_DEBUG*/

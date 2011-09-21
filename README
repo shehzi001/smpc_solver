@@ -1,0 +1,10 @@
+This library implements a solver of quadratic optimization problems
+defined using sparse model predictive control formulation for
+walking motion generation. 
+
+Requirements:
+    GNU make
+
+Compilation can be started by running make without targets.
+When 'test' target is specified, the tests and examples in the
+'test' folder are also build.

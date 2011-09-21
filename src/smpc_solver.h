@@ -13,6 +13,11 @@
 class qp_as;
 
 
+/// @addtogroup gAPI 
+/// @{
+/**
+ * @brief API of the sparse MPC solver.
+ */
 class smpc_solver
 {
     public:
@@ -46,15 +51,15 @@ class smpc_solver
 
         /** @brief Initializes quadratic problem.
 
-            @param[in] T Sampling time (for the moment it is assumed to be constant) [sec.]
-            @param[in] h Height of the Center of Mass divided by gravity
-            @param[in] angle Rotation angle for each state in the preview window
-            @param[in] zref_x reference values of z_x
-            @param[in] zref_y reference values of z_y
-            @param[in] lb array of lower bounds for z
-            @param[in] ub array of upper bounds for z
-            @param[in] X_tilde current state (#X_tilde)
-            @param[in,out] X initial guess / solution of optimization problem
+            @param[in] T sampling time for each time step [sec.]
+            @param[in] h height of the center of mass divided by gravity for each time step
+            @param[in] angle rotation angle for each state relative to the world frame
+            @param[in] zref_x reference values of x coordinate of ZMP
+            @param[in] zref_y reference values of y coordinate of ZMP
+            @param[in] lb array of lower bounds for coordinates of ZMP
+            @param[in] ub array of upper bounds for coordinates of ZMP
+            @param[in] X_tilde current state (@ref pX_tilde "X_tilde")
+            @param[in,out] X solution of optimization problem
         */
         void init(
                 double* T,
@@ -79,7 +84,7 @@ class smpc_solver
         // -------------------------------
 
         /**
-         * @brief Returns the next state as #X_tilde.
+         * @brief Returns the next state as @ref pX_tilde "X_tilde".
          *  
          * @param[in,out] state the state (#NUM_STATE_VAR elements).
          *
@@ -117,5 +122,6 @@ class smpc_solver
     private:
         qp_as *qpas_solver;
 };
+/// @}
 
 #endif /*SMPC_SOLVER_H*/

@@ -1,11 +1,8 @@
 /** 
  * @file
- * @brief 
- *
  * @author Alexander Sherikov
  * @date 28.08.2011 13:43:08 MSD
  */
-
 
 
 /****************************************
@@ -51,7 +48,7 @@ L_initializer::~L_initializer()
  * @param[in,out] mx9 a pointer to matrix, the result is 
  *                    stored in the same place.
  *
- * @note Only the elements below the main diagonal are used.
+ * @attention Only the elements below the main diagonal are initialized.
  */
 void L_initializer::chol_dec (double *mx9)
 {
@@ -80,6 +77,8 @@ void L_initializer::chol_dec (double *mx9)
  * @param[in] i2Q a vector of 3 elements, which contains
  *              diagonal elements of 0.5 * inv(Q).
  * @param[in] i2P 0.5 * inv(P) (only one number)
+ *
+ * @attention Only the elements below the main diagonal are initialized.
  */
 void L_initializer::form_iQBiPB (double *B, double *i2Q, double i2P)
 {
@@ -121,6 +120,8 @@ void L_initializer::form_iQAT (double T, double A6, double *i2Q)
  *
  * @param[in] T 4th and 7th elements of A.
  * @param[in] A6 6th element of A.
+ *
+ * @attention Only the elements below the main diagonal are initialized.
  */
 void L_initializer::form_AiQATiQBiPB (double T, double A6)
 {
@@ -183,6 +184,8 @@ void L_initializer::form_L_non_diag(double *ecLp, double *ecLc)
  * @param[in] ecLp upper triangular matrix matrix lying to the left
  *                 from ecLc on the same level of L
  * @param[in] ecLc the result is stored here
+ *
+ * @attention Only the elements below the main diagonal are initialized.
  */
 void L_initializer::form_L_diag(double *ecLp, double *ecLc)
 {

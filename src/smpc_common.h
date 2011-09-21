@@ -1,11 +1,7 @@
 /**
  * @file
- * @brief 
- *
  * @author Alexander Sherikov
  * @date 19.07.2011 22:37:28 MSD
- *
- * @todo add description
  */
 
 
@@ -21,15 +17,26 @@
 /****************************************
  * DEFINES
  ****************************************/
+
+/// @addtogroup gINTERNALS
+/// @{
+
+/// Number of state variables.
 #define NUM_STATE_VAR 6
+/// Number of control variables.
 #define NUM_CONTROL_VAR 2
+/// Total number of variables.
 #define NUM_VAR 8
 
+/// The size of one dimension of 3x3 matrix.
 #define MATRIX_DIM_SIZE 3
+/// The number of elements in 3x3 matrix.
 #define MATRIX_SIZE 9
 
-
+/// Allow variable chol_solve_param#T and chol_solve_param#h
 #define QPAS_VARIABLE_T_h
+/// Allow removal of constraints from active set
+#define QPAS_DOWNDATE
 
 
 /****************************************
@@ -37,8 +44,7 @@
  ****************************************/
 
 /**
- * @brief 
- * @todo This is ugly. What to do?
+ * @brief A set of parameters used by #chol_solve class.
  */
 struct chol_solve_param 
 {
@@ -60,7 +66,7 @@ struct chol_solve_param
 // parameters used in generation of A and B matrices
     /** Preview sampling time  */
     double *T;
-    /** h = #hCoM/#gravity. */
+    /** h = @ref ph "hCoM/gravity". */
     double *h;
 
 #ifdef QPAS_VARIABLE_T_h
@@ -71,6 +77,6 @@ struct chol_solve_param
 /****************************************
  * PROTOTYPES 
  ****************************************/
-
+///@}
 #endif /*SMPC_COMMON_H*/
 

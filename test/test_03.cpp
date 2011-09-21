@@ -1,18 +1,16 @@
-#include <iostream>
-#include <fstream>
+/** 
+ * @file
+ * @author Alexander Sherikov
+ * @brief Performs a full simulation with a dumb emulation of variable
+ *  sampling time in the preview window: the differing period repeated
+ *  in the preview window in a cycle.
+ */
 
-#include <cmath> // abs
-#include <cstdio>
 
+#include "tests_common.h" 
 
-#include "WMG.h"
-#include "init_WMG.h"
-
-#include "smpc_solver.h" 
-
-using namespace std;
-/// @todo describe tests
-
+///@addtogroup gTEST
+///@{
 int main(int argc, char **argv)
 {
     //-----------------------------------------------------------
@@ -22,13 +20,11 @@ int main(int argc, char **argv)
     //-----------------------------------------------------------
   
 
+    test_start (argv[0]);
 
     smpc_solver solver(wmg.N);
-
     int nW;
-  
 
-    printf ("\n################################\n %s \n################################\n", argv[0]);
     int j=0;
     for(;;)
     {
@@ -66,27 +62,23 @@ int main(int argc, char **argv)
         //------------------------------------------------------
 
 
-//**************************************************************************
-// SOLVER IS USED HERE
-//**************************************************************************
+        //------------------------------------------------------
         solver.init(wmg.T, wmg.h, wmg.angle, wmg.zref_x, wmg.zref_y, wmg.lb, wmg.ub, wmg.X_tilde, wmg.X);
         nW = solver.solve();
         solver.get_next_state_tilde (wmg.X_tilde);
-//**************************************************************************
+        //------------------------------------------------------
 
 
         //------------------------------------------------------
-        // compare with reference results
         printf("Num. of activated constraints: %d\n", nW);
         for (int i = 0; i < 6; i++)
         {
             printf("value: % 8e\n", wmg.X[i]);
         }
         //------------------------------------------------------
-
-        wmg.slide();
     }
-    printf ("################################\n");
 
+    test_end (argv[0]);
     return 0;
 }
+///@}

@@ -1,8 +1,8 @@
-test: smpc_solver
-	cd test; ${MAKE}
-
 smpc_solver:
 	cd src; ${MAKE}
+
+test: smpc_solver
+	cd test; ${MAKE}
 
 clean:
 	cd test; ${MAKE} clean

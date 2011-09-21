@@ -1,7 +1,5 @@
 /**
  * @file
- * @brief 
- *
  * @author Alexander Sherikov
  * @date 14.09.2011 17:03:42 MSD
  */
@@ -19,7 +17,12 @@
 /****************************************
  * PROTOTYPES 
  ****************************************/
+/// @addtogroup gINTERNALS
+/// @{
 
+/**
+ * @brief Various operations on the vector of states.
+ */
 namespace state_handling
 {
     void tilde_to_bar (double *, double, double);
@@ -29,5 +32,5 @@ namespace state_handling
     void get_next_state_tilde (double *, double *, chol_solve_param);
     void get_next_state (double *, double *, chol_solve_param);
 }
-
+/// @}
 #endif /*STATE_HANDLING_H*/

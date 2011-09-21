@@ -1,9 +1,35 @@
+#include <iostream>
+#include <fstream>
+#include <cstdio>
+#include <limits>
+#include <cmath> // abs
+
+
 #include "WMG.h"
+#include "smpc_solver.h" 
+
+using namespace std;
+
+///@addtogroup gTEST
+///@{
+
+void test_start (char *name)
+{
+    printf ("\n################################\n %s \n################################\n", name);
+}
+
+void test_end (char *name)
+{
+    printf ("################################\n");
+}
+
+
+//**********************************************************************
+/// @todo add more test cases; double support?
+
 
 void init_01 (WMG *wmg)
 {
-    //-----------------------------------------------------------
-    // initialize
     wmg->init(15, 0.1, 0.261);
 
     double d[4] = {0.09 , 0.025, 0.03, 0.075};
@@ -25,9 +51,6 @@ void init_01 (WMG *wmg)
     wmg->AddFootstep(step_x, -step_y, z);
     wmg->AddFootstep(step_x,  step_y, 0.0, 30, 30);
     wmg->AddFootstep(0.0   , -step_y, 0.0);
-
-    //wmg.FS2file(); // output results for later use in Matlab/Octave
-    //-----------------------------------------------------------
 }
 
 
@@ -59,3 +82,5 @@ void init_02 (WMG *wmg)
     wmg->AddFootstep(step_x,  step_y, 0.0, 30, 30);
     wmg->AddFootstep(0.0   , -step_y, 0.0);
 }
+
+///@}

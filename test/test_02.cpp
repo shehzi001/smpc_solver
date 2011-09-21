@@ -1,20 +1,19 @@
-#include <iostream>
-#include <fstream>
+/** 
+ * @file
+ * @author Alexander Sherikov
+ * @brief Performs a full simulation and measures average time
+ *  required to solve a QP.
+ */
 
-#include <cmath> // abs
-#include <cstdio>
 
 #include <sys/time.h>
 #include <time.h>
 
 
-#include "WMG.h"
-#include "init_WMG.h"
+#include "tests_common.h" 
 
-#include "smpc_solver.h" 
-
-using namespace std;
-
+///@addtogroup gTEST
+///@{
 
 int main(int argc, char **argv)
 {
@@ -26,11 +25,9 @@ int main(int argc, char **argv)
     //-----------------------------------------------------------
  
 
+    test_start(argv[0]);
+
     smpc_solver solver(wmg.N);
-
-
-
-    printf ("\n################################\n %s \n################################\n", argv[0]);
     for(;;)
     {
         //------------------------------------------------------
@@ -49,24 +46,19 @@ int main(int argc, char **argv)
         gettimeofday(&start,0);
         for(int kk=0; kk<NN ;kk++)
         {
-//**************************************************************************
-// SOLVER IS USED HERE
-//**************************************************************************
             solver.init(wmg.T, wmg.h, wmg.angle, wmg.zref_x, wmg.zref_y, wmg.lb, wmg.ub, wmg.X_tilde, wmg.X);
             nW = solver.solve();
-//**************************************************************************
         }
         solver.get_next_state_tilde (wmg.X_tilde);
         gettimeofday(&end,0);             
         CurrentCPUTime = end.tv_sec - start.tv_sec + 0.000001 * (end.tv_usec - start.tv_usec);
         double TT = CurrentCPUTime/NN;
-        printf("(%i) time = % f (%i)\n", wmg.counter, TT, nW);
+        printf("(%i) time = % f (%i)\n", wmg.counter - 1, TT, nW);
         //------------------------------------------------------
-
-
-        wmg.slide();
     }
-    printf ("################################\n");
 
+
+    test_end(argv[0]);
     return 0;
 }
+///@}

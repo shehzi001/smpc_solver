@@ -1,10 +1,7 @@
 /** 
  * @file
- * @brief  
- *
  * @author Alexander Sherikov
  * @date 19.07.2011 22:30:13 MSD
- * @todo add description
  */
 
 
@@ -26,6 +23,11 @@
 //==============================================
 // constructors / destructors
 
+/**
+ * @brief Constructor
+ *
+ * @param[in] preview_win_size size of the preview window.
+ */
 chol_solve::chol_solve (int preview_win_size)
 {
     N = preview_win_size;
@@ -33,7 +35,7 @@ chol_solve::chol_solve (int preview_win_size)
     ecL = new double[MATRIX_SIZE*N + MATRIX_SIZE*(N-1)]();
 
     nu = new double[NUM_VAR*N];
-    ViHg = new double[NUM_VAR*N];
+    XiHg = new double[NUM_VAR*N];
 
     z = new double[NUM_VAR*N];
 
@@ -53,8 +55,8 @@ chol_solve::~chol_solve()
         delete ecL;
     if (nu != NULL)
         delete nu;
-    if (ViHg != NULL)
-        delete ViHg;
+    if (XiHg != NULL)
+        delete XiHg;
     if (icL != NULL)
     {
         delete icL_mem;
@@ -71,8 +73,8 @@ chol_solve::~chol_solve()
  * @brief Forms E*x.
  *
  * @param[in] csp parameters.
- * @param[in] x vector x (NUM_VAR * N).
- * @param[out] result vector E*x (NUM_STATE_VAR * N)
+ * @param[in] x vector x (#NUM_VAR * N).
+ * @param[out] result vector E*x (#NUM_STATE_VAR * N)
  */
 void chol_solve::form_Ex (chol_solve_param csp, double *x, double *result)
 {
@@ -148,8 +150,8 @@ void chol_solve::form_Ex (chol_solve_param csp, double *x, double *result)
  * @brief Forms E' * x
  *
  * @param[in] csp parameters.
- * @param[in] x vector x (NUM_STATE_VAR * N).
- * @param[out] result vector E' * nu (NUM_VAR * N)
+ * @param[in] x vector x (#NUM_STATE_VAR * N).
+ * @param[out] result vector E' * nu (#NUM_VAR * N)
  */
 void chol_solve::form_ETx (chol_solve_param csp, double *x, double *result)
 {
@@ -232,7 +234,7 @@ void chol_solve::form_ETx (chol_solve_param csp, double *x, double *result)
  * @brief Solve system ecL * x = b using forward substitution.
  *
  * @param[in,out] x vector "b" as input, vector "x" as output
- *                  (N * NUM_STATE_VAR)
+ *                  (N * #NUM_STATE_VAR)
  */
 void chol_solve::solve_forward(double *x)
 {
@@ -364,46 +366,14 @@ void chol_solve::solve_backward(double *x)
 
 
 /**
- * @brief Forms row vector 'a'.
-
-    Consider the following matrix (with "H" being a diagonal matrix, and "a"
-    a column vector)
-    
-    \verbatim
-    [C;a']*inv(H)*[C',a] = [C*inv(H)*C' , C*inv(H)*a;
-                            a'*inv(H)*C', a'*inv(H)*a]
-
-    Then,
-
-    aRowVector = [a'*inv(H)*C', a'*inv(H)*a]
-
-    Or, if C = [E;Aw] (with Aw containing the normals to the active inequality 
-    constraints prior to the inclusion of "a")
-
-    aRowVector = [a'*inv(H)*E', a'*inv(H)*Aw', a'*inv(H)*a])
-
-    Note that a'*inv(H)*Aw' is a vector of zeros (with dimension 
-    [1 x (number of active constraints)]). While a'*inv(H)*a = 1\Beta
-                   -----------------------------------------------------
-    aRowVector =   |      a'*inv(H)*E'      |  0 0 ... 0 | a'*inv(H)*a |
-                   -----------------------------------------------------
-    (dimensions)~~    6*N                      nW            1
-
-    a'*inv(H)*E' = (E*inv(H)*a)' = (1/Beta*E*a)' (because "a" is avector 
-    of zeros, with only one of 1:3:6*N equal to 1).
-    Hence, a'*inv(H)*E' selects and scales (by 1/Beta) one column of E 
-    (of course a column with index in 1:3:6*N).
-    Such a column can have at most 4 nonzero entries.
-
-    The row has 5 or 3 (for the last state in the preview window) non-zero elements.
-    \endverbatim
+ * @brief Forms row vector 's_a' (@ref pCholUp).
  *
  * @param[in] csp parameters
  * @param[in] ic_num number of constraint, for example 5 if 4 are already added 
  * @param[in] var_num number of constrained variable
- * @param[out] row 'a' row
+ * @param[out] row 's_a' row
  */
-void chol_solve::form_a_row(chol_solve_param csp, int ic_num, int var_num, double *row)
+void chol_solve::form_sa_row(chol_solve_param csp, int ic_num, int var_num, double *row)
 {
     double aiH = csp.i2Q[0]; // a'*inv(H) = a'*inv(H)*a
     int state_num = var_num / 2; // number of state in the preview window
@@ -473,11 +443,11 @@ void chol_solve::solve(chol_solve_param csp, double *ix, double *dx)
     //  V - initial feasible point
     for (i = 0; i < NUM_VAR * N; i++)
     {
-        ViHg[i] = -(ix[i] + csp.iHg[i]);
+        XiHg[i] = -(ix[i] + csp.iHg[i]);
     }
 
     // obtain s = E * x;
-    form_Ex (csp, ViHg, s_nu);
+    form_Ex (csp, XiHg, s_nu);
 
     // obtain nu
     solve_forward(s_nu);
@@ -496,16 +466,16 @@ void chol_solve::solve(chol_solve_param csp, double *ix, double *dx)
     //
     // dx = -(V + inv(H) * g + inv(H) * E' * nu)
     //        ~~~~~~~~~~~~~~            ~~~~~~~
-    // dx   -(   -ViHg       + inv(H) *   dx   ) 
+    // dx   -(   -XiHg       + inv(H) *   dx   ) 
     for (i = 0; i < N*NUM_STATE_VAR; i++)
     {
         // dx for state variables
-        dx[i] = -(-ViHg[i] + i2Q[i%3] * dx[i]);
+        dx[i] = -(-XiHg[i] + i2Q[i%3] * dx[i]);
     }
     for (; i < N*NUM_VAR; i++)
     {
         // dx for control variables
-        dx[i] = -(-ViHg[i] + csp.i2P * dx[i]);
+        dx[i] = -(-XiHg[i] + csp.i2P * dx[i]);
     }
 }
 
@@ -529,7 +499,8 @@ void chol_solve::up_resolve(chol_solve_param csp, int nW, int *W, double *x, dou
 
 
 /**
- * @brief Adds a row corresponding to some inequality constraint to L.
+ * @brief Adds a row corresponding to some inequality constraint to L, see
+ * '@ref pCholUpAlg'.
  *
  * @param[in] csp parameters.
  * @param[in] nW number of added inequality constraints + 1.
@@ -552,7 +523,7 @@ void chol_solve::update (chol_solve_param csp, int nW, int *W)
 
 
     // form row 'a' in the current row of icL
-    form_a_row(csp, ic_num, W[ic_num], new_row);
+    form_sa_row(csp, ic_num, W[ic_num], new_row);
 
     // update elements starting from the first non-zero
     // element in the row to NUM_STATE_VAR * N (size of ecL)
@@ -639,7 +610,7 @@ void chol_solve::update (chol_solve_param csp, int nW, int *W)
 
 
 /**
- * @brief Adjust vector 'z' after update.
+ * @brief Adjust vector '@ref pz "z"' after update.
  *
  * @param[in] csp   parameters.
  * @param[in] nW    number of added constrains.
@@ -760,7 +731,7 @@ double * chol_solve::get_lambda()
 
 
 /**
- * @brief Adjust vector 'z' after downdate.
+ * @brief Adjust vector '@ref pz "z"' after downdate.
  *
  * @param[in] csp   parameters.
  * @param[in] nW    number of added constrains.
@@ -795,7 +766,7 @@ void chol_solve::downdate_z (chol_solve_param csp, int nW, int *W, int ind_exclu
 
 
 /**
- * @brief Delete a line from icL.
+ * @brief Delete a line from icL, see page '@ref pCholDown'.
  *
  * @param[in] csp   parameters.
  * @param[in] nW    number of added constrains.

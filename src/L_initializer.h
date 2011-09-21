@@ -1,7 +1,5 @@
 /**
  * @file
- * @brief 
- *
  * @author Alexander Sherikov
  * @date 28.08.2011 13:43:12 MSD
  */
@@ -9,6 +7,7 @@
 
 #ifndef L_INITIALIZER_H
 #define L_INITIALIZER_H
+
 
 /****************************************
  * INCLUDES 
@@ -28,6 +27,12 @@
 
 using namespace std;
 
+/// @addtogroup gINTERNALS
+/// @{
+
+/**
+ * @brief Initializes lower diagonal matrix @ref pCholesky "L".
+ */
 class L_initializer
 {
     public:
@@ -54,5 +59,6 @@ class L_initializer
         double *iQAT;       /// inv(Q) * A'
         double *AiQATiQBiPB;/// A * inv(Q) * A' + inv(Q) + B * inv(P) * B'
 };
+/// @}
 
 #endif /*L_INITIALIZER_H*/

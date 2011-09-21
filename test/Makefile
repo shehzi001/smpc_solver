@@ -8,17 +8,18 @@ TESTS=\
 	  test_01 \
 	  test_02 \
 	  test_03 \
-	  test_04 \
-	  test_05 \
-	  test_06 \
-	  test_07
+	  test_04
 
 
-all: ${TESTS}
+all: ${TESTS} demo
 
 ${TESTS}:
-	${CXX} ${CXXFLAGS} ${IFLAGS} -c $@.cpp WMG.cpp init_WMG.cpp
-	${CXX} -o $@.a $@.o WMG.o init_WMG.o ${LDFLAGS}
+	${CXX} ${CXXFLAGS} ${IFLAGS} -c $@.cpp WMG.cpp 
+	${CXX} -o $@.a $@.o WMG.o ${LDFLAGS}
+
+demo:
+	${CXX} ${CXXFLAGS} ${IFLAGS} -c $@.cpp WMG.cpp 
+	${CXX} -o $@.a $@.o WMG.o ${LDFLAGS}
 
 clean:
 	rm -f *.a *.o

@@ -1,27 +1,5 @@
 /**
  * @file
- * @brief 
- * Contains code that (approximately) solves the following 
- * 
- * ---------------------------------
- * | Quadratic Program             |
- * ---------------------------------
- * |  min f(x) = 0.5*x'*H*x + x'*g |
- * |   x                           |
- * |                               |
- * |  st. E*x = e                  |
- * |      lb <= x <= ub            |
- * |                               |
- * | Note:                         |
- * | ------                        |
- * | H, g, E, e have structure as  |
- * | defined in my IROS11 paper    | 
- * ---------------------------------
- *
- * The "solver" uses a Primal Active Set scheme (with range space linear algebra). Inequality
- * constraints are only included in the active set (they are not removed). For the purposes of MPC
- * this appears to be reasonable (of course in general it is not).
- *
  * @author Alexander Sherikov
  * @note Based on the code originally developed by Dimitar Dimitrov.
  * @date 19.07.2011 15:56:18 MSD
@@ -47,8 +25,10 @@
 
 using namespace std;
 
+/// @addtogroup gINTERNALS
+/// @{
 
-/** \brief Defines simple bounds associated on a variable. */
+/** \brief Defines simple bounds associated with variables. */
 class bound
 {
     public:
@@ -74,7 +54,7 @@ class bound
 
 
 /** 
- * Approximately solve a quadratic program with a specific structure. 
+ * @brief Solve a quadratic program with a specific structure. 
  * qp_as = Quadratic Programming / Active Set
  */
 class qp_as
@@ -93,7 +73,7 @@ class qp_as
         void init(double*, double*, double*, double*, double*, double*, double*, double*, double*);
    
 
-        ///@todo return W
+        ///@todo Do we need to return active set (W)?
         int solve ();
 
         void get_next_state_tilde (double *);
@@ -105,7 +85,8 @@ class qp_as
         chol_solve_param chol_param;
 
         /** Variables for the QP (contain the states + control variables).
-            Initial feasible point with respect to the equality and inequality constraints. */
+            Initial feasible point with respect to the equality and inequality 
+            constraints. */
         double *X;
 
 
@@ -135,12 +116,14 @@ class qp_as
         chol_solve chol;
 
 
-    // gains        
+    ///@{
+    /// Gains used in @ref pPDObj "objective function".
         double gain_alpha;
         double gain_beta;
         double gain_gamma;
+    ///@}
 
-    // tolerance
+        /// tolerance
         double tol;
 
     // variables and descent direction
@@ -153,31 +136,25 @@ class qp_as
 
     // active set        
         /** Working set (contains the indexes of only inequality constraints). It is assumed that
-            the only inequality constraints are simple bounds. Since only 2*#N variables in #X are
-            subjecto to bounds, #W is defined to have size 2*#N. */
+            the only inequality constraints are simple bounds. See also '@ref pBounds'. */
         int *W;
 
 #ifdef QPAS_DOWNDATE
         /** 
          * Since we do not distinguish lower/upper bounds of active constraints (<= and => 
          * inequlities are treated in the same way), we have to adjust signs of lagrange 
-         * multipliers before downdate. 
+         * multipliers before downdate. See also '@ref pBounds'.
          */
         int *W_sign;
 #endif
 
-        /** Number of indexes of inequality constraints already included in #W. #W(#nW-1) is the
+        /** Number of inequality constraints already included in #W. #W(#nW-1) is the
             index of the last inequality constraint added to #W. */
         int nW;
 
         /// Vector of bounds.
         std::vector <bound> Bounds;
-
-#ifdef SMPCS_DEBUG
-        double *zref_x_copy;
-        double *zref_y_copy;
-#endif
 };
 
-
+///@}
 #endif /*QPAS_H*/
