@@ -109,14 +109,19 @@
  *      - @ref pPDObj
  *      - @ref pPD_EC (example: @ref pExampleEC)
  *      - @ref pPD_IC
- *      - @ref pPD_KKT
+ * - @ref pKKT
+ * - @ref pInitGuess
  * - @ref pProjectedHessian
  * - @ref pCholesky
- *   - @ref pCholUp
- *   - @ref pCholDown
  * - @ref pAddIC
- * - @ref pBounds
+ *      - @ref pCholUp
+ *      - @ref pAddICz
+ * - @ref pRemoveIC
+ *      - @ref pCholDown
+ *      - @ref pRemoveICz
  * - @ref pDetails 
+ *      - @ref pDetMatrices
+ *      - @ref pBounds
  */
 
 
@@ -399,17 +404,86 @@
       \end{array}
     \right]\bar{\mbm{c}}_k + \mbm{d}_{k} \geq \mbm{0},
     @f$
-\n\n
+ */
 
 
-@section pPD_KKT KKT system
+/**
+@page pKKT KKT system
     @f$
     \newcommand{\mbm}[1]{\mbox{\boldmath $#1$}}\\
-      \left[\begin{array}{cc} 2\mbm{H} & \mbm{E}^T \\ \mbm{E} & \mbm{0} \end{array}\right]
-      \left[\begin{array}{c} \mbm{v} \\ \mbm{\nu}\end{array}\right] =
-      \left[\begin{array}{c} -\mbm{g} \\ \mbm{\bar{e}} \end{array}\right]. 
+      \left[
+        \begin{array}{cc} 
+            2\mbm{H} & \mbm{E}^T \\ 
+            \mbm{E} & \mbm{0} 
+        \end{array}
+      \right]
+      \left[
+        \begin{array}{c} 
+            \mbm{x}_{init} + \Delta\mbm{x}\\ 
+            \mbm{\nu}
+        \end{array}
+      \right] =
+      \left[
+        \begin{array}{c} 
+            -\mbm{g} \\ 
+            \mbm{\bar{e}} 
+        \end{array}
+      \right]. 
     @f$
+
+    Section '@ref pProblemDef' discusses formation of matrices
+    @f$
+    \newcommand{\mbm}[1]{\mbox{\boldmath $#1$}}\\
+    \mbm{H}, \mbm{E}^T, \mbm{g}, \mbm{\bar{e}} 
+    @f$.
+
+    We assume, that an initial guess satisfying all constraints is given
+    (instructions on how to generate it are given in section '@ref pInitGuess')
+    Our goal is to find delta between initial guess and optimal point.
+    From the system presented above we can derive:
+
+    @f$
+    \newcommand{\mbm}[1]{\mbox{\boldmath $#1$}}\\
+    \frac{1}{2} \mbm{E} \mbm{H}^{-1} \mbm{E}^T \mbm{\nu} = 
+        \mbm{S} \mbm{\nu} = 
+        \mbm{E} (-\frac{1}{2} \mbm{H}^{-1} \mbm{g} - \mbm{x}_{init}) = \mbm{s}\\
+    \Delta\mbm{x} = -\frac{1}{2} \mbm{H}^{-1} \mbm{g} - \mbm{x}_{init} - 
+        \frac{1}{2} \mbm{H}^{-1} \mbm{E}^T \mbm{\nu}
+    @f$
+
+    Here
+    @f$
+    \newcommand{\mbm}[1]{\mbox{\boldmath $#1$}}\\
+    \mbm{S}
+    @f$
+    is a projected Hessian, its structure is described in section '@ref pProjectedHessian'.
+
+    Note, that
+    @f$
+    \newcommand{\mbm}[1]{\mbox{\boldmath $#1$}}\\
+    \frac{1}{2} \mbm{H}^{-1} \mbm{g}
+    @f$
+    is constant. Also, since Hessian is diagonal its invertion is trivial and
+    multiplication of inverted Hessian by any vector is O(N).
  */
+
+/**
+ * @page pInitGuess Generation of an initial feasible point
+    Consider @ref pPDModel "model of the system".
+ 
+    We assume, that initial state is given (in @ref pX_tilde "X_tilde form").
+    A feasible ZMP profile can be build by selecting reference points, which
+    satisfy inequality constraints. Then based on this profile we can find
+    all states and control inputs:
+
+    -# since the coordinates of the current and the next ZMP positions are 
+    known, we can compute control inputs necessary to change position;
+    -# given control inputs and current state we can find the next state;
+    -# if there are more ZMP positions in ZMP profile go to step 1;
+    -# perform variable substitution (rotation) to convert the feasible point
+    to @ref pX_bar "X_bar form".
+ */
+
 
 
 /**
@@ -509,13 +583,12 @@
 /**
  * @page pProjectedHessian Projected Hessian matrix
 
-    In order to solve KKT system (see '@ref pPD_KKT') we have to form 
-    Schur complement (projected Hessian):
+    In order to solve @ref pKKT we have to form Schur complement (projected Hessian):
 
     @f$
     \newcommand{\mbm}[1]{\mbox{\boldmath $#1$}}\\
     \mbm{S} = \frac{1}{2}\mbm{E}\mbm{H}^{-1}\mbm{E}^T = \frac{1}{2}\left[\begin{array}{cc}\bar{\mbm{E}}_c  \tilde{\mbm{E}}_u\end{array}\right]
-    \left[\begin{array}{cc}\tilde{\mbm{H}}_c  \mbm{0} \\ \mbm{0}  \mbm{H}_u\end{array}\right]
+    \left[\begin{array}{cc}\tilde{\mbm{H}}_c & \mbm{0} \\ \mbm{0} & \mbm{H}_u\end{array}\right]
     \left[\begin{array}{c}\bar{\mbm{E}}_c^T \\ \tilde{\mbm{E}}_u^T \end{array}\right] 
 
     = \frac{1}{2}\bar{\mbm{E}}_c\tilde{\mbm{H}}_c^{-1}\bar{\mbm{E}}_c^T + \frac{1}{2}\tilde{\mbm{E}}_u\mbm{H}_u^{-1}\tilde{\mbm{E}}_u^T. 
@@ -684,6 +757,8 @@
     @f$\newcommand{\mbm}[1]{\mbox{\boldmath $#1$}} \mbm{B}@f$ 
     do not change). 
 */
+
+
 /**
  * @page pCholesky Cholesky decomposition of projected Hessian
     Once projected Hessian is formed we can use Cholesky decomposition
@@ -721,7 +796,14 @@
     requires the computation of the Cholesky factors of 
     @f$\newcommand{\mbm}[1]{\mbox{\boldmath $#1$}} \mbm{S}_{22} - \mbm{L}_{21}\mbm{L}_{21}^T@f$. 
 \n\n
+ */
 
+
+
+/**
+ * @page pAddIC Adding inequality constraints
+    This page describes changes in @ref pKKT "KKT system" after addition of
+    inequality constraint to the active set.
 
 @section pCholUp Update of Cholesky factor
 
@@ -841,24 +923,7 @@ Output:
 \n\n
 
 
-@section pCholDown Downdate of Cholesky factor
-@todo add description of Cholesky downdate.
- */
-
-
-
-/**
- * @page pAddIC Adding inequality constraints
- *
-
-    From '@ref pPD_KKT' we can derive:
-
-    @f$
-    \newcommand{\mbm}[1]{\mbox{\boldmath $#1$}}\\
-    \mbm{S}\mbm{\nu} = -\mbm{C} (\mbm{H}^{-1}\mbm{g} + \mbm{x}) = \mbm{s}\\
-    \Delta\mbm{x} = -(\mbm{H}^{-1}\mbm{g} + \mbm{x} + \mbm{H}^{-1} \mbm{C}^T \mbm{\nu})
-    @f$
-
+@section pAddICz Update of z
     @anchor pz
     After Cholesky decomposition we get
     @f$
@@ -933,61 +998,138 @@ Output:
     amounts to performing one dot product.
  */
 
- /**
-  * @page pBounds Implementing bounds
+/**
+ * @page pRemoveIC Removing inequality constraints
+    This page describes changes in @ref pKKT "KKT system" after removal of
+    inequality constraint from the active set.
+    \n\n
 
-    Consider the variable
-
-    @f$
-    \newcommand{\mbm}[1]{\mbox{\boldmath $#1$}}\\
-    \mbm{x} = \left[\begin{array}{c} x_1 \\ x_2 \\ x_3 \\ x_4 \\ x_5 \\ x_6 \end{array}\right].
-    @f$
-     
-    Suppose that variables @f$x_1@f$ and @f$x_4@f$ have simple bounds (and the rest of the variables are are
-    not subject to inequality constraints), i.e., 
-
-    @f$
-    \newcommand{\mbm}[1]{\mbox{\boldmath $#1$}}\\
-      lb_1 \leq x_1 \leq ub_1  \\
-      lb_2 \leq x_2 \leq ub_2  
-    @f$
-
-    The above four inequality constraints can be written as
+@section pCholDown Downdate of Cholesky factor
+    Imagine, that we have selected an inequality constraint for removal,
+    then corresponding line and column must be removed from matrix
+    @f$\newcommand{\mbm}[1]{\mbox{\boldmath $#1$}} \mbm{S}@f$. We can
+    represent this by moving these lines to the end and to the right of
+    the matrix using permutation matrix:
 
     @f$
-    \newcommand{\mbm}[1]{\mbox{\boldmath $#1$}}\\
-    \mbm{a}_1^T\mbm{x} \leq ub_1  \\
-    \mbm{a}_1^T\mbm{x} \geq lb_1  \\
-    \mbm{a}_2^T\mbm{x} \leq ub_2  \\
-    \mbm{a}_2^T\mbm{x} \geq lb_1, 
+    \newcommand{\mbm}[1]{\mbox{\boldmath $#1$}} 
+    \mbm{E}_{perm} \mbm{S} \mbm{E}_{perm}^T = 
+    \mbm{E}_{perm} \mbm{L} \mbm{L}^T \mbm{E}_{perm}^T = 
+    (\mbm{E}_{perm} \mbm{L}) (\mbm{E}_{perm} \mbm{L})^T
     @f$
 
-    where
-
+    But matrix 
     @f$
-    \newcommand{\mbm}[1]{\mbox{\boldmath $#1$}}\\
-      \mbm{a}_1^T = \left[\begin{array}{cccccc} 1 & 0 & 0 & 0 & 0 & 0 \end{array}\right]  \\
-      \mbm{a}_2^T = \left[\begin{array}{cccccc} 0 & 0 & 0 & 1 & 0 & 0 \end{array}\right]. 
+    \newcommand{\mbm}[1]{\mbox{\boldmath $#1$}} 
+    \mbm{E}_{perm} \mbm{L}
     @f$
+    is not lower triangular. We can transform it using Givens rotation 
+    matrices (which, obviously, cancel out):
+@verbatim
+    .                 .                     .                 .
+    ..                ..                    ..                ..
+    ...  -> remove -> .... <  -> Givens  -> ...  -> Givens -> ...
+    ....     line     .....<     rotation   .....   rotation  ....
+    .....               ^^^
+                      these elements 
+     L                must be adjusted
+@endverbatim
+    The rotations are performed in the following way:
+    -# from two columns, which must be updated, topmost 2x2 matrix is taken;
+    -# the rotation matrix is formed in such a way, that this 2x2 matrix
+    becomes diagonal;
+    -# the selected two columns are multiplied by the rotation matrix.
 
-    Note that both 
-    @f$\newcommand{\mbm}[1]{\mbox{\boldmath $#1$}} \mbm{a}_1^T\mbm{x} \leq ub_1@f$ 
-    and 
-    @f$\newcommand{\mbm}[1]{\mbox{\boldmath $#1$}} \mbm{a}_1^T\mbm{x} \geq lb_1@f$ 
-    can not be in the working set at the same time (because if we are on one of the bounds we 
-    can not be on the other one).
-
-    @attention Note, that if we do not distinguish lower and upper bounds, Lagrange 
-    multipliers can be negative.
+    The Cholesky decomposition is unique: given a positive-definite matrix A,
+    there is only one lower triangular matrix L with strictly positive
+    diagonal entries such that A = L*L'. The algorithm presented above can 
+    produce L with negative diagonal entries. If a negative diagonal element
+    is found, the sign of the whole column must be altered after rotation.
 \n\n
-*/
+
+
+@section pRemoveICz Downdate of z
+    All elements of @f$\newcommand{\mbm}[1]{\mbox{\boldmath $#1$}} \mbm{z}@f$
+    starting from the position corresponding to the last non-zero (diagonal)
+    element of removed row must be updated.
+
+    Consider the following situation (based on formulas derived in section 
+    '@ref pAddICz'):
+
+    @f$
+    \newcommand{\mbm}[1]{\mbox{\boldmath $#1$}}\\
+      \left[
+        \begin{array}{cccc} 
+            \mbm{L} & \mbm{0} & \mbm{0} & \mbm{0} \\
+            & \mbox{removed line} &&\\
+            & \mbox{ignored lines} &&\\
+            \mbm{l}^T & \ell_{rem} & \mbm{l}^T_u& \ell_n
+        \end{array}
+      \right]
+      \left[\begin{array}{c} \mbm{z} \\ z_{rem} \\ \mbm{z}_u \\ z_n \end{array}\right] = 
+      \mbm{s}
+    @f$
+
+    Some lines are not important right now and they are marked as 'ignored'.
+    Elements of
+    @f$
+    \newcommand{\mbm}[1]{\mbox{\boldmath $#1$}}\\
+    \mbm{s}
+    @f$
+    are computed on demand and there is no need to alter it.
+    @f$
+    \newcommand{\mbm}[1]{\mbox{\boldmath $#1$}}\\
+    \mbm{l}^T_u, \mbm{z}_u
+    @f$
+    must be updated.
+    Vector
+    @f$
+    \newcommand{\mbm}[1]{\mbox{\boldmath $#1$}}\\
+    \mbm{l}^T
+    @f$
+    is not affected by update (see section '@ref pCholDown'). Hence the following
+    number stays constant:
+
+    @f$
+    \newcommand{\mbm}[1]{\mbox{\boldmath $#1$}}\\
+    z_n \ell_n + \ell_{rem} z_{rem} + \mbm{l}^T_u \mbm{z}_u = s_n - \mbm{l}^T\mbm{z} = z_{n,const}
+    @f$
+
+    
+    After Cholesky factor was updated we get:
+
+    @f$
+    \newcommand{\mbm}[1]{\mbox{\boldmath $#1$}}\\
+      \left[
+        \begin{array}{ccc} 
+            \mbm{L} & \mbm{0} & \mbm{0} \\
+            & \mbox{ignored lines} &\\
+            \mbm{l}^T & \mbm{l}^T_{u,new}& \ell_{n,new}
+        \end{array}
+      \right]
+      \left[\begin{array}{c} \mbm{z} \\ \mbm{z}_{u,new} \\ z_{n,new} \end{array}\right] = 
+      \mbm{s}
+    @f$
+    
+    The new element of vector z can be computed:
+
+    @f[
+    \newcommand{\mbm}[1]{\mbox{\boldmath $#1$}}\\
+    z_{n,new} = \frac{z_{n,const} - \mbm{l}^T_{u,new} \mbm{z}_{u,new} }{\ell_{new}}
+    @f]
+
+    Note, that computation of new elements @f$z_{n,new}@f$ must be started from the
+    element corresponding to the first changed line of L and continued towards the
+    end of z.
+ */
+
 
 /**
  * @page pDetails Minor implemetation details
 @section pDetNotes Notes
     It is implicitly supposed that we have 6 state variables and 2 control variables.
 
-@section pDetMatrices Matrices
+@section pDetMatrices Representation of matrices
     Note, that parts of state and control matrices (@ref pPDModel) corresponding to x 
     and y coordinates are identical. This property is preserved in all subsequent
     transformations, hence there is no need to compute and store all elements of 
@@ -1035,6 +1177,53 @@ Output:
       altered each time the active set is changed. This part is stored as a
       set of 2*N vectors. The length of each vector could not be longer than
       N*#NUM_VAR.
+\n\n
+
+@section pBounds Implementing bounds
+
+    Consider the variable
+
+    @f$
+    \newcommand{\mbm}[1]{\mbox{\boldmath $#1$}}\\
+    \mbm{x} = \left[\begin{array}{c} x_1 \\ x_2 \\ x_3 \\ x_4 \\ x_5 \\ x_6 \end{array}\right].
+    @f$
+     
+    Suppose that variables @f$x_1@f$ and @f$x_4@f$ have simple bounds (and the rest of the variables are are
+    not subject to inequality constraints), i.e., 
+
+    @f$
+    \newcommand{\mbm}[1]{\mbox{\boldmath $#1$}}\\
+      lb_1 \leq x_1 \leq ub_1  \\
+      lb_2 \leq x_2 \leq ub_2  
+    @f$
+
+    The above four inequality constraints can be written as
+
+    @f$
+    \newcommand{\mbm}[1]{\mbox{\boldmath $#1$}}\\
+    \mbm{a}_1^T\mbm{x} \leq ub_1  \\
+    \mbm{a}_1^T\mbm{x} \geq lb_1  \\
+    \mbm{a}_2^T\mbm{x} \leq ub_2  \\
+    \mbm{a}_2^T\mbm{x} \geq lb_1, 
+    @f$
+
+    where
+
+    @f$
+    \newcommand{\mbm}[1]{\mbox{\boldmath $#1$}}\\
+      \mbm{a}_1^T = \left[\begin{array}{cccccc} 1 & 0 & 0 & 0 & 0 & 0 \end{array}\right]  \\
+      \mbm{a}_2^T = \left[\begin{array}{cccccc} 0 & 0 & 0 & 1 & 0 & 0 \end{array}\right]. 
+    @f$
+
+    Note that both 
+    @f$\newcommand{\mbm}[1]{\mbox{\boldmath $#1$}} \mbm{a}_1^T\mbm{x} \leq ub_1@f$ 
+    and 
+    @f$\newcommand{\mbm}[1]{\mbox{\boldmath $#1$}} \mbm{a}_1^T\mbm{x} \geq lb_1@f$ 
+    can not be in the working set at the same time (because if we are on one of the bounds we 
+    can not be on the other one).
+
+    @attention Note, that if we do not distinguish lower and upper bounds, Lagrange 
+    multipliers can be negative.
  */
 
 #endif /*DOXYGEN_H*/

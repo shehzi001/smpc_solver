@@ -25,7 +25,7 @@ using namespace std;
 /// @{
 
 /**
- * @brief Solves @ref pPD_KKT "KKT system" using 
+ * @brief Solves @ref pKKT "KKT system" using 
  * @ref pCholesky "Cholesky decomposition".
  */
 class chol_solve
