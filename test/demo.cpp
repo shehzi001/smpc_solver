@@ -57,7 +57,6 @@ int main(int argc, char **argv)
         wmg.FormPreviewWindow();    // initialize input for QP
         if (wmg.halt)               // not enough time steps left (<15)
         {
-            cout << "EXIT (halt = 1)" << endl;
             break;
         }
         //------------------------------------------------------
