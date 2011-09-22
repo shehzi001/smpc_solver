@@ -36,71 +36,13 @@
 <h1>Cholesky decomposition of projected Hessian </h1>  </div>
 </div>
 <div class="contents">
-<div class="textblock"><p>Once projected Hessian is formed we can use Cholesky decomposition <img class="formulaInl" alt="$\newcommand{\mbm}[1]{\mbox{\boldmath $#1$}} \mbm{S} = \mbm{L}\mbm{L}^T$" src="form_46.png"/>. to obtain Langrange multipliers.</p>
-<p><img class="formulaInl" alt="$ \newcommand{\mbm}[1]{\mbox{\boldmath $#1$}}\\ \mbm{L} = \left[ \begin{array}{cccccc} \mbm{L}_{11} &amp; \mbm{0} &amp; \mbm{0} &amp; \dots &amp; \mbm{0} &amp; \mbm{0} \\ \mbm{L}_{21} &amp; \mbm{L}_{22} &amp; \mbm{0} &amp; \dots &amp; \mbm{0} &amp; \mbm{0} \\ \mbm{0} &amp; \mbm{L}_{32} &amp; \mbm{L}_{33} &amp; \dots &amp; \mbm{0} &amp; \mbm{0} \\ \vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots &amp; \vdots \\ \mbm{0} &amp; \mbm{0} &amp; \mbm{0} &amp; \dots &amp; \mbm{L}_{N-1,N-1} &amp; \mbm{0} \\ \mbm{0} &amp; \mbm{0} &amp; \mbm{0} &amp; \dots &amp; \mbm{L}_{N,N-1} &amp; \mbm{L}_{NN} \end{array} \right], $" src="form_47.png"/></p>
+<div class="textblock"><p>Once projected Hessian is formed we can use Cholesky decomposition <img class="formulaInl" alt="$\newcommand{\mbm}[1]{\mbox{\boldmath $#1$}} \mbm{S} = \mbm{L}\mbm{L}^T$" src="form_50.png"/>. to obtain Langrange multipliers.</p>
+<p><img class="formulaInl" alt="$ \newcommand{\mbm}[1]{\mbox{\boldmath $#1$}}\\ \mbm{L} = \left[ \begin{array}{cccccc} \mbm{L}_{11} &amp; \mbm{0} &amp; \mbm{0} &amp; \dots &amp; \mbm{0} &amp; \mbm{0} \\ \mbm{L}_{21} &amp; \mbm{L}_{22} &amp; \mbm{0} &amp; \dots &amp; \mbm{0} &amp; \mbm{0} \\ \mbm{0} &amp; \mbm{L}_{32} &amp; \mbm{L}_{33} &amp; \dots &amp; \mbm{0} &amp; \mbm{0} \\ \vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots &amp; \vdots \\ \mbm{0} &amp; \mbm{0} &amp; \mbm{0} &amp; \dots &amp; \mbm{L}_{N-1,N-1} &amp; \mbm{0} \\ \mbm{0} &amp; \mbm{0} &amp; \mbm{0} &amp; \dots &amp; \mbm{L}_{N,N-1} &amp; \mbm{L}_{NN} \end{array} \right], $" src="form_51.png"/></p>
 <p>Directly from observation we have</p>
-<p><img class="formulaInl" alt="$ \newcommand{\mbm}[1]{\mbox{\boldmath $#1$}}\\ \mbm{S}_{11} = \mbm{L}_{11}\mbm{L}_{11}^T, \\ \mbm{S}_{12} = \mbm{S}_{21}^T = \mbm{L}_{11}\mbm{L}_{21}^T, \quad \mbm{L}_{21}^T = \mbm{L}_{11}^{-1}\mbm{S}_{12}, \\ \mbm{S}_{22} = \mbm{L}_{21}\mbm{L}_{21}^T + \mbm{L}_{22}\mbm{L}_{22}^T, \quad \dots $" src="form_48.png"/></p>
-<p>In the second step <img class="formulaInl" alt="$\newcommand{\mbm}[1]{\mbox{\boldmath $#1$}} \mbm{L}_{21}^T$" src="form_49.png"/> is computed by forward substitution, and in the third step, forming <img class="formulaInl" alt="$\newcommand{\mbm}[1]{\mbox{\boldmath $#1$}} \mbm{L}_{22}$" src="form_50.png"/> requires the computation of the Cholesky factors of <img class="formulaInl" alt="$\newcommand{\mbm}[1]{\mbox{\boldmath $#1$}} \mbm{S}_{22} - \mbm{L}_{21}\mbm{L}_{21}^T$" src="form_51.png"/>. <br/>
+<p><img class="formulaInl" alt="$ \newcommand{\mbm}[1]{\mbox{\boldmath $#1$}}\\ \mbm{S}_{11} = \mbm{L}_{11}\mbm{L}_{11}^T, \\ \mbm{S}_{12} = \mbm{S}_{21}^T = \mbm{L}_{11}\mbm{L}_{21}^T, \quad \mbm{L}_{21}^T = \mbm{L}_{11}^{-1}\mbm{S}_{12}, \\ \mbm{S}_{22} = \mbm{L}_{21}\mbm{L}_{21}^T + \mbm{L}_{22}\mbm{L}_{22}^T, \quad \dots $" src="form_52.png"/></p>
+<p>In the second step <img class="formulaInl" alt="$\newcommand{\mbm}[1]{\mbox{\boldmath $#1$}} \mbm{L}_{21}^T$" src="form_53.png"/> is computed by forward substitution, and in the third step, forming <img class="formulaInl" alt="$\newcommand{\mbm}[1]{\mbox{\boldmath $#1$}} \mbm{L}_{22}$" src="form_54.png"/> requires the computation of the Cholesky factors of <img class="formulaInl" alt="$\newcommand{\mbm}[1]{\mbox{\boldmath $#1$}} \mbm{S}_{22} - \mbm{L}_{21}\mbm{L}_{21}^T$" src="form_55.png"/>. <br/>
 <br/>
-</p>
-<h2><a class="anchor" id="pCholUp"></a>
-Update of Cholesky factor</h2>
-<p>Let <img class="formulaInl" alt="$\newcommand{\mbm}[1]{\mbox{\boldmath $#1$}} \mbm{a}_i^T$" src="form_52.png"/> be the normal to the i-th inequality constraint (assumed to be a simple bound). Define the matrix</p>
-<p><img class="formulaInl" alt="$ \newcommand{\mbm}[1]{\mbox{\boldmath $#1$}} \mbm{C} = \left[\begin{array}{c} \mbm{E} \\ \mbm{A}_{W}\end{array}\right] $" src="form_53.png"/></p>
-<p>where the rows of <img class="formulaInl" alt="$\newcommand{\mbm}[1]{\mbox{\boldmath $#1$}} \mbm{A}_W$" src="form_54.png"/> contain the normals to the inequality constraints in the working set.</p>
-<p>If a new constraint must be added to the active set, then the projected Hessian matrix must be updated:</p>
-<p><img class="formulaInl" alt="$ \newcommand{\mbm}[1]{\mbox{\boldmath $#1$}}\\ \frac{1}{2} \left[ \begin{array}{c} \mbm{C}\\ \mbm{a}^T\\ \end{array} \right] \mbm{H}^{-1} \left[\mbm{C}^T \quad \mbm{a}\right] = \frac{1}{2} \left[ \begin{array}{cc} \mbm{C} \mbm{H}^{-1} \mbm{C}^T &amp; \mbm{C} \mbm{H}^{-1} \mbm{a}\\ \mbm{a}^T \mbm{H}^{-1} \mbm{C}^T &amp; \mbm{a}^T \mbm{H}^{-1} \mbm{a}\\ \end{array} \right] $" src="form_55.png"/></p>
-<p>In general the last line is</p>
-<p><img class="formulaInl" alt="$ \newcommand{\mbm}[1]{\mbox{\boldmath $#1$}}\\ \mbm{s_a}^T = \frac{1}{2} \left[ \mbm{a}^T \mbm{H}^{-1} \mbm{C}^T \quad \mbm{a}^T \mbm{H}^{-1} \mbm{A}_W^T \quad \mbm{a}^T \mbm{H}^{-1} \mbm{a} \right] $" src="form_56.png"/></p>
-<p>Note that <img class="formulaInl" alt="$ \newcommand{\mbm}[1]{\mbox{\boldmath $#1$}} \frac{1}{2} \mbm{a}^T \mbm{H}^{-1} \mbm{A}_W^T $" src="form_57.png"/> is a vector of zeros. While <img class="formulaInl" alt="$ \newcommand{\mbm}[1]{\mbox{\boldmath $#1$}} \frac{1}{2} \mbm{a}^T \mbm{H}^{-1} \mbm{a} = \frac{1}{2\beta} $" src="form_58.png"/> is a number.</p>
-<p><img class="formulaInl" alt="$ \newcommand{\mbm}[1]{\mbox{\boldmath $#1$}} \frac{1}{2} \mbm{a}^T \mbm{H}^{-1} \mbm{C}^T $" src="form_59.png"/> selects and scales one column of E, this column corresponds to ZMP coordinates and can have at most 4 non-zero elements.</p>
-<p>The total number of non-zero elements in the new row of projected Hessian is 5 or 3 (for the last state in the preview window). <br/>
-<br/>
-</p>
-<h3><a class="anchor" id="pCholUpAlg"></a>
-Algorithm of Cholesky factor update</h3>
-<div class="fragment"><pre class="fragment">
-Input:
-    m_e % the number of equality constraints
-    m_a % the current cardinality of the active set
-    L   % Cholesky factor
-    s_a % a row added to the projected Hessian
-
-Output:
-    l   % a new (the last) row of L
-
-    l = s_a
-    first   % the index of the first !=0 element of s_a
-    end = m_e + m_a + 1 % the index of the last element of s_a
-
-    for i = l_s:m_e
-        l(i) = l(i) / L(i,i)
-        l(end) = l(end) - l(i)^2
-
-        % Since ecL is sparse, no more than three subsequent elements with
-        % (known) indexes 'k' &lt;= 'end' in 'l' must be updated: 
-        l(k) = l(k) - l(i) * L(k,i)
-
-        for j = m_e+1:end-1
-            l(j) = l(j) - l(i) * L_(j,i)
-        end
-    end
-
-    for i = m_e+1:end-1
-        l(i) = l(i) / L(i,i)
-        l(end) = l(end) - l(i)^2
-
-        for j = i+1:end-1
-            l(j) = l(j) - l(i) * L(j,i)
-        end
-    end
-    l(end) = sqrt(l(end))
-</pre></div><p> <br/>
-<br/>
-</p>
-<h2><a class="anchor" id="pCholDown"></a>
-Downdate of Cholesky factor</h2>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>add description of Cholesky downdate. </dd></dl>
+ </p>
 </div></div>
 <hr class="footer"/><address class="footer"><small>Generated by&#160;
 <a href="http://www.doxygen.org/index.html">

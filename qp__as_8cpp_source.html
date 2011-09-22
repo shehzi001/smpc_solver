@@ -378,78 +378,78 @@
 <a name="l00393"></a>00393 
 <a name="l00394"></a>00394 <span class="preprocessor">#ifdef QPAS_DOWNDATE</span>
 <a name="l00395"></a>00395 <span class="preprocessor"></span>
-<a name="l00404"></a><a class="code" href="classqp__as.html#ac055eada6668659bbbdaa5c1ae9db8ad">00404</a> <span class="keywordtype">int</span> <a class="code" href="classqp__as.html#ac055eada6668659bbbdaa5c1ae9db8ad" title="Selects a constraint for removal from active set.">qp_as::choose_excl_constr</a> (<span class="keywordtype">double</span> *lambda)
-<a name="l00405"></a>00405 {
-<a name="l00406"></a>00406     <span class="keywordtype">double</span> min_lambda = -<a class="code" href="classqp__as.html#af45d1d497ff63c59467f7c8c650b0158" title="tolerance">tol</a>;
-<a name="l00407"></a>00407     <span class="keywordtype">int</span> ind_exclude = -1;
-<a name="l00408"></a>00408 
-<a name="l00409"></a>00409     <span class="comment">// find the constraint with the smallest lambda</span>
-<a name="l00410"></a>00410     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="classqp__as.html#a0b6f465d0de92c4aa47fcd4676795238">nW</a>; i++)
-<a name="l00411"></a>00411     {
-<a name="l00412"></a>00412         <span class="keywordflow">if</span> (lambda[i] * <a class="code" href="classqp__as.html#ad7ff73b80e9955bf99e1ef0765d4a850">W_sign</a>[i] &lt; min_lambda)
-<a name="l00413"></a>00413         {
-<a name="l00414"></a>00414             min_lambda = lambda[i] * <a class="code" href="classqp__as.html#ad7ff73b80e9955bf99e1ef0765d4a850">W_sign</a>[i];
-<a name="l00415"></a>00415             ind_exclude = i;
-<a name="l00416"></a>00416         }
-<a name="l00417"></a>00417     }
-<a name="l00418"></a>00418 
-<a name="l00419"></a>00419     <span class="keywordflow">if</span> (ind_exclude != -1)
-<a name="l00420"></a>00420     {
-<a name="l00421"></a>00421         <a class="code" href="classqp__as.html#a666c41482c7512440dd1a15bd2674c94" title="Vector of bounds.">Bounds</a>[<a class="code" href="classqp__as.html#adb95e9cb39b791fad69e41b27497b951">W</a>[ind_exclude]].isActive = 0;
-<a name="l00422"></a>00422         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = ind_exclude; i &lt; nW-1; i++)
-<a name="l00423"></a>00423         {
-<a name="l00424"></a>00424             <a class="code" href="classqp__as.html#adb95e9cb39b791fad69e41b27497b951">W</a>[i] = <a class="code" href="classqp__as.html#adb95e9cb39b791fad69e41b27497b951">W</a>[i + 1];
-<a name="l00425"></a>00425             <a class="code" href="classqp__as.html#ad7ff73b80e9955bf99e1ef0765d4a850">W_sign</a>[i] = <a class="code" href="classqp__as.html#ad7ff73b80e9955bf99e1ef0765d4a850">W_sign</a>[i + 1];
-<a name="l00426"></a>00426         }
-<a name="l00427"></a>00427         nW--;
-<a name="l00428"></a>00428     }
-<a name="l00429"></a>00429 
-<a name="l00430"></a>00430     <span class="keywordflow">return</span> (ind_exclude);
-<a name="l00431"></a>00431 }
-<a name="l00432"></a>00432 <span class="preprocessor">#endif </span><span class="comment">/* QPAS_DOWNDATE */</span>
+<a name="l00408"></a><a class="code" href="classqp__as.html#ac055eada6668659bbbdaa5c1ae9db8ad">00408</a> <span class="keywordtype">int</span> <a class="code" href="classqp__as.html#ac055eada6668659bbbdaa5c1ae9db8ad" title="Selects a constraint for removal from active set.">qp_as::choose_excl_constr</a> (<span class="keywordtype">double</span> *lambda)
+<a name="l00409"></a>00409 {
+<a name="l00410"></a>00410     <span class="keywordtype">double</span> min_lambda = -<a class="code" href="classqp__as.html#af45d1d497ff63c59467f7c8c650b0158" title="tolerance">tol</a>;
+<a name="l00411"></a>00411     <span class="keywordtype">int</span> ind_exclude = -1;
+<a name="l00412"></a>00412 
+<a name="l00413"></a>00413     <span class="comment">// find the constraint with the smallest lambda</span>
+<a name="l00414"></a>00414     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="classqp__as.html#a0b6f465d0de92c4aa47fcd4676795238">nW</a>; i++)
+<a name="l00415"></a>00415     {
+<a name="l00416"></a>00416         <span class="keywordflow">if</span> (lambda[i] * <a class="code" href="classqp__as.html#ad7ff73b80e9955bf99e1ef0765d4a850">W_sign</a>[i] &lt; min_lambda)
+<a name="l00417"></a>00417         {
+<a name="l00418"></a>00418             min_lambda = lambda[i] * <a class="code" href="classqp__as.html#ad7ff73b80e9955bf99e1ef0765d4a850">W_sign</a>[i];
+<a name="l00419"></a>00419             ind_exclude = i;
+<a name="l00420"></a>00420         }
+<a name="l00421"></a>00421     }
+<a name="l00422"></a>00422 
+<a name="l00423"></a>00423     <span class="keywordflow">if</span> (ind_exclude != -1)
+<a name="l00424"></a>00424     {
+<a name="l00425"></a>00425         <a class="code" href="classqp__as.html#a666c41482c7512440dd1a15bd2674c94" title="Vector of bounds.">Bounds</a>[<a class="code" href="classqp__as.html#adb95e9cb39b791fad69e41b27497b951">W</a>[ind_exclude]].isActive = 0;
+<a name="l00426"></a>00426         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = ind_exclude; i &lt; nW-1; i++)
+<a name="l00427"></a>00427         {
+<a name="l00428"></a>00428             <a class="code" href="classqp__as.html#adb95e9cb39b791fad69e41b27497b951">W</a>[i] = <a class="code" href="classqp__as.html#adb95e9cb39b791fad69e41b27497b951">W</a>[i + 1];
+<a name="l00429"></a>00429             <a class="code" href="classqp__as.html#ad7ff73b80e9955bf99e1ef0765d4a850">W_sign</a>[i] = <a class="code" href="classqp__as.html#ad7ff73b80e9955bf99e1ef0765d4a850">W_sign</a>[i + 1];
+<a name="l00430"></a>00430         }
+<a name="l00431"></a>00431         nW--;
+<a name="l00432"></a>00432     }
 <a name="l00433"></a>00433 
-<a name="l00434"></a>00434 
-<a name="l00440"></a><a class="code" href="classqp__as.html#af0386f027f77a8ee54f13df9ee2c9f84">00440</a> <span class="keywordtype">int</span> <a class="code" href="classqp__as.html#af0386f027f77a8ee54f13df9ee2c9f84" title="Solve QP problem.">qp_as::solve</a> ()
-<a name="l00441"></a>00441 {
-<a name="l00442"></a>00442     <span class="comment">// obtain dX</span>
-<a name="l00443"></a>00443     <a class="code" href="classqp__as.html#a25918a9df0e80d5289c36779f243cc12" title="An instance of chol_solve class.">chol</a>.<a class="code" href="classchol__solve.html#a830167457f22637bab88b13c2486d312" title="Determines feasible descent direction.">solve</a>(<a class="code" href="classqp__as.html#a24321a3e24c1cd4ed4b5b5a217c58e11" title="Parameters, which are fed to the methods of chol_solve class.">chol_param</a>, <a class="code" href="classqp__as.html#afc3e9ed1c081763d05f5f8d1decca8f3">X</a>, <a class="code" href="classqp__as.html#a40696d975ffb89c9f1e43f71f3207ac8">dX</a>);
-<a name="l00444"></a>00444 
-<a name="l00445"></a>00445     <span class="keywordflow">for</span> (;;)
-<a name="l00446"></a>00446     {
-<a name="l00447"></a>00447         <span class="keywordtype">int</span> activated_var_num = <a class="code" href="classqp__as.html#a0236fdaa4eda75806b6ef4a68b8f7e1a" title="Checks for blocking bounds.">check_blocking_bounds</a>();
+<a name="l00434"></a>00434     <span class="keywordflow">return</span> (ind_exclude);
+<a name="l00435"></a>00435 }
+<a name="l00436"></a>00436 <span class="preprocessor">#endif </span><span class="comment">/* QPAS_DOWNDATE */</span>
+<a name="l00437"></a>00437 
+<a name="l00438"></a>00438 
+<a name="l00444"></a><a class="code" href="classqp__as.html#af0386f027f77a8ee54f13df9ee2c9f84">00444</a> <span class="keywordtype">int</span> <a class="code" href="classqp__as.html#af0386f027f77a8ee54f13df9ee2c9f84" title="Solve QP problem.">qp_as::solve</a> ()
+<a name="l00445"></a>00445 {
+<a name="l00446"></a>00446     <span class="comment">// obtain dX</span>
+<a name="l00447"></a>00447     <a class="code" href="classqp__as.html#a25918a9df0e80d5289c36779f243cc12" title="An instance of chol_solve class.">chol</a>.<a class="code" href="classchol__solve.html#a830167457f22637bab88b13c2486d312" title="Determines feasible descent direction.">solve</a>(<a class="code" href="classqp__as.html#a24321a3e24c1cd4ed4b5b5a217c58e11" title="Parameters, which are fed to the methods of chol_solve class.">chol_param</a>, <a class="code" href="classqp__as.html#afc3e9ed1c081763d05f5f8d1decca8f3">X</a>, <a class="code" href="classqp__as.html#a40696d975ffb89c9f1e43f71f3207ac8">dX</a>);
 <a name="l00448"></a>00448 
-<a name="l00449"></a>00449         <span class="comment">// Move in the feasible descent direction</span>
-<a name="l00450"></a>00450         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="classqp__as.html#a99df86781d02a46d077d0e2dc42c1729">N</a>*<a class="code" href="group__gINTERNALS.html#gae8780c341d0ab405a8d820726f7e3b5c" title="Total number of variables.">NUM_VAR</a> ; i++)
-<a name="l00451"></a>00451         {
-<a name="l00452"></a>00452             <a class="code" href="classqp__as.html#afc3e9ed1c081763d05f5f8d1decca8f3">X</a>[i] += <a class="code" href="classqp__as.html#a0484715f0ba7d0c35f6b9c8183d958d4">alpha</a> * <a class="code" href="classqp__as.html#a40696d975ffb89c9f1e43f71f3207ac8">dX</a>[i];
-<a name="l00453"></a>00453         }
-<a name="l00454"></a>00454 
-<a name="l00455"></a>00455         <span class="comment">// no new inequality constraints</span>
-<a name="l00456"></a>00456         <span class="keywordflow">if</span> (activated_var_num == -1)
-<a name="l00457"></a>00457         {
-<a name="l00458"></a>00458 <span class="preprocessor">#ifdef QPAS_DOWNDATE</span>
-<a name="l00459"></a>00459 <span class="preprocessor"></span>            <span class="keywordtype">int</span> ind_exclude = <a class="code" href="classqp__as.html#ac055eada6668659bbbdaa5c1ae9db8ad" title="Selects a constraint for removal from active set.">choose_excl_constr</a> (<a class="code" href="classqp__as.html#a25918a9df0e80d5289c36779f243cc12" title="An instance of chol_solve class.">chol</a>.<a class="code" href="classchol__solve.html#ad473b8cee2c41023c1ebbed8992a76a2">get_lambda</a>());
-<a name="l00460"></a>00460             <span class="keywordflow">if</span> (ind_exclude != -1)
-<a name="l00461"></a>00461             {
-<a name="l00462"></a>00462                 <a class="code" href="classqp__as.html#a25918a9df0e80d5289c36779f243cc12" title="An instance of chol_solve class.">chol</a>.<a class="code" href="classchol__solve.html#a5cc3ec10c6973372aa41338f3d5cb7d6" title="A wrapper around private functions, which downdate Cholesky factor and resolve the system...">down_resolve</a> (<a class="code" href="classqp__as.html#a24321a3e24c1cd4ed4b5b5a217c58e11" title="Parameters, which are fed to the methods of chol_solve class.">chol_param</a>, <a class="code" href="classqp__as.html#a0b6f465d0de92c4aa47fcd4676795238">nW</a>, <a class="code" href="classqp__as.html#adb95e9cb39b791fad69e41b27497b951">W</a>, ind_exclude, <a class="code" href="classqp__as.html#afc3e9ed1c081763d05f5f8d1decca8f3">X</a>, <a class="code" href="classqp__as.html#a40696d975ffb89c9f1e43f71f3207ac8">dX</a>);
-<a name="l00463"></a>00463             }
-<a name="l00464"></a>00464             <span class="keywordflow">else</span>
+<a name="l00449"></a>00449     <span class="keywordflow">for</span> (;;)
+<a name="l00450"></a>00450     {
+<a name="l00451"></a>00451         <span class="keywordtype">int</span> activated_var_num = <a class="code" href="classqp__as.html#a0236fdaa4eda75806b6ef4a68b8f7e1a" title="Checks for blocking bounds.">check_blocking_bounds</a>();
+<a name="l00452"></a>00452 
+<a name="l00453"></a>00453         <span class="comment">// Move in the feasible descent direction</span>
+<a name="l00454"></a>00454         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="classqp__as.html#a99df86781d02a46d077d0e2dc42c1729">N</a>*<a class="code" href="group__gINTERNALS.html#gae8780c341d0ab405a8d820726f7e3b5c" title="Total number of variables.">NUM_VAR</a> ; i++)
+<a name="l00455"></a>00455         {
+<a name="l00456"></a>00456             <a class="code" href="classqp__as.html#afc3e9ed1c081763d05f5f8d1decca8f3">X</a>[i] += <a class="code" href="classqp__as.html#a0484715f0ba7d0c35f6b9c8183d958d4">alpha</a> * <a class="code" href="classqp__as.html#a40696d975ffb89c9f1e43f71f3207ac8">dX</a>[i];
+<a name="l00457"></a>00457         }
+<a name="l00458"></a>00458 
+<a name="l00459"></a>00459         <span class="comment">// no new inequality constraints</span>
+<a name="l00460"></a>00460         <span class="keywordflow">if</span> (activated_var_num == -1)
+<a name="l00461"></a>00461         {
+<a name="l00462"></a>00462 <span class="preprocessor">#ifdef QPAS_DOWNDATE</span>
+<a name="l00463"></a>00463 <span class="preprocessor"></span>            <span class="keywordtype">int</span> ind_exclude = <a class="code" href="classqp__as.html#ac055eada6668659bbbdaa5c1ae9db8ad" title="Selects a constraint for removal from active set.">choose_excl_constr</a> (<a class="code" href="classqp__as.html#a25918a9df0e80d5289c36779f243cc12" title="An instance of chol_solve class.">chol</a>.<a class="code" href="classchol__solve.html#ad473b8cee2c41023c1ebbed8992a76a2">get_lambda</a>());
+<a name="l00464"></a>00464             <span class="keywordflow">if</span> (ind_exclude != -1)
 <a name="l00465"></a>00465             {
-<a name="l00466"></a>00466                 <span class="keywordflow">break</span>;
+<a name="l00466"></a>00466                 <a class="code" href="classqp__as.html#a25918a9df0e80d5289c36779f243cc12" title="An instance of chol_solve class.">chol</a>.<a class="code" href="classchol__solve.html#a5cc3ec10c6973372aa41338f3d5cb7d6" title="A wrapper around private functions, which downdate Cholesky factor and resolve the system...">down_resolve</a> (<a class="code" href="classqp__as.html#a24321a3e24c1cd4ed4b5b5a217c58e11" title="Parameters, which are fed to the methods of chol_solve class.">chol_param</a>, <a class="code" href="classqp__as.html#a0b6f465d0de92c4aa47fcd4676795238">nW</a>, <a class="code" href="classqp__as.html#adb95e9cb39b791fad69e41b27497b951">W</a>, ind_exclude, <a class="code" href="classqp__as.html#afc3e9ed1c081763d05f5f8d1decca8f3">X</a>, <a class="code" href="classqp__as.html#a40696d975ffb89c9f1e43f71f3207ac8">dX</a>);
 <a name="l00467"></a>00467             }
-<a name="l00468"></a>00468 <span class="preprocessor">#else</span>
-<a name="l00469"></a>00469 <span class="preprocessor"></span>            <span class="keywordflow">break</span>;
-<a name="l00470"></a>00470 <span class="preprocessor">#endif </span><span class="comment">/*QPAS_DOWNDATE*/</span>
-<a name="l00471"></a>00471         }
-<a name="l00472"></a>00472         <span class="keywordflow">else</span>
-<a name="l00473"></a>00473         {
-<a name="l00474"></a>00474             <span class="comment">// add row to the L matrix and find new dX</span>
-<a name="l00475"></a>00475             <a class="code" href="classqp__as.html#a25918a9df0e80d5289c36779f243cc12" title="An instance of chol_solve class.">chol</a>.<a class="code" href="classchol__solve.html#a6f86737c7f0e89684d122505437e0566" title="A wrapper around private functions, which update Cholesky factor and resolve the system.">up_resolve</a> (<a class="code" href="classqp__as.html#a24321a3e24c1cd4ed4b5b5a217c58e11" title="Parameters, which are fed to the methods of chol_solve class.">chol_param</a>, <a class="code" href="classqp__as.html#a0b6f465d0de92c4aa47fcd4676795238">nW</a>, <a class="code" href="classqp__as.html#adb95e9cb39b791fad69e41b27497b951">W</a>, <a class="code" href="classqp__as.html#afc3e9ed1c081763d05f5f8d1decca8f3">X</a>, <a class="code" href="classqp__as.html#a40696d975ffb89c9f1e43f71f3207ac8">dX</a>);
-<a name="l00476"></a>00476         }
-<a name="l00477"></a>00477     }
-<a name="l00478"></a>00478 
-<a name="l00479"></a>00479     <span class="keywordflow">return</span> (<a class="code" href="classqp__as.html#a0b6f465d0de92c4aa47fcd4676795238">nW</a>);
-<a name="l00480"></a>00480 }
+<a name="l00468"></a>00468             <span class="keywordflow">else</span>
+<a name="l00469"></a>00469             {
+<a name="l00470"></a>00470                 <span class="keywordflow">break</span>;
+<a name="l00471"></a>00471             }
+<a name="l00472"></a>00472 <span class="preprocessor">#else</span>
+<a name="l00473"></a>00473 <span class="preprocessor"></span>            <span class="keywordflow">break</span>;
+<a name="l00474"></a>00474 <span class="preprocessor">#endif </span><span class="comment">/*QPAS_DOWNDATE*/</span>
+<a name="l00475"></a>00475         }
+<a name="l00476"></a>00476         <span class="keywordflow">else</span>
+<a name="l00477"></a>00477         {
+<a name="l00478"></a>00478             <span class="comment">// add row to the L matrix and find new dX</span>
+<a name="l00479"></a>00479             <a class="code" href="classqp__as.html#a25918a9df0e80d5289c36779f243cc12" title="An instance of chol_solve class.">chol</a>.<a class="code" href="classchol__solve.html#a6f86737c7f0e89684d122505437e0566" title="A wrapper around private functions, which update Cholesky factor and resolve the system.">up_resolve</a> (<a class="code" href="classqp__as.html#a24321a3e24c1cd4ed4b5b5a217c58e11" title="Parameters, which are fed to the methods of chol_solve class.">chol_param</a>, <a class="code" href="classqp__as.html#a0b6f465d0de92c4aa47fcd4676795238">nW</a>, <a class="code" href="classqp__as.html#adb95e9cb39b791fad69e41b27497b951">W</a>, <a class="code" href="classqp__as.html#afc3e9ed1c081763d05f5f8d1decca8f3">X</a>, <a class="code" href="classqp__as.html#a40696d975ffb89c9f1e43f71f3207ac8">dX</a>);
+<a name="l00480"></a>00480         }
+<a name="l00481"></a>00481     }
+<a name="l00482"></a>00482 
+<a name="l00483"></a>00483     <span class="keywordflow">return</span> (<a class="code" href="classqp__as.html#a0b6f465d0de92c4aa47fcd4676795238">nW</a>);
+<a name="l00484"></a>00484 }
 </pre></div></div>
 </div>
 <hr class="footer"/><address class="footer"><small>Generated by&#160;

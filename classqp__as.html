@@ -238,9 +238,10 @@ Private Attributes</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>index of constraint in the active set, -1 if no constraint can be removed. </dd></dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>index of constraint in the active set, -1 if no constraint can be removed.</dd></dl>
+<dl class="attention"><dt><b>Attention:</b></dt><dd>If a constraint for removal is selected, then it is removed from the active set (<a class="el" href="classqp__as.html#adb95e9cb39b791fad69e41b27497b951">W</a>) and the number of constraints in active set (<a class="el" href="classqp__as.html#a0b6f465d0de92c4aa47fcd4676795238">nW</a>) is decremented. </dd></dl>
 
-<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00404">404</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00408">408</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
 
 </div>
 </div>
@@ -509,10 +510,10 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 
 <p>Solve QP problem. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>Do we need to return active set (W)? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>Do we need to return active set (W)? </dd></dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>number of activated constraints </dd></dl>
 
-<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00440">440</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00444">444</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
 
 </div>
 </div>
@@ -706,7 +707,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<p>Working set (contains the indexes of only inequality constraints). It is assumed that the only inequality constraints are simple bounds. See also '<a class="el" href="pBounds.html">Implementing bounds</a>'. </p>
+<p>Working set (contains the indexes of only inequality constraints). It is assumed that the only inequality constraints are simple bounds. See also '<a class="el" href="pDetails.html#pBounds">Implementing bounds</a>'. </p>
 
 <p>Definition at line <a class="el" href="qp__as_8h_source.html#l00140">140</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
 
@@ -722,7 +723,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<p>Since we do not distinguish lower/upper bounds of active constraints (&lt;= and =&gt; inequlities are treated in the same way), we have to adjust signs of lagrange multipliers before downdate. See also '<a class="el" href="pBounds.html">Implementing bounds</a>'. </p>
+<p>Since we do not distinguish lower/upper bounds of active constraints (&lt;= and =&gt; inequlities are treated in the same way), we have to adjust signs of lagrange multipliers before downdate. See also '<a class="el" href="pDetails.html#pBounds">Implementing bounds</a>'. </p>
 
 <p>Definition at line <a class="el" href="qp__as_8h_source.html#l00148">148</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
 

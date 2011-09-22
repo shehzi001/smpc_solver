@@ -657,103 +657,121 @@
 <a name="l00702"></a>00702 
 <a name="l00703"></a>00703 <span class="preprocessor">#ifdef QPAS_DOWNDATE</span>
 <a name="l00704"></a>00704 <span class="preprocessor"></span>
-<a name="l00715"></a><a class="code" href="classchol__solve.html#a5cc3ec10c6973372aa41338f3d5cb7d6">00715</a> <span class="keywordtype">void</span> <a class="code" href="classchol__solve.html#a5cc3ec10c6973372aa41338f3d5cb7d6" title="A wrapper around private functions, which downdate Cholesky factor and resolve the system...">chol_solve::down_resolve</a>(<a class="code" href="structchol__solve__param.html" title="A set of parameters used by chol_solve class.">chol_solve_param</a> csp, <span class="keywordtype">int</span> nW, <span class="keywordtype">int</span> *W, <span class="keywordtype">int</span> ind_exclude, <span class="keywordtype">double</span> *x, <span class="keywordtype">double</span> *dx)
-<a name="l00716"></a>00716 {
-<a name="l00717"></a>00717     <a class="code" href="classchol__solve.html#a7e291618ab94d40751cca5eea117dea6" title="Delete a line from icL, see page &amp;#39;Downdate of Cholesky factor&amp;#39;.">downdate</a> (csp, nW, ind_exclude, x);
-<a name="l00718"></a>00718     <a class="code" href="classchol__solve.html#a545436d4ee452c51820780047e14931b" title="Adjust vector &amp;#39;z&amp;#39; after downdate.">downdate_z</a> (csp, nW, W, ind_exclude, x);
-<a name="l00719"></a>00719     <a class="code" href="classchol__solve.html#a2a5e518191e7507191b71504cba519f0" title="Determines feasible descent direction with respect to added inequality constraints.">resolve</a> (csp, nW, W, x, dx);
-<a name="l00720"></a>00720 }
-<a name="l00721"></a>00721 
-<a name="l00722"></a>00722 
-<a name="l00723"></a>00723 
-<a name="l00727"></a><a class="code" href="classchol__solve.html#ad473b8cee2c41023c1ebbed8992a76a2">00727</a> <span class="keywordtype">double</span> * <a class="code" href="classchol__solve.html#ad473b8cee2c41023c1ebbed8992a76a2">chol_solve::get_lambda</a>()
-<a name="l00728"></a>00728 {
-<a name="l00729"></a>00729     <span class="keywordflow">return</span>(&amp;<a class="code" href="classchol__solve.html#aaf07a4e6bdaa472c7347f3d0822c9584" title="Vector of Lagrange multipliers.">nu</a>[<a class="code" href="group__gINTERNALS.html#ga37814f52692ffc71ef43e6b06e891440" title="Number of state variables.">NUM_STATE_VAR</a>*<a class="code" href="classchol__solve.html#a5f3f833766e7126c799cb52ddbb47c1a" title="number of states in the preview window">N</a>]);
-<a name="l00730"></a>00730 }
-<a name="l00731"></a>00731 
-<a name="l00732"></a>00732 
-<a name="l00742"></a><a class="code" href="classchol__solve.html#a545436d4ee452c51820780047e14931b">00742</a> <span class="keywordtype">void</span> <a class="code" href="classchol__solve.html#a545436d4ee452c51820780047e14931b" title="Adjust vector &amp;#39;z&amp;#39; after downdate.">chol_solve::downdate_z</a> (<a class="code" href="structchol__solve__param.html" title="A set of parameters used by chol_solve class.">chol_solve_param</a> csp, <span class="keywordtype">int</span> nW, <span class="keywordtype">int</span> *W, <span class="keywordtype">int</span> ind_exclude, <span class="keywordtype">double</span> *x)
-<a name="l00743"></a>00743 {
-<a name="l00744"></a>00744     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = ind_exclude; i &lt; nW; i++)
-<a name="l00745"></a>00745     {
-<a name="l00746"></a>00746         <span class="keywordtype">int</span> zind = <a class="code" href="classchol__solve.html#a5f3f833766e7126c799cb52ddbb47c1a" title="number of states in the preview window">N</a>*<a class="code" href="group__gINTERNALS.html#ga37814f52692ffc71ef43e6b06e891440" title="Number of state variables.">NUM_STATE_VAR</a> + i;
-<a name="l00747"></a>00747 
-<a name="l00748"></a>00748         <span class="comment">// sn</span>
-<a name="l00749"></a>00749         <span class="keywordtype">double</span> zn = -(csp.<a class="code" href="structchol__solve__param.html#a79cf71be21fe8cb44babcc19284721a3">iHg</a>[W[i]*3] + x[W[i]*3]);
-<a name="l00750"></a>00750 
-<a name="l00751"></a>00751         <span class="comment">// zn</span>
-<a name="l00752"></a>00752         <span class="comment">// start from the first !=0 element</span>
-<a name="l00753"></a>00753         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = W[i]/2*<a class="code" href="group__gINTERNALS.html#ga37814f52692ffc71ef43e6b06e891440" title="Number of state variables.">NUM_STATE_VAR</a>; j &lt; zind; j++)
-<a name="l00754"></a>00754         {
-<a name="l00755"></a>00755             zn -= <a class="code" href="classchol__solve.html#a8847b11cd7988219cb54138baed352bb" title="Vector z.">z</a>[j] * <a class="code" href="classchol__solve.html#a5bd075e51500947c69d067bd2d6991e0" title="L for inequality constraints, see &amp;#39;Cholesky factor&amp;#39;.">icL</a>[i][j];
-<a name="l00756"></a>00756         }
-<a name="l00757"></a>00757         <a class="code" href="classchol__solve.html#a8847b11cd7988219cb54138baed352bb" title="Vector z.">z</a>[zind] = zn/<a class="code" href="classchol__solve.html#a5bd075e51500947c69d067bd2d6991e0" title="L for inequality constraints, see &amp;#39;Cholesky factor&amp;#39;.">icL</a>[i][zind];
-<a name="l00758"></a>00758     }
-<a name="l00759"></a>00759 
-<a name="l00760"></a>00760     <span class="comment">// update lagrange multipliers</span>
-<a name="l00761"></a>00761     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="classchol__solve.html#a5f3f833766e7126c799cb52ddbb47c1a" title="number of states in the preview window">N</a>*<a class="code" href="group__gINTERNALS.html#ga37814f52692ffc71ef43e6b06e891440" title="Number of state variables.">NUM_STATE_VAR</a> + nW; i++)
-<a name="l00762"></a>00762     {
-<a name="l00763"></a>00763         <a class="code" href="classchol__solve.html#aaf07a4e6bdaa472c7347f3d0822c9584" title="Vector of Lagrange multipliers.">nu</a>[i] = <a class="code" href="classchol__solve.html#a8847b11cd7988219cb54138baed352bb" title="Vector z.">z</a>[i];
-<a name="l00764"></a>00764     }
-<a name="l00765"></a>00765 }
+<a name="l00717"></a><a class="code" href="classchol__solve.html#a5cc3ec10c6973372aa41338f3d5cb7d6">00717</a> <span class="keywordtype">void</span> <a class="code" href="classchol__solve.html#a5cc3ec10c6973372aa41338f3d5cb7d6" title="A wrapper around private functions, which downdate Cholesky factor and resolve the system...">chol_solve::down_resolve</a>(<a class="code" href="structchol__solve__param.html" title="A set of parameters used by chol_solve class.">chol_solve_param</a> csp, <span class="keywordtype">int</span> nW, <span class="keywordtype">int</span> *W, <span class="keywordtype">int</span> ind_exclude, <span class="keywordtype">double</span> *x, <span class="keywordtype">double</span> *dx)
+<a name="l00718"></a>00718 {
+<a name="l00719"></a>00719     <span class="comment">// for each element of z affected by removed constraint</span>
+<a name="l00720"></a>00720     <span class="comment">// find a base that stays the same</span>
+<a name="l00721"></a>00721     <span class="keywordtype">double</span> z_tmp = 0;
+<a name="l00722"></a>00722     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = nW; i &gt; ind_exclude; i--)
+<a name="l00723"></a>00723     {
+<a name="l00724"></a>00724         <span class="keywordtype">int</span> zind = <a class="code" href="classchol__solve.html#a5f3f833766e7126c799cb52ddbb47c1a" title="number of states in the preview window">N</a>*<a class="code" href="group__gINTERNALS.html#ga37814f52692ffc71ef43e6b06e891440" title="Number of state variables.">NUM_STATE_VAR</a> + i;
+<a name="l00725"></a>00725         <span class="keywordtype">double</span> zn = <a class="code" href="classchol__solve.html#a8847b11cd7988219cb54138baed352bb" title="Vector z.">z</a>[zind] * <a class="code" href="classchol__solve.html#a5bd075e51500947c69d067bd2d6991e0" title="L for inequality constraints, see &amp;#39;Cholesky factor&amp;#39;.">icL</a>[i][zind];
+<a name="l00726"></a>00726         <a class="code" href="classchol__solve.html#a8847b11cd7988219cb54138baed352bb" title="Vector z.">z</a>[zind] = z_tmp;
+<a name="l00727"></a>00727 
+<a name="l00728"></a>00728         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = <a class="code" href="classchol__solve.html#a5f3f833766e7126c799cb52ddbb47c1a" title="number of states in the preview window">N</a>*<a class="code" href="group__gINTERNALS.html#ga37814f52692ffc71ef43e6b06e891440" title="Number of state variables.">NUM_STATE_VAR</a> + ind_exclude; j &lt; zind; j++)
+<a name="l00729"></a>00729         {
+<a name="l00730"></a>00730             zn += <a class="code" href="classchol__solve.html#a8847b11cd7988219cb54138baed352bb" title="Vector z.">z</a>[j] * icL[i][j];
+<a name="l00731"></a>00731         }
+<a name="l00732"></a>00732         z_tmp = zn;
+<a name="l00733"></a>00733     }
+<a name="l00734"></a>00734     <a class="code" href="classchol__solve.html#a8847b11cd7988219cb54138baed352bb" title="Vector z.">z</a>[<a class="code" href="classchol__solve.html#a5f3f833766e7126c799cb52ddbb47c1a" title="number of states in the preview window">N</a>*<a class="code" href="group__gINTERNALS.html#ga37814f52692ffc71ef43e6b06e891440" title="Number of state variables.">NUM_STATE_VAR</a> + ind_exclude] = z_tmp;
+<a name="l00735"></a>00735 
+<a name="l00736"></a>00736 
+<a name="l00737"></a>00737     <span class="comment">// downdate L</span>
+<a name="l00738"></a>00738     <a class="code" href="classchol__solve.html#a7e291618ab94d40751cca5eea117dea6" title="Delete a line from icL, see page &amp;#39;Downdate of Cholesky factor&amp;#39;.">downdate</a> (csp, nW, ind_exclude, x);
+<a name="l00739"></a>00739 
+<a name="l00740"></a>00740 
+<a name="l00741"></a>00741     <span class="comment">// recompute elements of z</span>
+<a name="l00742"></a>00742     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = ind_exclude; i &lt; nW; i++)
+<a name="l00743"></a>00743     {
+<a name="l00744"></a>00744         <span class="keywordtype">int</span> zind = <a class="code" href="classchol__solve.html#a5f3f833766e7126c799cb52ddbb47c1a" title="number of states in the preview window">N</a>*<a class="code" href="group__gINTERNALS.html#ga37814f52692ffc71ef43e6b06e891440" title="Number of state variables.">NUM_STATE_VAR</a> + i;
+<a name="l00745"></a>00745         <span class="keywordtype">double</span> zn = <a class="code" href="classchol__solve.html#a8847b11cd7988219cb54138baed352bb" title="Vector z.">z</a>[zind];
+<a name="l00746"></a>00746 
+<a name="l00747"></a>00747         <span class="comment">// zn</span>
+<a name="l00748"></a>00748         <span class="comment">// start from the first !=0 element</span>
+<a name="l00749"></a>00749         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = <a class="code" href="classchol__solve.html#a5f3f833766e7126c799cb52ddbb47c1a" title="number of states in the preview window">N</a>*<a class="code" href="group__gINTERNALS.html#ga37814f52692ffc71ef43e6b06e891440" title="Number of state variables.">NUM_STATE_VAR</a>+ind_exclude; j &lt; zind; j++)
+<a name="l00750"></a>00750         {
+<a name="l00751"></a>00751             zn -= <a class="code" href="classchol__solve.html#a8847b11cd7988219cb54138baed352bb" title="Vector z.">z</a>[j] * <a class="code" href="classchol__solve.html#a5bd075e51500947c69d067bd2d6991e0" title="L for inequality constraints, see &amp;#39;Cholesky factor&amp;#39;.">icL</a>[i][j];
+<a name="l00752"></a>00752         }
+<a name="l00753"></a>00753         <a class="code" href="classchol__solve.html#a8847b11cd7988219cb54138baed352bb" title="Vector z.">z</a>[zind] = zn/<a class="code" href="classchol__solve.html#a5bd075e51500947c69d067bd2d6991e0" title="L for inequality constraints, see &amp;#39;Cholesky factor&amp;#39;.">icL</a>[i][zind];
+<a name="l00754"></a>00754     }
+<a name="l00755"></a>00755 
+<a name="l00756"></a>00756     <span class="comment">// copy z to nu</span>
+<a name="l00757"></a>00757     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="classchol__solve.html#a5f3f833766e7126c799cb52ddbb47c1a" title="number of states in the preview window">N</a>*<a class="code" href="group__gINTERNALS.html#ga37814f52692ffc71ef43e6b06e891440" title="Number of state variables.">NUM_STATE_VAR</a> + nW; i++)
+<a name="l00758"></a>00758     {
+<a name="l00759"></a>00759         <a class="code" href="classchol__solve.html#aaf07a4e6bdaa472c7347f3d0822c9584" title="Vector of Lagrange multipliers.">nu</a>[i] = <a class="code" href="classchol__solve.html#a8847b11cd7988219cb54138baed352bb" title="Vector z.">z</a>[i];
+<a name="l00760"></a>00760     }
+<a name="l00761"></a>00761 
+<a name="l00762"></a>00762 
+<a name="l00763"></a>00763     <a class="code" href="classchol__solve.html#a2a5e518191e7507191b71504cba519f0" title="Determines feasible descent direction with respect to added inequality constraints.">resolve</a> (csp, nW, W, x, dx);
+<a name="l00764"></a>00764 }
+<a name="l00765"></a>00765 
 <a name="l00766"></a>00766 
 <a name="l00767"></a>00767 
-<a name="l00776"></a><a class="code" href="classchol__solve.html#a7e291618ab94d40751cca5eea117dea6">00776</a> <span class="keywordtype">void</span> <a class="code" href="classchol__solve.html#a7e291618ab94d40751cca5eea117dea6" title="Delete a line from icL, see page &amp;#39;Downdate of Cholesky factor&amp;#39;.">chol_solve::downdate</a>(<a class="code" href="structchol__solve__param.html" title="A set of parameters used by chol_solve class.">chol_solve_param</a> csp, <span class="keywordtype">int</span> nW, <span class="keywordtype">int</span> ind_exclude, <span class="keywordtype">double</span> *x)
-<a name="l00777"></a>00777 {
-<a name="l00778"></a>00778     <span class="comment">// Shuffle memory pointers to avoid copying of the data.</span>
-<a name="l00779"></a>00779     <span class="keywordtype">double</span> * downdate_row = <a class="code" href="classchol__solve.html#a5bd075e51500947c69d067bd2d6991e0" title="L for inequality constraints, see &amp;#39;Cholesky factor&amp;#39;.">icL</a>[ind_exclude];
-<a name="l00780"></a>00780     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = ind_exclude + 1; i &lt; nW + 1; i++)
-<a name="l00781"></a>00781     {
-<a name="l00782"></a>00782         <a class="code" href="classchol__solve.html#a5bd075e51500947c69d067bd2d6991e0" title="L for inequality constraints, see &amp;#39;Cholesky factor&amp;#39;.">icL</a>[i-1] = <a class="code" href="classchol__solve.html#a5bd075e51500947c69d067bd2d6991e0" title="L for inequality constraints, see &amp;#39;Cholesky factor&amp;#39;.">icL</a>[i];
-<a name="l00783"></a>00783     }
-<a name="l00784"></a>00784     <a class="code" href="classchol__solve.html#a5bd075e51500947c69d067bd2d6991e0" title="L for inequality constraints, see &amp;#39;Cholesky factor&amp;#39;.">icL</a>[nW] = downdate_row;
-<a name="l00785"></a>00785 
-<a name="l00786"></a>00786 
-<a name="l00787"></a>00787     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = ind_exclude; i &lt; nW; i++)
-<a name="l00788"></a>00788     {
-<a name="l00789"></a>00789         <span class="keywordtype">int</span> el_index = <a class="code" href="group__gINTERNALS.html#ga37814f52692ffc71ef43e6b06e891440" title="Number of state variables.">NUM_STATE_VAR</a>*<a class="code" href="classchol__solve.html#a5f3f833766e7126c799cb52ddbb47c1a" title="number of states in the preview window">N</a> + i;
-<a name="l00790"></a>00790         <span class="keywordtype">double</span> *cur_el = &amp;<a class="code" href="classchol__solve.html#a5bd075e51500947c69d067bd2d6991e0" title="L for inequality constraints, see &amp;#39;Cholesky factor&amp;#39;.">icL</a>[i][el_index];
-<a name="l00791"></a>00791         <span class="keywordtype">double</span> x1 = cur_el[0];
-<a name="l00792"></a>00792         <span class="keywordtype">double</span> x2 = cur_el[1];
-<a name="l00793"></a>00793         <span class="keywordtype">double</span> cosT, sinT;
-<a name="l00794"></a>00794 
-<a name="l00795"></a>00795 
-<a name="l00796"></a>00796         <span class="comment">// Givens rotation matrix</span>
-<a name="l00797"></a>00797         <span class="keywordflow">if</span> (abs(x2) &gt;= abs(x1))
-<a name="l00798"></a>00798         {
-<a name="l00799"></a>00799             <span class="keywordtype">double</span> t = x1/x2;
-<a name="l00800"></a>00800             sinT = 1/sqrt(1 + t*t);
-<a name="l00801"></a>00801             cosT = sinT*t;
-<a name="l00802"></a>00802         }
-<a name="l00803"></a>00803         <span class="keywordflow">else</span>
-<a name="l00804"></a>00804         {
-<a name="l00805"></a>00805             <span class="keywordtype">double</span> t = x2/x1;
-<a name="l00806"></a>00806             cosT = 1/sqrt(1 + t*t);
-<a name="l00807"></a>00807             sinT = cosT*t;
-<a name="l00808"></a>00808         }
-<a name="l00809"></a>00809 
-<a name="l00810"></a>00810 
-<a name="l00811"></a>00811         <span class="comment">// update elements in the current line</span>
-<a name="l00812"></a>00812         cur_el[0] = cosT*x1 + sinT*x2;
-<a name="l00813"></a>00813         cur_el[1] = 0;
-<a name="l00814"></a>00814 
-<a name="l00815"></a>00815         <span class="comment">// change sign if needed (diagonal elements of Cholesky </span>
-<a name="l00816"></a>00816         <span class="comment">// decomposition must be positive)</span>
-<a name="l00817"></a>00817         <span class="keywordtype">double</span> sign = copysign(1, cur_el[0]);
-<a name="l00818"></a>00818         cur_el[0] = fabs(cur_el[0]);
-<a name="l00819"></a>00819 
-<a name="l00820"></a>00820         <span class="comment">// update the lines below the current one.</span>
-<a name="l00821"></a>00821         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = i + 1; j &lt; nW; j++)
-<a name="l00822"></a>00822         {
-<a name="l00823"></a>00823             x1 = <a class="code" href="classchol__solve.html#a5bd075e51500947c69d067bd2d6991e0" title="L for inequality constraints, see &amp;#39;Cholesky factor&amp;#39;.">icL</a>[j][el_index];
-<a name="l00824"></a>00824             x2 = <a class="code" href="classchol__solve.html#a5bd075e51500947c69d067bd2d6991e0" title="L for inequality constraints, see &amp;#39;Cholesky factor&amp;#39;.">icL</a>[j][el_index + 1];
+<a name="l00771"></a><a class="code" href="classchol__solve.html#ad473b8cee2c41023c1ebbed8992a76a2">00771</a> <span class="keywordtype">double</span> * <a class="code" href="classchol__solve.html#ad473b8cee2c41023c1ebbed8992a76a2">chol_solve::get_lambda</a>()
+<a name="l00772"></a>00772 {
+<a name="l00773"></a>00773     <span class="keywordflow">return</span>(&amp;<a class="code" href="classchol__solve.html#aaf07a4e6bdaa472c7347f3d0822c9584" title="Vector of Lagrange multipliers.">nu</a>[<a class="code" href="group__gINTERNALS.html#ga37814f52692ffc71ef43e6b06e891440" title="Number of state variables.">NUM_STATE_VAR</a>*<a class="code" href="classchol__solve.html#a5f3f833766e7126c799cb52ddbb47c1a" title="number of states in the preview window">N</a>]);
+<a name="l00774"></a>00774 }
+<a name="l00775"></a>00775 
+<a name="l00776"></a>00776 
+<a name="l00777"></a>00777 
+<a name="l00778"></a>00778 
+<a name="l00787"></a><a class="code" href="classchol__solve.html#a7e291618ab94d40751cca5eea117dea6">00787</a> <span class="keywordtype">void</span> <a class="code" href="classchol__solve.html#a7e291618ab94d40751cca5eea117dea6" title="Delete a line from icL, see page &amp;#39;Downdate of Cholesky factor&amp;#39;.">chol_solve::downdate</a>(<a class="code" href="structchol__solve__param.html" title="A set of parameters used by chol_solve class.">chol_solve_param</a> csp, <span class="keywordtype">int</span> nW, <span class="keywordtype">int</span> ind_exclude, <span class="keywordtype">double</span> *x)
+<a name="l00788"></a>00788 {
+<a name="l00789"></a>00789     <span class="comment">// Shuffle memory pointers to avoid copying of the data.</span>
+<a name="l00790"></a>00790     <span class="keywordtype">double</span> * downdate_row = <a class="code" href="classchol__solve.html#a5bd075e51500947c69d067bd2d6991e0" title="L for inequality constraints, see &amp;#39;Cholesky factor&amp;#39;.">icL</a>[ind_exclude];
+<a name="l00791"></a>00791     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = ind_exclude + 1; i &lt; nW + 1; i++)
+<a name="l00792"></a>00792     {
+<a name="l00793"></a>00793         <a class="code" href="classchol__solve.html#a5bd075e51500947c69d067bd2d6991e0" title="L for inequality constraints, see &amp;#39;Cholesky factor&amp;#39;.">icL</a>[i-1] = <a class="code" href="classchol__solve.html#a5bd075e51500947c69d067bd2d6991e0" title="L for inequality constraints, see &amp;#39;Cholesky factor&amp;#39;.">icL</a>[i];
+<a name="l00794"></a>00794     }
+<a name="l00795"></a>00795     <a class="code" href="classchol__solve.html#a5bd075e51500947c69d067bd2d6991e0" title="L for inequality constraints, see &amp;#39;Cholesky factor&amp;#39;.">icL</a>[nW] = downdate_row;
+<a name="l00796"></a>00796 
+<a name="l00797"></a>00797 
+<a name="l00798"></a>00798     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = ind_exclude; i &lt; nW; i++)
+<a name="l00799"></a>00799     {
+<a name="l00800"></a>00800         <span class="keywordtype">int</span> el_index = <a class="code" href="group__gINTERNALS.html#ga37814f52692ffc71ef43e6b06e891440" title="Number of state variables.">NUM_STATE_VAR</a>*<a class="code" href="classchol__solve.html#a5f3f833766e7126c799cb52ddbb47c1a" title="number of states in the preview window">N</a> + i;
+<a name="l00801"></a>00801         <span class="keywordtype">double</span> *cur_el = &amp;<a class="code" href="classchol__solve.html#a5bd075e51500947c69d067bd2d6991e0" title="L for inequality constraints, see &amp;#39;Cholesky factor&amp;#39;.">icL</a>[i][el_index];
+<a name="l00802"></a>00802         <span class="keywordtype">double</span> x1 = cur_el[0];
+<a name="l00803"></a>00803         <span class="keywordtype">double</span> x2 = cur_el[1];
+<a name="l00804"></a>00804         <span class="keywordtype">double</span> cosT, sinT;
+<a name="l00805"></a>00805 
+<a name="l00806"></a>00806 
+<a name="l00807"></a>00807         <span class="comment">// Givens rotation matrix</span>
+<a name="l00808"></a>00808         <span class="keywordflow">if</span> (abs(x2) &gt;= abs(x1))
+<a name="l00809"></a>00809         {
+<a name="l00810"></a>00810             <span class="keywordtype">double</span> t = x1/x2;
+<a name="l00811"></a>00811             sinT = 1/sqrt(1 + t*t);
+<a name="l00812"></a>00812             cosT = sinT*t;
+<a name="l00813"></a>00813         }
+<a name="l00814"></a>00814         <span class="keywordflow">else</span>
+<a name="l00815"></a>00815         {
+<a name="l00816"></a>00816             <span class="keywordtype">double</span> t = x2/x1;
+<a name="l00817"></a>00817             cosT = 1/sqrt(1 + t*t);
+<a name="l00818"></a>00818             sinT = cosT*t;
+<a name="l00819"></a>00819         }
+<a name="l00820"></a>00820 
+<a name="l00821"></a>00821 
+<a name="l00822"></a>00822         <span class="comment">// update elements in the current line</span>
+<a name="l00823"></a>00823         cur_el[0] = cosT*x1 + sinT*x2;
+<a name="l00824"></a>00824         cur_el[1] = 0;
 <a name="l00825"></a>00825 
-<a name="l00826"></a>00826             <a class="code" href="classchol__solve.html#a5bd075e51500947c69d067bd2d6991e0" title="L for inequality constraints, see &amp;#39;Cholesky factor&amp;#39;.">icL</a>[j][el_index] = sign * (cosT*x1 + sinT*x2);
-<a name="l00827"></a>00827             <a class="code" href="classchol__solve.html#a5bd075e51500947c69d067bd2d6991e0" title="L for inequality constraints, see &amp;#39;Cholesky factor&amp;#39;.">icL</a>[j][el_index + 1] = -sinT*x1 + cosT*x2;
-<a name="l00828"></a>00828         }
-<a name="l00829"></a>00829     }
-<a name="l00830"></a>00830 }
-<a name="l00831"></a>00831 <span class="preprocessor">#endif</span>
+<a name="l00826"></a>00826         <span class="comment">// change sign if needed (diagonal elements of Cholesky </span>
+<a name="l00827"></a>00827         <span class="comment">// decomposition must be positive)</span>
+<a name="l00828"></a>00828         <span class="keywordtype">double</span> sign = copysign(1, cur_el[0]);
+<a name="l00829"></a>00829         cur_el[0] = fabs(cur_el[0]);
+<a name="l00830"></a>00830 
+<a name="l00831"></a>00831         <span class="comment">// update the lines below the current one.</span>
+<a name="l00832"></a>00832         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = i + 1; j &lt; nW; j++)
+<a name="l00833"></a>00833         {
+<a name="l00834"></a>00834             x1 = <a class="code" href="classchol__solve.html#a5bd075e51500947c69d067bd2d6991e0" title="L for inequality constraints, see &amp;#39;Cholesky factor&amp;#39;.">icL</a>[j][el_index];
+<a name="l00835"></a>00835             x2 = <a class="code" href="classchol__solve.html#a5bd075e51500947c69d067bd2d6991e0" title="L for inequality constraints, see &amp;#39;Cholesky factor&amp;#39;.">icL</a>[j][el_index + 1];
+<a name="l00836"></a>00836 
+<a name="l00837"></a>00837             <a class="code" href="classchol__solve.html#a5bd075e51500947c69d067bd2d6991e0" title="L for inequality constraints, see &amp;#39;Cholesky factor&amp;#39;.">icL</a>[j][el_index] = sign * (cosT*x1 + sinT*x2);
+<a name="l00838"></a>00838             <a class="code" href="classchol__solve.html#a5bd075e51500947c69d067bd2d6991e0" title="L for inequality constraints, see &amp;#39;Cholesky factor&amp;#39;.">icL</a>[j][el_index + 1] = -sinT*x1 + cosT*x2;
+<a name="l00839"></a>00839         }
+<a name="l00840"></a>00840     }
+<a name="l00841"></a>00841 }
+<a name="l00842"></a>00842 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
 <hr class="footer"/><address class="footer"><small>Generated by&#160;
