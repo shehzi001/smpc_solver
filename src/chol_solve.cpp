@@ -706,16 +706,60 @@ void chol_solve::resolve (chol_solve_param csp, int nW, int *W, double *x, doubl
  *  resolve the system.
  *
  * @param[in] csp   parameters.
- * @param[in] nW    number of added constrains.
- * @param[in] W     indicies of added constraints.
+ * @param[in] nW    number of added constrains (without removed constraint).
+ * @param[in] W     indicies of added constraints (without removed constraint).
  * @param[in] ind_exclude index of excluded constraint.
  * @param[in] x     initial guess.
  * @param[out] dx   feasible descent direction, must be allocated.
+ *
+ * @note Downdate of vector @ref pz 'z' is described on the page '@ref pRemoveICz'.
  */
 void chol_solve::down_resolve(chol_solve_param csp, int nW, int *W, int ind_exclude, double *x, double *dx)
 {
+    // for each element of z affected by removed constraint
+    // find a base that stays the same
+    double z_tmp = 0;
+    for (int i = nW; i > ind_exclude; i--)
+    {
+        int zind = N*NUM_STATE_VAR + i;
+        double zn = z[zind] * icL[i][zind];
+        z[zind] = z_tmp;
+
+        for (int j = N*NUM_STATE_VAR + ind_exclude; j < zind; j++)
+        {
+            zn += z[j] * icL[i][j];
+        }
+        z_tmp = zn;
+    }
+    z[N*NUM_STATE_VAR + ind_exclude] = z_tmp;
+
+
+    // downdate L
     downdate (csp, nW, ind_exclude, x);
-    downdate_z (csp, nW, W, ind_exclude, x);
+
+
+    // recompute elements of z
+    for (int i = ind_exclude; i < nW; i++)
+    {
+        int zind = N*NUM_STATE_VAR + i;
+        double zn = z[zind];
+
+        // zn
+        // start from the first !=0 element
+        for (int j = N*NUM_STATE_VAR+ind_exclude; j < zind; j++)
+        {
+            zn -= z[j] * icL[i][j];
+        }
+        z[zind] = zn/icL[i][zind];
+    }
+
+    // copy z to nu
+    for (int i = 0; i < N*NUM_STATE_VAR + nW; i++)
+    {
+        nu[i] = z[i];
+    }
+
+
     resolve (csp, nW, W, x, dx);
 }
 
@@ -730,39 +774,6 @@ double * chol_solve::get_lambda()
 }
 
 
-/**
- * @brief Adjust vector '@ref pz "z"' after downdate.
- *
- * @param[in] csp   parameters.
- * @param[in] nW    number of added constrains.
- * @param[in] W     indicies of added constraints.
- * @param[in] ind_exclude index of excluded constraint.
- * @param[in] x     initial guess.
- */
-void chol_solve::downdate_z (chol_solve_param csp, int nW, int *W, int ind_exclude, double *x)
-{
-    for (int i = ind_exclude; i < nW; i++)
-    {
-        int zind = N*NUM_STATE_VAR + i;
-
-        // sn
-        double zn = -(csp.iHg[W[i]*3] + x[W[i]*3]);
-
-        // zn
-        // start from the first !=0 element
-        for (int j = W[i]/2*NUM_STATE_VAR; j < zind; j++)
-        {
-            zn -= z[j] * icL[i][j];
-        }
-        z[zind] = zn/icL[i][zind];
-    }
-
-    // update lagrange multipliers
-    for (int i = 0; i < N*NUM_STATE_VAR + nW; i++)
-    {
-        nu[i] = z[i];
-    }
-}
 
 
 /**
