@@ -8,3 +8,7 @@ Requirements:
 Compilation can be started by running make without targets.
 When 'test' target is specified, the tests and examples in the
 'test' folder are also build.
+
+The newest sources and documetation are available on GitHub:
+    http://github.com/asherikov/smpc_solver
+    http://asherikov.github.com/smpc_solver
