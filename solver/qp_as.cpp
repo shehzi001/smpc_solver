@@ -147,7 +147,7 @@ void qp_as::init(
     chol_param.T = T_;
     chol_param.h = h_;
 #ifdef QPAS_VARIABLE_T_h
-    chol_param.dh = new double[N-1]();
+    chol_param.dh = new double[N-1];
     for (int i = 0; i < N-1; i++)
     {
         chol_param.dh[i] = chol_param.h[i+1] - chol_param.h[i];
