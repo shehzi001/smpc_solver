@@ -73,7 +73,6 @@ class qp_as
         void init(double*, double*, double*, double*, double*, double*, double*, double*, double*);
    
 
-        ///@todo Do we need to return active set (W)?
         int solve ();
 
         void get_next_state_tilde (double *);

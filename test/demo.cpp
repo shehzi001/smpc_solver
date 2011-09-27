@@ -1,5 +1,9 @@
+#include <cmath> // M_PI
+
+
 #include "WMG.h"    // a helper class
 #include "smpc_solver.h"    // the interface of the library
+
 
 ///@addtogroup gTEST
 ///@{

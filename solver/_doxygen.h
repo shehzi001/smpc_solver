@@ -40,19 +40,26 @@
  *
  * @section MainHowTo API & examples
  * - @ref gAPI 
+ * - @ref gWMG_API
  * - @ref pDemo "A simple demo"
  * \n\n
  *
  * @section MainInternals Implementation details
  * - @ref gINTERNALS
  * - @ref pFormulas 
+ *
+ * - @ref gWMG_INTERNALS
  */
 
 
 /**
- * @defgroup gAPI API of the library
+ * @defgroup gAPI API of the solver library
  *  
- * @defgroup gINTERNALS Internal classes, functions and definitions
+ * @defgroup gINTERNALS Internal classes, functions and definitions of the solver library
+ *
+ * @defgroup gWMG_API API of the simulation support library
+ *
+ * @defgroup gWMG_INTERNALS Internal classes, functions and definitions of the simulation support library.
  *
  * @defgroup gTEST Tests and benchmarks
  * @todo Currently tests are not included in the doxygen documentation,

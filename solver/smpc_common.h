@@ -13,6 +13,7 @@
  ****************************************/
 
 #include <cstddef>
+#include "common_const.h"
 
 /****************************************
  * DEFINES
@@ -20,13 +21,6 @@
 
 /// @addtogroup gINTERNALS
 /// @{
-
-/// Number of state variables.
-#define NUM_STATE_VAR 6
-/// Number of control variables.
-#define NUM_CONTROL_VAR 2
-/// Total number of variables.
-#define NUM_VAR 8
 
 /// The size of one dimension of 3x3 matrix.
 #define MATRIX_DIM_SIZE 3

@@ -2,7 +2,7 @@
 #include <fstream>
 #include <cstdio>
 #include <limits>
-#include <cmath> // abs
+#include <cmath> // abs, M_PI
 
 
 #include "WMG.h"

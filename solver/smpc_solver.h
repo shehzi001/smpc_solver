@@ -4,6 +4,8 @@
  *
  * @author Alexander Sherikov
  * @date 02.09.2011 00:22:48 MSD
+ *
+ * @todo (low priority) Interface with Matlab/Octave.
  */
 
 

@@ -1,5 +1,7 @@
 include ../common.mk
 
+CXXFLAGS+=-I../solver/
+
 all: 
 	${CXX} ${CXXFLAGS} ${IFLAGS} -c *.cpp
 	${AR} -rc libwmg.a *.o
