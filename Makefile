@@ -1,12 +1,16 @@
 smpc_solver:
-	cd src; ${MAKE}
+	cd solver; ${MAKE}
 
-test: smpc_solver
+wmg:
+	cd WMG; ${MAKE}
+
+test: smpc_solver wmg
 	cd test; ${MAKE}
 
 clean:
 	cd test; ${MAKE} clean
-	cd src; ${MAKE} clean
+	cd solver; ${MAKE} clean
+	cd WMG; ${MAKE} clean
 	rm -Rf docs
 
 # dummy targets

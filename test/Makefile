@@ -1,7 +1,7 @@
 include ../common.mk
 
-IFLAGS+=-I../src/
-LDFLAGS+=-L../src/ -lsmpc_solver
+IFLAGS+=-I../solver/ -I../WMG/
+LDFLAGS+=-L../solver/ -lsmpc_solver -L../WMG/ -lwmg
 
 
 TESTS=\
@@ -14,12 +14,12 @@ TESTS=\
 all: ${TESTS} demo
 
 ${TESTS}:
-	${CXX} ${CXXFLAGS} ${IFLAGS} -c $@.cpp WMG.cpp 
-	${CXX} -o $@.a $@.o WMG.o ${LDFLAGS}
+	${CXX} ${CXXFLAGS} ${IFLAGS} -c $@.cpp
+	${CXX} -o $@.a $@.o ${LDFLAGS}
 
 demo:
-	${CXX} ${CXXFLAGS} ${IFLAGS} -c $@.cpp WMG.cpp 
-	${CXX} -o $@.a $@.o WMG.o ${LDFLAGS}
+	${CXX} ${CXXFLAGS} ${IFLAGS} -c $@.cpp
+	${CXX} -o $@.a $@.o ${LDFLAGS}
 
 clean:
 	rm -f *.a *.o

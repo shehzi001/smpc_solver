@@ -90,10 +90,10 @@ class RectangularConstraint_ZMP
             \note D is a [4 x 2] matrix stored column-wise (Fortran style). D takes the form 
             \verbatim
             D = [ 1  0;
-                    0  1;
-                   -1  0;
-                    0 -1] * [cos(a) -sin(a)
-                             sin(a)  cos(a)].
+                  0  1;
+                 -1  0;
+                  0 -1] * [cos(a) -sin(a)
+                           sin(a)  cos(a)].
             \endverbatim
          */
         double D[4*2];
@@ -185,7 +185,6 @@ class WMG
         void AddFootstep(double x_relative, double y_relative, double angle_relative, int _nSS, int _n);
         void AddFootstep(double x_relative, double y_relative, double angle_relative);
         void FormPreviewWindow();
-        void slide();
         void print_ind();
         void FS2file();
         void output_CoM_ZMP();
@@ -245,12 +244,14 @@ class WMG
         /** \brief If halt = 1 then stop the execution (else keep going) */
         int halt;
 
-
         double *angle;
         double *zref_x;
         double *zref_y;
         double *lb;
         double *ub;
+
+    private:
+        void slide();
 };
 
 ///@}
