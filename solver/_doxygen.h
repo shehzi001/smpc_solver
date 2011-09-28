@@ -465,13 +465,16 @@
     @f$
     is a projected Hessian, its structure is described in section '@ref pProjectedHessian'.
 
+    @anchor piHg
     Note, that
     @f$
     \newcommand{\mbm}[1]{\mbox{\boldmath $#1$}}\\
     \frac{1}{2} \mbm{H}^{-1} \mbm{g}
     @f$
-    is constant. Also, since Hessian is diagonal its invertion is trivial and
-    multiplication of inverted Hessian by any vector is O(N).
+    is constant and due to @ref pPDObj "the structure of the matrix and vector"
+    has only 2*N non-zero elements. Also, since Hessian is diagonal its 
+    invertion is trivial and multiplication of inverted Hessian by any vector 
+    is O(N).
  */
 
 /**

@@ -65,7 +65,7 @@ qp_as::qp_as(int N_, double Alpha, double Beta, double Gamma, double regularizat
 
     chol_param.i2P = 1/(2 * (Gamma/2));
 
-    chol_param.iHg = new double[NUM_VAR*N]();
+    chol_param.iHg = new double[2*N];
 
     chol_param.T = NULL;
     chol_param.h = NULL;
@@ -301,9 +301,9 @@ void qp_as::form_iHg(double *zref_x, double *zref_y)
         p1 = zref_y[i];
 
         // inv (2*H) * R' * Cp' * zref
-        chol_param.iHg[i*NUM_STATE_VAR + 0] = 
+        chol_param.iHg[i*2] = 
             -chol_param.i2Q[0] * (cosA*p0 + sinA*p1)*gain_beta;
-        chol_param.iHg[i*NUM_STATE_VAR + 3] = 
+        chol_param.iHg[i*2 + 1] = 
             -chol_param.i2Q[0] * (-sinA*p0 + cosA*p1)*gain_beta; 
     }
 }

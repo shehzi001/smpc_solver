@@ -426,10 +426,10 @@ void chol_solve::form_sa_row(chol_solve_param csp, int ic_num, int var_num, doub
  * @brief Determines feasible descent direction.
  *
  * @param[in] csp   parameters.
- * @param[in] ix    initial guess.
+ * @param[in] x    initial guess.
  * @param[out] dx   feasible descent direction, must be allocated.
  */
-void chol_solve::solve(chol_solve_param csp, double *ix, double *dx)
+void chol_solve::solve(chol_solve_param csp, double *x, double *dx)
 {
     double *s_nu = nu;
     int i;
@@ -439,11 +439,15 @@ void chol_solve::solve(chol_solve_param csp, double *ix, double *dx)
     // generate L
     L_init.form_L(csp, N, ecL);
 
-    // -(V + inv(H) * g)
-    //  V - initial feasible point
+    // -(x + inv(H) * g)
+    //  x - initial feasible point
     for (i = 0; i < NUM_VAR * N; i++)
     {
-        XiHg[i] = -(ix[i] + csp.iHg[i]);
+        XiHg[i] = -x[i];
+    }
+    for (i = 0; i < 2*N; i++)
+    {
+        XiHg[i*3] -= csp.iHg[i];
     }
 
     // obtain s = E * x;
@@ -464,18 +468,18 @@ void chol_solve::solve(chol_solve_param csp, double *ix, double *dx)
     
     // dx = -iH*(grad + E'*nu)
     //
-    // dx = -(V + inv(H) * g + inv(H) * E' * nu)
+    // dx = -(x + inv(H) * g + inv(H) * E' * nu)
     //        ~~~~~~~~~~~~~~            ~~~~~~~
     // dx   -(   -XiHg       + inv(H) *   dx   ) 
     for (i = 0; i < N*NUM_STATE_VAR; i++)
     {
         // dx for state variables
-        dx[i] = -(-XiHg[i] + i2Q[i%3] * dx[i]);
+        dx[i] = XiHg[i] - i2Q[i%3] * dx[i];
     }
     for (; i < N*NUM_VAR; i++)
     {
         // dx for control variables
-        dx[i] = -(-XiHg[i] + csp.i2P * dx[i]);
+        dx[i] = XiHg[i] - csp.i2P * dx[i];
     }
 }
 
@@ -623,7 +627,7 @@ void chol_solve::update_z (chol_solve_param csp, int nW, int *W, double *x)
     // update lagrange multipliers
     int zind = N*NUM_STATE_VAR + ic_num;
     // sn
-    double zn = -(csp.iHg[W[ic_num]*3] + x[W[ic_num]*3]);
+    double zn = -csp.iHg[W[ic_num]] - x[W[ic_num]*3];
 
     // zn
     for (int i = 0; i < zind; i++)
@@ -676,18 +680,23 @@ void chol_solve::resolve (chol_solve_param csp, int nW, int *W, double *x, doubl
 
     // dx = -iH*(grad + E'*nu  + A(W,:)'*lambda)
     //
-    // dx = -(V + inv(H) * g + inv(H) * E' * nu)
-    //        ~~~~~~~~~~~~~~            ~~~~~~~
+    // dx = -(x + inv(H) * g + inv(H) * E' * nu)
+    //            ~~~~~~~~~~            ~~~~~~~
     // dx   -(x +  iHg       + inv(H) *   dx   ) 
     for (i = 0; i < N*NUM_STATE_VAR; i++)
     {
         // dx for state variables
-        dx[i] = -(x[i] + csp.iHg[i] + i2Q[i%3] * dx[i]);
+        dx[i] = -x[i] - i2Q[i%3] * dx[i];
     }
     for (; i < N*NUM_VAR; i++)
     {
         // dx for control variables
-        dx[i] = -(x[i] + csp.iHg[i] + csp.i2P * dx[i]);
+        dx[i] = -x[i] - csp.i2P * dx[i];
+    }
+    for (i = 0; i < 2*N; i++)
+    {
+        // dx for state variables
+        dx[i*3] -= csp.iHg[i];
     }
 
     // -iH * A(W,:)' * lambda

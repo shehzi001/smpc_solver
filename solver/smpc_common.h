@@ -49,7 +49,7 @@ struct chol_solve_param
     /** Control related penalty. */
     double i2P;
 
-    /** inv(H) * g */
+    /** @ref piHg "inv(H) * g" */
     double *iHg;
 
 
