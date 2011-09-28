@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>A sparse MPC solver for walking motion generation.: src/qp_as.h Source File</title>
+<title>A sparse MPC solver for walking motion generation.: solver/qp_as.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -38,7 +38,7 @@
   </div>
 <div class="header">
   <div class="headertitle">
-<h1>src/qp_as.h</h1>  </div>
+<h1>solver/qp_as.h</h1>  </div>
 </div>
 <div class="contents">
 <a href="qp__as_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 
@@ -95,68 +95,68 @@
 <a name="l00073"></a>00073         <span class="keywordtype">void</span> init(<span class="keywordtype">double</span>*, <span class="keywordtype">double</span>*, <span class="keywordtype">double</span>*, <span class="keywordtype">double</span>*, <span class="keywordtype">double</span>*, <span class="keywordtype">double</span>*, <span class="keywordtype">double</span>*, <span class="keywordtype">double</span>*, <span class="keywordtype">double</span>*);
 <a name="l00074"></a>00074    
 <a name="l00075"></a>00075 
-<a name="l00077"></a>00077         <span class="keywordtype">int</span> solve ();
-<a name="l00078"></a>00078 
-<a name="l00079"></a>00079         <span class="keywordtype">void</span> <a class="code" href="namespacestate__handling.html#a8fe5e6d13c3a28612538d828eef1dec5" title="Returns the next state as X_tilde.">get_next_state_tilde</a> (<span class="keywordtype">double</span> *);
-<a name="l00080"></a>00080         <span class="keywordtype">void</span> <a class="code" href="namespacestate__handling.html#ae9883b291705288f1a8834f6cc409f72" title="Returns the next state represented by original variables.">get_next_state</a> (<span class="keywordtype">double</span> *);
+<a name="l00076"></a>00076         <span class="keywordtype">int</span> solve ();
+<a name="l00077"></a>00077 
+<a name="l00078"></a>00078         <span class="keywordtype">void</span> <a class="code" href="namespacestate__handling.html#a8fe5e6d13c3a28612538d828eef1dec5" title="Returns the next state as X_tilde.">get_next_state_tilde</a> (<span class="keywordtype">double</span> *);
+<a name="l00079"></a>00079         <span class="keywordtype">void</span> <a class="code" href="namespacestate__handling.html#ae9883b291705288f1a8834f6cc409f72" title="Returns the next state represented by original variables.">get_next_state</a> (<span class="keywordtype">double</span> *);
+<a name="l00080"></a>00080 
 <a name="l00081"></a>00081 
-<a name="l00082"></a>00082 
-<a name="l00083"></a>00083 <span class="comment">// variables</span>
-<a name="l00085"></a><a class="code" href="classqp__as.html#a24321a3e24c1cd4ed4b5b5a217c58e11">00085</a> <span class="comment"></span>        <a class="code" href="structchol__solve__param.html" title="A set of parameters used by chol_solve class.">chol_solve_param</a> <a class="code" href="classqp__as.html#a24321a3e24c1cd4ed4b5b5a217c58e11" title="Parameters, which are fed to the methods of chol_solve class.">chol_param</a>;
-<a name="l00086"></a>00086 
-<a name="l00090"></a><a class="code" href="classqp__as.html#afc3e9ed1c081763d05f5f8d1decca8f3">00090</a>         <span class="keywordtype">double</span> *<a class="code" href="classqp__as.html#afc3e9ed1c081763d05f5f8d1decca8f3">X</a>;
+<a name="l00082"></a>00082 <span class="comment">// variables</span>
+<a name="l00084"></a><a class="code" href="classqp__as.html#a24321a3e24c1cd4ed4b5b5a217c58e11">00084</a> <span class="comment"></span>        <a class="code" href="structchol__solve__param.html" title="A set of parameters used by chol_solve class.">chol_solve_param</a> <a class="code" href="classqp__as.html#a24321a3e24c1cd4ed4b5b5a217c58e11" title="Parameters, which are fed to the methods of chol_solve class.">chol_param</a>;
+<a name="l00085"></a>00085 
+<a name="l00089"></a><a class="code" href="classqp__as.html#afc3e9ed1c081763d05f5f8d1decca8f3">00089</a>         <span class="keywordtype">double</span> *<a class="code" href="classqp__as.html#afc3e9ed1c081763d05f5f8d1decca8f3">X</a>;
+<a name="l00090"></a>00090 
 <a name="l00091"></a>00091 
-<a name="l00092"></a>00092 
-<a name="l00093"></a>00093     <span class="keyword">private</span>:
-<a name="l00094"></a>00094 
-<a name="l00095"></a>00095 <span class="comment">// functions        </span>
-<a name="l00096"></a>00096         <span class="keywordtype">void</span> form_init_fp(<span class="keywordtype">double</span> *, <span class="keywordtype">double</span> *, <span class="keywordtype">double</span> *);
-<a name="l00097"></a>00097         <span class="keywordtype">void</span> form_iHg(<span class="keywordtype">double</span> *, <span class="keywordtype">double</span> *);
-<a name="l00098"></a>00098         <span class="keywordtype">void</span> initialize_bounds();
-<a name="l00099"></a>00099         <span class="keywordtype">void</span> form_bounds(<span class="keywordtype">double</span> *, <span class="keywordtype">double</span> *);
-<a name="l00100"></a>00100         <span class="keywordtype">int</span> check_blocking_bounds();
-<a name="l00101"></a>00101 
-<a name="l00102"></a>00102 <span class="preprocessor">#ifdef QPAS_DOWNDATE</span>
-<a name="l00103"></a>00103 <span class="preprocessor"></span>        <span class="keywordtype">int</span> choose_excl_constr (<span class="keywordtype">double</span> *);
-<a name="l00104"></a>00104 <span class="preprocessor">#endif</span>
-<a name="l00105"></a>00105 <span class="preprocessor"></span>
-<a name="l00106"></a>00106 <span class="preprocessor">#ifdef SMPCS_DEBUG</span>
-<a name="l00107"></a>00107 <span class="preprocessor"></span>        <span class="keywordtype">void</span> print_objective();
-<a name="l00108"></a>00108 <span class="preprocessor">#endif</span>
-<a name="l00109"></a>00109 <span class="preprocessor"></span>
-<a name="l00110"></a>00110 <span class="comment">// variables</span>
-<a name="l00112"></a><a class="code" href="classqp__as.html#a99df86781d02a46d077d0e2dc42c1729">00112</a> <span class="comment"></span>        <span class="keywordtype">int</span> <a class="code" href="classqp__as.html#a99df86781d02a46d077d0e2dc42c1729">N</a>;
+<a name="l00092"></a>00092     <span class="keyword">private</span>:
+<a name="l00093"></a>00093 
+<a name="l00094"></a>00094 <span class="comment">// functions        </span>
+<a name="l00095"></a>00095         <span class="keywordtype">void</span> form_init_fp(<span class="keywordtype">double</span> *, <span class="keywordtype">double</span> *, <span class="keywordtype">double</span> *);
+<a name="l00096"></a>00096         <span class="keywordtype">void</span> form_iHg(<span class="keywordtype">double</span> *, <span class="keywordtype">double</span> *);
+<a name="l00097"></a>00097         <span class="keywordtype">void</span> initialize_bounds();
+<a name="l00098"></a>00098         <span class="keywordtype">void</span> form_bounds(<span class="keywordtype">double</span> *, <span class="keywordtype">double</span> *);
+<a name="l00099"></a>00099         <span class="keywordtype">int</span> check_blocking_bounds();
+<a name="l00100"></a>00100 
+<a name="l00101"></a>00101 <span class="preprocessor">#ifdef QPAS_DOWNDATE</span>
+<a name="l00102"></a>00102 <span class="preprocessor"></span>        <span class="keywordtype">int</span> choose_excl_constr (<span class="keywordtype">double</span> *);
+<a name="l00103"></a>00103 <span class="preprocessor">#endif</span>
+<a name="l00104"></a>00104 <span class="preprocessor"></span>
+<a name="l00105"></a>00105 <span class="preprocessor">#ifdef SMPCS_DEBUG</span>
+<a name="l00106"></a>00106 <span class="preprocessor"></span>        <span class="keywordtype">void</span> print_objective();
+<a name="l00107"></a>00107 <span class="preprocessor">#endif</span>
+<a name="l00108"></a>00108 <span class="preprocessor"></span>
+<a name="l00109"></a>00109 <span class="comment">// variables</span>
+<a name="l00111"></a><a class="code" href="classqp__as.html#a99df86781d02a46d077d0e2dc42c1729">00111</a> <span class="comment"></span>        <span class="keywordtype">int</span> <a class="code" href="classqp__as.html#a99df86781d02a46d077d0e2dc42c1729">N</a>;
+<a name="l00112"></a>00112 
 <a name="l00113"></a>00113 
-<a name="l00114"></a>00114 
-<a name="l00116"></a><a class="code" href="classqp__as.html#a25918a9df0e80d5289c36779f243cc12">00116</a>         <a class="code" href="classchol__solve.html" title="Solves KKT system using Cholesky decomposition.">chol_solve</a> <a class="code" href="classqp__as.html#a25918a9df0e80d5289c36779f243cc12" title="An instance of chol_solve class.">chol</a>;
+<a name="l00115"></a><a class="code" href="classqp__as.html#a25918a9df0e80d5289c36779f243cc12">00115</a>         <a class="code" href="classchol__solve.html" title="Solves KKT system using Cholesky decomposition.">chol_solve</a> <a class="code" href="classqp__as.html#a25918a9df0e80d5289c36779f243cc12" title="An instance of chol_solve class.">chol</a>;
+<a name="l00116"></a>00116 
 <a name="l00117"></a>00117 
-<a name="l00118"></a>00118 
-<a name="l00121"></a><a class="code" href="classqp__as.html#afde4ceb30a8f4760d806e462762fe4c2">00121</a>         <span class="keywordtype">double</span> <a class="code" href="classqp__as.html#afde4ceb30a8f4760d806e462762fe4c2" title="Gains used in objective function.">gain_alpha</a>;
-<a name="l00122"></a><a class="code" href="classqp__as.html#af8de01b4c112e024b9a9c838d6b6526f">00122</a>         <span class="keywordtype">double</span> <a class="code" href="classqp__as.html#af8de01b4c112e024b9a9c838d6b6526f">gain_beta</a>;
-<a name="l00123"></a><a class="code" href="classqp__as.html#a0cb953117d095d43b80b80750b8355f5">00123</a>         <span class="keywordtype">double</span> <a class="code" href="classqp__as.html#a0cb953117d095d43b80b80750b8355f5">gain_gamma</a>;
-<a name="l00125"></a>00125 
-<a name="l00127"></a><a class="code" href="classqp__as.html#af45d1d497ff63c59467f7c8c650b0158">00127</a>         <span class="keywordtype">double</span> <a class="code" href="classqp__as.html#af45d1d497ff63c59467f7c8c650b0158" title="tolerance">tol</a>;
-<a name="l00128"></a>00128 
-<a name="l00129"></a>00129     <span class="comment">// variables and descent direction</span>
-<a name="l00130"></a>00130      
-<a name="l00132"></a><a class="code" href="classqp__as.html#a40696d975ffb89c9f1e43f71f3207ac8">00132</a>         <span class="keywordtype">double</span> *<a class="code" href="classqp__as.html#a40696d975ffb89c9f1e43f71f3207ac8">dX</a>;
-<a name="l00133"></a>00133 
-<a name="l00135"></a><a class="code" href="classqp__as.html#a0484715f0ba7d0c35f6b9c8183d958d4">00135</a>         <span class="keywordtype">double</span> <a class="code" href="classqp__as.html#a0484715f0ba7d0c35f6b9c8183d958d4">alpha</a>;
-<a name="l00136"></a>00136 
-<a name="l00137"></a>00137     <span class="comment">// active set        </span>
-<a name="l00140"></a><a class="code" href="classqp__as.html#adb95e9cb39b791fad69e41b27497b951">00140</a> <span class="comment"></span>        <span class="keywordtype">int</span> *<a class="code" href="classqp__as.html#adb95e9cb39b791fad69e41b27497b951">W</a>;
-<a name="l00141"></a>00141 
-<a name="l00142"></a>00142 <span class="preprocessor">#ifdef QPAS_DOWNDATE</span>
-<a name="l00143"></a>00143 <span class="preprocessor"></span>
-<a name="l00148"></a><a class="code" href="classqp__as.html#ad7ff73b80e9955bf99e1ef0765d4a850">00148</a>         <span class="keywordtype">int</span> *<a class="code" href="classqp__as.html#ad7ff73b80e9955bf99e1ef0765d4a850">W_sign</a>;
-<a name="l00149"></a>00149 <span class="preprocessor">#endif</span>
-<a name="l00150"></a>00150 <span class="preprocessor"></span>
-<a name="l00153"></a><a class="code" href="classqp__as.html#a0b6f465d0de92c4aa47fcd4676795238">00153</a>         <span class="keywordtype">int</span> <a class="code" href="classqp__as.html#a0b6f465d0de92c4aa47fcd4676795238">nW</a>;
-<a name="l00154"></a>00154 
-<a name="l00156"></a><a class="code" href="classqp__as.html#a666c41482c7512440dd1a15bd2674c94">00156</a>         std::vector &lt;bound&gt; <a class="code" href="classqp__as.html#a666c41482c7512440dd1a15bd2674c94" title="Vector of bounds.">Bounds</a>;
-<a name="l00157"></a>00157 };
-<a name="l00158"></a>00158 
-<a name="l00160"></a>00160 <span class="preprocessor">#endif </span><span class="comment">/*QPAS_H*/</span>
+<a name="l00120"></a><a class="code" href="classqp__as.html#afde4ceb30a8f4760d806e462762fe4c2">00120</a>         <span class="keywordtype">double</span> <a class="code" href="classqp__as.html#afde4ceb30a8f4760d806e462762fe4c2" title="Gains used in objective function.">gain_alpha</a>;
+<a name="l00121"></a><a class="code" href="classqp__as.html#af8de01b4c112e024b9a9c838d6b6526f">00121</a>         <span class="keywordtype">double</span> <a class="code" href="classqp__as.html#af8de01b4c112e024b9a9c838d6b6526f">gain_beta</a>;
+<a name="l00122"></a><a class="code" href="classqp__as.html#a0cb953117d095d43b80b80750b8355f5">00122</a>         <span class="keywordtype">double</span> <a class="code" href="classqp__as.html#a0cb953117d095d43b80b80750b8355f5">gain_gamma</a>;
+<a name="l00124"></a>00124 
+<a name="l00126"></a><a class="code" href="classqp__as.html#af45d1d497ff63c59467f7c8c650b0158">00126</a>         <span class="keywordtype">double</span> <a class="code" href="classqp__as.html#af45d1d497ff63c59467f7c8c650b0158" title="tolerance">tol</a>;
+<a name="l00127"></a>00127 
+<a name="l00128"></a>00128     <span class="comment">// variables and descent direction</span>
+<a name="l00129"></a>00129      
+<a name="l00131"></a><a class="code" href="classqp__as.html#a40696d975ffb89c9f1e43f71f3207ac8">00131</a>         <span class="keywordtype">double</span> *<a class="code" href="classqp__as.html#a40696d975ffb89c9f1e43f71f3207ac8">dX</a>;
+<a name="l00132"></a>00132 
+<a name="l00134"></a><a class="code" href="classqp__as.html#a0484715f0ba7d0c35f6b9c8183d958d4">00134</a>         <span class="keywordtype">double</span> <a class="code" href="classqp__as.html#a0484715f0ba7d0c35f6b9c8183d958d4">alpha</a>;
+<a name="l00135"></a>00135 
+<a name="l00136"></a>00136     <span class="comment">// active set        </span>
+<a name="l00139"></a><a class="code" href="classqp__as.html#adb95e9cb39b791fad69e41b27497b951">00139</a> <span class="comment"></span>        <span class="keywordtype">int</span> *<a class="code" href="classqp__as.html#adb95e9cb39b791fad69e41b27497b951">W</a>;
+<a name="l00140"></a>00140 
+<a name="l00141"></a>00141 <span class="preprocessor">#ifdef QPAS_DOWNDATE</span>
+<a name="l00142"></a>00142 <span class="preprocessor"></span>
+<a name="l00147"></a><a class="code" href="classqp__as.html#ad7ff73b80e9955bf99e1ef0765d4a850">00147</a>         <span class="keywordtype">int</span> *<a class="code" href="classqp__as.html#ad7ff73b80e9955bf99e1ef0765d4a850">W_sign</a>;
+<a name="l00148"></a>00148 <span class="preprocessor">#endif</span>
+<a name="l00149"></a>00149 <span class="preprocessor"></span>
+<a name="l00152"></a><a class="code" href="classqp__as.html#a0b6f465d0de92c4aa47fcd4676795238">00152</a>         <span class="keywordtype">int</span> <a class="code" href="classqp__as.html#a0b6f465d0de92c4aa47fcd4676795238">nW</a>;
+<a name="l00153"></a>00153 
+<a name="l00155"></a><a class="code" href="classqp__as.html#a666c41482c7512440dd1a15bd2674c94">00155</a>         std::vector &lt;bound&gt; <a class="code" href="classqp__as.html#a666c41482c7512440dd1a15bd2674c94" title="Vector of bounds.">Bounds</a>;
+<a name="l00156"></a>00156 };
+<a name="l00157"></a>00157 
+<a name="l00159"></a>00159 <span class="preprocessor">#endif </span><span class="comment">/*QPAS_H*/</span>
 </pre></div></div>
 </div>
 <hr class="footer"/><address class="footer"><small>Generated by&#160;

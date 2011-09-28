@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>A sparse MPC solver for walking motion generation.: src/qp_as.cpp Source File</title>
+<title>A sparse MPC solver for walking motion generation.: solver/qp_as.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -38,7 +38,7 @@
   </div>
 <div class="header">
   <div class="headertitle">
-<h1>src/qp_as.cpp</h1>  </div>
+<h1>solver/qp_as.cpp</h1>  </div>
 </div>
 <div class="contents">
 <a href="qp__as_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 
@@ -85,7 +85,7 @@
 <a name="l00065"></a>00065 
 <a name="l00066"></a>00066     <a class="code" href="classqp__as.html#a24321a3e24c1cd4ed4b5b5a217c58e11" title="Parameters, which are fed to the methods of chol_solve class.">chol_param</a>.<a class="code" href="structchol__solve__param.html#a7fc0216270bba41da3c05f87c30af6a9">i2P</a> = 1/(2 * (Gamma/2));
 <a name="l00067"></a>00067 
-<a name="l00068"></a>00068     <a class="code" href="classqp__as.html#a24321a3e24c1cd4ed4b5b5a217c58e11" title="Parameters, which are fed to the methods of chol_solve class.">chol_param</a>.<a class="code" href="structchol__solve__param.html#a79cf71be21fe8cb44babcc19284721a3">iHg</a> = <span class="keyword">new</span> <span class="keywordtype">double</span>[<a class="code" href="group__gINTERNALS.html#gae8780c341d0ab405a8d820726f7e3b5c" title="Total number of variables.">NUM_VAR</a>*<a class="code" href="classqp__as.html#a99df86781d02a46d077d0e2dc42c1729">N</a>]();
+<a name="l00068"></a>00068     <a class="code" href="classqp__as.html#a24321a3e24c1cd4ed4b5b5a217c58e11" title="Parameters, which are fed to the methods of chol_solve class.">chol_param</a>.<a class="code" href="structchol__solve__param.html#a79cf71be21fe8cb44babcc19284721a3">iHg</a> = <span class="keyword">new</span> <span class="keywordtype">double</span>[2*<a class="code" href="classqp__as.html#a99df86781d02a46d077d0e2dc42c1729">N</a>];
 <a name="l00069"></a>00069 
 <a name="l00070"></a>00070     <a class="code" href="classqp__as.html#a24321a3e24c1cd4ed4b5b5a217c58e11" title="Parameters, which are fed to the methods of chol_solve class.">chol_param</a>.<a class="code" href="structchol__solve__param.html#a3bb1e83250785f41203651ea2ab645fa">T</a> = NULL;
 <a name="l00071"></a>00071     <a class="code" href="classqp__as.html#a24321a3e24c1cd4ed4b5b5a217c58e11" title="Parameters, which are fed to the methods of chol_solve class.">chol_param</a>.<a class="code" href="structchol__solve__param.html#ad44b7802c945fbfc6855c157626afffd">h</a> = NULL;
@@ -154,7 +154,7 @@
 <a name="l00147"></a>00147     <a class="code" href="classqp__as.html#a24321a3e24c1cd4ed4b5b5a217c58e11" title="Parameters, which are fed to the methods of chol_solve class.">chol_param</a>.<a class="code" href="structchol__solve__param.html#a3bb1e83250785f41203651ea2ab645fa">T</a> = T_;
 <a name="l00148"></a>00148     <a class="code" href="classqp__as.html#a24321a3e24c1cd4ed4b5b5a217c58e11" title="Parameters, which are fed to the methods of chol_solve class.">chol_param</a>.<a class="code" href="structchol__solve__param.html#ad44b7802c945fbfc6855c157626afffd">h</a> = h_;
 <a name="l00149"></a>00149 <span class="preprocessor">#ifdef QPAS_VARIABLE_T_h</span>
-<a name="l00150"></a>00150 <span class="preprocessor"></span>    <a class="code" href="classqp__as.html#a24321a3e24c1cd4ed4b5b5a217c58e11" title="Parameters, which are fed to the methods of chol_solve class.">chol_param</a>.<a class="code" href="structchol__solve__param.html#a134a99b291015b74666c77717fe9f4c4">dh</a> = <span class="keyword">new</span> <span class="keywordtype">double</span>[<a class="code" href="classqp__as.html#a99df86781d02a46d077d0e2dc42c1729">N</a>-1]();
+<a name="l00150"></a>00150 <span class="preprocessor"></span>    <a class="code" href="classqp__as.html#a24321a3e24c1cd4ed4b5b5a217c58e11" title="Parameters, which are fed to the methods of chol_solve class.">chol_param</a>.<a class="code" href="structchol__solve__param.html#a134a99b291015b74666c77717fe9f4c4">dh</a> = <span class="keyword">new</span> <span class="keywordtype">double</span>[<a class="code" href="classqp__as.html#a99df86781d02a46d077d0e2dc42c1729">N</a>-1];
 <a name="l00151"></a>00151     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="classqp__as.html#a99df86781d02a46d077d0e2dc42c1729">N</a>-1; i++)
 <a name="l00152"></a>00152     {
 <a name="l00153"></a>00153         <a class="code" href="classqp__as.html#a24321a3e24c1cd4ed4b5b5a217c58e11" title="Parameters, which are fed to the methods of chol_solve class.">chol_param</a>.<a class="code" href="structchol__solve__param.html#a134a99b291015b74666c77717fe9f4c4">dh</a>[i] = <a class="code" href="classqp__as.html#a24321a3e24c1cd4ed4b5b5a217c58e11" title="Parameters, which are fed to the methods of chol_solve class.">chol_param</a>.<a class="code" href="structchol__solve__param.html#ad44b7802c945fbfc6855c157626afffd">h</a>[i+1] - <a class="code" href="classqp__as.html#a24321a3e24c1cd4ed4b5b5a217c58e11" title="Parameters, which are fed to the methods of chol_solve class.">chol_param</a>.<a class="code" href="structchol__solve__param.html#ad44b7802c945fbfc6855c157626afffd">h</a>[i];
@@ -297,9 +297,9 @@
 <a name="l00301"></a>00301         p1 = zref_y[i];
 <a name="l00302"></a>00302 
 <a name="l00303"></a>00303         <span class="comment">// inv (2*H) * R&#39; * Cp&#39; * zref</span>
-<a name="l00304"></a>00304         <a class="code" href="classqp__as.html#a24321a3e24c1cd4ed4b5b5a217c58e11" title="Parameters, which are fed to the methods of chol_solve class.">chol_param</a>.<a class="code" href="structchol__solve__param.html#a79cf71be21fe8cb44babcc19284721a3">iHg</a>[i*<a class="code" href="group__gINTERNALS.html#ga37814f52692ffc71ef43e6b06e891440" title="Number of state variables.">NUM_STATE_VAR</a> + 0] = 
+<a name="l00304"></a>00304         <a class="code" href="classqp__as.html#a24321a3e24c1cd4ed4b5b5a217c58e11" title="Parameters, which are fed to the methods of chol_solve class.">chol_param</a>.<a class="code" href="structchol__solve__param.html#a79cf71be21fe8cb44babcc19284721a3">iHg</a>[i*2] = 
 <a name="l00305"></a>00305             -<a class="code" href="classqp__as.html#a24321a3e24c1cd4ed4b5b5a217c58e11" title="Parameters, which are fed to the methods of chol_solve class.">chol_param</a>.<a class="code" href="structchol__solve__param.html#a3432ea7cd2cede8f12713d2fa3497c7e">i2Q</a>[0] * (cosA*p0 + sinA*p1)*<a class="code" href="classqp__as.html#af8de01b4c112e024b9a9c838d6b6526f">gain_beta</a>;
-<a name="l00306"></a>00306         <a class="code" href="classqp__as.html#a24321a3e24c1cd4ed4b5b5a217c58e11" title="Parameters, which are fed to the methods of chol_solve class.">chol_param</a>.<a class="code" href="structchol__solve__param.html#a79cf71be21fe8cb44babcc19284721a3">iHg</a>[i*<a class="code" href="group__gINTERNALS.html#ga37814f52692ffc71ef43e6b06e891440" title="Number of state variables.">NUM_STATE_VAR</a> + 3] = 
+<a name="l00306"></a>00306         <a class="code" href="classqp__as.html#a24321a3e24c1cd4ed4b5b5a217c58e11" title="Parameters, which are fed to the methods of chol_solve class.">chol_param</a>.<a class="code" href="structchol__solve__param.html#a79cf71be21fe8cb44babcc19284721a3">iHg</a>[i*2 + 1] = 
 <a name="l00307"></a>00307             -<a class="code" href="classqp__as.html#a24321a3e24c1cd4ed4b5b5a217c58e11" title="Parameters, which are fed to the methods of chol_solve class.">chol_param</a>.<a class="code" href="structchol__solve__param.html#a3432ea7cd2cede8f12713d2fa3497c7e">i2Q</a>[0] * (-sinA*p0 + cosA*p1)*<a class="code" href="classqp__as.html#af8de01b4c112e024b9a9c838d6b6526f">gain_beta</a>; 
 <a name="l00308"></a>00308     }
 <a name="l00309"></a>00309 }
