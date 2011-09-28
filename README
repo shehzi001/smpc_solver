@@ -10,9 +10,9 @@ Tests and demos are placed in 'test' subfolder.
 Requirements:
     GNU make
 
-Compilation can be started by running make without targets. When 
-'test' target is specified, the tests and examples in the 'test' 
-folder are also build.
+Compilation of the solver can be started by running make without 
+targets. When 'test' target is specified, the tests and examples 
+in the 'test' folder and simulation support library are also built.
 
 The newest sources are available on GitHub:
     http://github.com/asherikov/smpc_solver
