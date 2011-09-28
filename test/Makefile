@@ -7,8 +7,7 @@ LDFLAGS+=-L../solver/ -lsmpc_solver -L../WMG/ -lwmg
 TESTS=\
 	  test_01 \
 	  test_02 \
-	  test_03 \
-	  test_04
+	  test_03
 
 
 all: ${TESTS} demo
