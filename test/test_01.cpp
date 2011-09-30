@@ -16,14 +16,15 @@ int main(int argc, char **argv)
 {
     bool dump_to_stdout = false;
     ifstream inFile;
+    ofstream fs_out;
 
     //-----------------------------------------------------------
     // initialize
     WMG wmg;
     init_01 (&wmg);
 
-    std::string filename("test_01_fs.m");
-    wmg.FS2file(filename); // output results for later use in Matlab/Octave
+    std::string fs_out_filename("test_01_fs.m");
+    wmg.FS2file(fs_out_filename); // output results for later use in Matlab/Octave
     //-----------------------------------------------------------
 
 
@@ -38,7 +39,6 @@ int main(int argc, char **argv)
         // the algorithm in Octave/MATLAB
         inFile.open ("./data/states_inv_downdate.dat");
         //inFile.open ("./data/states_chol_downdate.dat");
-        //inFile.open ("./data/states_chol_nodowndate.dat");
     }
 
 
@@ -51,6 +51,13 @@ int main(int argc, char **argv)
     double err = 0;
     double max_err = 0;
     double max_err_first_state = 0;
+
+
+    double X[6];
+    fs_out.open(fs_out_filename.c_str(), fstream::app);
+    fs_out.precision (numeric_limits<double>::digits10);
+    fs_out << endl << endl;
+    fs_out << "CoM_ZMP = [";
    
 
 
@@ -71,6 +78,8 @@ int main(int argc, char **argv)
         solver.get_next_state_tilde (wmg.X_tilde);
         //------------------------------------------------------
 
+        solver.get_next_state (X);
+        fs_out << endl << X[0] << " " << X[3] << " " << wmg.X_tilde[0] << " " << wmg.X_tilde[3] << ";";
 
         if (dump_to_stdout)
         {
@@ -97,7 +106,7 @@ int main(int argc, char **argv)
                 {
                     max_err = err;
                 }
-                //printf("value: % 8e   ref: % 8e   err: % 8e\n", wmg.FP_init[i], dataref, err);
+                //printf("value: % 8e   ref: % 8e   err: % 8e\n", wmg.X[i], dataref, err);
             }
             cout << "Max. error (first state, all steps): " << max_err_first_state << endl;
             cout << "Max. error (all states, all steps): " << max_err << endl;
@@ -106,6 +115,10 @@ int main(int argc, char **argv)
     }
     inFile.close();
 
+    fs_out << "];" << endl;
+    fs_out << "plot (CoM_ZMP(:,1), CoM_ZMP(:,2), 'b');" << endl;
+    fs_out << "plot (CoM_ZMP(:,3), CoM_ZMP(:,4), 'ks','MarkerSize',5);" << endl;
+    fs_out.close();
 
     if (!dump_to_stdout)
         test_end(argv[0]);

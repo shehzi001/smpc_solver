@@ -133,7 +133,7 @@ void WMG::init(const int _N, const double _T, const double _hCoM)
  * @param[in] x_relative x_relative X position [meter] relative to the previous footstep.
  * @param[in] y_relative y_relative Y position [meter] relative to the previous footstep.
  * @param[in] angle_relative angle_relative Angle [rad.] relative to the previous footstep.
- * @param[in] nSS Number of (preview window) iterations in Single Support.
+ * @param[in] n_this Number of (preview window) iterations in the added step.
  * @param[in] n Total number of (preview window) iterations, i.e., nSS + nDS.
  * @param[in] d Vector of the PoS constraints (assumed to be [4 x 1]).
  * @param[in] type (optional) type of the footstep.
@@ -144,7 +144,7 @@ void WMG::AddFootstep(
         const double x_relative, 
         const double y_relative, 
         const double angle_relative, 
-        const int nSS, 
+        const int n_this, 
         const int n, 
         const double *d, 
         const fs_type type)
@@ -153,8 +153,8 @@ void WMG::AddFootstep(
     def_constraint[1] = d[1];
     def_constraint[2] = d[2];
     def_constraint[3] = d[3];
-    def_repeat_times = nSS;
-    def_ds_num = n - nSS;
+    def_repeat_times = n_this;
+    def_ds_num = n - n_this;
     AddFootstep(x_relative, y_relative, angle_relative, type);
 }
 
@@ -167,7 +167,7 @@ void WMG::AddFootstep(
  * @param[in] x_relative x_relative X position [meter] relative to the previous footstep.
  * @param[in] y_relative y_relative Y position [meter] relative to the previous footstep.
  * @param[in] angle_relative angle_relative Angle [rad.] relative to the previous footstep.
- * @param[in] nSS Number of (preview window) iterations in Single Support.
+ * @param[in] n_this Number of (preview window) iterations in the added step.
  * @param[in] n Total number of (preview window) iterations, i.e., nSS + nDS.
  * @param[in] type (optional) type of the footstep.
  *
@@ -178,12 +178,12 @@ void WMG::AddFootstep(
         const double x_relative, 
         const double y_relative, 
         const double angle_relative, 
-        const int nSS, 
+        const int n_this, 
         const int n, 
         const fs_type type)
 {
-    def_repeat_times = nSS;
-    def_ds_num = n - nSS;
+    def_repeat_times = n_this;
+    def_ds_num = n - n_this;
     AddFootstep(x_relative, y_relative, angle_relative, type);
 }
 
@@ -296,9 +296,7 @@ WMGret WMG::FormPreviewWindow()
         else
         {
             win_step_num++;
-            /// @todo "-1" is added to be compatible with the old version,
-            /// this must be a bug.
-            if (win_step_num == (int) FS.size() - 1)
+            if (win_step_num == (int) FS.size())
             {
                 retval = WMG_HALT;
                 printf(" \n\n====================================\n ");        
