@@ -58,7 +58,7 @@ namespace state_handling
     void tilde_to_orig (const double h, double *state)
     {
         state[0] = state[0] + h * state[2];
-        state[0] = state[3] + h * state[5];
+        state[3] = state[3] + h * state[5];
     }
 
 
