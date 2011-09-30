@@ -22,11 +22,10 @@ int main(int argc, char **argv)
             0.1,    // sampling time [sec.]
             0.261); // height of the center of mass [meter]
 
-    // Double supports are not yet supported, hence the initial
-    // double support is simulated by a single support with one
+    // Double supports is represented by a single support with one
     // large foot.
     double d[4] = {0.09 , 0.025, 0.03, 0.075};
-    wmg.AddFootstep(0.0, 0.05, 0.0, 3, 3, 1, d);
+    wmg.AddFootstep(0.0, 0.05, 0.0, 3, 3, d);
 
     // each step is defined relatively to the previous step
     double z = 5.0*M_PI/180.0;  // relative angle
@@ -34,7 +33,7 @@ int main(int argc, char **argv)
     double step_y = 0.1;        // relative Y position
 
     d[3] = 0.025;   // all subsequent steps have normal feet size
-    wmg.AddFootstep(0.0   , -step_y, 0.0 , 4,  4, -1, d);
+    wmg.AddFootstep(0.0   , -step_y, 0.0 , 4,  4, d);
     wmg.AddFootstep(step_x,  step_y, z);
     wmg.AddFootstep(step_x, -step_y, z);
     wmg.AddFootstep(step_x,  step_y, z);
@@ -58,9 +57,9 @@ int main(int argc, char **argv)
   
     for(;;)
     {
-        wmg.FormPreviewWindow();    // initialize input for QP
-        if (wmg.halt)               // not enough time steps left (<15)
+        if (wmg.FormPreviewWindow() == WMG_HALT) // initialize input for QP
         {
+            // not enough time steps left (<15)
             break;
         }
         //------------------------------------------------------

@@ -53,8 +53,7 @@ int main(int argc, char **argv)
         cout << endl;
 
         //------------------------------------------------------
-        wmg.FormPreviewWindow();    
-        if (wmg.halt)
+        if (wmg.FormPreviewWindow() == WMG_HALT)
         {
             cout << "EXIT (halt = 1)" << endl;
             break;

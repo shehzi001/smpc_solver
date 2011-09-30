@@ -21,9 +21,10 @@ int main(int argc, char **argv)
     // initialize
     WMG wmg;
     init_01 (&wmg);
-    //wmg.FS2file(); // output results for later use in Matlab/Octave
-    //-----------------------------------------------------------
 
+    std::string filename("test_01_fs.m");
+    wmg.FS2file(filename); // output results for later use in Matlab/Octave
+    //-----------------------------------------------------------
 
 
     if ((argc == 2) && (strcmp (argv[1], "stdout") == 0))
@@ -56,8 +57,7 @@ int main(int argc, char **argv)
     for(;;)
     {
         //------------------------------------------------------
-        wmg.FormPreviewWindow();    
-        if (wmg.halt)
+        if (wmg.FormPreviewWindow() == WMG_HALT)
         {
             cout << "EXIT (halt = 1)" << endl;
             break;

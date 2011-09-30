@@ -14,11 +14,7 @@
 
 #include "point2d.h"
 #include "rect_constraint.h"
-
-
-/****************************************
- * DEFINES
- ****************************************/
+#include "WMG.h"
 
 
 
@@ -30,52 +26,27 @@
 /// @{
 
 /** \brief Defines a footstep. */
-class FootStep
+class FootStep : public Point2D, public RectangularConstraint_ZMP
 {
     public:
-        FootStep();
-        FootStep(double _angle, Point2D _p, int _nSS, int _n, int _RL);
-        FootStep(double _angle, Point2D _p, int _nSS, int _n, int _RL, double *_d);
-        void set(double _angle, Point2D _p, int _nSS, int _n, int _RL);
-        void print();
+        FootStep(const double, const double, const double, const int, const fs_type, const double *);
 
 
-
-        /** \brief Position (in the world frame) of a footstep [meter]. */
-        Point2D p;
-
-        /** \brief Angle (relative to the world frame) of a footstep [rad.]. */
+        /// Angle (relative to the world frame) of a footstep [rad.].
         double angle;
 
-        /** \brief cos(angle). */
+        /// cos(angle).
         double ca;
 
-        /** \brief sin(angle). */
+        /// sin(angle).
         double sa;
 
-        /** \brief Constraints defining the Polyogn of Support (PoS). */
-        RectangularConstraint_ZMP ctr;
+        /// number of times this step appears in the preview window.
+        int repeat_times;
 
-        /** \brief Offset from the "point of interest of a constraint" [meter] defined in the local frame. 
-                
-            \note This is used in order to define ZMP_ref
-         */
-        Point2D Offset;
-
-        /** \brief If RL = 1 the left foot is in support. If RL = -1 the right foot is in support. */
-        int RL;
-
-        /** \brief Number of (preview window) iterations in Single Support. */
-        int nSS;
-
-        /** \brief Total number of (preview window) iterations, i.e., nSS + nDS. */
-        int n;
+        /// type of the step.
+        fs_type type;
 };
-
-
-/****************************************
- * PROTOTYPES 
- ****************************************/
 
 ///@}
 #endif /*FOOTSTEP_H*/

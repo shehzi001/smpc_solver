@@ -24,12 +24,17 @@
 class Point2D
 {
     public:
-        Point2D();
-        Point2D(double _x, double _y);
-        void print();
-        void set(double _x, double _y);
-
-
+        /**
+         * @brief A constructor.
+         *
+         * @param[in] x_ x coordinate.
+         * @param[in] y_ y coordinate.
+         */
+        Point2D(const double x_, const double y_)
+        {
+            x = x_;
+            y = y_;
+        };
 
         /** \brief x position [meter]*/
         double x;

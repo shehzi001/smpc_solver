@@ -13,6 +13,7 @@
  * INCLUDES 
  ****************************************/
 
+#include <string>
 #include <vector>
 
 #include "common_const.h"
@@ -27,20 +28,47 @@ class FootStep;
 /// @addtogroup gWMG_API
 /// @{
 
+enum WMGret
+{
+    WMG_OK,
+    WMG_HALT
+};
+
+enum fs_type
+{
+    FS_TYPE_SS,
+    FS_TYPE_DS
+};
+
 /** \brief Defines the parameters of the Walking Pattern Generator. */
 class WMG
 {
     public:
         WMG();
         ~WMG();
-        void init (int _N, double _T, double _hCoM);
-        void AddFootstep(double x_relative, double y_relative, double angle_relative, int _nSS, int _n, int _RL, double *_d);
-        void AddFootstep(double x_relative, double y_relative, double angle_relative, int _nSS, int _n);
-        void AddFootstep(double x_relative, double y_relative, double angle_relative);
-        void FormPreviewWindow();
-        void print_ind();
-        void FS2file();
-        void output_CoM_ZMP();
+        void init (const int, const double, const double);
+        void AddFootstep(
+                const double, 
+                const double, 
+                const double, 
+                const int, 
+                const int, 
+                const double *, 
+                const fs_type type = FS_TYPE_SS);
+        void AddFootstep(
+                const double, 
+                const double, 
+                const double, 
+                const int, 
+                const int, 
+                const fs_type type = FS_TYPE_SS);
+        void AddFootstep(
+                const double, 
+                const double, 
+                const double, 
+                const fs_type type = FS_TYPE_SS);
+        WMGret FormPreviewWindow();
+        void FS2file(const std::string);
 
 
 
@@ -64,31 +92,11 @@ class WMG
         /** \brief h = #hCoM/#gravity. */
         double *h;
         
-        /** \brief Contains the reference profile for the ZMP. */
-        double *ZMP_ref;
-
-        /** \brief Initial feasible point with respect to the equality and inequality constraints. */
+        /// A chunk of memory allocated for solution.
         double *X;
 
         /** \brief Initial state. */
         double X_tilde[NUM_STATE_VAR];
-
-        /** \brief Initial angle */
-        double init_angle;
-
-        /** \brief Indexes of footsteps appearing in the current preview window
-         */
-        int *ind; 
-
-        /** \brief This is the step in FS that is at the start of the current preview window. I don't need
-        to pop_front steps from FS and that is why I use stl vector and not stl deque). */
-        int current_step_number;
-
-        /** \brief Iteration counter. Starts from 0 and increases (by one) with each preview window. */
-        int counter;
-
-        /** \brief If halt = 1 then stop the execution (else keep going) */
-        int halt;
 
         double *angle;
         double *zref_x;
@@ -97,7 +105,15 @@ class WMG
         double *ub;
 
     private:
-        void slide();
+        double def_constraint[4];
+        int def_repeat_times;
+
+        double def_ds_constraint[4];
+        int def_ds_num;
+
+        /** \brief This is the step in FS that is at the start of the current preview window. I don't need
+        to pop_front steps from FS and that is why I use stl vector and not stl deque). */
+        int current_step_number;
 };
 
 ///@}

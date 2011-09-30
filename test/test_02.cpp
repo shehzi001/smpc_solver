@@ -28,11 +28,10 @@ int main(int argc, char **argv)
     test_start(argv[0]);
 
     smpc_solver solver(wmg.N);
-    for(;;)
+    for(int counter = 0 ;; counter++)
     {
         //------------------------------------------------------
-        wmg.FormPreviewWindow();    
-        if (wmg.halt)
+        if (wmg.FormPreviewWindow() == WMG_HALT)
         {
             cout << "EXIT (halt = 1)" << endl;
             break;
@@ -53,7 +52,7 @@ int main(int argc, char **argv)
         gettimeofday(&end,0);             
         CurrentCPUTime = end.tv_sec - start.tv_sec + 0.000001 * (end.tv_usec - start.tv_usec);
         double TT = CurrentCPUTime/NN;
-        printf("(%i) time = % f (%i)\n", wmg.counter - 1, TT, nW);
+        printf("(%i) time = % f (%i)\n", counter, TT, nW);
         //------------------------------------------------------
     }
 

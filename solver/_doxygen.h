@@ -26,7 +26,7 @@
  * @section MainRef References
  *
  * Dimitar Nikolaev Dimitrov, Alexander Sherikov, and Pierre-Brice Wieber\n
- * <a href ="http://www.aass.oru.se/Research/Learning/drdv_dir/publications/iros11/iros11_1.html">
+ * <a href="http://www.aass.oru.se/Research/Learning/drdv_dir/publications/iros11/iros11_1.html">
  * A sparse model predictive control formulation for walking motion generation</a>\n
  * IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS),\n
  * September 25-30, 2011, San Francisco, California

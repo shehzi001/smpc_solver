@@ -7,7 +7,8 @@ LDFLAGS+=-L../solver/ -lsmpc_solver -L../WMG/ -lwmg
 TESTS=\
 	  test_01 \
 	  test_02 \
-	  test_03
+	  test_03 \
+	  test_04
 
 
 all: ${TESTS} demo
@@ -21,7 +22,7 @@ demo:
 	${CXX} -o $@.a $@.o ${LDFLAGS}
 
 clean:
-	rm -f *.a *.o
+	rm -f *.a *.o test_*.m
 
 # dummy targets
 .PHONY: clean
