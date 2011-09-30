@@ -24,9 +24,9 @@
 
 
 smpc_solver::smpc_solver (
-                int N,
-                double Alpha, double Beta, double Gamma,
-                double regularization, double tol) : 
+                const int N,
+                const double Alpha, const double Beta, const double Gamma,
+                const double regularization, const double tol) : 
     qpas_solver (new qp_as (N, Alpha, Beta, Gamma, regularization, tol)) {}
 
 
@@ -37,11 +37,11 @@ smpc_solver::~smpc_solver()
 
 
 void smpc_solver::init(
-        double* T, double* h,
-        double* angle,
-        double* zref_x, double* zref_y,
-        double* lb, double* ub,
-        double* X_tilde,
+        const double* T, const double* h,
+        const double* angle,
+        const double* zref_x, const double* zref_y,
+        const double* lb, const double* ub,
+        const double* X_tilde,
         double* X)
 {
     qpas_solver->init(T, h, angle, zref_x, zref_y, lb, ub, X_tilde, X);
@@ -56,10 +56,10 @@ int smpc_solver::solve()
 
 void smpc_solver::get_next_state_tilde (double *state)
 {
-    state_handling::get_next_state_tilde (state, qpas_solver->X, qpas_solver->chol_param);
+    state_handling::get_next_state_tilde (qpas_solver->chol_param, qpas_solver->X, state);
 }
 
 void smpc_solver::get_next_state (double *state)
 {
-    state_handling::get_next_state (state, qpas_solver->X, qpas_solver->chol_param);
+    state_handling::get_next_state (qpas_solver->chol_param, qpas_solver->X, state);
 }

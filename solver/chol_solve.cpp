@@ -28,7 +28,7 @@
  *
  * @param[in] preview_win_size size of the preview window.
  */
-chol_solve::chol_solve (int preview_win_size)
+chol_solve::chol_solve (const int preview_win_size)
 {
     N = preview_win_size;
 
@@ -76,7 +76,7 @@ chol_solve::~chol_solve()
  * @param[in] x vector x (#NUM_VAR * N).
  * @param[out] result vector E*x (#NUM_STATE_VAR * N)
  */
-void chol_solve::form_Ex (chol_solve_param csp, double *x, double *result)
+void chol_solve::form_Ex (const chol_solve_param& csp, const double *x, double *result)
 {
     int i;
 
@@ -89,7 +89,7 @@ void chol_solve::form_Ex (chol_solve_param csp, double *x, double *result)
 #endif
 
 
-    double *control = &x[N*NUM_STATE_VAR];
+    const double *control = &x[N*NUM_STATE_VAR];
     double *res = result;
 
     for (i = 0; i < N; i++)
@@ -106,7 +106,7 @@ void chol_solve::form_Ex (chol_solve_param csp, double *x, double *result)
         // a pointer to 6 current elements of result
 
         // a pointer to 6 current state variables
-        double *xc = &x[i*NUM_STATE_VAR];
+        const double *xc = &x[i*NUM_STATE_VAR];
 
 
 
@@ -153,7 +153,7 @@ void chol_solve::form_Ex (chol_solve_param csp, double *x, double *result)
  * @param[in] x vector x (#NUM_STATE_VAR * N).
  * @param[out] result vector E' * nu (#NUM_VAR * N)
  */
-void chol_solve::form_ETx (chol_solve_param csp, double *x, double *result)
+void chol_solve::form_ETx (const chol_solve_param& csp, const double *x, double *result)
 {
     int i;
 
@@ -179,7 +179,7 @@ void chol_solve::form_ETx (chol_solve_param csp, double *x, double *result)
 
         // a pointer to 6 current elements of result
         // a pointer to 6 current elements of nu
-        double *xc = &x[i*NUM_STATE_VAR];
+        const double *xc = &x[i*NUM_STATE_VAR];
 
 
         // result = -R' * nu
@@ -373,7 +373,11 @@ void chol_solve::solve_backward(double *x)
  * @param[in] var_num number of constrained variable
  * @param[out] row 's_a' row
  */
-void chol_solve::form_sa_row(chol_solve_param csp, int ic_num, int var_num, double *row)
+void chol_solve::form_sa_row(
+        const chol_solve_param& csp, 
+        const int ic_num, 
+        const int var_num, 
+        double *row)
 {
     double aiH = csp.i2Q[0]; // a'*inv(H) = a'*inv(H)*a
     int state_num = var_num / 2; // number of state in the preview window
@@ -429,7 +433,10 @@ void chol_solve::form_sa_row(chol_solve_param csp, int ic_num, int var_num, doub
  * @param[in] x    initial guess.
  * @param[out] dx   feasible descent direction, must be allocated.
  */
-void chol_solve::solve(chol_solve_param csp, double *x, double *dx)
+void chol_solve::solve(
+        const chol_solve_param& csp, 
+        const double *x, 
+        double *dx)
 {
     double *s_nu = nu;
     int i;
@@ -494,7 +501,12 @@ void chol_solve::solve(chol_solve_param csp, double *x, double *dx)
  * @param[in] x     initial guess.
  * @param[out] dx   feasible descent direction, must be allocated.
  */
-void chol_solve::up_resolve(chol_solve_param csp, int nW, int *W, double *x, double *dx)
+void chol_solve::up_resolve(
+        const chol_solve_param& csp, 
+        const int nW, 
+        const int *W, 
+        const double *x, 
+        double *dx)
 {
     update (csp, nW, W);
     update_z (csp, nW, W, x);
@@ -510,7 +522,7 @@ void chol_solve::up_resolve(chol_solve_param csp, int nW, int *W, double *x, dou
  * @param[in] nW number of added inequality constraints + 1.
  * @param[in] W indexes of added inequality constraints + one index to be added.
  */
-void chol_solve::update (chol_solve_param csp, int nW, int *W)
+void chol_solve::update (const chol_solve_param& csp, const int nW, const int *W)
 {
     int i, j, k;
 
@@ -621,7 +633,11 @@ void chol_solve::update (chol_solve_param csp, int nW, int *W)
  * @param[in] W     indicies of added constraints.
  * @param[in] x     initial guess.
  */
-void chol_solve::update_z (chol_solve_param csp, int nW, int *W, double *x)
+void chol_solve::update_z (
+        const chol_solve_param& csp, 
+        const int nW, 
+        const int *W, 
+        const double *x)
 {
     int ic_num = nW-1; // index of added constraint in W
     // update lagrange multipliers
@@ -651,7 +667,12 @@ void chol_solve::update_z (chol_solve_param csp, int nW, int *W, double *x)
  * @param[in] x     initial guess.
  * @param[out] dx   feasible descent direction, must be allocated.
  */
-void chol_solve::resolve (chol_solve_param csp, int nW, int *W, double *x, double *dx)
+void chol_solve::resolve (
+        const chol_solve_param& csp, 
+        const int nW, 
+        const int *W, 
+        const double *x, 
+        double *dx)
 {
     int i,j;
 
@@ -723,7 +744,13 @@ void chol_solve::resolve (chol_solve_param csp, int nW, int *W, double *x, doubl
  *
  * @note Downdate of vector @ref pz 'z' is described on the page '@ref pRemoveICz'.
  */
-void chol_solve::down_resolve(chol_solve_param csp, int nW, int *W, int ind_exclude, double *x, double *dx)
+void chol_solve::down_resolve(
+        const chol_solve_param& csp, 
+        const int nW, 
+        const int *W, 
+        const int ind_exclude, 
+        const double *x, 
+        double *dx)
 {
     // for each element of z affected by removed constraint
     // find a base that stays the same
@@ -793,7 +820,11 @@ double * chol_solve::get_lambda()
  * @param[in] ind_exclude index of excluded constraint.
  * @param[in] x     initial guess.
  */
-void chol_solve::downdate(chol_solve_param csp, int nW, int ind_exclude, double *x)
+void chol_solve::downdate(
+        const chol_solve_param& csp, 
+        const int nW, 
+        const int ind_exclude, 
+        const double *x)
 {
     // Shuffle memory pointers to avoid copying of the data.
     double * downdate_row = icL[ind_exclude];

@@ -80,7 +80,7 @@ void L_initializer::chol_dec (double *mx9)
  *
  * @attention Only the elements below the main diagonal are initialized.
  */
-void L_initializer::form_iQBiPB (double *B, double *i2Q, double i2P)
+void L_initializer::form_iQBiPB (const double *B, const double *i2Q, const double i2P)
 {
     // diagonal elements
     iQBiPB[0] = i2P * B[0]*B[0] + i2Q[0];
@@ -103,7 +103,7 @@ void L_initializer::form_iQBiPB (double *B, double *i2Q, double i2P)
  * @param[in] i2Q a vector of 3 elements, which contains
  *              diagonal elements of 0.5*inv(Q).
  */
-void L_initializer::form_iQAT (double T, double A6, double *i2Q)
+void L_initializer::form_iQAT (const double T, const double A6, const double *i2Q)
 {
     iQAT[0] = i2Q[0];
     iQAT[1] = T * i2Q[1];
@@ -123,7 +123,7 @@ void L_initializer::form_iQAT (double T, double A6, double *i2Q)
  *
  * @attention Only the elements below the main diagonal are initialized.
  */
-void L_initializer::form_AiQATiQBiPB (double T, double A6)
+void L_initializer::form_AiQATiQBiPB (const double T, const double A6)
 {
     // 1st column
     AiQATiQBiPB[0] = iQBiPB[0] + iQAT[0] + T*iQAT[1] + A6*iQAT[2];
@@ -151,7 +151,7 @@ void L_initializer::form_AiQATiQBiPB (double T, double A6)
  * @param[in] ecLp previous matrix lying on the diagonal of L
  * @param[in] ecLc the result is stored here
  */
-void L_initializer::form_L_non_diag(double *ecLp, double *ecLc)
+void L_initializer::form_L_non_diag(const double *ecLp, double *ecLc)
 {
     /* L(k+1,k) * L(k,k)' = - inv(Q) * A'
      *
@@ -187,7 +187,7 @@ void L_initializer::form_L_non_diag(double *ecLp, double *ecLc)
  *
  * @attention Only the elements below the main diagonal are initialized.
  */
-void L_initializer::form_L_diag(double *ecLp, double *ecLc)
+void L_initializer::form_L_diag(const double *ecLp, double *ecLc)
 {
     // the first matrix L(0,0) is computed differently
     if (ecLp == NULL)
@@ -227,7 +227,7 @@ void L_initializer::form_L_diag(double *ecLp, double *ecLc)
  * @param[in] N number of states in preview window.
  * @param[out] ecL the memory allocated for L.
  */
-void L_initializer::form_L(chol_solve_param csp, int N, double *ecL)
+void L_initializer::form_L(const chol_solve_param& csp, const int N, double *ecL)
 {
     int i;
     int cur_offset;

@@ -10,6 +10,12 @@
 
 #ifndef DOXYGEN_H
 #define DOXYGEN_H
+
+/**
+ * @todo (low priority) Interface with Matlab/Octave.
+ * @todo Implement interior point method.
+ */
+
 /**
  * @mainpage A sparse MPC solver for walking motion generation.
  *

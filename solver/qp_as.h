@@ -32,7 +32,7 @@ using namespace std;
 class bound
 {
     public:
-        void set (int, double, double, int);
+        void set (const int, const double, const double, const int);
 
 
         /** Variable number (on which to impose the bounds). */
@@ -62,21 +62,30 @@ class qp_as
     public:
 // functions        
         qp_as(
-                int N_, 
-                double Alpha = 150.0, 
-                double Beta = 2000.0, 
-                double Gamma = 1.0,
-                double regularization = 0.01,
-                double tol = 1e-7);
+                const int N_, 
+                const double Alpha = 150.0, 
+                const double Beta = 2000.0, 
+                const double Gamma = 1.0,
+                const double regularization = 0.01,
+                const double tol = 1e-7);
         ~qp_as();
 
-        void init(double*, double*, double*, double*, double*, double*, double*, double*, double*);
+        void init(
+                const double*, 
+                const double*, 
+                const double*, 
+                const double*, 
+                const double*, 
+                const double*, 
+                const double*, 
+                const double*, 
+                double*);
    
 
         int solve ();
 
-        void get_next_state_tilde (double *);
-        void get_next_state (double *);
+        void get_next_state_tilde (const double *);
+        void get_next_state (const double *);
 
 
 // variables
@@ -92,14 +101,14 @@ class qp_as
     private:
 
 // functions        
-        void form_init_fp(double *, double *, double *);
-        void form_iHg(double *, double *);
+        void form_init_fp(const double *, const double *, const double *);
+        void form_iHg(const double *, const double *);
         void initialize_bounds();
-        void form_bounds(double *, double *);
+        void form_bounds(const double *, const double *);
         int check_blocking_bounds();
 
 #ifdef QPAS_DOWNDATE
-        int choose_excl_constr (double *);
+        int choose_excl_constr (const double *);
 #endif
 
 #ifdef SMPCS_DEBUG

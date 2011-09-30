@@ -40,18 +40,18 @@ class L_initializer
         L_initializer();
         ~L_initializer();
 
-        void form_L(chol_solve_param, int, double *);
+        void form_L (const chol_solve_param&, const int, double *);
 
 
     private:
         void chol_dec (double *);
 
-        void form_iQBiPB (double *, double *, double);
-        void form_iQAT (double, double, double *);
-        void form_AiQATiQBiPB (double, double);
+        void form_iQBiPB (const double *, const double *, const double);
+        void form_iQAT (const double, const double, const double *);
+        void form_AiQATiQBiPB (const double, const double);
 
-        void form_L_non_diag(double *, double *);
-        void form_L_diag(double *, double *);
+        void form_L_non_diag(const double *, double *);
+        void form_L_diag(const double *, double *);
 
 
         // intermediate results used in computation of L

@@ -28,7 +28,7 @@
  * @param[in] ub_ upper bound
  * @param[in] active activity of the bound
  */
-void bound::set(int var_num_, double lb_, double ub_, int active)
+void bound::set(const int var_num_, const double lb_, const double ub_, const int active)
 {
     var_num = var_num_;
     lb = lb_;
@@ -50,7 +50,13 @@ void bound::set(int var_num_, double lb_, double ub_, int active)
     @param[in] regularization regularization
     @param[in] tol_ tolerance
 */
-qp_as::qp_as(int N_, double Alpha, double Beta, double Gamma, double regularization, double tol_) : chol (N_)
+qp_as::qp_as(
+        const int N_, 
+        const double Alpha, 
+        const double Beta, 
+        const double Gamma, 
+        const double regularization, 
+        const double tol_) : chol (N_)
 {
     N = N_;
     tol = tol_;
@@ -132,14 +138,14 @@ qp_as::~qp_as()
     @param[in,out] X_ initial guess / solution of optimization problem
 */
 void qp_as::init(
-        double* T_, 
-        double* h_, 
-        double* angle,
-        double* zref_x,
-        double* zref_y,
-        double* lb,
-        double* ub,
-        double* X_tilde,
+        const double* T_, 
+        const double* h_, 
+        const double* angle,
+        const double* zref_x,
+        const double* zref_y,
+        const double* lb,
+        const double* ub,
+        const double* X_tilde,
         double* X_)
 {
     nW = 0;
@@ -179,11 +185,11 @@ void qp_as::init(
  * First we perform a change of variable to @ref pX_tilde "X_tilde"
  * generate a feasible point, and then we go back to @ref pX_bar "X_bar".
  */
-void qp_as::form_init_fp(double *zref_x, double *zref_y, double *X_tilde)
+void qp_as::form_init_fp(const double *zref_x, const double *zref_y, const double *X_tilde)
 {
     double *control = &X[NUM_STATE_VAR*N];
     double *cur_state = X;
-    double *prev_state = X_tilde;
+    const double *prev_state = X_tilde;
 
 #ifndef QPAS_VARIABLE_T_h    
     //------------------------------------
@@ -274,7 +280,7 @@ void qp_as::form_init_fp(double *zref_x, double *zref_y, double *X_tilde)
     cur_state = X;
     for (int i=0; i<N; i++)
     {
-        state_handling::tilde_to_bar (cur_state, chol_param.angle_sin[i], chol_param.angle_cos[i]);
+        state_handling::tilde_to_bar (chol_param.angle_sin[i], chol_param.angle_cos[i], cur_state);
         cur_state = &cur_state[NUM_STATE_VAR];
     }
 }
@@ -286,7 +292,7 @@ void qp_as::form_init_fp(double *zref_x, double *zref_y, double *X_tilde)
  * @param[in] zref_x reference values of z_x
  * @param[in] zref_y reference values of z_y
  */
-void qp_as::form_iHg(double *zref_x, double *zref_y)
+void qp_as::form_iHg(const double *zref_x, const double *zref_y)
 {
     double p0, p1;
     double cosA, sinA;
@@ -317,7 +323,7 @@ void qp_as::form_iHg(double *zref_x, double *zref_y)
  * @param[in] lb array of lower bounds for z
  * @param[in] ub array of upper bounds for z
  */
-void qp_as::form_bounds(double *lb, double *ub)
+void qp_as::form_bounds(const double *lb, const double *ub)
 {
     for (int i=0; i < N; i++)
     {
@@ -405,7 +411,7 @@ int qp_as::check_blocking_bounds()
  * removed from the active set (#W) and the number of constraints
  * in active set (#nW) is decremented.
  */
-int qp_as::choose_excl_constr (double *lambda)
+int qp_as::choose_excl_constr (const double *lambda)
 {
     double min_lambda = -tol;
     int ind_exclude = -1;

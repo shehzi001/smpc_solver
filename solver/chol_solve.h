@@ -35,33 +35,33 @@ class chol_solve
         chol_solve (int);
         ~chol_solve();
 
-        void solve(chol_solve_param, double *, double *);
+        void solve(const chol_solve_param&, const double *, double *);
 
-        void up_resolve(chol_solve_param, int, int *, double *, double *);
+        void up_resolve(const chol_solve_param&, const int, const int *, const double *, double *);
 
 #ifdef QPAS_DOWNDATE
         double * get_lambda();
-        void down_resolve(chol_solve_param, int, int *, int, double *, double *);
+        void down_resolve(const chol_solve_param&, const int, const int *, const int, const double *, double *);
 #endif
 
 
     private:
-        void update (chol_solve_param, int, int *);
-        void update_z (chol_solve_param, int, int *, double *);
+        void update (const chol_solve_param&, const int, const int *);
+        void update_z (const chol_solve_param&, const int, const int *, const double *);
 #ifdef QPAS_DOWNDATE
-        void downdate(chol_solve_param, int, int, double *);
-        void downdate_z (chol_solve_param, int, int *, int, double *);
+        void downdate(const chol_solve_param&, const int, const int, const double *);
+        void downdate_z (const chol_solve_param&, const int, const int *, const int, const double *);
 #endif
 
-        void resolve (chol_solve_param, int, int *, double *, double *);
+        void resolve (const chol_solve_param&, const int, const int *, const double *, double *);
 
-        void form_Ex (chol_solve_param, double *, double *);
-        void form_ETx (chol_solve_param, double *, double *);
+        void form_Ex (const chol_solve_param&, const double *, double *);
+        void form_ETx (const chol_solve_param&, const double *, double *);
 
         void solve_forward(double *);
         void solve_backward(double *);
 
-        void form_sa_row(chol_solve_param, int, int, double *);
+        void form_sa_row(const chol_solve_param&, const int, const int, double *);
 
 
 // ----------------------------------------------

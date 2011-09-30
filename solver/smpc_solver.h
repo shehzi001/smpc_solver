@@ -4,8 +4,6 @@
  *
  * @author Alexander Sherikov
  * @date 02.09.2011 00:22:48 MSD
- *
- * @todo (low priority) Interface with Matlab/Octave.
  */
 
 
@@ -38,12 +36,12 @@ class smpc_solver
             @param[in] tol tolerance
         */
         smpc_solver(
-                int N, 
-                double Alpha = 150.0, 
-                double Beta = 2000.0, 
-                double Gamma = 1.0,
-                double regularization = 0.01,
-                double tol = 1e-7);
+                const int N, 
+                const double Alpha = 150.0, 
+                const double Beta = 2000.0, 
+                const double Gamma = 1.0,
+                const double regularization = 0.01,
+                const double tol = 1e-7);
 
         ~smpc_solver();
 
@@ -64,14 +62,14 @@ class smpc_solver
             @param[in,out] X solution of optimization problem
         */
         void init(
-                double* T,
-                double* h,
-                double* angle,
-                double* zref_x,
-                double* zref_y,
-                double* lb,
-                double* ub,
-                double* X_tilde,
+                const double* T,
+                const double* h,
+                const double* angle,
+                const double* zref_x,
+                const double* zref_y,
+                const double* lb,
+                const double* ub,
+                const double* X_tilde,
                 double* X);
 
 
