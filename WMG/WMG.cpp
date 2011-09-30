@@ -373,18 +373,15 @@ void WMG::FS2file(const std::string filename)
 
     fprintf(file_op,"hold on\n");    
     fprintf(file_op,"for i=1:length(FS)\n");
-    fprintf(file_op,"    if FS(i).type == 1;");
-    fprintf(file_op,"        plot (FS(i).p(1),FS(i).p(2),'gs','MarkerFaceColor','b','MarkerSize',2)\n");
+    fprintf(file_op,"    if FS(i).type == 1;\n");
+    fprintf(file_op,"        plot (FS(i).p(1),FS(i).p(2),'gs','MarkerFaceColor','r','MarkerSize',2)\n");
     fprintf(file_op,"        plot (FS(i).v(:,1), FS(i).v(:,2), 'c');\n");
     fprintf(file_op,"    end\n");
-    fprintf(file_op,"    if FS(i).type == 2;");
+    fprintf(file_op,"    if FS(i).type == 2;\n");
     fprintf(file_op,"        plot (FS(i).p(1),FS(i).p(2),'gs','MarkerFaceColor','g','MarkerSize',4)\n");
     fprintf(file_op,"        plot (FS(i).v(:,1), FS(i).v(:,2), 'r');\n");
     fprintf(file_op,"    end\n");
     fprintf(file_op,"end\n");
     fprintf(file_op,"grid on; axis equal\n");
-
-    fprintf(file_op,"\n%% Note: the -FS(i).D is because Constraints2Vert expects constraints of the form D*z+d>=0.\n");
-    
     fclose(file_op);  
 }
