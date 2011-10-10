@@ -16,5 +16,10 @@ clean:
 	rm -f docs/*.css
 	rm -f docs/formula.repository
 
+copydoc: clean
+	doxygen
+	rm ../smpc_solver_docs/*
+	cp docs/*.html docs/*.png docs/*.css ../smpc_solver_docs/
+
 # dummy targets
 .PHONY: clean

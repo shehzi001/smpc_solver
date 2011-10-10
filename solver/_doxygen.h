@@ -22,9 +22,15 @@
  * @verbinclude "README"
  *
  * For more information on the sparse MPC refer to the papers listed 
- * in the '@ref MainRef' section. Section '@ref MainHowTo' contains 
- * instructions for application programmer. Implementaion details are 
- * given in section '@ref MainInternals'.
+ * in the '@ref MainRef' section. 
+ *
+ * Section '@ref MainHowTo' contains instructions for application 
+ * programmer. 
+ *
+ * Implementaion details are given in section '@ref MainInternals'.
+ *
+ * The sources are published on 
+ * <a href="http://github.com/asherikov/smpc_solver">GitHub</a>.
  * \n\n
  *
  *
