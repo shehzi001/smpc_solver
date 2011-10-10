@@ -33,6 +33,7 @@
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
@@ -45,105 +46,85 @@
 <h1>FootStep Class Reference<div class="ingroups"><a class="el" href="group__gWMG__INTERNALS.html">Internal classes, functions and definitions of the simulation support library.</a></div></h1>  </div>
 </div>
 <div class="contents">
-<!-- doxytag: class="FootStep" -->
+<!-- doxytag: class="FootStep" --><!-- doxytag: inherits="Point2D,RectangularConstraint_ZMP" -->
 <p>Defines a footstep.  
 <a href="#_details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="footstep_8h_source.html">footstep.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for FootStep:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classFootStep.png" usemap="#FootStep_map" alt=""/>
+  <map id="FootStep_map" name="FootStep_map">
+<area href="classPoint2D.html" alt="Point2D" shape="rect" coords="0,0,172,24"/>
+<area href="classRectangularConstraint__ZMP.html" alt="RectangularConstraint_ZMP" shape="rect" coords="182,0,354,24"/>
+</map>
+ </div></div>
 
 <p><a href="classFootStep-members.html">List of all members.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFootStep.html#a218d8af10af2fc12daa1361356a73204">FootStep</a> ()</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a218d8af10af2fc12daa1361356a73204"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFootStep.html#ac8eeb81108503cfb653334d265ce4ba3">FootStep</a> (double _angle, <a class="el" href="classPoint2D.html">Point2D</a> _p, int _nSS, int _n, int _RL)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines a footstep at a given position with a given orientation.  <a href="#ac8eeb81108503cfb653334d265ce4ba3"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFootStep.html#a2c2c1e897fd8928ba1719b36961b2839">FootStep</a> (double _angle, <a class="el" href="classPoint2D.html">Point2D</a> _p, int _nSS, int _n, int _RL, double *_d)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines a footstep at a given position with a given orientation.  <a href="#a2c2c1e897fd8928ba1719b36961b2839"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFootStep.html#a4b87d18c6e5c48493b7a3a3cac828414">set</a> (double _angle, <a class="el" href="classPoint2D.html">Point2D</a> _p, int _nSS, int _n, int _RL)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the position and orientation of a footstep.  <a href="#a4b87d18c6e5c48493b7a3a3cac828414"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFootStep.html#a71d483ab6129c52d34328e31b1f5c461">print</a> ()</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints information about a footstep.  <a href="#a71d483ab6129c52d34328e31b1f5c461"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFootStep.html#a6a04cf837ff92ecd3a2107241ab6972b">FootStep</a> (const double, const double, const double, const int, const <a class="el" href="group__gWMG__API.html#ga45147e528b9243fa8842d38163498449">fs_type</a>, const double *)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines a footstep at a given position with a given orientation.  <a href="#a6a04cf837ff92ecd3a2107241ab6972b"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classPoint2D.html">Point2D</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFootStep.html#a6454c53c21e0ed90d848c87576801423">p</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Position (in the world frame) of a footstep [meter].  <a href="#a6454c53c21e0ed90d848c87576801423"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFootStep.html#a1acb6f981aa58cfec41a2a2e9f6cd6a6">angle</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Angle (relative to the world frame) of a footstep [rad.].  <a href="#a1acb6f981aa58cfec41a2a2e9f6cd6a6"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFootStep.html#a81faab6c5e8ce565077b519defa66859">ca</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">cos(angle).  <a href="#a81faab6c5e8ce565077b519defa66859"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFootStep.html#a8692f8a0017ece845ab40e0aabc9837d">sa</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">sin(angle).  <a href="#a8692f8a0017ece845ab40e0aabc9837d"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classRectangularConstraint__ZMP.html">RectangularConstraint_ZMP</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFootStep.html#adbac7103c7f386d6de4bb69c253237a7">ctr</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Constraints defining the Polyogn of Support (PoS).  <a href="#adbac7103c7f386d6de4bb69c253237a7"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classPoint2D.html">Point2D</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFootStep.html#acddac1342cbde076e8394db23c8d757c">Offset</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Offset from the "point of interest of a constraint" [meter] defined in the local frame.  <a href="#acddac1342cbde076e8394db23c8d757c"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFootStep.html#a64cfccabf77b5e21e5442f703e14163b">RL</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">If RL = 1 the left foot is in support. If RL = -1 the right foot is in support.  <a href="#a64cfccabf77b5e21e5442f703e14163b"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFootStep.html#a7213209a0a351ac3cd67c7d7415699eb">nSS</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of (preview window) iterations in Single Support.  <a href="#a7213209a0a351ac3cd67c7d7415699eb"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFootStep.html#a5ad14977aff9a548ad4441f7129085bb">n</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Total number of (preview window) iterations, i.e., nSS + nDS.  <a href="#a5ad14977aff9a548ad4441f7129085bb"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFootStep.html#a68d814856ea507ac7d3a946cadd978d2">repeat_times</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">number of times this step appears in the preview window.  <a href="#a68d814856ea507ac7d3a946cadd978d2"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__gWMG__API.html#ga45147e528b9243fa8842d38163498449">fs_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFootStep.html#a5c0b7a7841b2b53d4bd6a28eda2fb977">type</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">type of the step.  <a href="#a5c0b7a7841b2b53d4bd6a28eda2fb977"></a><br/></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Defines a footstep. </p>
 
-<p>Definition at line <a class="el" href="footstep_8h_source.html#l00033">33</a> of file <a class="el" href="footstep_8h_source.html">footstep.h</a>.</p>
+<p>Definition at line <a class="el" href="footstep_8h_source.html#l00029">29</a> of file <a class="el" href="footstep_8h_source.html">footstep.h</a>.</p>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a218d8af10af2fc12daa1361356a73204"></a><!-- doxytag: member="FootStep::FootStep" ref="a218d8af10af2fc12daa1361356a73204" args="()" -->
+<a class="anchor" id="a6a04cf837ff92ecd3a2107241ab6972b"></a><!-- doxytag: member="FootStep::FootStep" ref="a6a04cf837ff92ecd3a2107241ab6972b" args="(const double, const double, const double, const int, const fs_type, const double *)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">FootStep::FootStep </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Default constructor. </p>
-
-<p>Definition at line <a class="el" href="footstep_8cpp_source.html#l00024">24</a> of file <a class="el" href="footstep_8cpp_source.html">footstep.cpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ac8eeb81108503cfb653334d265ce4ba3"></a><!-- doxytag: member="FootStep::FootStep" ref="ac8eeb81108503cfb653334d265ce4ba3" args="(double _angle, Point2D _p, int _nSS, int _n, int _RL)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">FootStep::FootStep </td>
-          <td>(</td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>_angle</em>, </td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>angle_</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classPoint2D.html">Point2D</a>&#160;</td>
-          <td class="paramname"><em>_p</em>, </td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>x_</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>_nSS</em>, </td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>y_</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>_n</em>, </td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>repeat_times_</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>_RL</em>&#160;</td>
+          <td class="paramtype">const <a class="el" href="group__gWMG__API.html#ga45147e528b9243fa8842d38163498449">fs_type</a>&#160;</td>
+          <td class="paramname"><em>type_</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double *&#160;</td>
+          <td class="paramname"><em>d_</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -157,162 +138,17 @@ Public Attributes</h2></td></tr>
 <p>Defines a footstep at a given position with a given orientation. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">_p</td><td>2D position (of the "point of interest") </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">_angle</td><td>orientation </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">_nSS</td><td>Number of (preview window) iterations in Single Support. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">_n</td><td>Total number of (preview window) iterations, i.e., nSS + nDS. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">_RL</td><td>Right or left foot (1 for left, -1 for right). </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">angle_</td><td>absolute rotation angle. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">x_</td><td>absolute x coordinate of the reference point. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">y_</td><td>absolute y coordinate of the reference point. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">repeat_times_</td><td>number of times this step appears in the preview window. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">type_</td><td>type of the step. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">d_</td><td>ZMP constraints as defined in <a class="el" href="classRectangularConstraint__ZMP.html#ac0377442c16c92f29f260bddb29da25a" title="A constructor.">RectangularConstraint_ZMP::RectangularConstraint_ZMP</a>. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="footstep_8cpp_source.html#l00044">44</a> of file <a class="el" href="footstep_8cpp_source.html">footstep.cpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a2c2c1e897fd8928ba1719b36961b2839"></a><!-- doxytag: member="FootStep::FootStep" ref="a2c2c1e897fd8928ba1719b36961b2839" args="(double _angle, Point2D _p, int _nSS, int _n, int _RL, double *_d)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">FootStep::FootStep </td>
-          <td>(</td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>_angle</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classPoint2D.html">Point2D</a>&#160;</td>
-          <td class="paramname"><em>_p</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>_nSS</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>_n</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>_RL</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double *&#160;</td>
-          <td class="paramname"><em>_d</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Defines a footstep at a given position with a given orientation. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">_p</td><td>2D position (of the "point of interest") </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">_angle</td><td>orientation </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">_nSS</td><td>Number of (preview window) iterations in Single Support. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">_n</td><td>Total number of (preview window) iterations, i.e., nSS + nDS. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">_RL</td><td>Right or left foot (1 for left, -1 for right). </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">_d</td><td>Vector of the PoS constraints (assumed to be [4 x 1]) </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="footstep_8cpp_source.html#l00061">61</a> of file <a class="el" href="footstep_8cpp_source.html">footstep.cpp</a>.</p>
-
-</div>
-</div>
-<hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="a71d483ab6129c52d34328e31b1f5c461"></a><!-- doxytag: member="FootStep::print" ref="a71d483ab6129c52d34328e31b1f5c461" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void FootStep::print </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Prints information about a footstep. </p>
-
-<p>Definition at line <a class="el" href="footstep_8cpp_source.html#l00091">91</a> of file <a class="el" href="footstep_8cpp_source.html">footstep.cpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a4b87d18c6e5c48493b7a3a3cac828414"></a><!-- doxytag: member="FootStep::set" ref="a4b87d18c6e5c48493b7a3a3cac828414" args="(double _angle, Point2D _p, int _nSS, int _n, int _RL)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void FootStep::set </td>
-          <td>(</td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>_angle</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classPoint2D.html">Point2D</a>&#160;</td>
-          <td class="paramname"><em>_p</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>_nSS</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>_n</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>_RL</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Sets the position and orientation of a footstep. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">_p</td><td>2D Position (of the point of interest) </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">_angle</td><td>Orientation </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">_nSS</td><td>Number of (preview window) iterations in Single Support. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">_n</td><td>Total number of (preview window) iterations, i.e., nSS + nDS. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">_RL</td><td>Right or left foot (1 for left, -1 for right). </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="footstep_8cpp_source.html#l00078">78</a> of file <a class="el" href="footstep_8cpp_source.html">footstep.cpp</a>.</p>
+<p>Definition at line <a class="el" href="footstep_8cpp_source.html#l00032">32</a> of file <a class="el" href="footstep_8cpp_source.html">footstep.cpp</a>.</p>
 
 </div>
 </div>
@@ -330,7 +166,7 @@ Public Attributes</h2></td></tr>
 
 <p>Angle (relative to the world frame) of a footstep [rad.]. </p>
 
-<p>Definition at line <a class="el" href="footstep_8h_source.html#l00048">48</a> of file <a class="el" href="footstep_8h_source.html">footstep.h</a>.</p>
+<p>Definition at line <a class="el" href="footstep_8h_source.html#l00036">36</a> of file <a class="el" href="footstep_8h_source.html">footstep.h</a>.</p>
 
 </div>
 </div>
@@ -347,110 +183,24 @@ Public Attributes</h2></td></tr>
 
 <p>cos(angle). </p>
 
-<p>Definition at line <a class="el" href="footstep_8h_source.html#l00051">51</a> of file <a class="el" href="footstep_8h_source.html">footstep.h</a>.</p>
+<p>Definition at line <a class="el" href="footstep_8h_source.html#l00039">39</a> of file <a class="el" href="footstep_8h_source.html">footstep.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="adbac7103c7f386d6de4bb69c253237a7"></a><!-- doxytag: member="FootStep::ctr" ref="adbac7103c7f386d6de4bb69c253237a7" args="" -->
+<a class="anchor" id="a68d814856ea507ac7d3a946cadd978d2"></a><!-- doxytag: member="FootStep::repeat_times" ref="a68d814856ea507ac7d3a946cadd978d2" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classRectangularConstraint__ZMP.html">RectangularConstraint_ZMP</a> <a class="el" href="classFootStep.html#adbac7103c7f386d6de4bb69c253237a7">FootStep::ctr</a></td>
+          <td class="memname">int <a class="el" href="classFootStep.html#a68d814856ea507ac7d3a946cadd978d2">FootStep::repeat_times</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Constraints defining the Polyogn of Support (PoS). </p>
-
-<p>Definition at line <a class="el" href="footstep_8h_source.html#l00057">57</a> of file <a class="el" href="footstep_8h_source.html">footstep.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a5ad14977aff9a548ad4441f7129085bb"></a><!-- doxytag: member="FootStep::n" ref="a5ad14977aff9a548ad4441f7129085bb" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int <a class="el" href="classFootStep.html#a5ad14977aff9a548ad4441f7129085bb">FootStep::n</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Total number of (preview window) iterations, i.e., nSS + nDS. </p>
-
-<p>Definition at line <a class="el" href="footstep_8h_source.html#l00072">72</a> of file <a class="el" href="footstep_8h_source.html">footstep.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a7213209a0a351ac3cd67c7d7415699eb"></a><!-- doxytag: member="FootStep::nSS" ref="a7213209a0a351ac3cd67c7d7415699eb" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int <a class="el" href="classFootStep.html#a7213209a0a351ac3cd67c7d7415699eb">FootStep::nSS</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Number of (preview window) iterations in Single Support. </p>
-
-<p>Definition at line <a class="el" href="footstep_8h_source.html#l00069">69</a> of file <a class="el" href="footstep_8h_source.html">footstep.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="acddac1342cbde076e8394db23c8d757c"></a><!-- doxytag: member="FootStep::Offset" ref="acddac1342cbde076e8394db23c8d757c" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classPoint2D.html">Point2D</a> <a class="el" href="classFootStep.html#acddac1342cbde076e8394db23c8d757c">FootStep::Offset</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Offset from the "point of interest of a constraint" [meter] defined in the local frame. </p>
-<dl class="note"><dt><b>Note:</b></dt><dd>This is used in order to define ZMP_ref </dd></dl>
-
-<p>Definition at line <a class="el" href="footstep_8h_source.html#l00063">63</a> of file <a class="el" href="footstep_8h_source.html">footstep.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a6454c53c21e0ed90d848c87576801423"></a><!-- doxytag: member="FootStep::p" ref="a6454c53c21e0ed90d848c87576801423" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classPoint2D.html">Point2D</a> <a class="el" href="classFootStep.html#a6454c53c21e0ed90d848c87576801423">FootStep::p</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Position (in the world frame) of a footstep [meter]. </p>
+<p>number of times this step appears in the preview window. </p>
 
 <p>Definition at line <a class="el" href="footstep_8h_source.html#l00045">45</a> of file <a class="el" href="footstep_8h_source.html">footstep.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a64cfccabf77b5e21e5442f703e14163b"></a><!-- doxytag: member="FootStep::RL" ref="a64cfccabf77b5e21e5442f703e14163b" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int <a class="el" href="classFootStep.html#a64cfccabf77b5e21e5442f703e14163b">FootStep::RL</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>If RL = 1 the left foot is in support. If RL = -1 the right foot is in support. </p>
-
-<p>Definition at line <a class="el" href="footstep_8h_source.html#l00066">66</a> of file <a class="el" href="footstep_8h_source.html">footstep.h</a>.</p>
 
 </div>
 </div>
@@ -467,7 +217,24 @@ Public Attributes</h2></td></tr>
 
 <p>sin(angle). </p>
 
-<p>Definition at line <a class="el" href="footstep_8h_source.html#l00054">54</a> of file <a class="el" href="footstep_8h_source.html">footstep.h</a>.</p>
+<p>Definition at line <a class="el" href="footstep_8h_source.html#l00042">42</a> of file <a class="el" href="footstep_8h_source.html">footstep.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a5c0b7a7841b2b53d4bd6a28eda2fb977"></a><!-- doxytag: member="FootStep::type" ref="a5c0b7a7841b2b53d4bd6a28eda2fb977" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__gWMG__API.html#ga45147e528b9243fa8842d38163498449">fs_type</a> <a class="el" href="classFootStep.html#a5c0b7a7841b2b53d4bd6a28eda2fb977">FootStep::type</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>type of the step. </p>
+
+<p>Definition at line <a class="el" href="footstep_8h_source.html#l00048">48</a> of file <a class="el" href="footstep_8h_source.html">footstep.h</a>.</p>
 
 </div>
 </div>

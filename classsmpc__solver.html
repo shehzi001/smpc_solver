@@ -33,6 +33,7 @@
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
@@ -55,11 +56,11 @@
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc__solver.html#a7faafc816e9f6c41d49ee0d4142fb5a0">smpc_solver</a> (int N, double Alpha=150.0, double Beta=2000.0, double Gamma=1.0, double regularization=0.01, double tol=1e-7)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor: initialization of the constant parameters.  <a href="#a7faafc816e9f6c41d49ee0d4142fb5a0"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc__solver.html#ab4c2f4a558ca4aa2393a7c81cf5a80f5">smpc_solver</a> (const int N, const double Alpha=150.0, const double Beta=2000.0, const double Gamma=1.0, const double regularization=0.01, const double tol=1e-7)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor: initialization of the constant parameters.  <a href="#ab4c2f4a558ca4aa2393a7c81cf5a80f5"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc__solver.html#a05e4dab88f8d24401f6f93def87b3b25">~smpc_solver</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc__solver.html#ab214d3947a93ef6a01175184e4a741a5">init</a> (double *T, double *h, double *angle, double *zref_x, double *zref_y, double *lb, double *ub, double *X_tilde, double *X)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes quadratic problem.  <a href="#ab214d3947a93ef6a01175184e4a741a5"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc__solver.html#acc92a2506c8af11024494d4c768840c5">init</a> (const double *T, const double *h, const double *angle, const double *zref_x, const double *zref_y, const double *lb, const double *ub, const double *X_tilde, double *X)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes quadratic problem.  <a href="#acc92a2506c8af11024494d4c768840c5"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc__solver.html#a180099519887349235c2a90a3839ef71">solve</a> ()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Solve QP problem.  <a href="#a180099519887349235c2a90a3839ef71"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc__solver.html#a80a01e0024c61b37a7f3f18136808a1f">get_next_state_tilde</a> (double *state)</td></tr>
@@ -73,46 +74,46 @@ Private Attributes</h2></td></tr>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>API of the sparse MPC solver. </p>
 
-<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00023">23</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
+<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00021">21</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a7faafc816e9f6c41d49ee0d4142fb5a0"></a><!-- doxytag: member="smpc_solver::smpc_solver" ref="a7faafc816e9f6c41d49ee0d4142fb5a0" args="(int N, double Alpha=150.0, double Beta=2000.0, double Gamma=1.0, double regularization=0.01, double tol=1e&#45;7)" -->
+<a class="anchor" id="ab4c2f4a558ca4aa2393a7c81cf5a80f5"></a><!-- doxytag: member="smpc_solver::smpc_solver" ref="ab4c2f4a558ca4aa2393a7c81cf5a80f5" args="(const int N, const double Alpha=150.0, const double Beta=2000.0, const double Gamma=1.0, const double regularization=0.01, const double tol=1e&#45;7)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">smpc_solver::smpc_solver </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
+          <td class="paramtype">const int&#160;</td>
           <td class="paramname"><em>N</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype">const double&#160;</td>
           <td class="paramname"><em>Alpha</em> = <code>150.0</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype">const double&#160;</td>
           <td class="paramname"><em>Beta</em> = <code>2000.0</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype">const double&#160;</td>
           <td class="paramname"><em>Gamma</em> = <code>1.0</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype">const double&#160;</td>
           <td class="paramname"><em>regularization</em> = <code>0.01</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype">const double&#160;</td>
           <td class="paramname"><em>tol</em> = <code>1e-7</code>&#160;</td>
         </tr>
         <tr>
@@ -228,56 +229,56 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ab214d3947a93ef6a01175184e4a741a5"></a><!-- doxytag: member="smpc_solver::init" ref="ab214d3947a93ef6a01175184e4a741a5" args="(double *T, double *h, double *angle, double *zref_x, double *zref_y, double *lb, double *ub, double *X_tilde, double *X)" -->
+<a class="anchor" id="acc92a2506c8af11024494d4c768840c5"></a><!-- doxytag: member="smpc_solver::init" ref="acc92a2506c8af11024494d4c768840c5" args="(const double *T, const double *h, const double *angle, const double *zref_x, const double *zref_y, const double *lb, const double *ub, const double *X_tilde, double *X)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void smpc_solver::init </td>
           <td>(</td>
-          <td class="paramtype">double *&#160;</td>
+          <td class="paramtype">const double *&#160;</td>
           <td class="paramname"><em>T</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double *&#160;</td>
+          <td class="paramtype">const double *&#160;</td>
           <td class="paramname"><em>h</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double *&#160;</td>
+          <td class="paramtype">const double *&#160;</td>
           <td class="paramname"><em>angle</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double *&#160;</td>
+          <td class="paramtype">const double *&#160;</td>
           <td class="paramname"><em>zref_x</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double *&#160;</td>
+          <td class="paramtype">const double *&#160;</td>
           <td class="paramname"><em>zref_y</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double *&#160;</td>
+          <td class="paramtype">const double *&#160;</td>
           <td class="paramname"><em>lb</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double *&#160;</td>
+          <td class="paramtype">const double *&#160;</td>
           <td class="paramname"><em>ub</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double *&#160;</td>
+          <td class="paramtype">const double *&#160;</td>
           <td class="paramname"><em>X_tilde</em>, </td>
         </tr>
         <tr>
@@ -348,7 +349,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00125">125</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
+<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00123">123</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
 
 </div>
 </div>

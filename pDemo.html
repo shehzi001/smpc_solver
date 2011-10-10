@@ -58,36 +58,47 @@ Define footsteps:</h2>
     <span class="comment">// iteration of simulation</span>
     <a class="code" href="classWMG.html" title="Defines the parameters of the Walking Pattern Generator.">WMG</a> wmg;
 
-    wmg.<a class="code" href="classWMG.html#a015b6a58234fb453f0266a8ae2309f8b" title="Initializes a WMG object.">init</a> (
+    wmg.<a class="code" href="classWMG.html#a0758ae4958f2d9ca521141ca9331517d" title="Initializes a WMG object.">init</a> (
             15,     <span class="comment">// size of the preview window</span>
             0.1,    <span class="comment">// sampling time [sec.]</span>
             0.261); <span class="comment">// height of the center of mass [meter]</span>
 
-    <span class="comment">// Double supports are not yet supported, hence the initial</span>
-    <span class="comment">// double support is simulated by a single support with one</span>
-    <span class="comment">// large foot.</span>
-    <span class="keywordtype">double</span> d[4] = {0.09 , 0.025, 0.03, 0.075};
-    wmg.<a class="code" href="classWMG.html#a2ece853d3481d718f6304606d7f5c493" title="Adds a footstep to FS.">AddFootstep</a>(0.0, 0.05, 0.0, 3, 3, 1, d);
+
+    <span class="comment">// Initial double support</span>
+    <span class="keywordtype">double</span> d[4] = {0.09 , 0.075, 0.03, 0.025};
+    wmg.<a class="code" href="classWMG.html#a22369d281e86ade4b07ab6c9c8aa42ac" title="Adds a footstep to FS; sets the default constraints, the total number of iterations and the number of...">AddFootstep</a>(0.0, 0.0, 0.0, 2, 3, d, <a class="code" href="group__gWMG__API.html#gga45147e528b9243fa8842d38163498449ac92a7214504e35546f6bff550f2d07d0">FS_TYPE_DS</a>);
+    <span class="comment">// ZMP, CoM are at [0;0]</span>
 
     <span class="comment">// each step is defined relatively to the previous step</span>
     <span class="keywordtype">double</span> z = 5.0*M_PI/180.0;  <span class="comment">// relative angle</span>
     <span class="keywordtype">double</span> step_x = 0.035;      <span class="comment">// relative X position</span>
     <span class="keywordtype">double</span> step_y = 0.1;        <span class="comment">// relative Y position</span>
 
-    d[3] = 0.025;   <span class="comment">// all subsequent steps have normal feet size</span>
-    wmg.<a class="code" href="classWMG.html#a2ece853d3481d718f6304606d7f5c493" title="Adds a footstep to FS.">AddFootstep</a>(0.0   , -step_y, 0.0 , 4,  4, -1, d);
-    wmg.<a class="code" href="classWMG.html#a2ece853d3481d718f6304606d7f5c493" title="Adds a footstep to FS.">AddFootstep</a>(step_x,  step_y, z);
-    wmg.<a class="code" href="classWMG.html#a2ece853d3481d718f6304606d7f5c493" title="Adds a footstep to FS.">AddFootstep</a>(step_x, -step_y, z);
-    wmg.<a class="code" href="classWMG.html#a2ece853d3481d718f6304606d7f5c493" title="Adds a footstep to FS.">AddFootstep</a>(step_x,  step_y, z);
-    wmg.<a class="code" href="classWMG.html#a2ece853d3481d718f6304606d7f5c493" title="Adds a footstep to FS.">AddFootstep</a>(step_x, -step_y, z);
-    wmg.<a class="code" href="classWMG.html#a2ece853d3481d718f6304606d7f5c493" title="Adds a footstep to FS.">AddFootstep</a>(step_x,  step_y, z);
-    wmg.<a class="code" href="classWMG.html#a2ece853d3481d718f6304606d7f5c493" title="Adds a footstep to FS.">AddFootstep</a>(step_x, -step_y, z);
-    wmg.<a class="code" href="classWMG.html#a2ece853d3481d718f6304606d7f5c493" title="Adds a footstep to FS.">AddFootstep</a>(step_x,  step_y, z);
-    wmg.<a class="code" href="classWMG.html#a2ece853d3481d718f6304606d7f5c493" title="Adds a footstep to FS.">AddFootstep</a>(step_x, -step_y, z);
-    wmg.<a class="code" href="classWMG.html#a2ece853d3481d718f6304606d7f5c493" title="Adds a footstep to FS.">AddFootstep</a>(step_x,  step_y, 0.0, 30, 30);
-    wmg.<a class="code" href="classWMG.html#a2ece853d3481d718f6304606d7f5c493" title="Adds a footstep to FS.">AddFootstep</a>(0.0   , -step_y, 0.0);
+    <span class="comment">// all subsequent steps have normal feet size</span>
+    d[0] = 0.09;
+    d[1] = 0.025;
+    d[2] = 0.03;
+    d[3] = 0.025;
+    <span class="comment">// 2 reference ZMP positions in single support </span>
+    <span class="comment">// 1 in double support</span>
+    <span class="comment">// 1 + 2 = 3</span>
+    wmg.<a class="code" href="classWMG.html#a22369d281e86ade4b07ab6c9c8aa42ac" title="Adds a footstep to FS; sets the default constraints, the total number of iterations and the number of...">AddFootstep</a>(0.0   , -step_y/2, 0.0 , 2,  3, d);
+    wmg.<a class="code" href="classWMG.html#a22369d281e86ade4b07ab6c9c8aa42ac" title="Adds a footstep to FS; sets the default constraints, the total number of iterations and the number of...">AddFootstep</a>(step_x,  step_y, z);
+    wmg.<a class="code" href="classWMG.html#a22369d281e86ade4b07ab6c9c8aa42ac" title="Adds a footstep to FS; sets the default constraints, the total number of iterations and the number of...">AddFootstep</a>(step_x, -step_y, z);
+    wmg.<a class="code" href="classWMG.html#a22369d281e86ade4b07ab6c9c8aa42ac" title="Adds a footstep to FS; sets the default constraints, the total number of iterations and the number of...">AddFootstep</a>(step_x,  step_y, z);
+    wmg.<a class="code" href="classWMG.html#a22369d281e86ade4b07ab6c9c8aa42ac" title="Adds a footstep to FS; sets the default constraints, the total number of iterations and the number of...">AddFootstep</a>(step_x, -step_y, z);
+    wmg.<a class="code" href="classWMG.html#a22369d281e86ade4b07ab6c9c8aa42ac" title="Adds a footstep to FS; sets the default constraints, the total number of iterations and the number of...">AddFootstep</a>(step_x,  step_y, z);
+    wmg.<a class="code" href="classWMG.html#a22369d281e86ade4b07ab6c9c8aa42ac" title="Adds a footstep to FS; sets the default constraints, the total number of iterations and the number of...">AddFootstep</a>(step_x, -step_y, z);
+    wmg.<a class="code" href="classWMG.html#a22369d281e86ade4b07ab6c9c8aa42ac" title="Adds a footstep to FS; sets the default constraints, the total number of iterations and the number of...">AddFootstep</a>(step_x,  step_y, 0.0);
 
-    <span class="comment">//wmg.FS2file(); // output results for later use in Matlab/Octave</span>
+    <span class="comment">// here we give many reference points, since otherwise we </span>
+    <span class="comment">// would not have enough steps in preview window to reach </span>
+    <span class="comment">// the last footsteps</span>
+    d[0] = 0.09;
+    d[1] = 0.025;
+    d[2] = 0.03;
+    d[3] = 0.075;
+    wmg.<a class="code" href="classWMG.html#a22369d281e86ade4b07ab6c9c8aa42ac" title="Adds a footstep to FS; sets the default constraints, the total number of iterations and the number of...">AddFootstep</a>(0.0   , -step_y/2, 0.0, 30, 30, d, <a class="code" href="group__gWMG__API.html#gga45147e528b9243fa8842d38163498449ac92a7214504e35546f6bff550f2d07d0">FS_TYPE_DS</a>);
     <span class="comment">//-----------------------------------------------------------</span>
 </pre></div></p>
 <h2><a class="anchor" id="pDemo3"></a>
@@ -98,16 +109,16 @@ Setup solver:</h2>
             wmg.<a class="code" href="classWMG.html#abb248bd581bb239890067b5a73b4c4bd" title="Number of iterations in a preview window.">N</a>); <span class="comment">// size of the preview window</span>
                     <span class="comment">// other parameters are optional</span>
     <span class="comment">//-----------------------------------------------------------</span>
-</pre></div> The gains are defined <a class="el" href="pProblemDef.html#pGains">here</a>. The default values of optional parameters can be found here: <a class="el" href="classsmpc__solver.html#a7faafc816e9f6c41d49ee0d4142fb5a0" title="Constructor: initialization of the constant parameters.">smpc_solver::smpc_solver</a>.</p>
+</pre></div> The gains are defined <a class="el" href="pProblemDef.html#pGains">here</a>. The default values of optional parameters can be found here: <a class="el" href="classsmpc__solver.html#ab4c2f4a558ca4aa2393a7c81cf5a80f5" title="Constructor: initialization of the constant parameters.">smpc_solver::smpc_solver</a>.</p>
 <h2><a class="anchor" id="pDemo4"></a>
 Start simulation:</h2>
 <p><div class="fragment"><pre class="fragment">
   
     <span class="keywordflow">for</span>(;;)
     {
-        wmg.<a class="code" href="classWMG.html#a77002ff9516fc8947baa4f8bfa869817" title="Forms the preview window. Using only single support!">FormPreviewWindow</a>();    <span class="comment">// initialize input for QP</span>
-        <span class="keywordflow">if</span> (wmg.<a class="code" href="classWMG.html#a6680a01268258722daf81f3cb98bc449" title="If halt = 1 then stop the execution (else keep going)">halt</a>)               <span class="comment">// not enough time steps left (&lt;15)</span>
+        <span class="keywordflow">if</span> (wmg.<a class="code" href="classWMG.html#afa97e1de34aaf70f766aa4965cc34652" title="Forms a preview window.">FormPreviewWindow</a>() == <a class="code" href="group__gWMG__API.html#gga4bb1652524cdb17807ce1b82df68d50aa615ab0e4f617068b4d7347f1f05fba31">WMG_HALT</a>) <span class="comment">// initialize input for QP</span>
         {
+            <span class="comment">// not enough time steps left (&lt;15)</span>
             <span class="keywordflow">break</span>;
         }
         <span class="comment">//------------------------------------------------------</span>
@@ -137,10 +148,10 @@ Initialize QP</h3>
                 <span class="comment">// current state</span>
                 wmg.<a class="code" href="classWMG.html#a831e486340b6774dfe0b1b2d7f52d286" title="Initial state.">X_tilde</a>, 
                 <span class="comment">// solution of the optimization problem</span>
-                wmg.<a class="code" href="classWMG.html#a801c492c750f587cb1cf873aaec5a96f" title="Initial feasible point with respect to the equality and inequality constraints.">X</a>);
+                wmg.<a class="code" href="classWMG.html#a801c492c750f587cb1cf873aaec5a96f" title="A chunk of memory allocated for solution.">X</a>);
 
         <span class="comment">//------------------------------------------------------</span>
-</pre></div> See also <a class="el" href="classsmpc__solver.html#ab214d3947a93ef6a01175184e4a741a5" title="Initializes quadratic problem.">smpc_solver::init</a>. Note, that the current state must be given after <a class="el" href="pProblemDef.html#pX_tilde">first variable substitution</a>.</p>
+</pre></div> See also <a class="el" href="classsmpc__solver.html#acc92a2506c8af11024494d4c768840c5" title="Initializes quadratic problem.">smpc_solver::init</a>. Note, that the current state must be given after <a class="el" href="pProblemDef.html#pX_tilde">first variable substitution</a>.</p>
 <h3><a class="anchor" id="pDemo52"></a>
 Solve QP</h3>
 <p><div class="fragment"><pre class="fragment">

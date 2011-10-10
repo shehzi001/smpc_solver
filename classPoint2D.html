@@ -33,6 +33,7 @@
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
@@ -50,15 +51,22 @@
 <a href="#_details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="point2d_8h_source.html">point2d.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for Point2D:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classPoint2D.png" usemap="#Point2D_map" alt=""/>
+  <map id="Point2D_map" name="Point2D_map">
+<area href="classFootStep.html" alt="FootStep" shape="rect" coords="0,56,62,80"/>
+</map>
+ </div></div>
 
 <p><a href="classPoint2D-members.html">List of all members.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPoint2D.html#a2415006d697f1c222c17254bdd302098">Point2D</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPoint2D.html#a19b448bff34c28daaab48709ee8d61f7">Point2D</a> (double _x, double _y)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPoint2D.html#ae3c0624393d4dec43e0a2b341d866e57">print</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPoint2D.html#a3ba3c87b2f336f1cb4b2039f6b361859">set</a> (double _x, double _y)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPoint2D.html#ae17ae4ec6fb5f1a2a8f6e9a4d2b5f0e4">Point2D</a> (const double x_, const double y_)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">A constructor.  <a href="#ae17ae4ec6fb5f1a2a8f6e9a4d2b5f0e4"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPoint2D.html#a42fcad8b63853b1136e6207ace6d555e">x</a></td></tr>
@@ -71,98 +79,41 @@ Public Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="point2d_8h_source.html#l00024">24</a> of file <a class="el" href="point2d_8h_source.html">point2d.h</a>.</p>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a2415006d697f1c222c17254bdd302098"></a><!-- doxytag: member="Point2D::Point2D" ref="a2415006d697f1c222c17254bdd302098" args="()" -->
+<a class="anchor" id="ae17ae4ec6fb5f1a2a8f6e9a4d2b5f0e4"></a><!-- doxytag: member="Point2D::Point2D" ref="ae17ae4ec6fb5f1a2a8f6e9a4d2b5f0e4" args="(const double x_, const double y_)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">Point2D::Point2D </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="point2d_8cpp_source.html#l00021">21</a> of file <a class="el" href="point2d_8cpp_source.html">point2d.cpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a19b448bff34c28daaab48709ee8d61f7"></a><!-- doxytag: member="Point2D::Point2D" ref="a19b448bff34c28daaab48709ee8d61f7" args="(double _x, double _y)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Point2D::Point2D </td>
-          <td>(</td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>_x</em>, </td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>x_</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>_y</em>&#160;</td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>y_</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td></td>
+          <td></td><td><code> [inline]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="point2d_8cpp_source.html#l00023">23</a> of file <a class="el" href="point2d_8cpp_source.html">point2d.cpp</a>.</p>
+<p>A constructor. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">x_</td><td>x coordinate. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">y_</td><td>y coordinate. </td></tr>
+  </table>
+  </dd>
+</dl>
 
-</div>
-</div>
-<hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="ae3c0624393d4dec43e0a2b341d866e57"></a><!-- doxytag: member="Point2D::print" ref="ae3c0624393d4dec43e0a2b341d866e57" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Point2D::print </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="point2d_8cpp_source.html#l00028">28</a> of file <a class="el" href="point2d_8cpp_source.html">point2d.cpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a3ba3c87b2f336f1cb4b2039f6b361859"></a><!-- doxytag: member="Point2D::set" ref="a3ba3c87b2f336f1cb4b2039f6b361859" args="(double _x, double _y)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Point2D::set </td>
-          <td>(</td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>_x</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>_y</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="point2d_8cpp_source.html#l00033">33</a> of file <a class="el" href="point2d_8cpp_source.html">point2d.cpp</a>.</p>
+<p>Definition at line <a class="el" href="point2d_8h_source.html#l00033">33</a> of file <a class="el" href="point2d_8h_source.html">point2d.h</a>.</p>
 
 </div>
 </div>
@@ -180,7 +131,7 @@ Public Attributes</h2></td></tr>
 
 <p>x position [meter] </p>
 
-<p>Definition at line <a class="el" href="point2d_8h_source.html#l00035">35</a> of file <a class="el" href="point2d_8h_source.html">point2d.h</a>.</p>
+<p>Definition at line <a class="el" href="point2d_8h_source.html#l00037">37</a> of file <a class="el" href="point2d_8h_source.html">point2d.h</a>.</p>
 
 </div>
 </div>
@@ -197,13 +148,12 @@ Public Attributes</h2></td></tr>
 
 <p>y position [meter] </p>
 
-<p>Definition at line <a class="el" href="point2d_8h_source.html#l00038">38</a> of file <a class="el" href="point2d_8h_source.html">point2d.h</a>.</p>
+<p>Definition at line <a class="el" href="point2d_8h_source.html#l00043">43</a> of file <a class="el" href="point2d_8h_source.html">point2d.h</a>.</p>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following files:<ul>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>WMG/<a class="el" href="point2d_8h_source.html">point2d.h</a></li>
-<li>WMG/<a class="el" href="point2d_8cpp_source.html">point2d.cpp</a></li>
 </ul>
 </div>
 <hr class="footer"/><address class="footer"><small>Generated by&#160;

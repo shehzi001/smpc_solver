@@ -33,6 +33,7 @@
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
@@ -58,22 +59,22 @@
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classL__initializer.html#a4ac23a348dd08a50e5981c74a26260e2">L_initializer</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classL__initializer.html#a376a536590ed661b81f217d5bb622c0f">~L_initializer</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classL__initializer.html#a8662f79671df3e273af2adb0d4bc91fa">form_L</a> (<a class="el" href="structchol__solve__param.html">chol_solve_param</a>, int, double *)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds matrix L.  <a href="#a8662f79671df3e273af2adb0d4bc91fa"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classL__initializer.html#a97d2a9c0ad41daae718c77f311effb97">form_L</a> (const <a class="el" href="structchol__solve__param.html">chol_solve_param</a> &amp;, const int, double *)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds matrix L.  <a href="#a97d2a9c0ad41daae718c77f311effb97"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classL__initializer.html#a942387c2b61f92e2b127bc613b8c9372">chol_dec</a> (double *)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs Cholesky decomposition of 3x3 matrix.  <a href="#a942387c2b61f92e2b127bc613b8c9372"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classL__initializer.html#a651f97bcebc6cecd9cf123cc384ca444">form_iQBiPB</a> (double *, double *, double)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Forms matrix iQBiPB = 0.5 * inv(Q) + 0.5 * B * inv(P) * B.  <a href="#a651f97bcebc6cecd9cf123cc384ca444"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classL__initializer.html#a73ef3698c1c50c79f31914e10f77e245">form_iQAT</a> (double, double, double *)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Forms matrix iQAT = 0.5 * inv (Q) * A'.  <a href="#a73ef3698c1c50c79f31914e10f77e245"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classL__initializer.html#ab98e4f02e04ad2b6d497aa92af88a950">form_AiQATiQBiPB</a> (double, double)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Forms matrix AiQATiQBiPB = A * inv(Q) * A' + 0.5 * inv(Q) + 0.5 * B * inv(P) * B.  <a href="#ab98e4f02e04ad2b6d497aa92af88a950"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classL__initializer.html#a132d3e4c48b89ffbf15528e3fdaec18b">form_L_non_diag</a> (double *, double *)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Forms a 3x3 matrix L(k+1, k), which lies below the diagonal of L.  <a href="#a132d3e4c48b89ffbf15528e3fdaec18b"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classL__initializer.html#ae677036ea113b313b98ee0bccdd22c8e">form_L_diag</a> (double *, double *)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Forms a 3x3 matrix L(k+1, k+1), which lies below the diagonal of L.  <a href="#ae677036ea113b313b98ee0bccdd22c8e"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classL__initializer.html#aee2de9baf3696fa664aef08ef5a6f8bf">form_iQBiPB</a> (const double *, const double *, const double)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Forms matrix iQBiPB = 0.5 * inv(Q) + 0.5 * B * inv(P) * B.  <a href="#aee2de9baf3696fa664aef08ef5a6f8bf"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classL__initializer.html#a148957f30358b71cc5c49ba339dc6f15">form_iQAT</a> (const double, const double, const double *)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Forms matrix iQAT = 0.5 * inv (Q) * A'.  <a href="#a148957f30358b71cc5c49ba339dc6f15"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classL__initializer.html#ac4eaaeb8d3bb5ec64bc0bc68181629c7">form_AiQATiQBiPB</a> (const double, const double)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Forms matrix AiQATiQBiPB = A * inv(Q) * A' + 0.5 * inv(Q) + 0.5 * B * inv(P) * B.  <a href="#ac4eaaeb8d3bb5ec64bc0bc68181629c7"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classL__initializer.html#a89f207154c66d8cc82f51e215937c809">form_L_non_diag</a> (const double *, double *)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Forms a 3x3 matrix L(k+1, k), which lies below the diagonal of L.  <a href="#a89f207154c66d8cc82f51e215937c809"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classL__initializer.html#a2b62e08afe0129fa3510254e0179c540">form_L_diag</a> (const double *, double *)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Forms a 3x3 matrix L(k+1, k+1), which lies below the diagonal of L.  <a href="#a2b62e08afe0129fa3510254e0179c540"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classL__initializer.html#a93268ada25738cc2acdaffc0907c1d14">iQBiPB</a></td></tr>
@@ -152,20 +153,20 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ab98e4f02e04ad2b6d497aa92af88a950"></a><!-- doxytag: member="L_initializer::form_AiQATiQBiPB" ref="ab98e4f02e04ad2b6d497aa92af88a950" args="(double, double)" -->
+<a class="anchor" id="ac4eaaeb8d3bb5ec64bc0bc68181629c7"></a><!-- doxytag: member="L_initializer::form_AiQATiQBiPB" ref="ac4eaaeb8d3bb5ec64bc0bc68181629c7" args="(const double, const double)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void L_initializer::form_AiQATiQBiPB </td>
           <td>(</td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype">const double&#160;</td>
           <td class="paramname"><em>T</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype">const double&#160;</td>
           <td class="paramname"><em>A6</em>&#160;</td>
         </tr>
         <tr>
@@ -191,26 +192,26 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a73ef3698c1c50c79f31914e10f77e245"></a><!-- doxytag: member="L_initializer::form_iQAT" ref="a73ef3698c1c50c79f31914e10f77e245" args="(double, double, double *)" -->
+<a class="anchor" id="a148957f30358b71cc5c49ba339dc6f15"></a><!-- doxytag: member="L_initializer::form_iQAT" ref="a148957f30358b71cc5c49ba339dc6f15" args="(const double, const double, const double *)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void L_initializer::form_iQAT </td>
           <td>(</td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype">const double&#160;</td>
           <td class="paramname"><em>T</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype">const double&#160;</td>
           <td class="paramname"><em>A6</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double *&#160;</td>
+          <td class="paramtype">const double *&#160;</td>
           <td class="paramname"><em>i2Q</em>&#160;</td>
         </tr>
         <tr>
@@ -236,26 +237,26 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a651f97bcebc6cecd9cf123cc384ca444"></a><!-- doxytag: member="L_initializer::form_iQBiPB" ref="a651f97bcebc6cecd9cf123cc384ca444" args="(double *, double *, double)" -->
+<a class="anchor" id="aee2de9baf3696fa664aef08ef5a6f8bf"></a><!-- doxytag: member="L_initializer::form_iQBiPB" ref="aee2de9baf3696fa664aef08ef5a6f8bf" args="(const double *, const double *, const double)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void L_initializer::form_iQBiPB </td>
           <td>(</td>
-          <td class="paramtype">double *&#160;</td>
+          <td class="paramtype">const double *&#160;</td>
           <td class="paramname"><em>B</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double *&#160;</td>
+          <td class="paramtype">const double *&#160;</td>
           <td class="paramname"><em>i2Q</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype">const double&#160;</td>
           <td class="paramname"><em>i2P</em>&#160;</td>
         </tr>
         <tr>
@@ -282,20 +283,20 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a8662f79671df3e273af2adb0d4bc91fa"></a><!-- doxytag: member="L_initializer::form_L" ref="a8662f79671df3e273af2adb0d4bc91fa" args="(chol_solve_param, int, double *)" -->
+<a class="anchor" id="a97d2a9c0ad41daae718c77f311effb97"></a><!-- doxytag: member="L_initializer::form_L" ref="a97d2a9c0ad41daae718c77f311effb97" args="(const chol_solve_param &amp;, const int, double *)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void L_initializer::form_L </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structchol__solve__param.html">chol_solve_param</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="structchol__solve__param.html">chol_solve_param</a> &amp;&#160;</td>
           <td class="paramname"><em>csp</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
+          <td class="paramtype">const int&#160;</td>
           <td class="paramname"><em>N</em>, </td>
         </tr>
         <tr>
@@ -327,14 +328,14 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ae677036ea113b313b98ee0bccdd22c8e"></a><!-- doxytag: member="L_initializer::form_L_diag" ref="ae677036ea113b313b98ee0bccdd22c8e" args="(double *, double *)" -->
+<a class="anchor" id="a2b62e08afe0129fa3510254e0179c540"></a><!-- doxytag: member="L_initializer::form_L_diag" ref="a2b62e08afe0129fa3510254e0179c540" args="(const double *, double *)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void L_initializer::form_L_diag </td>
           <td>(</td>
-          <td class="paramtype">double *&#160;</td>
+          <td class="paramtype">const double *&#160;</td>
           <td class="paramname"><em>ecLp</em>, </td>
         </tr>
         <tr>
@@ -366,14 +367,14 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a132d3e4c48b89ffbf15528e3fdaec18b"></a><!-- doxytag: member="L_initializer::form_L_non_diag" ref="a132d3e4c48b89ffbf15528e3fdaec18b" args="(double *, double *)" -->
+<a class="anchor" id="a89f207154c66d8cc82f51e215937c809"></a><!-- doxytag: member="L_initializer::form_L_non_diag" ref="a89f207154c66d8cc82f51e215937c809" args="(const double *, double *)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void L_initializer::form_L_non_diag </td>
           <td>(</td>
-          <td class="paramtype">double *&#160;</td>
+          <td class="paramtype">const double *&#160;</td>
           <td class="paramname"><em>ecLp</em>, </td>
         </tr>
         <tr>

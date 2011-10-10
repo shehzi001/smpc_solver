@@ -56,14 +56,14 @@
 <a name="l00020"></a>00020 
 <a name="l00021"></a><a class="code" href="namespacestate__handling.html">00021</a> <span class="keyword">namespace </span>state_handling
 <a name="l00022"></a>00022 {
-<a name="l00030"></a><a class="code" href="namespacestate__handling.html#a5c392abae53ddedaacc8531163bd2e57">00030</a>     <span class="keywordtype">void</span> <a class="code" href="namespacestate__handling.html#a5c392abae53ddedaacc8531163bd2e57" title="Converts state from X_tilde to X_bar.">tilde_to_bar</a> (<span class="keywordtype">double</span> *state, <span class="keywordtype">double</span> sinA, <span class="keywordtype">double</span> cosA)
+<a name="l00030"></a><a class="code" href="namespacestate__handling.html#ace1f521bb3caac6e4f4b2ea053e23b5b">00030</a>     <span class="keywordtype">void</span> <a class="code" href="namespacestate__handling.html#ace1f521bb3caac6e4f4b2ea053e23b5b" title="Converts state from X_tilde to X_bar.">tilde_to_bar</a> (<span class="keyword">const</span> <span class="keywordtype">double</span> sinA, <span class="keyword">const</span> <span class="keywordtype">double</span> cosA, <span class="keywordtype">double</span> *state)
 <a name="l00031"></a>00031     {
 <a name="l00032"></a>00032         <span class="keywordtype">double</span> tmp =  cosA*state[0] + sinA*state[3];
 <a name="l00033"></a>00033         state[3]   = -sinA*state[0] + cosA*state[3];
 <a name="l00034"></a>00034         state[0]   = tmp;
 <a name="l00035"></a>00035     }
 <a name="l00036"></a>00036 
-<a name="l00044"></a><a class="code" href="namespacestate__handling.html#acf5a9e5cc9d527b74abb5aac831c944b">00044</a>     <span class="keywordtype">void</span> <a class="code" href="namespacestate__handling.html#acf5a9e5cc9d527b74abb5aac831c944b" title="Converts state from X_tilde to X_bar.">bar_to_tilde</a> (<span class="keywordtype">double</span> *state, <span class="keywordtype">double</span> sinA, <span class="keywordtype">double</span> cosA)
+<a name="l00044"></a><a class="code" href="namespacestate__handling.html#a69960d3947b12aa4f525b82508c91868">00044</a>     <span class="keywordtype">void</span> <a class="code" href="namespacestate__handling.html#a69960d3947b12aa4f525b82508c91868" title="Converts state from X_tilde to X_bar.">bar_to_tilde</a> (<span class="keyword">const</span> <span class="keywordtype">double</span> sinA, <span class="keyword">const</span> <span class="keywordtype">double</span> cosA, <span class="keywordtype">double</span> *state)
 <a name="l00045"></a>00045     {
 <a name="l00046"></a>00046         <span class="keywordtype">double</span> tmp = cosA*state[0] - sinA*state[3];
 <a name="l00047"></a>00047         state[3]   = sinA*state[0] + cosA*state[3];
@@ -71,28 +71,28 @@
 <a name="l00049"></a>00049     }
 <a name="l00050"></a>00050 
 <a name="l00051"></a>00051 
-<a name="l00058"></a><a class="code" href="namespacestate__handling.html#a0e7f6c531de8661041c3fccd315ddf8d">00058</a>     <span class="keywordtype">void</span> <a class="code" href="namespacestate__handling.html#a0e7f6c531de8661041c3fccd315ddf8d" title="Converts state from X_tilde to original variables.">tilde_to_orig</a> (<span class="keywordtype">double</span> *state, <span class="keywordtype">double</span> h)
+<a name="l00058"></a><a class="code" href="namespacestate__handling.html#a44e8698f1054f74680b6668038142d0a">00058</a>     <span class="keywordtype">void</span> <a class="code" href="namespacestate__handling.html#a44e8698f1054f74680b6668038142d0a" title="Converts state from X_tilde to original variables.">tilde_to_orig</a> (<span class="keyword">const</span> <span class="keywordtype">double</span> h, <span class="keywordtype">double</span> *state)
 <a name="l00059"></a>00059     {
 <a name="l00060"></a>00060         state[0] = state[0] + h * state[2];
-<a name="l00061"></a>00061         state[0] = state[3] + h * state[5];
+<a name="l00061"></a>00061         state[3] = state[3] + h * state[5];
 <a name="l00062"></a>00062     }
 <a name="l00063"></a>00063 
 <a name="l00064"></a>00064 
-<a name="l00072"></a><a class="code" href="namespacestate__handling.html#a8fe5e6d13c3a28612538d828eef1dec5">00072</a>     <span class="keywordtype">void</span> <a class="code" href="namespacestate__handling.html#a8fe5e6d13c3a28612538d828eef1dec5" title="Returns the next state as X_tilde.">get_next_state_tilde</a> (<span class="keywordtype">double</span> *state, <span class="keywordtype">double</span> *X, <a class="code" href="structchol__solve__param.html" title="A set of parameters used by chol_solve class.">chol_solve_param</a> csp)
+<a name="l00072"></a><a class="code" href="namespacestate__handling.html#a995670cb04241d60481d3f8a0e6ec061">00072</a>     <span class="keywordtype">void</span> <a class="code" href="namespacestate__handling.html#a995670cb04241d60481d3f8a0e6ec061" title="Returns the next state as X_tilde.">get_next_state_tilde</a> (<span class="keyword">const</span> <a class="code" href="structchol__solve__param.html" title="A set of parameters used by chol_solve class.">chol_solve_param</a>&amp; csp, <span class="keyword">const</span> <span class="keywordtype">double</span> *X, <span class="keywordtype">double</span> *state)
 <a name="l00073"></a>00073     {
 <a name="l00074"></a>00074         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="group__gINTERNALS.html#ga37814f52692ffc71ef43e6b06e891440" title="Number of state variables.">NUM_STATE_VAR</a>; i++)
 <a name="l00075"></a>00075         {
 <a name="l00076"></a>00076             state[i] = X[i];
 <a name="l00077"></a>00077         }
 <a name="l00078"></a>00078 
-<a name="l00079"></a>00079         <a class="code" href="namespacestate__handling.html#acf5a9e5cc9d527b74abb5aac831c944b" title="Converts state from X_tilde to X_bar.">state_handling::bar_to_tilde</a> (state, csp.<a class="code" href="structchol__solve__param.html#a403c7d75ef6f5166fc4dc540ee1fa6bc">angle_sin</a>[0], csp.<a class="code" href="structchol__solve__param.html#ad0a0aa23e83947a1e871857c8e35e1c9">angle_cos</a>[0]);
+<a name="l00079"></a>00079         <a class="code" href="namespacestate__handling.html#a69960d3947b12aa4f525b82508c91868" title="Converts state from X_tilde to X_bar.">state_handling::bar_to_tilde</a> (csp.<a class="code" href="structchol__solve__param.html#a403c7d75ef6f5166fc4dc540ee1fa6bc">angle_sin</a>[0], csp.<a class="code" href="structchol__solve__param.html#ad0a0aa23e83947a1e871857c8e35e1c9">angle_cos</a>[0], state);
 <a name="l00080"></a>00080     }
 <a name="l00081"></a>00081 
 <a name="l00082"></a>00082 
-<a name="l00090"></a><a class="code" href="namespacestate__handling.html#ae9883b291705288f1a8834f6cc409f72">00090</a>     <span class="keywordtype">void</span> <a class="code" href="namespacestate__handling.html#ae9883b291705288f1a8834f6cc409f72" title="Returns the next state represented by original variables.">get_next_state</a> (<span class="keywordtype">double</span> *state, <span class="keywordtype">double</span> *X, <a class="code" href="structchol__solve__param.html" title="A set of parameters used by chol_solve class.">chol_solve_param</a> csp)
+<a name="l00090"></a><a class="code" href="namespacestate__handling.html#a6461e663f646fcf0d6a27dbd7472d4f4">00090</a>     <span class="keywordtype">void</span> <a class="code" href="namespacestate__handling.html#a6461e663f646fcf0d6a27dbd7472d4f4" title="Returns the next state represented by original variables.">get_next_state</a> (<span class="keyword">const</span> <a class="code" href="structchol__solve__param.html" title="A set of parameters used by chol_solve class.">chol_solve_param</a>&amp; csp, <span class="keyword">const</span> <span class="keywordtype">double</span> *X, <span class="keywordtype">double</span> *state)
 <a name="l00091"></a>00091     {
-<a name="l00092"></a>00092         <a class="code" href="namespacestate__handling.html#a8fe5e6d13c3a28612538d828eef1dec5" title="Returns the next state as X_tilde.">get_next_state_tilde</a> (state, X, csp);
-<a name="l00093"></a>00093         <a class="code" href="namespacestate__handling.html#a0e7f6c531de8661041c3fccd315ddf8d" title="Converts state from X_tilde to original variables.">state_handling::tilde_to_orig</a> (state, csp.<a class="code" href="structchol__solve__param.html#ad44b7802c945fbfc6855c157626afffd">h</a>[0]);
+<a name="l00092"></a>00092         <a class="code" href="namespacestate__handling.html#a995670cb04241d60481d3f8a0e6ec061" title="Returns the next state as X_tilde.">get_next_state_tilde</a> (csp, X, state);
+<a name="l00093"></a>00093         <a class="code" href="namespacestate__handling.html#a44e8698f1054f74680b6668038142d0a" title="Converts state from X_tilde to original variables.">state_handling::tilde_to_orig</a> (csp.<a class="code" href="structchol__solve__param.html#a136357a85d0d65710f9a82cb38df5cfe">h</a>[0], state);
 <a name="l00094"></a>00094     }
 <a name="l00095"></a>00095 }
 </pre></div></div>

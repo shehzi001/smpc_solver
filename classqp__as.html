@@ -33,6 +33,7 @@
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
@@ -57,15 +58,15 @@
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#aa75cdcb7a2d7d6eb02f7ceabeba4fa89">qp_as</a> (int N_, double Alpha=150.0, double Beta=2000.0, double Gamma=1.0, double regularization=0.01, double <a class="el" href="classqp__as.html#af45d1d497ff63c59467f7c8c650b0158">tol</a>=1e-7)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor: initialization of the constant parameters.  <a href="#aa75cdcb7a2d7d6eb02f7ceabeba4fa89"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#a382738376a96029ac995422c5aaae0bd">qp_as</a> (const int N_, const double Alpha=150.0, const double Beta=2000.0, const double Gamma=1.0, const double regularization=0.01, const double <a class="el" href="classqp__as.html#af45d1d497ff63c59467f7c8c650b0158">tol</a>=1e-7)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor: initialization of the constant parameters.  <a href="#a382738376a96029ac995422c5aaae0bd"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#ad45c27014c328627ca3dc662fb45743a">~qp_as</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#a5cf5d8376f38ba4251d362029d958451">init</a> (double *, double *, double *, double *, double *, double *, double *, double *, double *)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes quadratic problem.  <a href="#a5cf5d8376f38ba4251d362029d958451"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#a4aa06e0621b9dc9f8ae0f724ce6a55ae">init</a> (const double *, const double *, const double *, const double *, const double *, const double *, const double *, const double *, double *)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes quadratic problem.  <a href="#a4aa06e0621b9dc9f8ae0f724ce6a55ae"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#af0386f027f77a8ee54f13df9ee2c9f84">solve</a> ()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Solve QP problem.  <a href="#af0386f027f77a8ee54f13df9ee2c9f84"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#ac30cb5be6168d22cc588128815460f89">get_next_state_tilde</a> (double *)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#a7fcac12048fd877d36699a260a5883dc">get_next_state</a> (double *)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#aeda16e76622de824c0fef52bdc948220">get_next_state_tilde</a> (const double *)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#acc5bb0729cb0988cc23ef0439eff2352">get_next_state</a> (const double *)</td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchol__solve__param.html">chol_solve_param</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#a24321a3e24c1cd4ed4b5b5a217c58e11">chol_param</a></td></tr>
@@ -73,17 +74,17 @@ Public Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#afc3e9ed1c081763d05f5f8d1decca8f3">X</a></td></tr>
 <tr><td colspan="2"><h2><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#a045aa7068c650ae68c5f2ec286ef3f53">form_init_fp</a> (double *, double *, double *)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates an initial feasible point. First we perform a change of variable to <a class="el" href="pProblemDef.html#pX_tilde">X_tilde</a> generate a feasible point, and then we go back to <a class="el" href="pProblemDef.html#pX_bar">X_bar</a>.  <a href="#a045aa7068c650ae68c5f2ec286ef3f53"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#ae13bf9fb55e2b9c36a1499ddb78123cb">form_iHg</a> (double *, double *)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Forms inv(2*H) * g.  <a href="#ae13bf9fb55e2b9c36a1499ddb78123cb"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#a04e5df5e09ad8cc65401a789cbf59864">form_init_fp</a> (const double *, const double *, const double *)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates an initial feasible point. First we perform a change of variable to <a class="el" href="pProblemDef.html#pX_tilde">X_tilde</a> generate a feasible point, and then we go back to <a class="el" href="pProblemDef.html#pX_bar">X_bar</a>.  <a href="#a04e5df5e09ad8cc65401a789cbf59864"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#a812a93d46943d6244d03447e879ee145">form_iHg</a> (const double *, const double *)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Forms inv(2*H) * g.  <a href="#a812a93d46943d6244d03447e879ee145"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#ad98edc797468e932ad9355d7f6c9b209">initialize_bounds</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#a0ee958691bfa713e6c573c6c778d4f21">form_bounds</a> (double *, double *)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Forms the upper and lower bounds.  <a href="#a0ee958691bfa713e6c573c6c778d4f21"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#a2feba00a7fa19edc61bad5649c7fa7b8">form_bounds</a> (const double *, const double *)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Forms the upper and lower bounds.  <a href="#a2feba00a7fa19edc61bad5649c7fa7b8"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#a0236fdaa4eda75806b6ef4a68b8f7e1a">check_blocking_bounds</a> ()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks for blocking bounds.  <a href="#a0236fdaa4eda75806b6ef4a68b8f7e1a"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#ac055eada6668659bbbdaa5c1ae9db8ad">choose_excl_constr</a> (double *)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Selects a constraint for removal from active set.  <a href="#ac055eada6668659bbbdaa5c1ae9db8ad"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#a18a148f7356ff3f09060a095a648a80d">choose_excl_constr</a> (const double *)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Selects a constraint for removal from active set.  <a href="#a18a148f7356ff3f09060a095a648a80d"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#a99df86781d02a46d077d0e2dc42c1729">N</a></td></tr>
@@ -109,44 +110,44 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="qp__as_8h_source.html#l00060">60</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="aa75cdcb7a2d7d6eb02f7ceabeba4fa89"></a><!-- doxytag: member="qp_as::qp_as" ref="aa75cdcb7a2d7d6eb02f7ceabeba4fa89" args="(int N_, double Alpha=150.0, double Beta=2000.0, double Gamma=1.0, double regularization=0.01, double tol=1e&#45;7)" -->
+<a class="anchor" id="a382738376a96029ac995422c5aaae0bd"></a><!-- doxytag: member="qp_as::qp_as" ref="a382738376a96029ac995422c5aaae0bd" args="(const int N_, const double Alpha=150.0, const double Beta=2000.0, const double Gamma=1.0, const double regularization=0.01, const double tol=1e&#45;7)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">qp_as::qp_as </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
+          <td class="paramtype">const int&#160;</td>
           <td class="paramname"><em>N_</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype">const double&#160;</td>
           <td class="paramname"><em>Alpha</em> = <code>150.0</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype">const double&#160;</td>
           <td class="paramname"><em>Beta</em> = <code>2000.0</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype">const double&#160;</td>
           <td class="paramname"><em>Gamma</em> = <code>1.0</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype">const double&#160;</td>
           <td class="paramname"><em>regularization</em> = <code>0.01</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype">const double&#160;</td>
           <td class="paramname"><em>tol_</em> = <code>1e-7</code>&#160;</td>
         </tr>
         <tr>
@@ -190,7 +191,7 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Destructor </p>
 
-<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00094">94</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00100">100</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
 
 </div>
 </div>
@@ -212,18 +213,18 @@ Private Attributes</h2></td></tr>
 <p>Checks for blocking bounds. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>sequential number of constraint to be added, -1 if no constraints. </dd></dl>
 
-<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00335">335</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00341">341</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ac055eada6668659bbbdaa5c1ae9db8ad"></a><!-- doxytag: member="qp_as::choose_excl_constr" ref="ac055eada6668659bbbdaa5c1ae9db8ad" args="(double *)" -->
+<a class="anchor" id="a18a148f7356ff3f09060a095a648a80d"></a><!-- doxytag: member="qp_as::choose_excl_constr" ref="a18a148f7356ff3f09060a095a648a80d" args="(const double *)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">int qp_as::choose_excl_constr </td>
           <td>(</td>
-          <td class="paramtype">double *&#160;</td>
+          <td class="paramtype">const double *&#160;</td>
           <td class="paramname"><em>lambda</em></td><td>)</td>
           <td><code> [private]</code></td>
         </tr>
@@ -241,24 +242,24 @@ Private Attributes</h2></td></tr>
 <dl class="return"><dt><b>Returns:</b></dt><dd>index of constraint in the active set, -1 if no constraint can be removed.</dd></dl>
 <dl class="attention"><dt><b>Attention:</b></dt><dd>If a constraint for removal is selected, then it is removed from the active set (<a class="el" href="classqp__as.html#adb95e9cb39b791fad69e41b27497b951">W</a>) and the number of constraints in active set (<a class="el" href="classqp__as.html#a0b6f465d0de92c4aa47fcd4676795238">nW</a>) is decremented. </dd></dl>
 
-<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00408">408</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00414">414</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a0ee958691bfa713e6c573c6c778d4f21"></a><!-- doxytag: member="qp_as::form_bounds" ref="a0ee958691bfa713e6c573c6c778d4f21" args="(double *, double *)" -->
+<a class="anchor" id="a2feba00a7fa19edc61bad5649c7fa7b8"></a><!-- doxytag: member="qp_as::form_bounds" ref="a2feba00a7fa19edc61bad5649c7fa7b8" args="(const double *, const double *)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void qp_as::form_bounds </td>
           <td>(</td>
-          <td class="paramtype">double *&#160;</td>
+          <td class="paramtype">const double *&#160;</td>
           <td class="paramname"><em>lb</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double *&#160;</td>
+          <td class="paramtype">const double *&#160;</td>
           <td class="paramname"><em>ub</em>&#160;</td>
         </tr>
         <tr>
@@ -279,24 +280,24 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00320">320</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00326">326</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ae13bf9fb55e2b9c36a1499ddb78123cb"></a><!-- doxytag: member="qp_as::form_iHg" ref="ae13bf9fb55e2b9c36a1499ddb78123cb" args="(double *, double *)" -->
+<a class="anchor" id="a812a93d46943d6244d03447e879ee145"></a><!-- doxytag: member="qp_as::form_iHg" ref="a812a93d46943d6244d03447e879ee145" args="(const double *, const double *)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void qp_as::form_iHg </td>
           <td>(</td>
-          <td class="paramtype">double *&#160;</td>
+          <td class="paramtype">const double *&#160;</td>
           <td class="paramname"><em>zref_x</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double *&#160;</td>
+          <td class="paramtype">const double *&#160;</td>
           <td class="paramname"><em>zref_y</em>&#160;</td>
         </tr>
         <tr>
@@ -317,30 +318,30 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00289">289</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00295">295</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a045aa7068c650ae68c5f2ec286ef3f53"></a><!-- doxytag: member="qp_as::form_init_fp" ref="a045aa7068c650ae68c5f2ec286ef3f53" args="(double *, double *, double *)" -->
+<a class="anchor" id="a04e5df5e09ad8cc65401a789cbf59864"></a><!-- doxytag: member="qp_as::form_init_fp" ref="a04e5df5e09ad8cc65401a789cbf59864" args="(const double *, const double *, const double *)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void qp_as::form_init_fp </td>
           <td>(</td>
-          <td class="paramtype">double *&#160;</td>
+          <td class="paramtype">const double *&#160;</td>
           <td class="paramname"><em>zref_x</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double *&#160;</td>
+          <td class="paramtype">const double *&#160;</td>
           <td class="paramname"><em>zref_y</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double *&#160;</td>
+          <td class="paramtype">const double *&#160;</td>
           <td class="paramname"><em>X_tilde</em>&#160;</td>
         </tr>
         <tr>
@@ -354,18 +355,18 @@ Private Attributes</h2></td></tr>
 
 <p>Generates an initial feasible point. First we perform a change of variable to <a class="el" href="pProblemDef.html#pX_tilde">X_tilde</a> generate a feasible point, and then we go back to <a class="el" href="pProblemDef.html#pX_bar">X_bar</a>. </p>
 
-<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00182">182</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00188">188</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a7fcac12048fd877d36699a260a5883dc"></a><!-- doxytag: member="qp_as::get_next_state" ref="a7fcac12048fd877d36699a260a5883dc" args="(double *)" -->
+<a class="anchor" id="acc5bb0729cb0988cc23ef0439eff2352"></a><!-- doxytag: member="qp_as::get_next_state" ref="acc5bb0729cb0988cc23ef0439eff2352" args="(const double *)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void qp_as::get_next_state </td>
           <td>(</td>
-          <td class="paramtype">double *&#160;</td>
+          <td class="paramtype">const double *&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
@@ -375,14 +376,14 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ac30cb5be6168d22cc588128815460f89"></a><!-- doxytag: member="qp_as::get_next_state_tilde" ref="ac30cb5be6168d22cc588128815460f89" args="(double *)" -->
+<a class="anchor" id="aeda16e76622de824c0fef52bdc948220"></a><!-- doxytag: member="qp_as::get_next_state_tilde" ref="aeda16e76622de824c0fef52bdc948220" args="(const double *)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void qp_as::get_next_state_tilde </td>
           <td>(</td>
-          <td class="paramtype">double *&#160;</td>
+          <td class="paramtype">const double *&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
@@ -392,56 +393,56 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a5cf5d8376f38ba4251d362029d958451"></a><!-- doxytag: member="qp_as::init" ref="a5cf5d8376f38ba4251d362029d958451" args="(double *, double *, double *, double *, double *, double *, double *, double *, double *)" -->
+<a class="anchor" id="a4aa06e0621b9dc9f8ae0f724ce6a55ae"></a><!-- doxytag: member="qp_as::init" ref="a4aa06e0621b9dc9f8ae0f724ce6a55ae" args="(const double *, const double *, const double *, const double *, const double *, const double *, const double *, const double *, double *)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void qp_as::init </td>
           <td>(</td>
-          <td class="paramtype">double *&#160;</td>
+          <td class="paramtype">const double *&#160;</td>
           <td class="paramname"><em>T_</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double *&#160;</td>
+          <td class="paramtype">const double *&#160;</td>
           <td class="paramname"><em>h_</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double *&#160;</td>
+          <td class="paramtype">const double *&#160;</td>
           <td class="paramname"><em>angle</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double *&#160;</td>
+          <td class="paramtype">const double *&#160;</td>
           <td class="paramname"><em>zref_x</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double *&#160;</td>
+          <td class="paramtype">const double *&#160;</td>
           <td class="paramname"><em>zref_y</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double *&#160;</td>
+          <td class="paramtype">const double *&#160;</td>
           <td class="paramname"><em>lb</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double *&#160;</td>
+          <td class="paramtype">const double *&#160;</td>
           <td class="paramname"><em>ub</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double *&#160;</td>
+          <td class="paramtype">const double *&#160;</td>
           <td class="paramname"><em>X_tilde</em>, </td>
         </tr>
         <tr>
@@ -475,7 +476,7 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00134">134</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00140">140</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
 
 </div>
 </div>
@@ -512,7 +513,7 @@ Private Attributes</h2></td></tr>
 <p>Solve QP problem. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>number of activated constraints </dd></dl>
 
-<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00444">444</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00450">450</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
 
 </div>
 </div>
@@ -529,7 +530,7 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>A number from 0 to 1, which controls depth of descent <a class="el" href="classqp__as.html#afc3e9ed1c081763d05f5f8d1decca8f3">X</a> = <a class="el" href="classqp__as.html#afc3e9ed1c081763d05f5f8d1decca8f3">X</a> + <a class="el" href="classqp__as.html#a0484715f0ba7d0c35f6b9c8183d958d4">alpha</a>*<a class="el" href="classqp__as.html#a40696d975ffb89c9f1e43f71f3207ac8">dX</a>. </p>
 
-<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00134">134</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00143">143</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
 
 </div>
 </div>
@@ -546,7 +547,7 @@ Private Attributes</h2></td></tr>
 
 <p>Vector of bounds. </p>
 
-<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00155">155</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00164">164</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
 
 </div>
 </div>
@@ -563,7 +564,7 @@ Private Attributes</h2></td></tr>
 
 <p>An instance of <a class="el" href="classchol__solve.html" title="Solves KKT system using Cholesky decomposition.">chol_solve</a> class. </p>
 
-<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00115">115</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00124">124</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
 
 </div>
 </div>
@@ -580,7 +581,7 @@ Private Attributes</h2></td></tr>
 
 <p>Parameters, which are fed to the methods of <a class="el" href="classchol__solve.html" title="Solves KKT system using Cholesky decomposition.">chol_solve</a> class. </p>
 
-<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00084">84</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00093">93</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
 
 </div>
 </div>
@@ -596,7 +597,7 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Feasible descent direction (to be used for updating <a class="el" href="classqp__as.html#afc3e9ed1c081763d05f5f8d1decca8f3">X</a>). </p>
 
-<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00131">131</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00140">140</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
 
 </div>
 </div>
@@ -613,7 +614,7 @@ Private Attributes</h2></td></tr>
 
 <p>Gains used in <a class="el" href="pProblemDef.html#pPDObj">objective function</a>. </p>
 
-<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00120">120</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00129">129</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
 
 </div>
 </div>
@@ -628,7 +629,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00121">121</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00130">130</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
 
 </div>
 </div>
@@ -643,7 +644,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00122">122</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00131">131</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
 
 </div>
 </div>
@@ -659,7 +660,7 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Number of iterations in a preview window. </p>
 
-<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00111">111</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00120">120</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
 
 </div>
 </div>
@@ -675,7 +676,7 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Number of inequality constraints already included in <a class="el" href="classqp__as.html#adb95e9cb39b791fad69e41b27497b951">W</a>. <a class="el" href="classqp__as.html#adb95e9cb39b791fad69e41b27497b951">W</a>(<a class="el" href="classqp__as.html#a0b6f465d0de92c4aa47fcd4676795238">nW</a>-1) is the index of the last inequality constraint added to <a class="el" href="classqp__as.html#adb95e9cb39b791fad69e41b27497b951">W</a>. </p>
 
-<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00152">152</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00161">161</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
 
 </div>
 </div>
@@ -692,7 +693,7 @@ Private Attributes</h2></td></tr>
 
 <p>tolerance </p>
 
-<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00126">126</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00135">135</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
 
 </div>
 </div>
@@ -708,7 +709,7 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Working set (contains the indexes of only inequality constraints). It is assumed that the only inequality constraints are simple bounds. See also '<a class="el" href="pDetails.html#pBounds">Implementing bounds</a>'. </p>
 
-<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00139">139</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00148">148</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
 
 </div>
 </div>
@@ -724,7 +725,7 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Since we do not distinguish lower/upper bounds of active constraints (&lt;= and =&gt; inequlities are treated in the same way), we have to adjust signs of lagrange multipliers before downdate. See also '<a class="el" href="pDetails.html#pBounds">Implementing bounds</a>'. </p>
 
-<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00147">147</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00156">156</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
 
 </div>
 </div>
@@ -740,7 +741,7 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Variables for the QP (contain the states + control variables). Initial feasible point with respect to the equality and inequality constraints. </p>
 
-<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00089">89</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00098">98</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
 
 </div>
 </div>

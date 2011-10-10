@@ -57,10 +57,10 @@
 <a name="l00023"></a>00023 
 <a name="l00024"></a>00024 
 <a name="l00025"></a>00025 
-<a name="l00026"></a><a class="code" href="classsmpc__solver.html#a7faafc816e9f6c41d49ee0d4142fb5a0">00026</a> <a class="code" href="classsmpc__solver.html#a7faafc816e9f6c41d49ee0d4142fb5a0" title="Constructor: initialization of the constant parameters.">smpc_solver::smpc_solver</a> (
-<a name="l00027"></a>00027                 <span class="keywordtype">int</span> N,
-<a name="l00028"></a>00028                 <span class="keywordtype">double</span> Alpha, <span class="keywordtype">double</span> Beta, <span class="keywordtype">double</span> Gamma,
-<a name="l00029"></a>00029                 <span class="keywordtype">double</span> regularization, <span class="keywordtype">double</span> tol) : 
+<a name="l00026"></a><a class="code" href="classsmpc__solver.html#ab4c2f4a558ca4aa2393a7c81cf5a80f5">00026</a> <a class="code" href="classsmpc__solver.html#ab4c2f4a558ca4aa2393a7c81cf5a80f5" title="Constructor: initialization of the constant parameters.">smpc_solver::smpc_solver</a> (
+<a name="l00027"></a>00027                 <span class="keyword">const</span> <span class="keywordtype">int</span> N,
+<a name="l00028"></a>00028                 <span class="keyword">const</span> <span class="keywordtype">double</span> Alpha, <span class="keyword">const</span> <span class="keywordtype">double</span> Beta, <span class="keyword">const</span> <span class="keywordtype">double</span> Gamma,
+<a name="l00029"></a>00029                 <span class="keyword">const</span> <span class="keywordtype">double</span> regularization, <span class="keyword">const</span> <span class="keywordtype">double</span> tol) : 
 <a name="l00030"></a>00030     qpas_solver (new <a class="code" href="classqp__as.html" title="Solve a quadratic program with a specific structure. qp_as = Quadratic Programming / Active Set...">qp_as</a> (N, Alpha, Beta, Gamma, regularization, tol)) {}
 <a name="l00031"></a>00031 
 <a name="l00032"></a>00032 
@@ -70,15 +70,15 @@
 <a name="l00036"></a>00036 }
 <a name="l00037"></a>00037 
 <a name="l00038"></a>00038 
-<a name="l00039"></a><a class="code" href="classsmpc__solver.html#ab214d3947a93ef6a01175184e4a741a5">00039</a> <span class="keywordtype">void</span> <a class="code" href="classsmpc__solver.html#ab214d3947a93ef6a01175184e4a741a5" title="Initializes quadratic problem.">smpc_solver::init</a>(
-<a name="l00040"></a>00040         <span class="keywordtype">double</span>* T, <span class="keywordtype">double</span>* h,
-<a name="l00041"></a>00041         <span class="keywordtype">double</span>* angle,
-<a name="l00042"></a>00042         <span class="keywordtype">double</span>* zref_x, <span class="keywordtype">double</span>* zref_y,
-<a name="l00043"></a>00043         <span class="keywordtype">double</span>* lb, <span class="keywordtype">double</span>* ub,
-<a name="l00044"></a>00044         <span class="keywordtype">double</span>* X_tilde,
+<a name="l00039"></a><a class="code" href="classsmpc__solver.html#acc92a2506c8af11024494d4c768840c5">00039</a> <span class="keywordtype">void</span> <a class="code" href="classsmpc__solver.html#acc92a2506c8af11024494d4c768840c5" title="Initializes quadratic problem.">smpc_solver::init</a>(
+<a name="l00040"></a>00040         <span class="keyword">const</span> <span class="keywordtype">double</span>* T, <span class="keyword">const</span> <span class="keywordtype">double</span>* h,
+<a name="l00041"></a>00041         <span class="keyword">const</span> <span class="keywordtype">double</span>* angle,
+<a name="l00042"></a>00042         <span class="keyword">const</span> <span class="keywordtype">double</span>* zref_x, <span class="keyword">const</span> <span class="keywordtype">double</span>* zref_y,
+<a name="l00043"></a>00043         <span class="keyword">const</span> <span class="keywordtype">double</span>* lb, <span class="keyword">const</span> <span class="keywordtype">double</span>* ub,
+<a name="l00044"></a>00044         <span class="keyword">const</span> <span class="keywordtype">double</span>* X_tilde,
 <a name="l00045"></a>00045         <span class="keywordtype">double</span>* X)
 <a name="l00046"></a>00046 {
-<a name="l00047"></a>00047     <a class="code" href="classsmpc__solver.html#a3728888f2f460b2877dc281e13c5434b">qpas_solver</a>-&gt;<a class="code" href="classqp__as.html#a5cf5d8376f38ba4251d362029d958451" title="Initializes quadratic problem.">init</a>(T, h, angle, zref_x, zref_y, lb, ub, X_tilde, X);
+<a name="l00047"></a>00047     <a class="code" href="classsmpc__solver.html#a3728888f2f460b2877dc281e13c5434b">qpas_solver</a>-&gt;<a class="code" href="classqp__as.html#a4aa06e0621b9dc9f8ae0f724ce6a55ae" title="Initializes quadratic problem.">init</a>(T, h, angle, zref_x, zref_y, lb, ub, X_tilde, X);
 <a name="l00048"></a>00048 }
 <a name="l00049"></a>00049 
 <a name="l00050"></a>00050 
@@ -90,12 +90,12 @@
 <a name="l00056"></a>00056 
 <a name="l00057"></a><a class="code" href="classsmpc__solver.html#a80a01e0024c61b37a7f3f18136808a1f">00057</a> <span class="keywordtype">void</span> <a class="code" href="classsmpc__solver.html#a80a01e0024c61b37a7f3f18136808a1f" title="Returns the next state as X_tilde.">smpc_solver::get_next_state_tilde</a> (<span class="keywordtype">double</span> *state)
 <a name="l00058"></a>00058 {
-<a name="l00059"></a>00059     <a class="code" href="classsmpc__solver.html#a80a01e0024c61b37a7f3f18136808a1f" title="Returns the next state as X_tilde.">state_handling::get_next_state_tilde</a> (state, <a class="code" href="classsmpc__solver.html#a3728888f2f460b2877dc281e13c5434b">qpas_solver</a>-&gt;<a class="code" href="classqp__as.html#afc3e9ed1c081763d05f5f8d1decca8f3">X</a>, <a class="code" href="classsmpc__solver.html#a3728888f2f460b2877dc281e13c5434b">qpas_solver</a>-&gt;<a class="code" href="classqp__as.html#a24321a3e24c1cd4ed4b5b5a217c58e11" title="Parameters, which are fed to the methods of chol_solve class.">chol_param</a>);
+<a name="l00059"></a>00059     <a class="code" href="classsmpc__solver.html#a80a01e0024c61b37a7f3f18136808a1f" title="Returns the next state as X_tilde.">state_handling::get_next_state_tilde</a> (<a class="code" href="classsmpc__solver.html#a3728888f2f460b2877dc281e13c5434b">qpas_solver</a>-&gt;<a class="code" href="classqp__as.html#a24321a3e24c1cd4ed4b5b5a217c58e11" title="Parameters, which are fed to the methods of chol_solve class.">chol_param</a>, <a class="code" href="classsmpc__solver.html#a3728888f2f460b2877dc281e13c5434b">qpas_solver</a>-&gt;<a class="code" href="classqp__as.html#afc3e9ed1c081763d05f5f8d1decca8f3">X</a>, state);
 <a name="l00060"></a>00060 }
 <a name="l00061"></a>00061 
 <a name="l00062"></a><a class="code" href="classsmpc__solver.html#a6b2b9892becce07b98aaab20f492e84b">00062</a> <span class="keywordtype">void</span> <a class="code" href="classsmpc__solver.html#a6b2b9892becce07b98aaab20f492e84b" title="Returns the next state represented by original variables.">smpc_solver::get_next_state</a> (<span class="keywordtype">double</span> *state)
 <a name="l00063"></a>00063 {
-<a name="l00064"></a>00064     <a class="code" href="classsmpc__solver.html#a6b2b9892becce07b98aaab20f492e84b" title="Returns the next state represented by original variables.">state_handling::get_next_state</a> (state, <a class="code" href="classsmpc__solver.html#a3728888f2f460b2877dc281e13c5434b">qpas_solver</a>-&gt;<a class="code" href="classqp__as.html#afc3e9ed1c081763d05f5f8d1decca8f3">X</a>, <a class="code" href="classsmpc__solver.html#a3728888f2f460b2877dc281e13c5434b">qpas_solver</a>-&gt;<a class="code" href="classqp__as.html#a24321a3e24c1cd4ed4b5b5a217c58e11" title="Parameters, which are fed to the methods of chol_solve class.">chol_param</a>);
+<a name="l00064"></a>00064     <a class="code" href="classsmpc__solver.html#a6b2b9892becce07b98aaab20f492e84b" title="Returns the next state represented by original variables.">state_handling::get_next_state</a> (<a class="code" href="classsmpc__solver.html#a3728888f2f460b2877dc281e13c5434b">qpas_solver</a>-&gt;<a class="code" href="classqp__as.html#a24321a3e24c1cd4ed4b5b5a217c58e11" title="Parameters, which are fed to the methods of chol_solve class.">chol_param</a>, <a class="code" href="classsmpc__solver.html#a3728888f2f460b2877dc281e13c5434b">qpas_solver</a>-&gt;<a class="code" href="classqp__as.html#afc3e9ed1c081763d05f5f8d1decca8f3">X</a>, state);
 <a name="l00065"></a>00065 }
 </pre></div></div>
 </div>
