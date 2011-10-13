@@ -73,7 +73,8 @@ int main(int argc, char **argv)
 
 
         //------------------------------------------------------
-        solver.init(wmg.T, wmg.h, wmg.angle, wmg.zref_x, wmg.zref_y, wmg.lb, wmg.ub, wmg.X_tilde, wmg.X);
+        solver.set_parameters (wmg.T, wmg.h, wmg.angle, wmg.zref_x, wmg.zref_y, wmg.lb, wmg.ub);
+        solver.form_init_fp (wmg.zref_x, wmg.zref_y, wmg.X_tilde, wmg.X);
         solver.solve();
         solver.get_next_state_tilde (wmg.X_tilde);
         //------------------------------------------------------

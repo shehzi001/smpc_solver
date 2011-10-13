@@ -70,16 +70,16 @@ class qp_as
                 const double tol = 1e-7);
         ~qp_as();
 
-        void init(
+        void set_parameters(
                 const double*, 
                 const double*, 
                 const double*, 
                 const double*, 
                 const double*, 
                 const double*, 
-                const double*, 
-                const double*, 
-                double*);
+                const double*);
+
+        void form_init_fp(const double *, const double *, const double *, double *);
    
 
         int solve ();
@@ -101,7 +101,6 @@ class qp_as
     private:
 
 // functions        
-        void form_init_fp(const double *, const double *, const double *);
         void form_iHg(const double *, const double *);
         void initialize_bounds();
         void form_bounds(const double *, const double *);

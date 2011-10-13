@@ -58,18 +58,31 @@ class smpc_solver
             @param[in] zref_y reference values of y coordinate of ZMP
             @param[in] lb array of lower bounds for coordinates of ZMP
             @param[in] ub array of upper bounds for coordinates of ZMP
-            @param[in] X_tilde current state (@ref pX_tilde "X_tilde")
-            @param[in,out] X solution of optimization problem
         */
-        void init(
+        void set_parameters (
                 const double* T,
                 const double* h,
                 const double* angle,
                 const double* zref_x,
                 const double* zref_y,
                 const double* lb,
-                const double* ub,
-                const double* X_tilde,
+                const double* ub);
+
+
+        /** @brief Generates an initial feasible point. 
+
+            First we perform a change of variable to @ref pX_tilde "X_tilde"
+            generate a feasible point, and then we go back to @ref pX_bar "X_bar".
+         
+            @param[in] x_coord x coordinates of points satisfying constraints
+            @param[in] y_coord y coordinates of points satisfying constraints
+            @param[in] X_tilde current state (@ref pX_tilde "X_tilde")
+            @param[in,out] X solution of optimization problem
+         */
+        void form_init_fp (
+                const double *x_coord,
+                const double *y_coord,
+                const double *X_tilde,
                 double* X);
 
 

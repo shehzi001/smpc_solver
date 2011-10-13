@@ -134,19 +134,15 @@ qp_as::~qp_as()
     @param[in] zref_y reference values of z_y
     @param[in] lb array of lower bounds for z_x and z_y
     @param[in] ub array of upper bounds for z_x and z_y
-    @param[in] X_tilde current state
-    @param[in,out] X_ initial guess / solution of optimization problem
 */
-void qp_as::init(
+void qp_as::set_parameters(
         const double* T_, 
         const double* h_, 
         const double* angle,
         const double* zref_x,
         const double* zref_y,
         const double* lb,
-        const double* ub,
-        const double* X_tilde,
-        double* X_)
+        const double* ub)
 {
     nW = 0;
 
@@ -161,7 +157,6 @@ void qp_as::init(
 #endif
 
 
-    X = X_;
 
     form_bounds(lb, ub);
 
@@ -174,19 +169,29 @@ void qp_as::init(
         chol_param.angle_sin[i] = sin(angle[i]);
     }
 
-    form_init_fp (zref_x, zref_y, X_tilde);
     form_iHg (zref_x, zref_y);
 }
 
 
 
-/** 
+/**
  * @brief Generates an initial feasible point. 
  * First we perform a change of variable to @ref pX_tilde "X_tilde"
  * generate a feasible point, and then we go back to @ref pX_bar "X_bar".
+ *
+ * @param[in] x_coord x coordinates of points satisfying constraints
+ * @param[in] y_coord y coordinates of points satisfying constraints
+ * @param[in] X_tilde current state
+ * @param[in,out] X_ initial guess / solution of optimization problem
  */
-void qp_as::form_init_fp(const double *zref_x, const double *zref_y, const double *X_tilde)
+void qp_as::form_init_fp (
+        const double *x_coord, 
+        const double *y_coord, 
+        const double *X_tilde,
+        double* X_)
 {
+    X = X_;
+
     double *control = &X[NUM_STATE_VAR*N];
     double *cur_state = X;
     const double *prev_state = X_tilde;
@@ -259,8 +264,8 @@ void qp_as::form_init_fp(const double *zref_x, const double *zref_y, const doubl
 #endif /*QPAS_VARIABLE_T_h*/
 
 
-        control[0] = -iCpB_CpA[0]*prev_state[0] - iCpB_CpA[1]*prev_state[1] - iCpB_CpA[2]*prev_state[2] + iCpB*zref_x[i];
-        control[1] = -iCpB_CpA[0]*prev_state[3] - iCpB_CpA[1]*prev_state[4] - iCpB_CpA[2]*prev_state[5] + iCpB*zref_y[i];
+        control[0] = -iCpB_CpA[0]*prev_state[0] - iCpB_CpA[1]*prev_state[1] - iCpB_CpA[2]*prev_state[2] + iCpB*x_coord[i];
+        control[1] = -iCpB_CpA[0]*prev_state[3] - iCpB_CpA[1]*prev_state[4] - iCpB_CpA[2]*prev_state[5] + iCpB*y_coord[i];
 
         cur_state[0] = prev_state[0] + T*prev_state[1] + T2*prev_state[2] + B[0]*control[0];
         cur_state[1] =                   prev_state[1] +  T*prev_state[2] + B[1]*control[0];

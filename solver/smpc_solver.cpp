@@ -36,16 +36,24 @@ smpc_solver::~smpc_solver()
 }
 
 
-void smpc_solver::init(
+void smpc_solver::set_parameters(
         const double* T, const double* h,
         const double* angle,
         const double* zref_x, const double* zref_y,
-        const double* lb, const double* ub,
-        const double* X_tilde,
+        const double* lb, const double* ub)
+{
+    qpas_solver->set_parameters(T, h, angle, zref_x, zref_y, lb, ub);
+}
+
+void smpc_solver::form_init_fp (
+        const double *x_coord,
+        const double *y_coord,
+        const double *X_tilde,
         double* X)
 {
-    qpas_solver->init(T, h, angle, zref_x, zref_y, lb, ub, X_tilde, X);
+    qpas_solver->form_init_fp (x_coord, y_coord, X_tilde, X);
 }
+
 
 
 int smpc_solver::solve()

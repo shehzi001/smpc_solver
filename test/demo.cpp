@@ -78,7 +78,7 @@ int main(int argc, char **argv)
 
 
         // initialize quadratic problem
-        solver.init(
+        solver.set_parameters(
                 // sampling time for each time step [sec.]
                 wmg.T,
                 // height of the center of mass divided by gravity for each time step
@@ -92,7 +92,13 @@ int main(int argc, char **argv)
                 // array of lower bounds for coordinates of ZMP
                 wmg.lb, 
                 // array of upper bounds for coordinates of ZMP
-                wmg.ub, 
+                wmg.ub);
+
+        solver.form_init_fp (
+                // coordinates of points, that can be used to generate
+                // an initial feasible point
+                wmg.zref_x, 
+                wmg.zref_y, 
                 // current state
                 wmg.X_tilde, 
                 // solution of the optimization problem
