@@ -65,18 +65,18 @@ namespace state_handling
     /**
      * @brief Returns the next state as @ref pX_tilde "X_tilde".
      *
-     * @param[in] csp parameters. 
+     * @param[in] sp parameters. 
      * @param[in] X a solution.
      * @param[in,out] state the state (#NUM_STATE_VAR elements).
      */
-    void get_next_state_tilde (const chol_solve_param& csp, const double *X, double *state)
+    void get_next_state_tilde (const solver_parameters& sp, const double *X, double *state)
     {
         for (int i = 0; i < NUM_STATE_VAR; i++)
         {
             state[i] = X[i];
         }
 
-        state_handling::bar_to_tilde (csp.angle_sin[0], csp.angle_cos[0], state);
+        state_handling::bar_to_tilde (sp.angle_sin[0], sp.angle_cos[0], state);
     }
 
 
@@ -87,9 +87,9 @@ namespace state_handling
      * @param[in] X a solution.
      * @param[in,out] state the state (#NUM_STATE_VAR elements).
      */
-    void get_next_state (const chol_solve_param& csp, const double *X, double *state)
+    void get_next_state (const solver_parameters& sp, const double *X, double *state)
     {
-        get_next_state_tilde (csp, X, state);
-        state_handling::tilde_to_orig (csp.h[0], state);
+        get_next_state_tilde (sp, X, state);
+        state_handling::tilde_to_orig (sp.h[0], state);
     }
 }

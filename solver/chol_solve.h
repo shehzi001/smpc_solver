@@ -35,33 +35,33 @@ class chol_solve
         chol_solve (int);
         ~chol_solve();
 
-        void solve(const chol_solve_param&, const double *, double *);
+        void solve(const solver_parameters&, const double *, const double *, double *);
 
-        void up_resolve(const chol_solve_param&, const int, const int *, const double *, double *);
+        void up_resolve(const solver_parameters&, const double *, const int, const int *, const double *, double *);
 
 #ifdef QPAS_DOWNDATE
         double * get_lambda();
-        void down_resolve(const chol_solve_param&, const int, const int *, const int, const double *, double *);
+        void down_resolve(const solver_parameters&, const double *, const int, const int *, const int, const double *, double *);
 #endif
 
 
     private:
-        void update (const chol_solve_param&, const int, const int *);
-        void update_z (const chol_solve_param&, const int, const int *, const double *);
+        void update (const solver_parameters&, const int, const int *);
+        void update_z (const solver_parameters&, const double *, const int, const int *, const double *);
 #ifdef QPAS_DOWNDATE
-        void downdate(const chol_solve_param&, const int, const int, const double *);
-        void downdate_z (const chol_solve_param&, const int, const int *, const int, const double *);
+        void downdate(const solver_parameters&, const int, const int, const double *);
+        void downdate_z (const solver_parameters&, const int, const int *, const int, const double *);
 #endif
 
-        void resolve (const chol_solve_param&, const int, const int *, const double *, double *);
+        void resolve (const solver_parameters&, const double *, const int, const int *, const double *, double *);
 
-        void form_Ex (const chol_solve_param&, const double *, double *);
-        void form_ETx (const chol_solve_param&, const double *, double *);
+        void form_Ex (const solver_parameters&, const double *, double *);
+        void form_ETx (const solver_parameters&, const double *, double *);
 
         void solve_forward(double *);
         void solve_backward(double *);
 
-        void form_sa_row(const chol_solve_param&, const int, const int, double *);
+        void form_sa_row(const solver_parameters&, const int, const int, double *);
 
 
 // ----------------------------------------------
@@ -79,7 +79,7 @@ class chol_solve
         /// Vector of Lagrange multipliers
         double *nu;
 
-        /// - (X + chol_solve_param#iHg)
+        /// - (X + solver_parameters#iHg)
         double *XiHg;
 
         /// Vector @ref pz "z".

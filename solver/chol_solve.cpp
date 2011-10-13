@@ -76,12 +76,12 @@ chol_solve::~chol_solve()
  * @param[in] x vector x (#NUM_VAR * N).
  * @param[out] result vector E*x (#NUM_STATE_VAR * N)
  */
-void chol_solve::form_Ex (const chol_solve_param& csp, const double *x, double *result)
+void chol_solve::form_Ex (const solver_parameters& csp, const double *x, double *result)
 {
     int i;
 
     // Matrices A and B are generated on the fly using these parameters.
-#ifndef QPAS_VARIABLE_T_h
+#ifndef SMPC_VARIABLE_T_h
     double T = csp.T[0];
     double T2 = T*T/2;
     double B0 = T2*T/3 - csp.h[0]*T;
@@ -97,7 +97,7 @@ void chol_solve::form_Ex (const chol_solve_param& csp, const double *x, double *
         // cos and sin of the current angle to form R
         double cosA = csp.angle_cos[i];
         double sinA = csp.angle_sin[i];
-#ifdef QPAS_VARIABLE_T_h
+#ifdef SMPC_VARIABLE_T_h
         double T = csp.T[i];
         double T2 = T*T/2;
         double B0 = T2*T/3 - csp.h[i]*T;
@@ -122,7 +122,7 @@ void chol_solve::form_Ex (const chol_solve_param& csp, const double *x, double *
         if (i != 0) // no multiplication by A on the first iteration
         {
             int j = i-1;
-#ifdef QPAS_VARIABLE_T_h
+#ifdef SMPC_VARIABLE_T_h
             double A6 = T2 - csp.dh[j];
 #endif
             xc = &x[j*NUM_STATE_VAR];
@@ -153,12 +153,12 @@ void chol_solve::form_Ex (const chol_solve_param& csp, const double *x, double *
  * @param[in] x vector x (#NUM_STATE_VAR * N).
  * @param[out] result vector E' * nu (#NUM_VAR * N)
  */
-void chol_solve::form_ETx (const chol_solve_param& csp, const double *x, double *result)
+void chol_solve::form_ETx (const solver_parameters& csp, const double *x, double *result)
 {
     int i;
 
     // Matrices A and B are generated on the fly using these parameters.
-#ifndef QPAS_VARIABLE_T_h
+#ifndef SMPC_VARIABLE_T_h
     double T = csp.T[0];
     double T2 = T*T/2;
     double B0 = T2*T/3 - csp.h[0]*T;
@@ -193,7 +193,7 @@ void chol_solve::form_ETx (const chol_solve_param& csp, const double *x, double 
 
         if (i != N-1) // no multiplication by A on the last iteration
         {
-#ifdef QPAS_VARIABLE_T_h
+#ifdef SMPC_VARIABLE_T_h
             double A3 = csp.T[i+1];
             double A6 = A3*A3/2 - csp.dh[i];
 #endif
@@ -212,7 +212,7 @@ void chol_solve::form_ETx (const chol_solve_param& csp, const double *x, double 
 
 
         xc = &x[i*NUM_STATE_VAR];
-#ifdef QPAS_VARIABLE_T_h
+#ifdef SMPC_VARIABLE_T_h
         double T = csp.T[i];
         double T2 = T*T/2;
         double B0 = T2*T/3 - csp.h[i]*T;
@@ -374,7 +374,7 @@ void chol_solve::solve_backward(double *x)
  * @param[out] row 's_a' row
  */
 void chol_solve::form_sa_row(
-        const chol_solve_param& csp, 
+        const solver_parameters& csp, 
         const int ic_num, 
         const int var_num, 
         double *row)
@@ -430,11 +430,13 @@ void chol_solve::form_sa_row(
  * @brief Determines feasible descent direction.
  *
  * @param[in] csp   parameters.
+ * @param[in] iHg   inverted hessian * g.
  * @param[in] x    initial guess.
  * @param[out] dx   feasible descent direction, must be allocated.
  */
 void chol_solve::solve(
-        const chol_solve_param& csp, 
+        const solver_parameters& csp, 
+        const double *iHg,
         const double *x, 
         double *dx)
 {
@@ -454,7 +456,7 @@ void chol_solve::solve(
     }
     for (i = 0; i < 2*N; i++)
     {
-        XiHg[i*3] -= csp.iHg[i];
+        XiHg[i*3] -= iHg[i];
     }
 
     // obtain s = E * x;
@@ -496,21 +498,23 @@ void chol_solve::solve(
  *  resolve the system.
  *
  * @param[in] csp   parameters.
+ * @param[in] iHg   inverted hessian * g.
  * @param[in] nW    number of added constrains.
  * @param[in] W     indicies of added constraints.
  * @param[in] x     initial guess.
  * @param[out] dx   feasible descent direction, must be allocated.
  */
 void chol_solve::up_resolve(
-        const chol_solve_param& csp, 
+        const solver_parameters& csp, 
+        const double *iHg,
         const int nW, 
         const int *W, 
         const double *x, 
         double *dx)
 {
     update (csp, nW, W);
-    update_z (csp, nW, W, x);
-    resolve (csp, nW, W, x, dx);
+    update_z (csp, iHg, nW, W, x);
+    resolve (csp, iHg, nW, W, x, dx);
 }
 
 
@@ -522,7 +526,7 @@ void chol_solve::up_resolve(
  * @param[in] nW number of added inequality constraints + 1.
  * @param[in] W indexes of added inequality constraints + one index to be added.
  */
-void chol_solve::update (const chol_solve_param& csp, const int nW, const int *W)
+void chol_solve::update (const solver_parameters& csp, const int nW, const int *W)
 {
     int i, j, k;
 
@@ -629,12 +633,14 @@ void chol_solve::update (const chol_solve_param& csp, const int nW, const int *W
  * @brief Adjust vector '@ref pz "z"' after update.
  *
  * @param[in] csp   parameters.
+ * @param[in] iHg   inverted hessian * g.
  * @param[in] nW    number of added constrains.
  * @param[in] W     indicies of added constraints.
  * @param[in] x     initial guess.
  */
 void chol_solve::update_z (
-        const chol_solve_param& csp, 
+        const solver_parameters& csp, 
+        const double *iHg,
         const int nW, 
         const int *W, 
         const double *x)
@@ -643,7 +649,7 @@ void chol_solve::update_z (
     // update lagrange multipliers
     int zind = N*NUM_STATE_VAR + ic_num;
     // sn
-    double zn = -csp.iHg[W[ic_num]] - x[W[ic_num]*3];
+    double zn = -iHg[W[ic_num]] - x[W[ic_num]*3];
 
     // zn
     for (int i = 0; i < zind; i++)
@@ -662,13 +668,15 @@ void chol_solve::update_z (
  *  inequality constraints.
  *
  * @param[in] csp   parameters.
+ * @param[in] iHg   inverted hessian * g.
  * @param[in] nW    number of added constrains.
  * @param[in] W     indicies of added constraints.
  * @param[in] x     initial guess.
  * @param[out] dx   feasible descent direction, must be allocated.
  */
 void chol_solve::resolve (
-        const chol_solve_param& csp, 
+        const solver_parameters& csp, 
+        const double *iHg,
         const int nW, 
         const int *W, 
         const double *x, 
@@ -717,7 +725,7 @@ void chol_solve::resolve (
     for (i = 0; i < 2*N; i++)
     {
         // dx for state variables
-        dx[i*3] -= csp.iHg[i];
+        dx[i*3] -= iHg[i];
     }
 
     // -iH * A(W,:)' * lambda
@@ -736,6 +744,7 @@ void chol_solve::resolve (
  *  resolve the system.
  *
  * @param[in] csp   parameters.
+ * @param[in] iHg   inverted hessian * g.
  * @param[in] nW    number of added constrains (without removed constraint).
  * @param[in] W     indicies of added constraints (without removed constraint).
  * @param[in] ind_exclude index of excluded constraint.
@@ -745,7 +754,8 @@ void chol_solve::resolve (
  * @note Downdate of vector @ref pz 'z' is described on the page '@ref pRemoveICz'.
  */
 void chol_solve::down_resolve(
-        const chol_solve_param& csp, 
+        const solver_parameters& csp, 
+        const double *iHg,
         const int nW, 
         const int *W, 
         const int ind_exclude, 
@@ -796,7 +806,7 @@ void chol_solve::down_resolve(
     }
 
 
-    resolve (csp, nW, W, x, dx);
+    resolve (csp, iHg, nW, W, x, dx);
 }
 
 
@@ -821,7 +831,7 @@ double * chol_solve::get_lambda()
  * @param[in] x     initial guess.
  */
 void chol_solve::downdate(
-        const chol_solve_param& csp, 
+        const solver_parameters& csp, 
         const int nW, 
         const int ind_exclude, 
         const double *x)

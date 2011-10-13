@@ -10,11 +10,18 @@
 #ifndef SMPC_SOLVER_H
 #define SMPC_SOLVER_H
 
-class qp_as;
+class qp_solver;
 
 
 /// @addtogroup gAPI 
 /// @{
+
+enum solver_type
+{
+    SMPC_QPAS
+};
+
+
 /**
  * @brief API of the sparse MPC solver.
  */
@@ -28,6 +35,7 @@ class smpc_solver
 
         /** @brief Constructor: initialization of the constant parameters
 
+            @param[in] sol_type type of the solver (see #solver_type)
             @param[in] N Number of sampling times in a preview window
             @param[in] Alpha Velocity gain
             @param[in] Beta Position gain
@@ -37,6 +45,7 @@ class smpc_solver
         */
         smpc_solver(
                 const int N, 
+                const solver_type sol_type = SMPC_QPAS,
                 const double Alpha = 150.0, 
                 const double Beta = 2000.0, 
                 const double Gamma = 1.0,
@@ -133,7 +142,7 @@ class smpc_solver
 
 
     private:
-        qp_as *qpas_solver;
+        qp_solver *qp_sol;
 };
 /// @}
 

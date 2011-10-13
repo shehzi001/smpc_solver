@@ -227,7 +227,7 @@ void L_initializer::form_L_diag(const double *ecLp, double *ecLc)
  * @param[in] N number of states in preview window.
  * @param[out] ecL the memory allocated for L.
  */
-void L_initializer::form_L(const chol_solve_param& csp, const int N, double *ecL)
+void L_initializer::form_L(const solver_parameters& csp, const int N, double *ecL)
 {
     int i;
     int cur_offset;
@@ -239,7 +239,7 @@ void L_initializer::form_L(const chol_solve_param& csp, const int N, double *ecL
 
     // form all matrices
     form_iQBiPB (B, csp.i2Q, csp.i2P);
-#ifndef QPAS_VARIABLE_T_h
+#ifndef SMPC_VARIABLE_T_h
     double A6 = T2;
     form_iQAT (T, A6, csp.i2Q);
     form_AiQATiQBiPB (T, A6);
@@ -254,7 +254,7 @@ void L_initializer::form_L(const chol_solve_param& csp, const int N, double *ecL
     prev_offset = 0;
     for (i = 1; i < N; i++)
     {
-#ifdef QPAS_VARIABLE_T_h
+#ifdef SMPC_VARIABLE_T_h
         T = csp.T[i];
         T2 = T*T/2;
         B[0] = T2*T/3 - csp.h[i]*T;

@@ -27,8 +27,8 @@
 /// The number of elements in 3x3 matrix.
 #define MATRIX_SIZE 9
 
-/// Allow variable chol_solve_param#T and chol_solve_param#h
-#define QPAS_VARIABLE_T_h
+/// Allow variable solver_parameters#T and solver_parameters#h
+#define SMPC_VARIABLE_T_h
 /// Allow removal of constraints from active set
 #define QPAS_DOWNDATE
 
@@ -40,31 +40,55 @@
 /**
  * @brief A set of parameters used by #chol_solve class.
  */
-struct chol_solve_param 
+class solver_parameters
 {
-// static matrices and vectors
-    /** State related penalty.*/
-    double i2Q[3];
+    public:
+        solver_parameters ()
+        {
+            angle_cos = NULL;
+            angle_sin = NULL;
+            T = NULL;
+            h = NULL;
+#ifdef SMPC_VARIABLE_T_h
+            dh = NULL;
+#endif
+        };
 
-    /** Control related penalty. */
-    double i2P;
+        ~solver_parameters()
+        {
+            if (angle_cos != NULL)
+                delete angle_cos;
 
-    /** @ref piHg "inv(H) * g" */
-    double *iHg;
+            if (angle_sin != NULL)
+                delete angle_sin;
+
+#ifdef SMPC_VARIABLE_T_h
+            if (dh != NULL)
+                delete dh;
+#endif
+        };
 
 
-    double *angle_cos;
-    double *angle_sin;
+    // static matrices and vectors
+        /** State related penalty.*/
+        double i2Q[3];
+
+        /** Control related penalty. */
+        double i2P;
 
 
-// parameters used in generation of A and B matrices
-    /** Preview sampling time  */
-    const double *T;
-    /** h = @ref ph "hCoM/gravity". */
-    const double *h;
+        double *angle_cos;
+        double *angle_sin;
 
-#ifdef QPAS_VARIABLE_T_h
-    double *dh;
+
+    // parameters used in generation of A and B matrices
+        /** Preview sampling time  */
+        const double *T;
+        /** h = @ref ph "hCoM/gravity". */
+        const double *h;
+
+#ifdef SMPC_VARIABLE_T_h
+        double *dh;
 #endif
 };
 

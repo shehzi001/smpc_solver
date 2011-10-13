@@ -14,6 +14,7 @@
  ****************************************/
 #include "smpc_common.h"
 #include "chol_solve.h"
+#include "qp_solver.h"
 
 #include <vector>
 
@@ -53,11 +54,12 @@ class bound
 
 
 
+
 /** 
  * @brief Solve a quadratic program with a specific structure. 
  * qp_as = Quadratic Programming / Active Set
  */
-class qp_as
+class qp_as : public qp_solver
 {
     public:
 // functions        
@@ -79,30 +81,14 @@ class qp_as
                 const double*, 
                 const double*);
 
-        void form_init_fp(const double *, const double *, const double *, double *);
-   
 
         int solve ();
-
-        void get_next_state_tilde (const double *);
-        void get_next_state (const double *);
-
-
-// variables
-        /// Parameters, which are fed to the methods of #chol_solve class.
-        chol_solve_param chol_param;
-
-        /** Variables for the QP (contain the states + control variables).
-            Initial feasible point with respect to the equality and inequality 
-            constraints. */
-        double *X;
 
 
     private:
 
 // functions        
         void form_iHg(const double *, const double *);
-        void initialize_bounds();
         void form_bounds(const double *, const double *);
         int check_blocking_bounds();
 
@@ -110,36 +96,13 @@ class qp_as
         int choose_excl_constr (const double *);
 #endif
 
-#ifdef SMPCS_DEBUG
-        void print_objective();
-#endif
-
-// variables
-        /** Number of iterations in a preview window. */
-        int N;
-
-
         /// An instance of #chol_solve class.
         chol_solve chol;
 
 
-    ///@{
-    /// Gains used in @ref pPDObj "objective function".
-        double gain_alpha;
-        double gain_beta;
-        double gain_gamma;
-    ///@}
+        /// @ref piHg "inv(H) * g"
+        double *iHg;
 
-        /// tolerance
-        double tol;
-
-    // variables and descent direction
-     
-        /** Feasible descent direction (to be used for updating #X). */
-        double *dX;
-
-        /** A number from 0 to 1, which controls depth of descent #X = #X + #alpha*#dX. */
-        double alpha;
 
     // active set        
         /** Working set (contains the indexes of only inequality constraints). It is assumed that

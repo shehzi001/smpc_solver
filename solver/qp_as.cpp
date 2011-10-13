@@ -17,7 +17,6 @@
 /****************************************
  * FUNCTIONS
  ****************************************/
-
 //==============================================
 // bound
 /**
@@ -56,41 +55,17 @@ qp_as::qp_as(
         const double Beta, 
         const double Gamma, 
         const double regularization, 
-        const double tol_) : chol (N_)
+        const double tol_) : 
+    qp_solver (N_, Alpha, Beta, Gamma, regularization, tol_),
+    chol (N_)
 {
-    N = N_;
-    tol = tol_;
-
-    gain_alpha = Alpha;
-    gain_beta  = Beta;
-    gain_gamma = Gamma;
-
-    chol_param.i2Q[0] = 1/(2*(Beta/2));
-    chol_param.i2Q[1] = 1/(2*(Alpha/2));
-    chol_param.i2Q[2] = 1/(2*regularization);
-
-    chol_param.i2P = 1/(2 * (Gamma/2));
-
-    chol_param.iHg = new double[2*N];
-
-    chol_param.T = NULL;
-    chol_param.h = NULL;
-#ifdef QPAS_VARIABLE_T_h
-    chol_param.dh = NULL;
-#endif
-
-    chol_param.angle_cos = NULL;
-    chol_param.angle_sin = NULL;
-
+    iHg = new double[2*N];
 
     // there are no inequality constraints in the initial working set (no hot-starting for the moment)
     W = new int[2*N];
 #ifdef QPAS_DOWNDATE
     W_sign = new int[2*N];
 #endif
-    alpha = 1;
-    
-    dX = new double[NUM_VAR*N]();
 
     Bounds.resize(2*N);
 }
@@ -100,24 +75,11 @@ qp_as::qp_as(
 qp_as::~qp_as()
 {
     if (W  != NULL)
-        delete [] W;
+        delete W;
 
-    if (dX  != NULL)
-        delete [] dX;
+    if (iHg != NULL)
+        delete iHg;
 
-    if (chol_param.angle_cos != NULL)
-        delete chol_param.angle_cos;
-
-    if (chol_param.angle_sin != NULL)
-        delete chol_param.angle_sin;
-
-    if (chol_param.iHg != NULL)
-        delete chol_param.iHg;
-
-#ifdef QPAS_VARIABLE_T_h
-    if (chol_param.dh != NULL)
-        delete chol_param.dh;
-#endif
 #ifdef QPAS_DOWNDATE
     if (W_sign != NULL)
         delete W_sign;
@@ -127,8 +89,8 @@ qp_as::~qp_as()
 
 /** @brief Initializes quadratic problem.
 
-    @param[in] T_ Sampling time (for the moment it is assumed to be constant) [sec.]
-    @param[in] h_ Height of the Center of Mass divided by gravity
+    @param[in] T Sampling time (for the moment it is assumed to be constant) [sec.]
+    @param[in] h Height of the Center of Mass divided by gravity
     @param[in] angle Rotation angle for each state in the preview window
     @param[in] zref_x reference values of z_x
     @param[in] zref_y reference values of z_y
@@ -136,8 +98,8 @@ qp_as::~qp_as()
     @param[in] ub array of upper bounds for z_x and z_y
 */
 void qp_as::set_parameters(
-        const double* T_, 
-        const double* h_, 
+        const double* T, 
+        const double* h, 
         const double* angle,
         const double* zref_x,
         const double* zref_y,
@@ -146,149 +108,11 @@ void qp_as::set_parameters(
 {
     nW = 0;
 
-    chol_param.T = T_;
-    chol_param.h = h_;
-#ifdef QPAS_VARIABLE_T_h
-    chol_param.dh = new double[N-1];
-    for (int i = 0; i < N-1; i++)
-    {
-        chol_param.dh[i] = chol_param.h[i+1] - chol_param.h[i];
-    }
-#endif
-
-
-
-    form_bounds(lb, ub);
-
-    chol_param.angle_cos = new double[N];
-    chol_param.angle_sin = new double[N];
-
-    for (int i = 0; i < N; i++)
-    {
-        chol_param.angle_cos[i] = cos(angle[i]);
-        chol_param.angle_sin[i] = sin(angle[i]);
-    }
-
+    set_state_parameters (T, h, angle);
     form_iHg (zref_x, zref_y);
+    form_bounds(lb, ub);
 }
 
-
-
-/**
- * @brief Generates an initial feasible point. 
- * First we perform a change of variable to @ref pX_tilde "X_tilde"
- * generate a feasible point, and then we go back to @ref pX_bar "X_bar".
- *
- * @param[in] x_coord x coordinates of points satisfying constraints
- * @param[in] y_coord y coordinates of points satisfying constraints
- * @param[in] X_tilde current state
- * @param[in,out] X_ initial guess / solution of optimization problem
- */
-void qp_as::form_init_fp (
-        const double *x_coord, 
-        const double *y_coord, 
-        const double *X_tilde,
-        double* X_)
-{
-    X = X_;
-
-    double *control = &X[NUM_STATE_VAR*N];
-    double *cur_state = X;
-    const double *prev_state = X_tilde;
-
-#ifndef QPAS_VARIABLE_T_h    
-    //------------------------------------
-    double T = chol_param.T[0];
-    double T2 = T*T/2;
-    double h = chol_param.h[0];
-
-
-    /* Control matrix. */
-    double B[3] = {T2*T/3 - h*T, T2, T};
-
-
-    /* inv(Cp*B). This is a [2 x 2] diagonal matrix (which is invertible if T^3/6-h*T is
-     * not equal to zero). The two elements one the main diagonal are equal, and only one of them 
-     * is stored, which is equal to
-        1/(T^3/6 - h*T)
-     */
-    double iCpB = 1/(B[0]);
-
-
-    /* inv(Cp*B)*Cp*A. This is a [2 x 6] matrix with the following structure
-        iCpB_CpA = [a b c 0 0 0;
-                    0 0 0 a b c];
-
-        a = iCpB
-        b = iCpB*T
-        c = iCpB*T^2/2
-     * Only a,b and c are stored.
-     */
-    double iCpB_CpA[3] = {iCpB, iCpB*T, iCpB*T2};
-    //------------------------------------
-#endif /*QPAS_VARIABLE_T_h*/
-
-    
-    for (int i=0; i<N; i++)
-    {
-#ifdef QPAS_VARIABLE_T_h
-        //------------------------------------
-        double T = chol_param.T[i];
-        double T2 = T*T/2;
-        double h = chol_param.h[i];
-
-
-        /* Control matrix. */
-        double B[3] = {T2*T/3 - h*T, T2, T};
-
-
-        /* inv(Cp*B). This is a [2 x 2] diagonal matrix (which is invertible if T^3/6-h*T is
-         * not equal to zero). The two elements one the main diagonal are equal, and only one of them 
-         * is stored, which is equal to
-            1/(T^3/6 - h*T)
-         */
-        double iCpB = 1/(B[0]);
-
-
-        /* inv(Cp*B)*Cp*A. This is a [2 x 6] matrix with the following structure
-            iCpB_CpA = [a b c 0 0 0;
-                        0 0 0 a b c];
-
-            a = iCpB
-            b = iCpB*T
-            c = iCpB*T^2/2
-         * Only a,b and c are stored.
-         */
-        double iCpB_CpA[3] = {iCpB, iCpB*T, iCpB*T2};
-        //------------------------------------
-#endif /*QPAS_VARIABLE_T_h*/
-
-
-        control[0] = -iCpB_CpA[0]*prev_state[0] - iCpB_CpA[1]*prev_state[1] - iCpB_CpA[2]*prev_state[2] + iCpB*x_coord[i];
-        control[1] = -iCpB_CpA[0]*prev_state[3] - iCpB_CpA[1]*prev_state[4] - iCpB_CpA[2]*prev_state[5] + iCpB*y_coord[i];
-
-        cur_state[0] = prev_state[0] + T*prev_state[1] + T2*prev_state[2] + B[0]*control[0];
-        cur_state[1] =                   prev_state[1] +  T*prev_state[2] + B[1]*control[0];
-        cur_state[2] =                                      prev_state[2] + B[2]*control[0];
-        cur_state[3] = prev_state[3] + T*prev_state[4] + T2*prev_state[5] + B[0]*control[1];
-        cur_state[4] =                   prev_state[4] +  T*prev_state[5] + B[1]*control[1];
-        cur_state[5] =                                      prev_state[5] + B[2]*control[1];
-
-
-        prev_state = &X[NUM_STATE_VAR*i];
-        cur_state = &X[NUM_STATE_VAR*(i+1)];
-        control = &control[NUM_CONTROL_VAR];
-    }
-
-
-    // go back to bar states
-    cur_state = X;
-    for (int i=0; i<N; i++)
-    {
-        state_handling::tilde_to_bar (chol_param.angle_sin[i], chol_param.angle_cos[i], cur_state);
-        cur_state = &cur_state[NUM_STATE_VAR];
-    }
-}
 
 
 /**
@@ -304,21 +128,20 @@ void qp_as::form_iHg(const double *zref_x, const double *zref_y)
 
     for (int i = 0; i < N; i++)
     {
-        cosA = chol_param.angle_cos[i];
-        sinA = chol_param.angle_sin[i];
+        cosA = sol_param.angle_cos[i];
+        sinA = sol_param.angle_sin[i];
 
         // zref
         p0 = zref_x[i];
         p1 = zref_y[i];
 
         // inv (2*H) * R' * Cp' * zref
-        chol_param.iHg[i*2] = 
-            -chol_param.i2Q[0] * (cosA*p0 + sinA*p1)*gain_beta;
-        chol_param.iHg[i*2 + 1] = 
-            -chol_param.i2Q[0] * (-sinA*p0 + cosA*p1)*gain_beta; 
+        iHg[i*2] = 
+            -sol_param.i2Q[0] * (cosA*p0 + sinA*p1)*gain_beta;
+        iHg[i*2 + 1] = 
+            -sol_param.i2Q[0] * (-sinA*p0 + cosA*p1)*gain_beta; 
     }
 }
-
 
 
 
@@ -336,6 +159,7 @@ void qp_as::form_bounds(const double *lb, const double *ub)
         Bounds[i*2+1].set(NUM_STATE_VAR*i+3, lb[i*2+1], ub[i*2+1], 0);
     }
 }
+
 
 
 /**
@@ -455,7 +279,7 @@ int qp_as::choose_excl_constr (const double *lambda)
 int qp_as::solve ()
 {
     // obtain dX
-    chol.solve(chol_param, X, dX);
+    chol.solve(sol_param, iHg, X, dX);
 
     for (;;)
     {
@@ -474,7 +298,7 @@ int qp_as::solve ()
             int ind_exclude = choose_excl_constr (chol.get_lambda());
             if (ind_exclude != -1)
             {
-                chol.down_resolve (chol_param, nW, W, ind_exclude, X, dX);
+                chol.down_resolve (sol_param, iHg, nW, W, ind_exclude, X, dX);
             }
             else
             {
@@ -487,7 +311,7 @@ int qp_as::solve ()
         else
         {
             // add row to the L matrix and find new dX
-            chol.up_resolve (chol_param, nW, W, X, dX);
+            chol.up_resolve (sol_param, iHg, nW, W, X, dX);
         }
     }
 
