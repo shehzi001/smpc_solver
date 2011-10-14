@@ -83,7 +83,7 @@ namespace state_handling
     /**
      * @brief Returns the next state represented by original variables.
      *
-     * @param[in] csp parameters. 
+     * @param[in] sp parameters. 
      * @param[in] X a solution.
      * @param[in,out] state the state (#NUM_STATE_VAR elements).
      */

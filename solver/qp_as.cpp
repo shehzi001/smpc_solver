@@ -87,8 +87,8 @@ qp_as::~qp_as()
 
 /** @brief Initializes quadratic problem.
 
-    @param[in] T Sampling time (for the moment it is assumed to be constant) [sec.]
-    @param[in] h Height of the Center of Mass divided by gravity
+    @param[in] T_ Sampling time (for the moment it is assumed to be constant) [sec.]
+    @param[in] h_ Height of the Center of Mass divided by gravity
     @param[in] angle Rotation angle for each state in the preview window
     @param[in] zref_x reference values of z_x
     @param[in] zref_y reference values of z_y
