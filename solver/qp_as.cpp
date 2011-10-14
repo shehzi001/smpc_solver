@@ -11,8 +11,6 @@
 #include "qp_as.h"
 #include "state_handling.h"
 
-#include <string.h> // in order to use memcpy and memmove
-#include <cmath> // cos, sin
 
 /****************************************
  * FUNCTIONS
@@ -98,8 +96,8 @@ qp_as::~qp_as()
     @param[in] ub array of upper bounds for z_x and z_y
 */
 void qp_as::set_parameters(
-        const double* T, 
-        const double* h, 
+        const double* T_, 
+        const double* h_, 
         const double* angle,
         const double* zref_x,
         const double* zref_y,
@@ -108,7 +106,7 @@ void qp_as::set_parameters(
 {
     nW = 0;
 
-    set_state_parameters (T, h, angle);
+    set_state_parameters (T_, h_, angle);
     form_iHg (zref_x, zref_y);
     form_bounds(lb, ub);
 }
@@ -128,18 +126,16 @@ void qp_as::form_iHg(const double *zref_x, const double *zref_y)
 
     for (int i = 0; i < N; i++)
     {
-        cosA = sol_param.angle_cos[i];
-        sinA = sol_param.angle_sin[i];
+        cosA = angle_cos[i];
+        sinA = angle_sin[i];
 
         // zref
         p0 = zref_x[i];
         p1 = zref_y[i];
 
         // inv (2*H) * R' * Cp' * zref
-        iHg[i*2] = 
-            -sol_param.i2Q[0] * (cosA*p0 + sinA*p1)*gain_beta;
-        iHg[i*2 + 1] = 
-            -sol_param.i2Q[0] * (-sinA*p0 + cosA*p1)*gain_beta; 
+        iHg[i*2] =     -i2Q[0] * (cosA*p0 + sinA*p1)*gain_beta;
+        iHg[i*2 + 1] = -i2Q[0] * (-sinA*p0 + cosA*p1)*gain_beta; 
     }
 }
 
@@ -279,7 +275,7 @@ int qp_as::choose_excl_constr (const double *lambda)
 int qp_as::solve ()
 {
     // obtain dX
-    chol.solve(sol_param, iHg, X, dX);
+    chol.solve(this, iHg, X, dX);
 
     for (;;)
     {
@@ -298,7 +294,7 @@ int qp_as::solve ()
             int ind_exclude = choose_excl_constr (chol.get_lambda());
             if (ind_exclude != -1)
             {
-                chol.down_resolve (sol_param, iHg, nW, W, ind_exclude, X, dX);
+                chol.down_resolve (this, iHg, nW, W, ind_exclude, X, dX);
             }
             else
             {
@@ -311,7 +307,7 @@ int qp_as::solve ()
         else
         {
             // add row to the L matrix and find new dX
-            chol.up_resolve (sol_param, iHg, nW, W, X, dX);
+            chol.up_resolve (this, iHg, nW, W, X, dX);
         }
     }
 

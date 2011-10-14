@@ -13,7 +13,7 @@
  * INCLUDES 
  ****************************************/
 #include "smpc_common.h"
-#include "chol_solve.h"
+#include "chol_solve_as.h"
 #include "qp_solver.h"
 
 #include <vector>
@@ -97,7 +97,7 @@ class qp_as : public qp_solver
 #endif
 
         /// An instance of #chol_solve class.
-        chol_solve chol;
+        chol_solve_as chol;
 
 
         /// @ref piHg "inv(H) * g"

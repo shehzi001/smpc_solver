@@ -28,7 +28,7 @@ using namespace std;
 /** 
  * @brief Solve a quadratic program with a specific structure. 
  */
-class qp_solver
+class qp_solver : public solver_parameters
 {
     public:
 // functions        
@@ -65,17 +65,10 @@ class qp_solver
    
 
 // variables
-        /// Parameters, which are fed to the methods of #chol_solve class.
-        solver_parameters sol_param;
-
         /** Variables for the QP (contain the states + control variables).
             Initial feasible point with respect to the equality and inequality 
             constraints. */
         double *X;
-
-
-        /** Number of iterations in a preview window. */
-        int N;
 
 
     ///@{

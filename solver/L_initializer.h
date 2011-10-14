@@ -40,7 +40,7 @@ class L_initializer
         L_initializer();
         ~L_initializer();
 
-        void form_L (const solver_parameters&, const int, double *);
+        void form_L (const solver_parameters*, const int, double *);
 
 
     private:

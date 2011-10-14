@@ -449,7 +449,7 @@
     @f$
     \mbm{S}
     @f$
-    is a projected Hessian, its structure is described in section '@ref pSchurComplement'.
+    is a Schur complement, its structure is described in section '@ref pSchurComplement'.
 
     @anchor piHg
     Note, that
@@ -588,11 +588,11 @@
     \tilde{\mbm{H}}_c^{-1}\bar{\mbm{E}}_c^T = 
       \left[
         \begin{array}{ccccc} 
-          \tilde{\mbm{Q}}^{-1} & \mbm{0}    & \mbm{0}    & \mbm{0}   & \mbm{0} \\
-          \mbm{0}    & \tilde{\mbm{Q}}^{-1} & \mbm{0}    & \mbm{0}   & \mbm{0} \\
-          \mbm{0}    & \mbm{0}    & \tilde{\mbm{Q}}^{-1} & \mbm{0}   & \mbm{0} \\
-          \mbm{0}    & \mbm{0}    & \mbm{0}    & \tilde{\mbm{Q}}^{-1} & \mbm{0} \\
-          \mbm{0}    & \mbm{0}    & \mbm{0}    & \mbm{0}  & \tilde{\mbm{Q}}^{-1}
+          \tilde{\mbm{Q}}^{-1}_1 & \mbm{0}    & \mbm{0}    & \mbm{0}   & \mbm{0} \\
+          \mbm{0}    & \tilde{\mbm{Q}}^{-1}_2 & \mbm{0}    & \mbm{0}   & \mbm{0} \\
+          \mbm{0}    & \mbm{0}    & \tilde{\mbm{Q}}^{-1}_3 & \mbm{0}   & \mbm{0} \\
+          \mbm{0}    & \mbm{0}    & \mbm{0}    & \tilde{\mbm{Q}}^{-1}_4 & \mbm{0} \\
+          \mbm{0}    & \mbm{0}    & \mbm{0}    & \mbm{0}  & \tilde{\mbm{Q}}^{-1}_5
         \end{array}
         \right]
       
@@ -608,13 +608,13 @@
 
     = \left[
       \begin{array}{ccccc} 
-        -\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_1^T & \tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_1^T\mbm{A}^T  & \mbm{0}    & \mbm{0}   & \mbm{0} \\
-        \mbm{0}    & -\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_2^T & \tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_2^T\mbm{A}^T    & \mbm{0}   & \mbm{0} \\
-        \mbm{0}    & \mbm{0}    & -\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_3^T & \tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_3^T\mbm{A}^T   & \mbm{0} \\
-        \mbm{0}    & \mbm{0}    & \mbm{0}    & -\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_4^T & \tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_4^T\mbm{A}^T \\
-        \mbm{0}    & \mbm{0}    & \mbm{0}    & \mbm{0}  & -\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_5^T
+        -\tilde{\mbm{Q}}^{-1}_1\bar{\mbm{R}}_1^T & \tilde{\mbm{Q}}^{-1}_1\bar{\mbm{R}}_1^T\mbm{A}^T  & \mbm{0}    & \mbm{0}   & \mbm{0} \\
+        \mbm{0}    & -\tilde{\mbm{Q}}^{-1}_2\bar{\mbm{R}}_2^T & \tilde{\mbm{Q}}^{-1}_2\bar{\mbm{R}}_2^T\mbm{A}^T    & \mbm{0}   & \mbm{0} \\
+        \mbm{0}    & \mbm{0}    & -\tilde{\mbm{Q}}^{-1}_3\bar{\mbm{R}}_3^T & \tilde{\mbm{Q}}^{-1}_3\bar{\mbm{R}}_3^T\mbm{A}^T   & \mbm{0} \\
+        \mbm{0}    & \mbm{0}    & \mbm{0}    & -\tilde{\mbm{Q}}^{-1}_4\bar{\mbm{R}}_4^T & \tilde{\mbm{Q}}^{-1}_4\bar{\mbm{R}}_4^T\mbm{A}^T \\
+        \mbm{0}    & \mbm{0}    & \mbm{0}    & \mbm{0}  & -\tilde{\mbm{Q}}_5^{-1}\bar{\mbm{R}}_5^T
       \end{array}
-      \right]. 
+      \right]
     @f$
 
     @f$
@@ -631,21 +631,21 @@
 
     \left[
       \begin{array}{ccccc} 
-        -\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_1^T & \tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_1^T\mbm{A}^T  & \mbm{0}    & \mbm{0}   & \mbm{0} \\
-        \mbm{0}    & -\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_2^T & \tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_2^T\mbm{A}^T    & \mbm{0}   & \mbm{0} \\
-        \mbm{0}    & \mbm{0}    & -\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_3^T & \tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_3^T\mbm{A}^T   & \mbm{0} \\
-        \mbm{0}    & \mbm{0}    & \mbm{0}    & -\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_4^T & \tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_4^T\mbm{A}^T \\
-        \mbm{0}    & \mbm{0}    & \mbm{0}    & \mbm{0}  & -\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_5^T
+        -\tilde{\mbm{Q}}^{-1}_1\bar{\mbm{R}}_1^T & \tilde{\mbm{Q}}^{-1}_1\bar{\mbm{R}}_1^T\mbm{A}^T  & \mbm{0}    & \mbm{0}   & \mbm{0} \\
+        \mbm{0}    & -\tilde{\mbm{Q}}^{-1}_2\bar{\mbm{R}}_2^T & \tilde{\mbm{Q}}^{-1}_2\bar{\mbm{R}}_2^T\mbm{A}^T    & \mbm{0}   & \mbm{0} \\
+        \mbm{0}    & \mbm{0}    & -\tilde{\mbm{Q}}^{-1}_3\bar{\mbm{R}}_3^T & \tilde{\mbm{Q}}^{-1}_3\bar{\mbm{R}}_3^T\mbm{A}^T   & \mbm{0} \\
+        \mbm{0}    & \mbm{0}    & \mbm{0}    & -\tilde{\mbm{Q}}^{-1}_4\bar{\mbm{R}}_4^T & \tilde{\mbm{Q}}^{-1}_4\bar{\mbm{R}}_4^T\mbm{A}^T \\
+        \mbm{0}    & \mbm{0}    & \mbm{0}    & \mbm{0}  & -\tilde{\mbm{Q}}_5^{-1}\bar{\mbm{R}}_5^T
       \end{array}
-      \right]  \\
+      \right]\\
 
     = \left[
       \begin{array}{ccccc} 
-        \bar{\mbm{R}}_1\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_1^T    &  -\bar{\mbm{R}}_1\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_1^T\mbm{A}^T    &  \mbm{0}  & \mbm{0}    & \mbm{0}  \\
-        -\mbm{A}\bar{\mbm{R}}_1\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_1^T & \mbm{A}\bar{\mbm{R}}_1\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_1^T\mbm{A}^T + \bar{\mbm{R}}_2\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_2^T   &  -\bar{\mbm{R}}_2\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_2^T\mbm{A}^T  & \mbm{0}    & \mbm{0}  \\
-        \mbm{0}    &  -\mbm{A}\bar{\mbm{R}}_2\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_2^T & \mbm{A}\bar{\mbm{R}}_2\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_2^T\mbm{A}^T + \bar{\mbm{R}}_3\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_3^T  & -\bar{\mbm{R}}_3\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_3^T\mbm{A}^T    & \mbm{0}  \\
-        \mbm{0}    &  \mbm{0}    &  -\mbm{A}\bar{\mbm{R}}_3\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_3^T  & \mbm{A}\bar{\mbm{R}}_3\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_3^T\mbm{A}^T + \bar{\mbm{R}}_4\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_4^T  & -\bar{\mbm{R}}_4\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_4^T\mbm{A}^T  \\
-        \mbm{0}    &  \mbm{0}    &  \mbm{0}  & -\mbm{A}\bar{\mbm{R}}_4\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_4^T & \mbm{A}\bar{\mbm{R}}_4\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_4^T\mbm{A}^T + \bar{\mbm{R}}_5\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_5^T
+        \bar{\mbm{R}}_1\tilde{\mbm{Q}}^{-1}_1\bar{\mbm{R}}_1^T    &  -\bar{\mbm{R}}_1\tilde{\mbm{Q}}^{-1}_1\bar{\mbm{R}}_1^T\mbm{A}^T    &  \mbm{0}  & \mbm{0}    & \mbm{0}  \\
+        -\mbm{A}\bar{\mbm{R}}_1\tilde{\mbm{Q}}^{-1}_1\bar{\mbm{R}}_1^T & \mbm{A}\bar{\mbm{R}}_1\tilde{\mbm{Q}}^{-1}_1\bar{\mbm{R}}_1^T\mbm{A}^T + \bar{\mbm{R}}_2\tilde{\mbm{Q}}^{-1}_2\bar{\mbm{R}}_2^T   &  -\bar{\mbm{R}}_2\tilde{\mbm{Q}}^{-1}_2\bar{\mbm{R}}_2^T\mbm{A}^T  & \mbm{0}    & \mbm{0}  \\
+        \mbm{0}    &  -\mbm{A}\bar{\mbm{R}}_2\tilde{\mbm{Q}}^{-1}_2\bar{\mbm{R}}_2^T & \mbm{A}\bar{\mbm{R}}_2\tilde{\mbm{Q}}^{-1}_2\bar{\mbm{R}}_2^T\mbm{A}^T + \bar{\mbm{R}}_3\tilde{\mbm{Q}}^{-1}_3\bar{\mbm{R}}_3^T  & -\bar{\mbm{R}}_3\tilde{\mbm{Q}}^{-1}_3\bar{\mbm{R}}_3^T\mbm{A}^T    & \mbm{0}  \\
+        \mbm{0}    &  \mbm{0}    &  -\mbm{A}\bar{\mbm{R}}_3\tilde{\mbm{Q}}^{-1}_3\bar{\mbm{R}}_3^T  & \mbm{A}\bar{\mbm{R}}_3\tilde{\mbm{Q}}^{-1}_3\bar{\mbm{R}}_3^T\mbm{A}^T + \bar{\mbm{R}}_4\tilde{\mbm{Q}}^{-1}_4\bar{\mbm{R}}_4^T  & -\bar{\mbm{R}}_4\tilde{\mbm{Q}}^{-1}_4\bar{\mbm{R}}_4^T\mbm{A}^T  \\
+        \mbm{0}    &  \mbm{0}    &  \mbm{0}  & -\mbm{A}\bar{\mbm{R}}_4\tilde{\mbm{Q}}^{-1}_4\bar{\mbm{R}}_4^T & \mbm{A}\bar{\mbm{R}}_4\tilde{\mbm{Q}}^{-1}_4\bar{\mbm{R}}_4^T\mbm{A}^T + \bar{\mbm{R}}_5\tilde{\mbm{Q}}^{-1}_5\bar{\mbm{R}}_5^T
       \end{array}
       \right]  \\
 
@@ -662,10 +662,10 @@
 
     where 
     @f$ \mbm{M}_{ii} = 
-    \bar{\mbm{R}}_i\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_i^T = 
-    \tilde{\mbm{Q}}^{-1}@f$ 
+    \bar{\mbm{R}}_i\tilde{\mbm{Q}}^{-1}_i\bar{\mbm{R}}_i^T = 
+    \tilde{\mbm{Q}}^{-1}_i@f$ 
     (due to the special structure of 
-    @f$ \tilde{\mbm{Q}}^{-1} @f$ and 
+    @f$ \tilde{\mbm{Q}}^{-1}_i @f$ and 
     @f$ \bar{\mbm{R}}_i @f$).
 
     @f$
@@ -735,8 +735,8 @@
 
 
 /**
- * @page pCholesky Cholesky decomposition of projected Hessian
-    Once projected Hessian is formed we can use Cholesky decomposition
+ * @page pCholesky Cholesky decomposition of Schur complement
+    Once Schur complement is formed we can use Cholesky decomposition
     @f$\mbm{S} = \mbm{L}\mbm{L}^T@f$.
     to obtain Langrange multipliers.
 
@@ -757,6 +757,7 @@
     Directly from observation we have
 
     @f$
+    \\
     \mbm{S}_{11} = \mbm{L}_{11}\mbm{L}_{11}^T,  \\
     \mbm{S}_{12} = \mbm{S}_{21}^T = \mbm{L}_{11}\mbm{L}_{21}^T, \quad \mbm{L}_{21}^T = \mbm{L}_{11}^{-1}\mbm{S}_{12},   \\
     \mbm{S}_{22} = \mbm{L}_{21}\mbm{L}_{21}^T + \mbm{L}_{22}\mbm{L}_{22}^T, \quad \dots 
@@ -793,8 +794,8 @@
     @f$\mbm{A}_W@f$ 
     contain the normals to the inequality constraints in the working set.
 
-    If a new constraint must be added to the active set, then the projected 
-    Hessian matrix must be updated:
+    If a new constraint must be added to the active set, then the Schur 
+    complement must be updated:
 
     @f$
     \frac{1}{2}
@@ -845,7 +846,7 @@
     selects and scales one column of E, this column corresponds to
     ZMP coordinates and can have at most 4 non-zero elements.
 
-    The total number of non-zero elements in the new row of projected Hessian
+    The total number of non-zero elements in the new row of Schur complement
     is 5 or 3 (for the last state in the preview window).
 \n\n
 
@@ -855,7 +856,7 @@ Input:
     m_e % the number of equality constraints
     m_a % the current cardinality of the active set
     L   % Cholesky factor
-    s_a % a row added to the projected Hessian
+    s_a % a row added to the Schur complement
 
 Output:
     l   % a new (the last) row of L

@@ -43,14 +43,27 @@
 class solver_parameters
 {
     public:
-        solver_parameters ()
+        solver_parameters (
+            const int N_,
+            const double Alpha,
+            const double Beta,
+            const double Gamma,
+            const double regularization)
         {
-            angle_cos = NULL;
-            angle_sin = NULL;
+            N = N_;
+
+            i2Q[0] = 1/(2*(Beta/2));
+            i2Q[1] = 1/(2*(Alpha/2));
+            i2Q[2] = 1/(2*regularization);
+
+            i2P = 1/(2 * (Gamma/2));
+
+            angle_cos = new double[N];
+            angle_sin = new double[N];
             T = NULL;
             h = NULL;
 #ifdef SMPC_VARIABLE_T_h
-            dh = NULL;
+            dh = new double[N-1];
 #endif
         };
 
@@ -69,12 +82,19 @@ class solver_parameters
         };
 
 
+        /** Number of iterations in a preview window. */
+        int N;
+
     // static matrices and vectors
+        ///@{
         /** State related penalty.*/
         double i2Q[3];
+        ///@}
 
+        ///@{
         /** Control related penalty. */
         double i2P;
+        ///@}
 
 
         double *angle_cos;

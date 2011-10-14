@@ -95,7 +95,7 @@ void smpc_solver::get_next_state_tilde (double *state)
 {
     if (qp_sol != NULL)
     {
-        state_handling::get_next_state_tilde (qp_sol->sol_param, qp_sol->X, state);
+        state_handling::get_next_state_tilde (qp_sol, qp_sol->X, state);
     }
 }
 
@@ -103,6 +103,6 @@ void smpc_solver::get_next_state (double *state)
 {
     if (qp_sol != NULL)
     {
-        state_handling::get_next_state (qp_sol->sol_param, qp_sol->X, state);
+        state_handling::get_next_state (qp_sol, qp_sol->X, state);
     }
 }
