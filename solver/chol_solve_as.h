@@ -41,7 +41,7 @@ class chol_solve_as : public chol_solve
         void up_resolve(const solver_parameters*, const double *, const int, const int *, const double *, double *);
 
 #ifdef QPAS_DOWNDATE
-        double * get_lambda();
+        double * get_lambda(const solver_parameters*);
         void down_resolve(const solver_parameters*, const double *, const int, const int *, const int, const double *, double *);
 #endif
 

@@ -28,10 +28,8 @@
  *
  * @param[in] preview_win_size size of the preview window.
  */
-chol_solve::chol_solve (const int preview_win_size)
+chol_solve::chol_solve (const int N)
 {
-    N = preview_win_size;
-
     ecL = new double[MATRIX_SIZE*N + MATRIX_SIZE*(N-1)]();
 
     nu = new double[NUM_VAR*N];
@@ -72,10 +70,10 @@ void chol_solve::form_Ex (const solver_parameters* csp, const double *x, double 
 #endif
 
 
-    const double *control = &x[N*NUM_STATE_VAR];
+    const double *control = &x[csp->N*NUM_STATE_VAR];
     double *res = result;
 
-    for (i = 0; i < N; i++)
+    for (i = 0; i < csp->N; i++)
     {
         // cos and sin of the current angle to form R
         double cosA = csp->angle_cos[i];
@@ -151,9 +149,9 @@ void chol_solve::form_ETx (const solver_parameters* csp, const double *x, double
 
 
     double *res = result;
-    double *control_res = &result[N*NUM_STATE_VAR];
+    double *control_res = &result[csp->N*NUM_STATE_VAR];
 
-    for (i = 0; i < N; i++)
+    for (i = 0; i < csp->N; i++)
     {
         // cos and sin of the current angle to form R
         double cosA = csp->angle_cos[i];
@@ -174,7 +172,7 @@ void chol_solve::form_ETx (const solver_parameters* csp, const double *x, double
         res[5] = -xc[5];
 
 
-        if (i != N-1) // no multiplication by A on the last iteration
+        if (i != csp->N-1) // no multiplication by A on the last iteration
         {
 #ifdef SMPC_VARIABLE_T_h
             double A3 = csp->T[i+1];
@@ -219,7 +217,7 @@ void chol_solve::form_ETx (const solver_parameters* csp, const double *x, double
  * @param[in,out] x vector "b" as input, vector "x" as output
  *                  (N * #NUM_STATE_VAR)
  */
-void chol_solve::solve_forward(double *x)
+void chol_solve::solve_forward(const solver_parameters* csp, double *x)
 {
     int i;
     double *xc = x; // 6 current elements of x
@@ -247,7 +245,7 @@ void chol_solve::solve_forward(double *x)
     xc[5] /= cur_ecL[8];
 
 
-    for (i = 1; i < N; i++)
+    for (i = 1; i < csp->N; i++)
     {
         // switch to the next level of L / next 6 elements
         xp = xc;
@@ -287,15 +285,15 @@ void chol_solve::solve_forward(double *x)
  *
  * @param[in,out] x vector "b" as input, vector "x" as output.
  */
-void chol_solve::solve_backward(double *x)
+void chol_solve::solve_backward(const solver_parameters* csp, double *x)
 {
     int i;
-    double *xc = & x[(N-1)*NUM_STATE_VAR]; // current 6 elements of result
+    double *xc = & x[(csp->N-1)*NUM_STATE_VAR]; // current 6 elements of result
     double *xp; // 6 elements computed on the previous iteration
 
     // elements of these matrices accessed as if they were transposed
     // lower triangular matrix lying on the diagonal of L
-    double *cur_ecL = &ecL[2 * (N - 1) * MATRIX_SIZE]; 
+    double *cur_ecL = &ecL[2 * (csp->N - 1) * MATRIX_SIZE]; 
     // upper triangular matrix lying to the right from cur_ecL at the same level of L'
     double *prev_ecL; 
 
@@ -315,7 +313,7 @@ void chol_solve::solve_backward(double *x)
     xc[3] /= cur_ecL[0];
 
 
-    for (i = N-2; i >= 0 ; i--)
+    for (i = csp->N-2; i >= 0 ; i--)
     {
         xp = xc;
         xc = & x[i*NUM_STATE_VAR];
@@ -369,15 +367,15 @@ void chol_solve::solve(
 
 
     // generate L
-    L_init.form_L(csp, N, ecL);
+    L_init.form_L(csp, csp->N, ecL);
 
     // -(x + inv(H) * g)
     //  x - initial feasible point
-    for (i = 0; i < NUM_VAR * N; i++)
+    for (i = 0; i < NUM_VAR * csp->N; i++)
     {
         XiHg[i] = -x[i];
     }
-    for (i = 0; i < 2*N; i++)
+    for (i = 0; i < 2*csp->N; i++)
     {
         XiHg[i*3] -= iHg[i];
     }
@@ -386,8 +384,8 @@ void chol_solve::solve(
     form_Ex (csp, XiHg, s_nu);
 
     // obtain nu
-    solve_forward(s_nu);
-    solve_backward(s_nu);
+    solve_forward(csp, s_nu);
+    solve_backward(csp, s_nu);
 
     // E' * nu
     form_ETx (csp, s_nu, dx);
@@ -398,12 +396,12 @@ void chol_solve::solve(
     // dx = -(x + inv(H) * g + inv(H) * E' * nu)
     //        ~~~~~~~~~~~~~~            ~~~~~~~
     // dx   -(   -XiHg       + inv(H) *   dx   ) 
-    for (i = 0; i < N*NUM_STATE_VAR; i++)
+    for (i = 0; i < csp->N*NUM_STATE_VAR; i++)
     {
         // dx for state variables
         dx[i] = XiHg[i] - i2Q[i%3] * dx[i];
     }
-    for (; i < N*NUM_VAR; i++)
+    for (; i < csp->N*NUM_VAR; i++)
     {
         // dx for control variables
         dx[i] = XiHg[i] - csp->i2P * dx[i];

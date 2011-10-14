@@ -28,7 +28,7 @@
  *
  * @param[in] preview_win_size size of the preview window.
  */
-chol_solve_as::chol_solve_as (const int preview_win_size) : chol_solve(preview_win_size)
+chol_solve_as::chol_solve_as (const int N) : chol_solve(N)
 {
     z = new double[NUM_VAR*N];
 
@@ -76,7 +76,7 @@ void chol_solve_as::form_sa_row(
 
 
     // reset memory
-    memset(row, 0, (NUM_STATE_VAR * N + ic_num) * sizeof(double));
+    memset(row, 0, (NUM_STATE_VAR * csp->N + ic_num) * sizeof(double));
 
     aiHcosA = aiH * csp->angle_cos[state_num];
     aiHsinA = aiH * csp->angle_sin[state_num];
@@ -89,7 +89,7 @@ void chol_solve_as::form_sa_row(
         row[first_num + 3] = -aiHsinA;
 
         // a * A'*R'
-        if (state_num != N-1)
+        if (state_num != csp->N-1)
         {
             row[first_num + 6] = aiHcosA;
             row[first_num + 9] = aiHsinA;
@@ -102,7 +102,7 @@ void chol_solve_as::form_sa_row(
         row[first_num + 3] = -aiHcosA;
 
         // a * A'*R'
-        if (state_num != N-1)
+        if (state_num != csp->N-1)
         {
             row[first_num + 6] = -aiHsinA;
             row[first_num + 9] = aiHcosA;
@@ -110,7 +110,7 @@ void chol_solve_as::form_sa_row(
     }
 
     // initialize the last element in the row
-    row[ic_num + N*NUM_STATE_VAR] = aiH;
+    row[ic_num + csp->N*NUM_STATE_VAR] = aiH;
 }
 
 
@@ -135,15 +135,15 @@ void chol_solve_as::solve(
 
 
     // generate L
-    L_init.form_L(csp, N, ecL);
+    L_init.form_L(csp, csp->N, ecL);
 
     // -(x + inv(H) * g)
     //  x - initial feasible point
-    for (i = 0; i < NUM_VAR * N; i++)
+    for (i = 0; i < NUM_VAR * csp->N; i++)
     {
         XiHg[i] = -x[i];
     }
-    for (i = 0; i < 2*N; i++)
+    for (i = 0; i < 2*csp->N; i++)
     {
         XiHg[i*3] -= iHg[i];
     }
@@ -152,13 +152,13 @@ void chol_solve_as::solve(
     form_Ex (csp, XiHg, s_nu);
 
     // obtain nu
-    solve_forward(s_nu);
+    solve_forward(csp, s_nu);
     // make copy of z - it is constant
-    for (i = 0; i < NUM_STATE_VAR * N; i++)
+    for (i = 0; i < NUM_STATE_VAR * csp->N; i++)
     {
         z[i] = s_nu[i];
     }
-    solve_backward(s_nu);
+    solve_backward(csp, s_nu);
 
     // E' * nu
     form_ETx (csp, s_nu, dx);
@@ -169,12 +169,12 @@ void chol_solve_as::solve(
     // dx = -(x + inv(H) * g + inv(H) * E' * nu)
     //        ~~~~~~~~~~~~~~            ~~~~~~~
     // dx   -(   -XiHg       + inv(H) *   dx   ) 
-    for (i = 0; i < N*NUM_STATE_VAR; i++)
+    for (i = 0; i < csp->N*NUM_STATE_VAR; i++)
     {
         // dx for state variables
         dx[i] = XiHg[i] - i2Q[i%3] * dx[i];
     }
-    for (; i < N*NUM_VAR; i++)
+    for (; i < csp->N*NUM_VAR; i++)
     {
         // dx for control variables
         dx[i] = XiHg[i] - csp->i2P * dx[i];
@@ -223,7 +223,7 @@ void chol_solve_as::update (const solver_parameters* csp, const int nW, const in
     int state_num = W[ic_num] / 2; // number of state in the preview window
     double *new_row = icL[ic_num]; // current row in icL
 
-    int last_num = ic_num + N*NUM_STATE_VAR; // the last !=0 element
+    int last_num = ic_num + csp->N*NUM_STATE_VAR; // the last !=0 element
 
     // a matrix on diagonal of ecL
     double* ecL_diag = &ecL[state_num * MATRIX_SIZE * 2];
@@ -242,7 +242,7 @@ void chol_solve_as::update (const solver_parameters* csp, const int nW, const in
     // it, they can be 1,2,6; 1,5,6; 4,5,6
     k = state_num*NUM_STATE_VAR;
     double* cur_pos = &new_row[k];
-    for(i = state_num*2; i < N*2; i++) // variables corresponding to x and 
+    for(i = state_num*2; i < csp->N*2; i++) // variables corresponding to x and 
     {                                  // y are computed using the same matrices
         double tmp_copy_el[3];
 
@@ -258,7 +258,7 @@ void chol_solve_as::update (const solver_parameters* csp, const int nW, const in
         // ----------------------------------------------------------------
         cur_pos[2] /= ecL_diag[8];
         tmp_copy_el[2] = cur_pos[2];
-        if (i < 2*(N - 1))  // non-diagonal matrix of ecL cannot be
+        if (i < 2*(csp->N - 1))  // non-diagonal matrix of ecL cannot be
         {                   // used when the last state is processed
 
             // these elements can be updated here, since they are not 
@@ -287,7 +287,7 @@ void chol_solve_as::update (const solver_parameters* csp, const int nW, const in
         // in icL
         for (j = 0; j < ic_num; j++)
         {
-            new_row[N*NUM_STATE_VAR + j] -= tmp_copy_el[0] * icL[j][k]
+            new_row[csp->N*NUM_STATE_VAR + j] -= tmp_copy_el[0] * icL[j][k]
                                           + tmp_copy_el[1] * icL[j][k+1]
                                           + tmp_copy_el[2] * icL[j][k+2];
         }
@@ -296,9 +296,9 @@ void chol_solve_as::update (const solver_parameters* csp, const int nW, const in
     }
 
     // update elements in the end of icL
-    for(i = NUM_STATE_VAR * N; i < last_num; i++)
+    for(i = NUM_STATE_VAR * csp->N; i < last_num; i++)
     {
-        new_row[i] /= icL[i - N*NUM_STATE_VAR][i];
+        new_row[i] /= icL[i - csp->N*NUM_STATE_VAR][i];
         double tmp_copy_el = new_row[i];
 
         // determine number in the row of L
@@ -306,9 +306,9 @@ void chol_solve_as::update (const solver_parameters* csp, const int nW, const in
         // update the last (diagonal) number in the row
         new_row[last_num] -= tmp_copy_el * tmp_copy_el;
 
-        for (j = (i - N*NUM_STATE_VAR) + 1; j < ic_num; j++)
+        for (j = (i - csp->N*NUM_STATE_VAR) + 1; j < ic_num; j++)
         {
-            new_row[N*NUM_STATE_VAR + j] -= tmp_copy_el * icL[j][i];
+            new_row[csp->N*NUM_STATE_VAR + j] -= tmp_copy_el * icL[j][i];
         }
     }
 
@@ -336,7 +336,7 @@ void chol_solve_as::update_z (
 {
     int ic_num = nW-1; // index of added constraint in W
     // update lagrange multipliers
-    int zind = N*NUM_STATE_VAR + ic_num;
+    int zind = csp->N*NUM_STATE_VAR + ic_num;
     // sn
     double zn = -iHg[W[ic_num]] - x[W[ic_num]*3];
 
@@ -377,10 +377,10 @@ void chol_solve_as::resolve (
 
 
     // backward substituition for icL
-    for (i = NUM_STATE_VAR*N + nW-1; i >= NUM_STATE_VAR*N; i--)
+    for (i = NUM_STATE_VAR*csp->N + nW-1; i >= NUM_STATE_VAR*csp->N; i--)
     {
         double nui = nu[i];
-        double *icL_row = icL[i-N*NUM_STATE_VAR];
+        double *icL_row = icL[i-csp->N*NUM_STATE_VAR];
 
         nui = nui / icL_row[i];
         for (j = i - 1; j >= 0; j--)
@@ -390,7 +390,7 @@ void chol_solve_as::resolve (
         nu[i] = nui;
     }
     // backward substituition for ecL
-    solve_backward(nu);
+    solve_backward(csp, nu);
 
 
     // E' * nu
@@ -401,24 +401,24 @@ void chol_solve_as::resolve (
     // dx = -(x + inv(H) * g + inv(H) * E' * nu)
     //            ~~~~~~~~~~            ~~~~~~~
     // dx   -(x +  iHg       + inv(H) *   dx   ) 
-    for (i = 0; i < N*NUM_STATE_VAR; i++)
+    for (i = 0; i < csp->N*NUM_STATE_VAR; i++)
     {
         // dx for state variables
         dx[i] = -x[i] - i2Q[i%3] * dx[i];
     }
-    for (; i < N*NUM_VAR; i++)
+    for (; i < csp->N*NUM_VAR; i++)
     {
         // dx for control variables
         dx[i] = -x[i] - csp->i2P * dx[i];
     }
-    for (i = 0; i < 2*N; i++)
+    for (i = 0; i < 2*csp->N; i++)
     {
         // dx for state variables
         dx[i*3] -= iHg[i];
     }
 
     // -iH * A(W,:)' * lambda
-    double *lambda = &nu[N*NUM_STATE_VAR];
+    double *lambda = &nu[csp->N*NUM_STATE_VAR];
     for (i = 0; i < nW; i++)
     {
         dx[W[i]*3] -= i2Q[0] * lambda[i];
@@ -456,17 +456,17 @@ void chol_solve_as::down_resolve(
     double z_tmp = 0;
     for (int i = nW; i > ind_exclude; i--)
     {
-        int zind = N*NUM_STATE_VAR + i;
+        int zind = csp->N*NUM_STATE_VAR + i;
         double zn = z[zind] * icL[i][zind];
         z[zind] = z_tmp;
 
-        for (int j = N*NUM_STATE_VAR + ind_exclude; j < zind; j++)
+        for (int j = csp->N*NUM_STATE_VAR + ind_exclude; j < zind; j++)
         {
             zn += z[j] * icL[i][j];
         }
         z_tmp = zn;
     }
-    z[N*NUM_STATE_VAR + ind_exclude] = z_tmp;
+    z[csp->N*NUM_STATE_VAR + ind_exclude] = z_tmp;
 
 
     // downdate L
@@ -476,12 +476,12 @@ void chol_solve_as::down_resolve(
     // recompute elements of z
     for (int i = ind_exclude; i < nW; i++)
     {
-        int zind = N*NUM_STATE_VAR + i;
+        int zind = csp->N*NUM_STATE_VAR + i;
         double zn = z[zind];
 
         // zn
         // start from the first !=0 element
-        for (int j = N*NUM_STATE_VAR+ind_exclude; j < zind; j++)
+        for (int j = csp->N*NUM_STATE_VAR+ind_exclude; j < zind; j++)
         {
             zn -= z[j] * icL[i][j];
         }
@@ -489,7 +489,7 @@ void chol_solve_as::down_resolve(
     }
 
     // copy z to nu
-    for (int i = 0; i < N*NUM_STATE_VAR + nW; i++)
+    for (int i = 0; i < csp->N*NUM_STATE_VAR + nW; i++)
     {
         nu[i] = z[i];
     }
@@ -503,9 +503,9 @@ void chol_solve_as::down_resolve(
 /**
  * @return a pointer to the memory where current lambdas are stored.
  */
-double * chol_solve_as::get_lambda()
+double * chol_solve_as::get_lambda(const solver_parameters* csp)
 {
-    return(&nu[NUM_STATE_VAR*N]);
+    return(&nu[NUM_STATE_VAR*csp->N]);
 }
 
 
@@ -536,7 +536,7 @@ void chol_solve_as::downdate(
 
     for (int i = ind_exclude; i < nW; i++)
     {
-        int el_index = NUM_STATE_VAR*N + i;
+        int el_index = NUM_STATE_VAR*csp->N + i;
         double *cur_el = &icL[i][el_index];
         double x1 = cur_el[0];
         double x2 = cur_el[1];

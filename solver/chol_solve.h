@@ -41,8 +41,8 @@ class chol_solve
         void form_Ex (const solver_parameters*, const double *, double *);
         void form_ETx (const solver_parameters*, const double *, double *);
 
-        void solve_forward(double *);
-        void solve_backward(double *);
+        void solve_forward(const solver_parameters*, double *);
+        void solve_backward(const solver_parameters*, double *);
 
         void form_sa_row(const solver_parameters*, const int, const int, double *);
 
@@ -58,9 +58,6 @@ class chol_solve
 
         /// - (X + solver_parameters#iHg)
         double *XiHg;
-
-        /// number of states in the preview window
-        int N;
 
         /// An instance of #L_initializer class
         L_initializer L_init;

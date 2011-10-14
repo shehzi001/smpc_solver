@@ -291,7 +291,7 @@ int qp_as::solve ()
         if (activated_var_num == -1)
         {
 #ifdef QPAS_DOWNDATE
-            int ind_exclude = choose_excl_constr (chol.get_lambda());
+            int ind_exclude = choose_excl_constr (chol.get_lambda(this));
             if (ind_exclude != -1)
             {
                 chol.down_resolve (this, iHg, nW, W, ind_exclude, X, dX);
