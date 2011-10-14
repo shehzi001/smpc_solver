@@ -36,27 +36,27 @@ class chol_solve_as : public chol_solve
         chol_solve_as (int);
         ~chol_solve_as();
 
-        void solve(const solver_parameters*, const double *, const double *, double *);
+        void solve(const problem_parameters*, const double *, const double *, double *);
 
-        void up_resolve(const solver_parameters*, const double *, const int, const int *, const double *, double *);
+        void up_resolve(const problem_parameters*, const double *, const int, const int *, const double *, double *);
 
 #ifdef QPAS_DOWNDATE
-        double * get_lambda(const solver_parameters*);
-        void down_resolve(const solver_parameters*, const double *, const int, const int *, const int, const double *, double *);
+        double * get_lambda(const problem_parameters*);
+        void down_resolve(const problem_parameters*, const double *, const int, const int *, const int, const double *, double *);
 #endif
 
 
     private:
-        void update (const solver_parameters*, const int, const int *);
-        void update_z (const solver_parameters*, const double *, const int, const int *, const double *);
+        void update (const problem_parameters*, const int, const int *);
+        void update_z (const problem_parameters*, const double *, const int, const int *, const double *);
 #ifdef QPAS_DOWNDATE
-        void downdate(const solver_parameters*, const int, const int, const double *);
-        void downdate_z (const solver_parameters*, const int, const int *, const int, const double *);
+        void downdate(const problem_parameters*, const int, const int, const double *);
+        void downdate_z (const problem_parameters*, const int, const int *, const int, const double *);
 #endif
 
-        void resolve (const solver_parameters*, const double *, const int, const int *, const double *, double *);
+        void resolve (const problem_parameters*, const double *, const int, const int *, const double *, double *);
 
-        void form_sa_row(const solver_parameters*, const int, const int, double *);
+        void form_sa_row(const problem_parameters*, const int, const int, double *);
 
 
 // ----------------------------------------------

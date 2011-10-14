@@ -28,7 +28,7 @@ using namespace std;
 /** 
  * @brief Solve a quadratic program with a specific structure. 
  */
-class qp_solver : public solver_parameters
+class qp_solver : public problem_parameters
 {
     public:
 // functions        

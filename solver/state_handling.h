@@ -29,8 +29,8 @@ namespace state_handling
     void bar_to_tilde (const double, const double, double *);
     void tilde_to_orig (const double, double *);
 
-    void get_next_state_tilde (const solver_parameters*, const double *, double *);
-    void get_next_state (const solver_parameters*, const double *, double *);
+    void get_next_state_tilde (const problem_parameters*, const double *, double *);
+    void get_next_state (const problem_parameters*, const double *, double *);
 }
 /// @}
 #endif /*STATE_HANDLING_H*/

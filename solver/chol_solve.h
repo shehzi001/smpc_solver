@@ -35,16 +35,16 @@ class chol_solve
         chol_solve (int);
         ~chol_solve();
 
-        void solve(const solver_parameters*, const double *, const double *, double *);
+        void solve(const problem_parameters*, const double *, const double *, double *);
 
 
-        void form_Ex (const solver_parameters*, const double *, double *);
-        void form_ETx (const solver_parameters*, const double *, double *);
+        void form_Ex (const problem_parameters*, const double *, double *);
+        void form_ETx (const problem_parameters*, const double *, double *);
 
-        void solve_forward(const solver_parameters*, double *);
-        void solve_backward(const solver_parameters*, double *);
+        void solve_forward(const problem_parameters*, double *);
+        void solve_backward(const problem_parameters*, double *);
 
-        void form_sa_row(const solver_parameters*, const int, const int, double *);
+        void form_sa_row(const problem_parameters*, const int, const int, double *);
 
 
 // ----------------------------------------------
@@ -56,7 +56,7 @@ class chol_solve
         /// Vector of Lagrange multipliers
         double *nu;
 
-        /// - (X + solver_parameters#iHg)
+        /// - (X + problem_parameters#iHg)
         double *XiHg;
 
         /// An instance of #L_initializer class

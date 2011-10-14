@@ -27,7 +27,7 @@
 /// The number of elements in 3x3 matrix.
 #define MATRIX_SIZE 9
 
-/// Allow variable solver_parameters#T and solver_parameters#h
+/// Allow variable problem_parameters#T and problem_parameters#h
 #define SMPC_VARIABLE_T_h
 /// Allow removal of constraints from active set
 #define QPAS_DOWNDATE
@@ -40,10 +40,10 @@
 /**
  * @brief A set of parameters used by #chol_solve class.
  */
-class solver_parameters
+class problem_parameters
 {
     public:
-        solver_parameters (
+        problem_parameters (
             const int N_,
             const double Alpha,
             const double Beta,
@@ -67,7 +67,7 @@ class solver_parameters
 #endif
         };
 
-        ~solver_parameters()
+        ~problem_parameters()
         {
             if (angle_cos != NULL)
                 delete angle_cos;

@@ -35,7 +35,7 @@ qp_solver::qp_solver(
         const double Gamma, 
         const double regularization, 
         const double tol_) :
-    solver_parameters (N_, Alpha, Beta, Gamma, regularization) 
+    problem_parameters (N_, Alpha, Beta, Gamma, regularization) 
 {
     tol = tol_;
 

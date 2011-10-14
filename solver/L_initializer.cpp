@@ -223,25 +223,25 @@ void L_initializer::form_L_diag(const double *ecLp, double *ecLc)
 /**
  * @brief Builds matrix L.
  *
- * @param[in] csp parameters.
+ * @param[in] ppar parameters.
  * @param[in] N number of states in preview window.
  * @param[out] ecL the memory allocated for L.
  */
-void L_initializer::form_L(const solver_parameters* csp, const int N, double *ecL)
+void L_initializer::form_L(const problem_parameters* ppar, const int N, double *ecL)
 {
     int i;
     int cur_offset;
     int prev_offset;
 
-    double T = csp->T[0];
+    double T = ppar->T[0];
     double T2 = T*T/2;
-    double B[3] = {T2*T/3 - csp->h[0]*T, T2, T};
+    double B[3] = {T2*T/3 - ppar->h[0]*T, T2, T};
 
     // form all matrices
-    form_iQBiPB (B, csp->i2Q, csp->i2P);
+    form_iQBiPB (B, ppar->i2Q, ppar->i2P);
 #ifndef SMPC_VARIABLE_T_h
     double A6 = T2;
-    form_iQAT (T, A6, csp->i2Q);
+    form_iQAT (T, A6, ppar->i2Q);
     form_AiQATiQBiPB (T, A6);
 #endif
 
@@ -255,16 +255,16 @@ void L_initializer::form_L(const solver_parameters* csp, const int N, double *ec
     for (i = 1; i < N; i++)
     {
 #ifdef SMPC_VARIABLE_T_h
-        T = csp->T[i];
+        T = ppar->T[i];
         T2 = T*T/2;
-        B[0] = T2*T/3 - csp->h[i]*T;
+        B[0] = T2*T/3 - ppar->h[i]*T;
         B[1] = T2;
         B[2] = T;
-        double A6 = T2 - csp->dh[i-1];
+        double A6 = T2 - ppar->dh[i-1];
 
         // form all matrices
-        form_iQBiPB (B, csp->i2Q, csp->i2P);
-        form_iQAT (T, A6, csp->i2Q);
+        form_iQBiPB (B, ppar->i2Q, ppar->i2P);
+        form_iQAT (T, A6, ppar->i2Q);
         form_AiQATiQBiPB (T, A6);
 #endif
 

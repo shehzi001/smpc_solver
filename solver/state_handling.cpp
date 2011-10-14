@@ -69,7 +69,7 @@ namespace state_handling
      * @param[in] X a solution.
      * @param[in,out] state the state (#NUM_STATE_VAR elements).
      */
-    void get_next_state_tilde (const solver_parameters* sp, const double *X, double *state)
+    void get_next_state_tilde (const problem_parameters* sp, const double *X, double *state)
     {
         for (int i = 0; i < NUM_STATE_VAR; i++)
         {
@@ -87,7 +87,7 @@ namespace state_handling
      * @param[in] X a solution.
      * @param[in,out] state the state (#NUM_STATE_VAR elements).
      */
-    void get_next_state (const solver_parameters* sp, const double *X, double *state)
+    void get_next_state (const problem_parameters* sp, const double *X, double *state)
     {
         get_next_state_tilde (sp, X, state);
         state_handling::tilde_to_orig (sp->h[0], state);
