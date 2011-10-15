@@ -11,9 +11,10 @@
  * INCLUDES 
  ****************************************/
 
+#include "smpc_common.h"
 #include "matrix_E.h"
 #include "matrix_ecL.h"
-#include "smpc_common.h"
+#include "problem_param.h"
 
 
 /****************************************

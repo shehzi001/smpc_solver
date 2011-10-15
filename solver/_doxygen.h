@@ -60,6 +60,10 @@
  * - @ref pFormulas 
  *
  * - @ref gWMG_INTERNALS
+ * \n\n
+ *
+ * @section MainNote Important notes
+ * @todo The library is not thoroughly tested with variable period T and variable height of ZMP.
  */
 
 

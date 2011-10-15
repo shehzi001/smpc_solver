@@ -108,13 +108,13 @@ void matrix_ecL::form_iQBiPB (const double *B, const double *i2Q, const double i
  * @param[in] i2Q a vector of 3 elements, which contains
  *              diagonal elements of 0.5*inv(Q).
  */
-void matrix_ecL::form_iQAT (const double T, const double A6, const double *i2Q)
+void matrix_ecL::form_iQAT (const double A3, const double A6, const double *i2Q)
 {
     iQAT[0] = i2Q[0];
-    iQAT[1] = T * i2Q[1];
+    iQAT[1] = A3 * i2Q[1];
     iQAT[2] = A6 * i2Q[2];
     iQAT[4] = i2Q[1];
-    iQAT[5] = T * i2Q[2];
+    iQAT[5] = A3 * i2Q[2];
     iQAT[8] = i2Q[2];
 }
 
@@ -128,22 +128,22 @@ void matrix_ecL::form_iQAT (const double T, const double A6, const double *i2Q)
  *
  * @attention Only the elements below the main diagonal are initialized.
  */
-void matrix_ecL::form_AiQATiQBiPB (const double T, const double A6)
+void matrix_ecL::form_AiQATiQBiPB (const double A3, const double A6)
 {
     // 1st column
-    AiQATiQBiPB[0] = iQBiPB[0] + iQAT[0] + T*iQAT[1] + A6*iQAT[2];
-    AiQATiQBiPB[1] = iQBiPB[1] +             iQAT[1] +  T*iQAT[2];
-    AiQATiQBiPB[2] = iQBiPB[2] +                          iQAT[2];
+    AiQATiQBiPB[0] = iQBiPB[0] + iQAT[0] + A3*iQAT[1] + A6*iQAT[2];
+    AiQATiQBiPB[1] = iQBiPB[1] +              iQAT[1] + A3*iQAT[2];
+    AiQATiQBiPB[2] = iQBiPB[2] +                           iQAT[2];
 
     // 2nd column
     // symmetric elements are not initialized
-//    AiQATiQBiPB[3] = iQBiPB[3] + T*iQAT[4] + A6*iQAT[5];
-    AiQATiQBiPB[4] = iQBiPB[4] +   iQAT[4] +  T*iQAT[5];
-    AiQATiQBiPB[5] = iQBiPB[5] +                iQAT[5];
+//    AiQATiQBiPB[3] = iQBiPB[3] + A3*iQAT[4] + A6*iQAT[5];
+    AiQATiQBiPB[4] = iQBiPB[4] +   iQAT[4] +  A3*iQAT[5];
+    AiQATiQBiPB[5] = iQBiPB[5] +                 iQAT[5];
 
     // 3rd column
 //    AiQATiQBiPB[6] = iQBiPB[6] + A6*iQAT[8];
-//    AiQATiQBiPB[7] = iQBiPB[7] +  T*iQAT[8];
+//    AiQATiQBiPB[7] = iQBiPB[7] + A3*iQAT[8];
     AiQATiQBiPB[8] = iQBiPB[8] +    iQAT[8];
 }
 
@@ -238,16 +238,21 @@ void matrix_ecL::form (const problem_parameters* ppar, const int N)
     int cur_offset;
     int prev_offset;
 
-    double T = ppar->T[0];
-    double T2 = T*T/2;
-    double B[3] = {T2*T/3 - ppar->h[0]*T, T2, T};
+
+    double A3,A6;
+    double B[3];
+
+    B[2] = ppar->T[0];
+    B[1] = ppar->B[1];
+    B[0] = ppar->B[0];
 
     // form all matrices
     form_iQBiPB (B, ppar->i2Q, ppar->i2P);
 #ifndef SMPC_VARIABLE_T_h
-    double A6 = T2;
-    form_iQAT (T, A6, ppar->i2Q);
-    form_AiQATiQBiPB (T, A6);
+    A3 = ppar->T[0];
+    A6 = ppar->A6;
+    form_iQAT (A3, A6, ppar->i2Q);
+    form_AiQATiQBiPB (A3, A6);
 #endif
 
 
@@ -260,17 +265,15 @@ void matrix_ecL::form (const problem_parameters* ppar, const int N)
     for (i = 1; i < N; i++)
     {
 #ifdef SMPC_VARIABLE_T_h
-        T = ppar->T[i];
-        T2 = T*T/2;
-        B[0] = T2*T/3 - ppar->h[i]*T;
-        B[1] = T2;
-        B[2] = T;
-        double A6 = T2 - ppar->dh[i-1];
+        B[0] = ppar->B[i*2];
+        B[1] = ppar->B[i*2+1];
+        A3 = B[2] = ppar->T[i];
+        A6 = ppar->A6[i-1];
 
         // form all matrices
         form_iQBiPB (B, ppar->i2Q, ppar->i2P);
-        form_iQAT (T, A6, ppar->i2Q);
-        form_AiQATiQBiPB (T, A6);
+        form_iQAT (A3, A6, ppar->i2Q);
+        form_AiQATiQBiPB (A3, A6);
 #endif
 
         // form (b), (d), (f) ... 

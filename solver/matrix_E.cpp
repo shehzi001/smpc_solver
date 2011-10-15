@@ -28,13 +28,15 @@
 void matrix_E::form_Ex (const problem_parameters* ppar, const double *x, double *result)
 {
     int i;
+    double B[3];
+    double A3,A6;
 
     // Matrices A and B are generated on the fly using these parameters.
 #ifndef SMPC_VARIABLE_T_h
-    double T = ppar->T[0];
-    double T2 = T*T/2;
-    double B0 = T2*T/3 - ppar->h[0]*T;
-    double A6 = T2;
+    A3 = B[2] = ppar->T[0];
+    B[1] = ppar->B[1];
+    B[0] = ppar->B[0];
+    A6 = ppar->A6;
 #endif
 
 
@@ -47,9 +49,9 @@ void matrix_E::form_Ex (const problem_parameters* ppar, const double *x, double 
         double cosA = ppar->angle_cos[i];
         double sinA = ppar->angle_sin[i];
 #ifdef SMPC_VARIABLE_T_h
-        double T = ppar->T[i];
-        double T2 = T*T/2;
-        double B0 = T2*T/3 - ppar->h[i]*T;
+        A3 = B[2] = ppar->T[i];
+        B[1] = ppar->B[i*2+1];
+        B[0] = ppar->B[i*2];
 #endif
 
         // a pointer to 6 current elements of result
@@ -60,19 +62,19 @@ void matrix_E::form_Ex (const problem_parameters* ppar, const double *x, double 
 
 
         // result = -R * x + B * u
-        res[0] = -(cosA * xc[0] - sinA * xc[3]) + B0 * control[0];
-        res[1] = -xc[1]                         + T2 * control[0];
-        res[2] = -xc[2]                         +  T * control[0];
-        res[3] = -(sinA * xc[0] + cosA * xc[3]) + B0 * control[1];
-        res[4] = -xc[4]                         + T2 * control[1];
-        res[5] = -xc[5]                         +  T * control[1];
+        res[0] = -(cosA * xc[0] - sinA * xc[3]) + B[0] * control[0];
+        res[1] = -xc[1]                         + B[1] * control[0];
+        res[2] = -xc[2]                         + B[2] * control[0];
+        res[3] = -(sinA * xc[0] + cosA * xc[3]) + B[0] * control[1];
+        res[4] = -xc[4]                         + B[1] * control[1];
+        res[5] = -xc[5]                         + B[2] * control[1];
 
 
         if (i != 0) // no multiplication by A on the first iteration
         {
             int j = i-1;
 #ifdef SMPC_VARIABLE_T_h
-            double A6 = T2 - ppar->dh[j];
+            A6 = ppar->A6[j];
 #endif
             xc = &x[j*NUM_STATE_VAR];
 
@@ -80,12 +82,12 @@ void matrix_E::form_Ex (const problem_parameters* ppar, const double *x, double 
             sinA = ppar->angle_sin[j];
 
             // result += A*R*x
-            res[0] += cosA * xc[0] + T * xc[1] + A6 * xc[2] - sinA * xc[3];
-            res[1] +=                    xc[1] +  T * xc[2];
-            res[2] +=                                 xc[2];
-            res[3] += cosA * xc[3] + T * xc[4] + A6 * xc[5] + sinA * xc[0];
-            res[4] +=                    xc[4] +  T * xc[5]; 
-            res[5] +=                                 xc[5];
+            res[0] += cosA * xc[0] + A3 * xc[1] + A6 * xc[2] - sinA * xc[3];
+            res[1] +=                     xc[1] + A3 * xc[2];
+            res[2] +=                                  xc[2];
+            res[3] += cosA * xc[3] + A3 * xc[4] + A6 * xc[5] + sinA * xc[0];
+            res[4] +=                     xc[4] + A3 * xc[5]; 
+            res[5] +=                                  xc[5];
         }
 
         // next control variables
@@ -105,14 +107,15 @@ void matrix_E::form_Ex (const problem_parameters* ppar, const double *x, double 
 void matrix_E::form_ETx (const problem_parameters* ppar, const double *x, double *result)
 {
     int i;
+    double B[3];
+    double A3,A6;
 
     // Matrices A and B are generated on the fly using these parameters.
 #ifndef SMPC_VARIABLE_T_h
-    double T = ppar->T[0];
-    double T2 = T*T/2;
-    double B0 = T2*T/3 - ppar->h[0]*T;
-    double A3 = T;
-    double A6 = T2;
+    A3 = B[2] = ppar->T[0];
+    B[1] = ppar->B[1];
+    B[0] = ppar->B[0];
+    A6 = ppar->A6;
 #endif
 
 
@@ -143,8 +146,8 @@ void matrix_E::form_ETx (const problem_parameters* ppar, const double *x, double
         if (i != ppar->N-1) // no multiplication by A on the last iteration
         {
 #ifdef SMPC_VARIABLE_T_h
-            double A3 = ppar->T[i+1];
-            double A6 = A3*A3/2 - ppar->dh[i];
+            A3 = ppar->T[i+1];
+            A6 = ppar->A6[i];
 #endif
 
             xc = &x[i*NUM_STATE_VAR + NUM_STATE_VAR];
@@ -162,14 +165,14 @@ void matrix_E::form_ETx (const problem_parameters* ppar, const double *x, double
 
         xc = &x[i*NUM_STATE_VAR];
 #ifdef SMPC_VARIABLE_T_h
-        double T = ppar->T[i];
-        double T2 = T*T/2;
-        double B0 = T2*T/3 - ppar->h[i]*T;
+        B[2] = ppar->T[i];
+        B[1] = ppar->B[i*2+1];
+        B[0] = ppar->B[i*2];
 #endif
 
         // result = B' * x
-        control_res[0] = B0 * xc[0] + T2 * xc[1] + T * xc[2];
-        control_res[1] = B0 * xc[3] + T2 * xc[4] + T * xc[5];
+        control_res[0] = B[0] * xc[0] + B[1] * xc[1] + B[2] * xc[2];
+        control_res[1] = B[0] * xc[3] + B[1] * xc[4] + B[2] * xc[5];
 
 
         res = &res[NUM_STATE_VAR];

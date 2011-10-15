@@ -12,6 +12,7 @@
  * INCLUDES 
  ****************************************/
 #include "smpc_common.h"
+#include "problem_param.h"
 
 #include <vector>
 
@@ -45,11 +46,6 @@ class qp_solver : public problem_parameters
             if (dX  != NULL)
                 delete dX;
         };
-
-        void set_state_parameters(
-                const double*, 
-                const double*, 
-                const double*);
 
         virtual void set_parameters(
                 const double*,
