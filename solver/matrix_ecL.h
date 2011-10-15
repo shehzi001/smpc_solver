@@ -5,8 +5,8 @@
  */
 
 
-#ifndef L_INITIALIZER_H
-#define L_INITIALIZER_H
+#ifndef MATRIX_ECL_H
+#define MATRIX_ECL_H
 
 
 /****************************************
@@ -31,17 +31,22 @@ using namespace std;
 /// @{
 
 /**
- * @brief Initializes lower diagonal matrix @ref pCholesky "L".
+ * @brief Initializes lower diagonal matrix @ref pCholesky "L" and 
+ * performs backward and forward substitutions using this matrix.
  */
-class L_initializer
+class matrix_ecL
 {
     public:
         /*********** Constructors / Destructors ************/
-        L_initializer();
-        ~L_initializer();
+        matrix_ecL(const int);
+        ~matrix_ecL();
 
-        void form_L (const problem_parameters*, const int, double *);
+        void form (const problem_parameters*, const int);
 
+        void solve_backward (const problem_parameters*, double *);
+        void solve_forward (const problem_parameters*, double *);
+
+        double *ecL;
 
     private:
         void chol_dec (double *);
@@ -61,4 +66,4 @@ class L_initializer
 };
 /// @}
 
-#endif /*L_INITIALIZER_H*/
+#endif /*MATRIX_ECL_H*/

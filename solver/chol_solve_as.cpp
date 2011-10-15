@@ -28,8 +28,10 @@
  *
  * @param[in] N size of the preview window.
  */
-chol_solve_as::chol_solve_as (const int N) : chol_solve(N)
+chol_solve_as::chol_solve_as (const int N) : ecL(N)
 {
+    nu = new double[NUM_VAR*N];
+    XiHg = new double[NUM_VAR*N];
     z = new double[NUM_VAR*N];
 
     icL = new double*[N*2];
@@ -50,6 +52,10 @@ chol_solve_as::~chol_solve_as()
     }
     if (z != NULL)
         delete z;
+    if (nu != NULL)
+        delete nu;
+    if (XiHg != NULL)
+        delete XiHg;
 }
 //==============================================
 
@@ -135,7 +141,7 @@ void chol_solve_as::solve(
 
 
     // generate L
-    form_L(ppar, ppar->N, ecL);
+    ecL.form (ppar, ppar->N);
 
     // -(x + inv(H) * g)
     //  x - initial feasible point
@@ -149,19 +155,19 @@ void chol_solve_as::solve(
     }
 
     // obtain s = E * x;
-    form_Ex (ppar, XiHg, s_nu);
+    E.form_Ex (ppar, XiHg, s_nu);
 
     // obtain nu
-    solve_forward(ppar, s_nu);
+    ecL.solve_forward(ppar, s_nu);
     // make copy of z - it is constant
     for (i = 0; i < NUM_STATE_VAR * ppar->N; i++)
     {
         z[i] = s_nu[i];
     }
-    solve_backward(ppar, s_nu);
+    ecL.solve_backward(ppar, s_nu);
 
     // E' * nu
-    form_ETx (ppar, s_nu, dx);
+    E.form_ETx (ppar, s_nu, dx);
 
     
     // dx = -iH*(grad + E'*nu)
@@ -226,9 +232,9 @@ void chol_solve_as::update (const problem_parameters* ppar, const int nW, const 
     int last_num = ic_num + ppar->N*NUM_STATE_VAR; // the last !=0 element
 
     // a matrix on diagonal of ecL
-    double* ecL_diag = &ecL[state_num * MATRIX_SIZE * 2];
+    double* ecL_diag = &ecL.ecL[state_num * MATRIX_SIZE * 2];
     // a matrix below the ecL_diag
-    double* ecL_ndiag = &ecL[state_num * MATRIX_SIZE * 2 + MATRIX_SIZE];
+    double* ecL_ndiag = &ecL.ecL[state_num * MATRIX_SIZE * 2 + MATRIX_SIZE];
 
 
     // form row 'a' in the current row of icL
@@ -390,11 +396,11 @@ void chol_solve_as::resolve (
         nu[i] = nui;
     }
     // backward substituition for ecL
-    solve_backward(ppar, nu);
+    ecL.solve_backward(ppar, nu);
 
 
     // E' * nu
-    form_ETx (ppar, nu, dx);
+    E.form_ETx (ppar, nu, dx);
 
     // dx = -iH*(grad + E'*nu  + A(W,:)'*lambda)
     //

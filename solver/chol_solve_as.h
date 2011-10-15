@@ -11,7 +11,8 @@
  * INCLUDES 
  ****************************************/
 
-#include "chol_solve.h"
+#include "matrix_E.h"
+#include "matrix_ecL.h"
 #include "smpc_common.h"
 
 
@@ -28,7 +29,7 @@ using namespace std;
  * @brief Solves @ref pKKT "KKT system" using 
  * @ref pCholesky "Cholesky decomposition".
  */
-class chol_solve_as : public chol_solve
+class chol_solve_as
 {
     public:
         /*********** Constructors / Destructors ************/
@@ -60,6 +61,16 @@ class chol_solve_as : public chol_solve
 
 // ----------------------------------------------
 // variables
+        /// Vector of Lagrange multipliers
+        double *nu;
+
+        /// - (X + problem_parameters#iHg)
+        double *XiHg;
+
+        matrix_E E;
+
+        /// L for equality constraints, see '@ref pDetCholesky'
+        matrix_ecL ecL;
 
         /// L for inequality constraints, see '@ref pDetCholesky'
         double **icL;   
