@@ -135,7 +135,7 @@ void chol_solve_as::solve(
 
 
     // generate L
-    L_init.form_L(ppar, ppar->N, ecL);
+    form_L(ppar, ppar->N, ecL);
 
     // -(x + inv(H) * g)
     //  x - initial feasible point

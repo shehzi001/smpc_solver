@@ -13,7 +13,6 @@
 
 #include "chol_solve.h"
 #include "smpc_common.h"
-#include "L_initializer.h"
 
 
 /****************************************

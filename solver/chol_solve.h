@@ -28,24 +28,18 @@ using namespace std;
  * @brief Solves @ref pKKT "KKT system" using 
  * @ref pCholesky "Cholesky decomposition".
  */
-class chol_solve
+class chol_solve : public L_initializer
 {
     public:
         /*********** Constructors / Destructors ************/
         chol_solve (int);
         ~chol_solve();
 
-        void solve(const problem_parameters*, const double *, const double *, double *);
-
-
         void form_Ex (const problem_parameters*, const double *, double *);
         void form_ETx (const problem_parameters*, const double *, double *);
 
         void solve_forward(const problem_parameters*, double *);
         void solve_backward(const problem_parameters*, double *);
-
-        void form_sa_row(const problem_parameters*, const int, const int, double *);
-
 
 // ----------------------------------------------
 // variables
@@ -58,9 +52,6 @@ class chol_solve
 
         /// - (X + problem_parameters#iHg)
         double *XiHg;
-
-        /// An instance of #L_initializer class
-        L_initializer L_init;
 };
 /// @}
 #endif /*CHOL_SOLVE_H*/
