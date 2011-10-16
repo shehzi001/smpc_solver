@@ -23,11 +23,11 @@
 
 matrix_ecL::matrix_ecL (const int N)
 {
-    ecL = new double[MATRIX_SIZE*N + MATRIX_SIZE*(N-1)]();
+    ecL = new double[MATRIX_SIZE_3x3*N + MATRIX_SIZE_3x3*(N-1)]();
 
-    iQBiPB = new double[MATRIX_SIZE];
-    iQAT = new double[MATRIX_SIZE];
-    AiQATiQBiPB = new double[MATRIX_SIZE];
+    iQBiPB = new double[MATRIX_SIZE_3x3];
+    iQAT = new double[MATRIX_SIZE_3x3];
+    AiQATiQBiPB = new double[MATRIX_SIZE_3x3];
 }
 
 
@@ -260,7 +260,7 @@ void matrix_ecL::form (const problem_parameters* ppar, const int N)
     form_L_diag(NULL, ecL);
 
     // offsets
-    cur_offset = MATRIX_SIZE;
+    cur_offset = MATRIX_SIZE_3x3;
     prev_offset = 0;
     for (i = 1; i < N; i++)
     {
@@ -279,14 +279,14 @@ void matrix_ecL::form (const problem_parameters* ppar, const int N)
         // form (b), (d), (f) ... 
         form_L_non_diag(&ecL[prev_offset], &ecL[cur_offset]);
         // update offsets
-        cur_offset += MATRIX_SIZE;
-        prev_offset += MATRIX_SIZE;
+        cur_offset += MATRIX_SIZE_3x3;
+        prev_offset += MATRIX_SIZE_3x3;
 
         // form (c), (e), (g) ...
         form_L_diag(&ecL[prev_offset], &ecL[cur_offset]);
         // update offsets
-        cur_offset += MATRIX_SIZE;
-        prev_offset += MATRIX_SIZE;
+        cur_offset += MATRIX_SIZE_3x3;
+        prev_offset += MATRIX_SIZE_3x3;
     }
 }
 
@@ -332,8 +332,8 @@ void matrix_ecL::solve_forward(const problem_parameters* ppar, double *x)
         xp = xc;
         xc = &xc[NUM_STATE_VAR];
 
-        prev_ecL = &cur_ecL[MATRIX_SIZE];
-        cur_ecL = &cur_ecL[2 * MATRIX_SIZE];
+        prev_ecL = &cur_ecL[MATRIX_SIZE_3x3];
+        cur_ecL = &cur_ecL[2 * MATRIX_SIZE_3x3];
 
 
         // update the right part of the equation and compute elements
@@ -374,7 +374,7 @@ void matrix_ecL::solve_backward (const problem_parameters* ppar, double *x)
     
     // elements of these matrices accessed as if they were transposed
     // lower triangular matrix lying on the diagonal of L
-    double *cur_ecL = &ecL[2 * (ppar->N - 1) * MATRIX_SIZE];
+    double *cur_ecL = &ecL[2 * (ppar->N - 1) * MATRIX_SIZE_3x3];
     // upper triangular matrix lying to the right from cur_ecL at the same level of L'
     double *prev_ecL; 
 
@@ -399,8 +399,8 @@ void matrix_ecL::solve_backward (const problem_parameters* ppar, double *x)
         xp = xc;
         xc = & x[i*NUM_STATE_VAR];
 
-        cur_ecL = &ecL[2 * i * MATRIX_SIZE];
-        prev_ecL = &cur_ecL[MATRIX_SIZE];
+        cur_ecL = &ecL[2 * i * MATRIX_SIZE_3x3];
+        prev_ecL = &cur_ecL[MATRIX_SIZE_3x3];
 
 
         // update the right part of the equation and compute elements

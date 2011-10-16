@@ -22,10 +22,8 @@
 /// @addtogroup gINTERNALS
 /// @{
 
-/// The size of one dimension of 3x3 matrix.
-#define MATRIX_DIM_SIZE 3
 /// The number of elements in 3x3 matrix.
-#define MATRIX_SIZE 9
+#define MATRIX_SIZE_3x3 9
 
 /// Allow variable problem_parameters#T and problem_parameters#h
 #define SMPC_VARIABLE_T_h

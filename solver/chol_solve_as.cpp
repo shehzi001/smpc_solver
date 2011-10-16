@@ -232,9 +232,9 @@ void chol_solve_as::update (const problem_parameters* ppar, const int nW, const 
     int last_num = ic_num + ppar->N*NUM_STATE_VAR; // the last !=0 element
 
     // a matrix on diagonal of ecL
-    double* ecL_diag = &ecL.ecL[state_num * MATRIX_SIZE * 2];
+    double* ecL_diag = &ecL.ecL[state_num * MATRIX_SIZE_3x3 * 2];
     // a matrix below the ecL_diag
-    double* ecL_ndiag = &ecL.ecL[state_num * MATRIX_SIZE * 2 + MATRIX_SIZE];
+    double* ecL_ndiag = &ecL.ecL[state_num * MATRIX_SIZE_3x3 * 2 + MATRIX_SIZE_3x3];
 
 
     // form row 'a' in the current row of icL
@@ -280,8 +280,8 @@ void chol_solve_as::update (const problem_parameters* ppar, const int nW, const 
 
             if ((i+1)%2 == 0) // jump to the next pair of matrices in ecL.
             {
-                ecL_diag = &ecL_diag[MATRIX_SIZE * 2];
-                ecL_ndiag = &ecL_ndiag[MATRIX_SIZE * 2];
+                ecL_diag = &ecL_diag[MATRIX_SIZE_3x3 * 2];
+                ecL_ndiag = &ecL_ndiag[MATRIX_SIZE_3x3 * 2];
             }
         }
         // update the last (diagonal) number in the row
