@@ -90,10 +90,6 @@ namespace state_handling
     void get_next_state (const problem_parameters* sp, const double *X, double *state)
     {
         get_next_state_tilde (sp, X, state);
-#ifdef SMPC_VARIABLE_T_h
         state_handling::tilde_to_orig (sp->spar[0].h, state);
-#else
-        state_handling::tilde_to_orig (sp->h, state);
-#endif
     }
 }

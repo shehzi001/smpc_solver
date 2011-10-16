@@ -69,70 +69,39 @@ void qp_solver::form_init_fp (
     double *cur_state = X;
     const double *prev_state = X_tilde;
 
-    double A3;
-    double A6_;
-    double B_[3];
-
-
-#ifndef SMPC_VARIABLE_T_h    
-    //------------------------------------
-    A6_ = A6;
-    /* Control matrix. */
-    A3 = B_[2] = T;
-    B_[1] = B[1];
-    B_[0] = B[0];
-
-
-
-    /* inv(Cp*B). This is a [2 x 2] diagonal matrix (which is invertible if T^3/6-h*T is
-     * not equal to zero). The two elements on the main diagonal are equal, and only one of them 
-     * is stored, which is equal to
-        1/(T^3/6 - h*T)
-     */
-    double iCpB = 1/(B_[0]);
-
-
-    /* inv(Cp*B)*Cp*A. This is a [2 x 6] matrix with the following structure
-        iCpB_CpA = [a b c 0 0 0;
-                    0 0 0 a b c];
-
-        a = iCpB
-        b = iCpB*T
-        c = iCpB*T^2/2
-     * Only a,b and c are stored.
-     */
-    double iCpB_CpA[3] = {iCpB, iCpB*A3, iCpB*A6_};
-    //------------------------------------
-#endif /*SMPC_VARIABLE_T_h*/
-
     
     for (int i=0; i<N; i++)
     {
-#ifdef SMPC_VARIABLE_T_h
         //------------------------------------
-        A6_ = spar[i].A6;
+        /* inv(Cp*B). This is a [2 x 2] diagonal matrix (which is invertible if T^3/6-h*T is
+         * not equal to zero). The two elements on the main diagonal are equal, and only one of them 
+         * is stored, which is equal to
+            1/(T^3/6 - h*T)
+         */
+        double iCpB = 1/(spar[i].B[0]);
 
-        /* Control matrix. */
-        A3 = B_[2] = spar[i].T;
-        B_[1] = spar[i].B[1];
-        B_[0] = spar[i].B[0];
+        /* inv(Cp*B)*Cp*A. This is a [2 x 6] matrix with the following structure
+            iCpB_CpA = [a b c 0 0 0;
+                        0 0 0 a b c];
 
-        // see comments above
-        double iCpB = 1/(B_[0]);
-        double iCpB_CpA[3] = {iCpB, iCpB*A3, iCpB*A6_};
+            a = iCpB
+            b = iCpB*T
+            c = iCpB*T^2/2
+         * Only a,b and c are stored.
+         */
+        double iCpB_CpA[3] = {iCpB, iCpB*spar[i].A3, iCpB*spar[i].A6};
         //------------------------------------
-#endif /*SMPC_VARIABLE_T_h*/
 
 
         control[0] = -iCpB_CpA[0]*prev_state[0] - iCpB_CpA[1]*prev_state[1] - iCpB_CpA[2]*prev_state[2] + iCpB*x_coord[i];
         control[1] = -iCpB_CpA[0]*prev_state[3] - iCpB_CpA[1]*prev_state[4] - iCpB_CpA[2]*prev_state[5] + iCpB*y_coord[i];
 
-        cur_state[0] = prev_state[0] + A3*prev_state[1] + A6_*prev_state[2] + B_[0]*control[0];
-        cur_state[1] =                    prev_state[1] +  A3*prev_state[2] + B_[1]*control[0];
-        cur_state[2] =                                        prev_state[2] + B_[2]*control[0];
-        cur_state[3] = prev_state[3] + A3*prev_state[4] + A6_*prev_state[5] + B_[0]*control[1];
-        cur_state[4] =                    prev_state[4] +  A3*prev_state[5] + B_[1]*control[1];
-        cur_state[5] =                                        prev_state[5] + B_[2]*control[1];
+        cur_state[0] = prev_state[0] + spar[i].A3*prev_state[1] + spar[i].A6*prev_state[2] + spar[i].B[0]*control[0];
+        cur_state[1] =                            prev_state[1] + spar[i].A3*prev_state[2] + spar[i].B[1]*control[0];
+        cur_state[2] =                                                       prev_state[2] + spar[i].B[2]*control[0];
+        cur_state[3] = prev_state[3] + spar[i].A3*prev_state[4] + spar[i].A6*prev_state[5] + spar[i].B[0]*control[1];
+        cur_state[4] =                            prev_state[4] + spar[i].A3*prev_state[5] + spar[i].B[1]*control[1];
+        cur_state[5] =                                                       prev_state[5] + spar[i].B[2]*control[1];
 
 
         prev_state = &X[NUM_STATE_VAR*i];

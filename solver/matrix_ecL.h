@@ -59,6 +59,7 @@ class matrix_ecL
         void form_AiQATiQBiPB (const double, const double);
 
         void form_L_non_diag(const double *, double *);
+        void form_L_diag(double *);
         void form_L_diag(const double *, double *);
 
 

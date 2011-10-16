@@ -181,6 +181,29 @@ void matrix_ecL::form_L_non_diag(const double *ecLp, double *ecLc)
 }
 
 
+/**
+ * @brief Forms a 3x3 matrix L(k+1, k+1), which lies below the 
+ *  diagonal of L.
+ *
+ * @param[in] ecLc the result is stored here
+ *
+ * @attention Only the elements below the main diagonal are initialized.
+ */
+void matrix_ecL::form_L_diag(double *ecLc)
+{
+    //0.5*inv(Q) + 0.5*B*inv(P)*B'
+    // matrix is symmetric (no need to initialize all elements)
+    ecLc[0] = iQBiPB[0];
+    ecLc[1] = iQBiPB[1];
+    ecLc[2] = iQBiPB[2];
+    ecLc[4] = iQBiPB[4];
+    ecLc[5] = iQBiPB[5];
+    ecLc[8] = iQBiPB[8];
+
+    // chol (L(k+1,k+1))
+    chol_dec (ecLc);
+}
+
 
 /**
  * @brief Forms a 3x3 matrix L(k+1, k+1), which lies below the 
@@ -194,30 +217,15 @@ void matrix_ecL::form_L_non_diag(const double *ecLp, double *ecLc)
  */
 void matrix_ecL::form_L_diag(const double *ecLp, double *ecLc)
 {
-    // the first matrix L(0,0) is computed differently
-    if (ecLp == NULL)
-    {
-        //0.5*inv(Q) + 0.5*B*inv(P)*B'
-        // matrix is symmetric (no need to initialize all elements)
-        ecLc[0] = iQBiPB[0];
-        ecLc[1] = iQBiPB[1];
-        ecLc[2] = iQBiPB[2];
-        ecLc[4] = iQBiPB[4];
-        ecLc[5] = iQBiPB[5];
-        ecLc[8] = iQBiPB[8];
-    }
-    else
-    {
     // L(k+1,k+1) = (- L(k+1,k) * L(k+1,k)') + (A * inv(Q) * A' + inv(Q) + B * inv(P) * B)
-        // diagonal elements
-        ecLc[0] = -(ecLp[0]*ecLp[0] + ecLp[3]*ecLp[3] + ecLp[6]*ecLp[6]) + AiQATiQBiPB[0];
-        ecLc[4] = -(ecLp[4]*ecLp[4] + ecLp[7]*ecLp[7]) + AiQATiQBiPB[4];
-        ecLc[8] = -(ecLp[8]*ecLp[8]) + AiQATiQBiPB[8];
-        // symmetric nondiagonal elements (no need to initialize all of them)
-        ecLc[1] = /*ecLc[3] =*/ -(ecLp[3]*ecLp[4] + ecLp[6]*ecLp[7]) + AiQATiQBiPB[1];
-        ecLc[2] = /*ecLc[6] =*/ -ecLp[6]*ecLp[8] + AiQATiQBiPB[2];
-        ecLc[5] = /*ecLc[7] =*/ -ecLp[7]*ecLp[8] + AiQATiQBiPB[5];
-    }
+    // diagonal elements
+    ecLc[0] = -(ecLp[0]*ecLp[0] + ecLp[3]*ecLp[3] + ecLp[6]*ecLp[6]) + AiQATiQBiPB[0];
+    ecLc[4] = -(ecLp[4]*ecLp[4] + ecLp[7]*ecLp[7]) + AiQATiQBiPB[4];
+    ecLc[8] = -(ecLp[8]*ecLp[8]) + AiQATiQBiPB[8];
+    // symmetric nondiagonal elements (no need to initialize all of them)
+    ecLc[1] = /*ecLc[3] =*/ -(ecLp[3]*ecLp[4] + ecLp[6]*ecLp[7]) + AiQATiQBiPB[1];
+    ecLc[2] = /*ecLc[6] =*/ -ecLp[6]*ecLp[8] + AiQATiQBiPB[2];
+    ecLc[5] = /*ecLc[7] =*/ -ecLp[7]*ecLp[8] + AiQATiQBiPB[5];
 
     // chol (L(k+1,k+1))
     chol_dec (ecLc);
@@ -237,33 +245,21 @@ void matrix_ecL::form (const problem_parameters* ppar, const int N)
     int i;
     int cur_offset;
     int prev_offset;
+    state_parameters stp;
 
 
-    double A3,A6;
-    double B[3];
-
-#ifdef SMPC_VARIABLE_T_h
-    B[2] = ppar->spar[0].T;
-    B[1] = ppar->spar[0].B[1];
-    B[0] = ppar->spar[0].B[0];
-#else
-    B[2] = ppar->T;
-    B[1] = ppar->B[1];
-    B[0] = ppar->B[0];
-#endif
+    stp = ppar->spar[0];
 
     // form all matrices
-    form_iQBiPB (B, ppar->i2Q, ppar->i2P);
+    form_iQBiPB (stp.B, ppar->i2Q, ppar->i2P);
 #ifndef SMPC_VARIABLE_T_h
-    A3 = ppar->T;
-    A6 = ppar->A6;
-    form_iQAT (A3, A6, ppar->i2Q);
-    form_AiQATiQBiPB (A3, A6);
+    form_iQAT (stp.A3, stp.A6, ppar->i2Q);
+    form_AiQATiQBiPB (stp.A3, stp.A6);
 #endif
 
-
     // the first matrix on diagonal
-    form_L_diag(NULL, ecL);
+    form_L_diag (ecL);
+
 
     // offsets
     cur_offset = MATRIX_SIZE_3x3;
@@ -271,15 +267,12 @@ void matrix_ecL::form (const problem_parameters* ppar, const int N)
     for (i = 1; i < N; i++)
     {
 #ifdef SMPC_VARIABLE_T_h
-        B[0] = ppar->spar[i].B[0];
-        B[1] = ppar->spar[i].B[1];
-        A3 = B[2] = ppar->spar[i].T;
-        A6 = ppar->spar[i].A6;
+        stp = ppar->spar[i];
 
         // form all matrices
-        form_iQBiPB (B, ppar->i2Q, ppar->i2P);
-        form_iQAT (A3, A6, ppar->i2Q);
-        form_AiQATiQBiPB (A3, A6);
+        form_iQBiPB (stp.B, ppar->i2Q, ppar->i2P);
+        form_iQAT (stp.A3, stp.A6, ppar->i2Q);
+        form_AiQATiQBiPB (stp.A3, stp.A6);
 #endif
 
         // form (b), (d), (f) ... 

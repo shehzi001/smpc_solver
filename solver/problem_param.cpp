@@ -56,27 +56,15 @@ void problem_parameters::set_state_parameters (
     const double* h_,
     const double* angle)
 {
-    int i;
+    int j;
 
-#ifndef SMPC_VARIABLE_T_h
-    T = T_[0];
-    h = h_[0];
-
-    A6 = B[1] = T*T/2;
-    B[0] = B[1]*T/3 - h*T;
-#endif
-
-    for (i = 0; i < N; i++)
+    for (int i = 0; i < N; i++)
     {
         spar[i].cos = cos(angle[i]);
         spar[i].sin = sin(angle[i]);
 
 #ifdef SMPC_VARIABLE_T_h
-        spar[i].T = T_[i];
-        spar[i].h = h_[i];
-
-        spar[i].B[1] = T_[i]*T_[i]/2;
-        spar[i].B[0] = spar[i].B[1]*T_[i]/3 - h_[i]*T_[i];
+        j = i;
 
         if (i == 0)
         {
@@ -87,6 +75,18 @@ void problem_parameters::set_state_parameters (
         {
             spar[i].A6 = T_[i]*T_[i]/2 - (h_[i] - h_[i-1]);
         }
+#else
+        j = 0;
+        spar[i].A6 = T_[0]*T_[0]/2;
 #endif
+
+        spar[i].T = T_[j];
+        spar[i].h = h_[j];
+
+        spar[i].B[2] = T_[j];
+        spar[i].B[1] = T_[j]*T_[j]/2;
+        spar[i].B[0] = spar[i].B[1]*T_[j]/3 - h_[j]*T_[j];
+
+        spar[i].A3 = T_[j];
     }
 }

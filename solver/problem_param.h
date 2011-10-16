@@ -28,17 +28,16 @@ class state_parameters
         double cos;
         double sin;
 
-#ifdef SMPC_VARIABLE_T_h
         // parameters used in generation of A and B matrices
         /** Preview sampling time  */
         double T;
         /** h = @ref ph "hCoM/gravity". */
         double h;
 
+        double A3;
         double A6;
 
-        double B[2];
-#endif
+        double B[3];
 };
 
 
@@ -70,12 +69,7 @@ class problem_parameters
 
         state_parameters *spar;
 
-#ifndef SMPC_VARIABLE_T_h
-        double T;
-        double h;
-        double B[2];
-        double A6;
-#endif
+        bool variable_th_on;
 };
 
 /****************************************
