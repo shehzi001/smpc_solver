@@ -592,11 +592,11 @@
     \tilde{\mbm{H}}_c^{-1}\bar{\mbm{E}}_c^T = 
       \left[
         \begin{array}{ccccc} 
-          \tilde{\mbm{Q}}^{-1}_1 & \mbm{0}    & \mbm{0}    & \mbm{0}   & \mbm{0} \\
-          \mbm{0}    & \tilde{\mbm{Q}}^{-1}_2 & \mbm{0}    & \mbm{0}   & \mbm{0} \\
-          \mbm{0}    & \mbm{0}    & \tilde{\mbm{Q}}^{-1}_3 & \mbm{0}   & \mbm{0} \\
-          \mbm{0}    & \mbm{0}    & \mbm{0}    & \tilde{\mbm{Q}}^{-1}_4 & \mbm{0} \\
-          \mbm{0}    & \mbm{0}    & \mbm{0}    & \mbm{0}  & \tilde{\mbm{Q}}^{-1}_5
+          \tilde{\mbm{Q}}^{-1} & \mbm{0}    & \mbm{0}    & \mbm{0}   & \mbm{0} \\
+          \mbm{0}    & \tilde{\mbm{Q}}^{-1} & \mbm{0}    & \mbm{0}   & \mbm{0} \\
+          \mbm{0}    & \mbm{0}    & \tilde{\mbm{Q}}^{-1} & \mbm{0}   & \mbm{0} \\
+          \mbm{0}    & \mbm{0}    & \mbm{0}    & \tilde{\mbm{Q}}^{-1} & \mbm{0} \\
+          \mbm{0}    & \mbm{0}    & \mbm{0}    & \mbm{0}  & \tilde{\mbm{Q}}^{-1}
         \end{array}
         \right]
       
@@ -612,11 +612,11 @@
 
     = \left[
       \begin{array}{ccccc} 
-        -\tilde{\mbm{Q}}^{-1}_1\bar{\mbm{R}}_1^T & \tilde{\mbm{Q}}^{-1}_1\bar{\mbm{R}}_1^T\mbm{A}^T  & \mbm{0}    & \mbm{0}   & \mbm{0} \\
-        \mbm{0}    & -\tilde{\mbm{Q}}^{-1}_2\bar{\mbm{R}}_2^T & \tilde{\mbm{Q}}^{-1}_2\bar{\mbm{R}}_2^T\mbm{A}^T    & \mbm{0}   & \mbm{0} \\
-        \mbm{0}    & \mbm{0}    & -\tilde{\mbm{Q}}^{-1}_3\bar{\mbm{R}}_3^T & \tilde{\mbm{Q}}^{-1}_3\bar{\mbm{R}}_3^T\mbm{A}^T   & \mbm{0} \\
-        \mbm{0}    & \mbm{0}    & \mbm{0}    & -\tilde{\mbm{Q}}^{-1}_4\bar{\mbm{R}}_4^T & \tilde{\mbm{Q}}^{-1}_4\bar{\mbm{R}}_4^T\mbm{A}^T \\
-        \mbm{0}    & \mbm{0}    & \mbm{0}    & \mbm{0}  & -\tilde{\mbm{Q}}_5^{-1}\bar{\mbm{R}}_5^T
+        -\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_1^T & \tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_1^T\mbm{A}^T  & \mbm{0}    & \mbm{0}   & \mbm{0} \\
+        \mbm{0}    & -\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_2^T & \tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_2^T\mbm{A}^T    & \mbm{0}   & \mbm{0} \\
+        \mbm{0}    & \mbm{0}    & -\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_3^T & \tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_3^T\mbm{A}^T   & \mbm{0} \\
+        \mbm{0}    & \mbm{0}    & \mbm{0}    & -\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_4^T & \tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_4^T\mbm{A}^T \\
+        \mbm{0}    & \mbm{0}    & \mbm{0}    & \mbm{0}  & -\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_5^T
       \end{array}
       \right]
     @f$
@@ -635,21 +635,21 @@
 
     \left[
       \begin{array}{ccccc} 
-        -\tilde{\mbm{Q}}^{-1}_1\bar{\mbm{R}}_1^T & \tilde{\mbm{Q}}^{-1}_1\bar{\mbm{R}}_1^T\mbm{A}^T  & \mbm{0}    & \mbm{0}   & \mbm{0} \\
-        \mbm{0}    & -\tilde{\mbm{Q}}^{-1}_2\bar{\mbm{R}}_2^T & \tilde{\mbm{Q}}^{-1}_2\bar{\mbm{R}}_2^T\mbm{A}^T    & \mbm{0}   & \mbm{0} \\
-        \mbm{0}    & \mbm{0}    & -\tilde{\mbm{Q}}^{-1}_3\bar{\mbm{R}}_3^T & \tilde{\mbm{Q}}^{-1}_3\bar{\mbm{R}}_3^T\mbm{A}^T   & \mbm{0} \\
-        \mbm{0}    & \mbm{0}    & \mbm{0}    & -\tilde{\mbm{Q}}^{-1}_4\bar{\mbm{R}}_4^T & \tilde{\mbm{Q}}^{-1}_4\bar{\mbm{R}}_4^T\mbm{A}^T \\
-        \mbm{0}    & \mbm{0}    & \mbm{0}    & \mbm{0}  & -\tilde{\mbm{Q}}_5^{-1}\bar{\mbm{R}}_5^T
+        -\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_1^T & \tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_1^T\mbm{A}^T  & \mbm{0}    & \mbm{0}   & \mbm{0} \\
+        \mbm{0}    & -\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_2^T & \tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_2^T\mbm{A}^T    & \mbm{0}   & \mbm{0} \\
+        \mbm{0}    & \mbm{0}    & -\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_3^T & \tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_3^T\mbm{A}^T   & \mbm{0} \\
+        \mbm{0}    & \mbm{0}    & \mbm{0}    & -\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_4^T & \tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_4^T\mbm{A}^T \\
+        \mbm{0}    & \mbm{0}    & \mbm{0}    & \mbm{0}  & -\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_5^T
       \end{array}
       \right]\\
 
     = \left[
       \begin{array}{ccccc} 
-        \bar{\mbm{R}}_1\tilde{\mbm{Q}}^{-1}_1\bar{\mbm{R}}_1^T    &  -\bar{\mbm{R}}_1\tilde{\mbm{Q}}^{-1}_1\bar{\mbm{R}}_1^T\mbm{A}^T    &  \mbm{0}  & \mbm{0}    & \mbm{0}  \\
-        -\mbm{A}\bar{\mbm{R}}_1\tilde{\mbm{Q}}^{-1}_1\bar{\mbm{R}}_1^T & \mbm{A}\bar{\mbm{R}}_1\tilde{\mbm{Q}}^{-1}_1\bar{\mbm{R}}_1^T\mbm{A}^T + \bar{\mbm{R}}_2\tilde{\mbm{Q}}^{-1}_2\bar{\mbm{R}}_2^T   &  -\bar{\mbm{R}}_2\tilde{\mbm{Q}}^{-1}_2\bar{\mbm{R}}_2^T\mbm{A}^T  & \mbm{0}    & \mbm{0}  \\
-        \mbm{0}    &  -\mbm{A}\bar{\mbm{R}}_2\tilde{\mbm{Q}}^{-1}_2\bar{\mbm{R}}_2^T & \mbm{A}\bar{\mbm{R}}_2\tilde{\mbm{Q}}^{-1}_2\bar{\mbm{R}}_2^T\mbm{A}^T + \bar{\mbm{R}}_3\tilde{\mbm{Q}}^{-1}_3\bar{\mbm{R}}_3^T  & -\bar{\mbm{R}}_3\tilde{\mbm{Q}}^{-1}_3\bar{\mbm{R}}_3^T\mbm{A}^T    & \mbm{0}  \\
-        \mbm{0}    &  \mbm{0}    &  -\mbm{A}\bar{\mbm{R}}_3\tilde{\mbm{Q}}^{-1}_3\bar{\mbm{R}}_3^T  & \mbm{A}\bar{\mbm{R}}_3\tilde{\mbm{Q}}^{-1}_3\bar{\mbm{R}}_3^T\mbm{A}^T + \bar{\mbm{R}}_4\tilde{\mbm{Q}}^{-1}_4\bar{\mbm{R}}_4^T  & -\bar{\mbm{R}}_4\tilde{\mbm{Q}}^{-1}_4\bar{\mbm{R}}_4^T\mbm{A}^T  \\
-        \mbm{0}    &  \mbm{0}    &  \mbm{0}  & -\mbm{A}\bar{\mbm{R}}_4\tilde{\mbm{Q}}^{-1}_4\bar{\mbm{R}}_4^T & \mbm{A}\bar{\mbm{R}}_4\tilde{\mbm{Q}}^{-1}_4\bar{\mbm{R}}_4^T\mbm{A}^T + \bar{\mbm{R}}_5\tilde{\mbm{Q}}^{-1}_5\bar{\mbm{R}}_5^T
+        \bar{\mbm{R}}_1\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_1^T    &  -\bar{\mbm{R}}_1\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_1^T\mbm{A}^T    &  \mbm{0}  & \mbm{0}    & \mbm{0}  \\
+        -\mbm{A}\bar{\mbm{R}}_1\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_1^T & \mbm{A}\bar{\mbm{R}}_1\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_1^T\mbm{A}^T + \bar{\mbm{R}}_2\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_2^T   &  -\bar{\mbm{R}}_2\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_2^T\mbm{A}^T  & \mbm{0}    & \mbm{0}  \\
+        \mbm{0}    &  -\mbm{A}\bar{\mbm{R}}_2\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_2^T & \mbm{A}\bar{\mbm{R}}_2\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_2^T\mbm{A}^T + \bar{\mbm{R}}_3\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_3^T  & -\bar{\mbm{R}}_3\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_3^T\mbm{A}^T    & \mbm{0}  \\
+        \mbm{0}    &  \mbm{0}    &  -\mbm{A}\bar{\mbm{R}}_3\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_3^T  & \mbm{A}\bar{\mbm{R}}_3\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_3^T\mbm{A}^T + \bar{\mbm{R}}_4\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_4^T  & -\bar{\mbm{R}}_4\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_4^T\mbm{A}^T  \\
+        \mbm{0}    &  \mbm{0}    &  \mbm{0}  & -\mbm{A}\bar{\mbm{R}}_4\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_4^T & \mbm{A}\bar{\mbm{R}}_4\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_4^T\mbm{A}^T + \bar{\mbm{R}}_5\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_5^T
       \end{array}
       \right]  \\
 
@@ -666,10 +666,10 @@
 
     where 
     @f$ \mbm{M}_{ii} = 
-    \bar{\mbm{R}}_i\tilde{\mbm{Q}}^{-1}_i\bar{\mbm{R}}_i^T = 
-    \tilde{\mbm{Q}}^{-1}_i@f$ 
+    \bar{\mbm{R}}_i\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_i^T = 
+    \tilde{\mbm{Q}}^{-1}@f$ 
     (due to the special structure of 
-    @f$ \tilde{\mbm{Q}}^{-1}_i @f$ and 
+    @f$ \tilde{\mbm{Q}}^{-1} @f$ and 
     @f$ \bar{\mbm{R}}_i @f$).
 
     @f$
