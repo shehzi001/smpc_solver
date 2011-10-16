@@ -78,7 +78,7 @@ void qp_solver::form_init_fp (
     //------------------------------------
     A6_ = A6;
     /* Control matrix. */
-    A3 = B_[2] = T[0];
+    A3 = B_[2] = T;
     B_[1] = B[1];
     B_[0] = B[0];
 
@@ -110,20 +110,12 @@ void qp_solver::form_init_fp (
     {
 #ifdef SMPC_VARIABLE_T_h
         //------------------------------------
-        if (i == 0)
-        {
-            ///@todo We need delta_h here.
-            A6_ = T[i]*T[i]/2;
-        }
-        else
-        {
-            A6_ = A6[i-1];
-        }
+        A6_ = spar[i].A6;
 
         /* Control matrix. */
-        A3 = B_[2] = T[i];
-        B_[1] = B[i*2+1];
-        B_[0] = B[i*2];
+        A3 = B_[2] = spar[i].T;
+        B_[1] = spar[i].B[1];
+        B_[0] = spar[i].B[0];
 
         // see comments above
         double iCpB = 1/(B_[0]);
@@ -153,7 +145,7 @@ void qp_solver::form_init_fp (
     cur_state = X;
     for (int i=0; i<N; i++)
     {
-        state_handling::tilde_to_bar (angle_sin[i], angle_cos[i], cur_state);
+        state_handling::tilde_to_bar (spar[i].sin, spar[i].cos, cur_state);
         cur_state = &cur_state[NUM_STATE_VAR];
     }
 }

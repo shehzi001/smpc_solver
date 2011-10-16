@@ -84,8 +84,8 @@ void chol_solve_as::form_sa_row(
     // reset memory
     memset(row, 0, (NUM_STATE_VAR * ppar->N + ic_num) * sizeof(double));
 
-    aiHcosA = aiH * ppar->angle_cos[state_num];
-    aiHsinA = aiH * ppar->angle_sin[state_num];
+    aiHcosA = aiH * ppar->spar[state_num].cos;
+    aiHsinA = aiH * ppar->spar[state_num].sin;
 
     // compute elements of 'a'
     if (var_num%2 == 0)   // constraint on z_x

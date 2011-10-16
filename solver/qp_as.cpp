@@ -126,8 +126,8 @@ void qp_as::form_iHg(const double *zref_x, const double *zref_y)
 
     for (int i = 0; i < N; i++)
     {
-        cosA = angle_cos[i];
-        sinA = angle_sin[i];
+        cosA = spar[i].cos;
+        sinA = spar[i].sin;
 
         // zref
         p0 = zref_x[i];

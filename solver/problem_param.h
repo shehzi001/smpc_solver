@@ -22,6 +22,26 @@
  * TYPEDEFS 
  ****************************************/
 
+class state_parameters
+{
+    public:
+        double cos;
+        double sin;
+
+#ifdef SMPC_VARIABLE_T_h
+        // parameters used in generation of A and B matrices
+        /** Preview sampling time  */
+        double T;
+        /** h = @ref ph "hCoM/gravity". */
+        double h;
+
+        double A6;
+
+        double B[2];
+#endif
+};
+
+
 /**
  * @brief A set of problem parameters.
  */
@@ -48,22 +68,12 @@ class problem_parameters
         double i2P;
         ///@}
 
+        state_parameters *spar;
 
-        double *angle_cos;
-        double *angle_sin;
-
-
-    // parameters used in generation of A and B matrices
-        /** Preview sampling time  */
-        const double *T;
-        /** h = @ref ph "hCoM/gravity". */
-        const double *h;
-
-#ifdef SMPC_VARIABLE_T_h
-        double *B;
-        double *A6;
-#else
-        double B[3];
+#ifndef SMPC_VARIABLE_T_h
+        double T;
+        double h;
+        double B[2];
         double A6;
 #endif
 };

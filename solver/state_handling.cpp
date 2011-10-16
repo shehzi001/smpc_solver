@@ -76,7 +76,7 @@ namespace state_handling
             state[i] = X[i];
         }
 
-        state_handling::bar_to_tilde (sp->angle_sin[0], sp->angle_cos[0], state);
+        state_handling::bar_to_tilde (sp->spar[0].sin, sp->spar[0].cos, state);
     }
 
 
@@ -90,6 +90,10 @@ namespace state_handling
     void get_next_state (const problem_parameters* sp, const double *X, double *state)
     {
         get_next_state_tilde (sp, X, state);
-        state_handling::tilde_to_orig (sp->h[0], state);
+#ifdef SMPC_VARIABLE_T_h
+        state_handling::tilde_to_orig (sp->spar[0].h, state);
+#else
+        state_handling::tilde_to_orig (sp->h, state);
+#endif
     }
 }

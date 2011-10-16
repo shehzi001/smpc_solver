@@ -33,7 +33,7 @@ void matrix_E::form_Ex (const problem_parameters* ppar, const double *x, double 
 
     // Matrices A and B are generated on the fly using these parameters.
 #ifndef SMPC_VARIABLE_T_h
-    A3 = B[2] = ppar->T[0];
+    A3 = B[2] = ppar->T;
     B[1] = ppar->B[1];
     B[0] = ppar->B[0];
     A6 = ppar->A6;
@@ -46,12 +46,12 @@ void matrix_E::form_Ex (const problem_parameters* ppar, const double *x, double 
     for (i = 0; i < ppar->N; i++)
     {
         // cos and sin of the current angle to form R
-        double cosA = ppar->angle_cos[i];
-        double sinA = ppar->angle_sin[i];
+        double cosA = ppar->spar[i].cos;
+        double sinA = ppar->spar[i].sin;
 #ifdef SMPC_VARIABLE_T_h
-        A3 = B[2] = ppar->T[i];
-        B[1] = ppar->B[i*2+1];
-        B[0] = ppar->B[i*2];
+        A3 = B[2] = ppar->spar[i].T;
+        B[1] = ppar->spar[i].B[1];
+        B[0] = ppar->spar[i].B[0];
 #endif
 
         // a pointer to 6 current elements of result
@@ -74,12 +74,12 @@ void matrix_E::form_Ex (const problem_parameters* ppar, const double *x, double 
         {
             int j = i-1;
 #ifdef SMPC_VARIABLE_T_h
-            A6 = ppar->A6[j];
+            A6 = ppar->spar[i].A6;
 #endif
             xc = &x[j*NUM_STATE_VAR];
 
-            cosA = ppar->angle_cos[j];
-            sinA = ppar->angle_sin[j];
+            cosA = ppar->spar[j].cos;
+            sinA = ppar->spar[j].sin;
 
             // result += A*R*x
             res[0] += cosA * xc[0] + A3 * xc[1] + A6 * xc[2] - sinA * xc[3];
@@ -112,7 +112,7 @@ void matrix_E::form_ETx (const problem_parameters* ppar, const double *x, double
 
     // Matrices A and B are generated on the fly using these parameters.
 #ifndef SMPC_VARIABLE_T_h
-    A3 = B[2] = ppar->T[0];
+    A3 = B[2] = ppar->T;
     B[1] = ppar->B[1];
     B[0] = ppar->B[0];
     A6 = ppar->A6;
@@ -125,8 +125,8 @@ void matrix_E::form_ETx (const problem_parameters* ppar, const double *x, double
     for (i = 0; i < ppar->N; i++)
     {
         // cos and sin of the current angle to form R
-        double cosA = ppar->angle_cos[i];
-        double sinA = ppar->angle_sin[i];
+        double cosA = ppar->spar[i].cos;
+        double sinA = ppar->spar[i].sin;
 
 
         // a pointer to 6 current elements of result
@@ -146,8 +146,8 @@ void matrix_E::form_ETx (const problem_parameters* ppar, const double *x, double
         if (i != ppar->N-1) // no multiplication by A on the last iteration
         {
 #ifdef SMPC_VARIABLE_T_h
-            A3 = ppar->T[i+1];
-            A6 = ppar->A6[i];
+            A3 = ppar->spar[i+1].T;
+            A6 = ppar->spar[i+1].A6;
 #endif
 
             xc = &x[i*NUM_STATE_VAR + NUM_STATE_VAR];
@@ -165,9 +165,9 @@ void matrix_E::form_ETx (const problem_parameters* ppar, const double *x, double
 
         xc = &x[i*NUM_STATE_VAR];
 #ifdef SMPC_VARIABLE_T_h
-        B[2] = ppar->T[i];
-        B[1] = ppar->B[i*2+1];
-        B[0] = ppar->B[i*2];
+        B[2] = ppar->spar[i].T;
+        B[1] = ppar->spar[i].B[1];
+        B[0] = ppar->spar[i].B[0];
 #endif
 
         // result = B' * x

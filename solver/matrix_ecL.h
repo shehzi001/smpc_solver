@@ -21,6 +21,8 @@
  * DEFINES
  ****************************************/
 
+/// The number of elements in 3x3 matrix.
+#define MATRIX_SIZE_3x3 9
 
 /****************************************
  * TYPEDEFS 

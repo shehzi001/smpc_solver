@@ -242,14 +242,20 @@ void matrix_ecL::form (const problem_parameters* ppar, const int N)
     double A3,A6;
     double B[3];
 
-    B[2] = ppar->T[0];
+#ifdef SMPC_VARIABLE_T_h
+    B[2] = ppar->spar[0].T;
+    B[1] = ppar->spar[0].B[1];
+    B[0] = ppar->spar[0].B[0];
+#else
+    B[2] = ppar->T;
     B[1] = ppar->B[1];
     B[0] = ppar->B[0];
+#endif
 
     // form all matrices
     form_iQBiPB (B, ppar->i2Q, ppar->i2P);
 #ifndef SMPC_VARIABLE_T_h
-    A3 = ppar->T[0];
+    A3 = ppar->T;
     A6 = ppar->A6;
     form_iQAT (A3, A6, ppar->i2Q);
     form_AiQATiQBiPB (A3, A6);
@@ -265,10 +271,10 @@ void matrix_ecL::form (const problem_parameters* ppar, const int N)
     for (i = 1; i < N; i++)
     {
 #ifdef SMPC_VARIABLE_T_h
-        B[0] = ppar->B[i*2];
-        B[1] = ppar->B[i*2+1];
-        A3 = B[2] = ppar->T[i];
-        A6 = ppar->A6[i-1];
+        B[0] = ppar->spar[i].B[0];
+        B[1] = ppar->spar[i].B[1];
+        A3 = B[2] = ppar->spar[i].T;
+        A6 = ppar->spar[i].A6;
 
         // form all matrices
         form_iQBiPB (B, ppar->i2Q, ppar->i2P);

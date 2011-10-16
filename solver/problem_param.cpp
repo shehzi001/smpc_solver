@@ -33,33 +33,15 @@ problem_parameters::problem_parameters (
 
     i2P = 1/(2 * (Gamma/2));
 
-    angle_cos = new double[N];
-    angle_sin = new double[N];
-    T = NULL;
-    h = NULL;
-
-#ifdef SMPC_VARIABLE_T_h
-    A6 = new double[N-1];
-    B = new double[2*N];
-#endif
+    spar = new state_parameters[N];
 }
 
 
 
 problem_parameters::~problem_parameters()
 {
-    if (angle_cos != NULL)
-        delete angle_cos;
-
-    if (angle_sin != NULL)
-        delete angle_sin;
-
-#ifdef SMPC_VARIABLE_T_h
-    if (B != NULL)
-        delete B;
-    if (A6 != NULL)
-        delete A6;
-#endif
+    if (spar != NULL)
+        delete [] spar;
 }
 
 
@@ -76,27 +58,35 @@ void problem_parameters::set_state_parameters (
 {
     int i;
 
-    T = T_;
-    h = h_;
+#ifndef SMPC_VARIABLE_T_h
+    T = T_[0];
+    h = h_[0];
+
+    A6 = B[1] = T*T/2;
+    B[0] = B[1]*T/3 - h*T;
+#endif
 
     for (i = 0; i < N; i++)
     {
-        angle_cos[i] = cos(angle[i]);
-        angle_sin[i] = sin(angle[i]);
-    }
+        spar[i].cos = cos(angle[i]);
+        spar[i].sin = sin(angle[i]);
 
 #ifdef SMPC_VARIABLE_T_h
-    for (i = 0; i < N; i++)
-    {
-        B[i*2+1] = T[i]*T[i]/2;
-        B[i*2] = B[i*2+1]*T[i]/3 - h[i]*T[i];
-    }
-    for (i = 0; i < N-1; i++)
-    {
-        A6[i] = T[i+1]*T[i+1]/2 - (h[i+1] - h[i]);
-    }
-#else
-    A6 = B[1] = T[0]*T[0]/2;
-    B[0] = B[1]*T[0]/3 - h[0]*T[0];
+        spar[i].T = T_[i];
+        spar[i].h = h_[i];
+
+        spar[i].B[1] = T_[i]*T_[i]/2;
+        spar[i].B[0] = spar[i].B[1]*T_[i]/3 - h_[i]*T_[i];
+
+        if (i == 0)
+        {
+            /// @todo We need delta_h here.
+            spar[i].A6 = T_[i]*T_[i]/2;
+        }
+        else
+        {
+            spar[i].A6 = T_[i]*T_[i]/2 - (h_[i] - h_[i-1]);
+        }
 #endif
+    }
 }
