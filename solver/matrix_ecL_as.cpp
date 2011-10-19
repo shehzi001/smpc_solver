@@ -230,9 +230,8 @@ void matrix_ecL_as::form_L_diag(const double *ecLp, double *ecLc)
  * @brief Builds matrix L.
  *
  * @param[in] ppar parameters.
- * @param[in] N number of states in preview window.
  */
-void matrix_ecL_as::form (const problem_parameters* ppar, const int N)
+void matrix_ecL_as::form (const problem_parameters* ppar)
 {
     int i;
     state_parameters stp;
@@ -254,7 +253,7 @@ void matrix_ecL_as::form (const problem_parameters* ppar, const int N)
     // offsets
     double *ecL_cur = &ecL[MATRIX_SIZE_3x3];
     double *ecL_prev = ecL;
-    for (i = 1; i < N; i++)
+    for (i = 1; i < ppar->N; i++)
     {
 #ifdef SMPC_VARIABLE_T_h
         stp = ppar->spar[i];

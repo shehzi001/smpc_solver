@@ -44,7 +44,7 @@ class matrix_ecL_as
         matrix_ecL_as(const int);
         ~matrix_ecL_as();
 
-        void form (const problem_parameters*, const int);
+        void form (const problem_parameters*);
 
         void solve_backward (const int, double *);
         void solve_forward (const int, double *);

@@ -359,11 +359,10 @@ void matrix_ecL_ip::form_L_diag (const double *ecLp, double *ecLc)
 /**
  * @brief Builds matrix L.
  *
- * @param[in] ppar parameters.
- * @param[in] N number of states in preview window.
- * @param[out] ecL the memory allocated for L.
+ * @param[in] ppar      parameters.
+ * @param[in] i2hess    2*N diagonal elements of inverted hessian.
  */
-void matrix_ecL_ip::form (const problem_parameters* ppar, const int N, const double *i2hess)
+void matrix_ecL_ip::form (const problem_parameters* ppar, const double *i2hess)
 {
     int i;
     state_parameters stp;
@@ -378,7 +377,7 @@ void matrix_ecL_ip::form (const problem_parameters* ppar, const int N, const dou
     // offsets
     double *ecL_cur = &ecL[MATRIX_SIZE_6x6];
     double *ecL_prev = &ecL[0];
-    for (i = 1; i < N; i++)
+    for (i = 1; i < ppar->N; i++)
     {
         stp = ppar->spar[i];
 
@@ -408,11 +407,11 @@ void matrix_ecL_ip::form (const problem_parameters* ppar, const int N, const dou
 /**
  * @brief Solve system ecL * x = b using forward substitution.
  *
- * @param[in] ppar parameters.
+ * @param[in] N number of states in the preview window
  * @param[in,out] x vector "b" as input, vector "x" as output
  *                  (N * #NUM_STATE_VAR)
  */
-void matrix_ecL_ip::solve_forward(const problem_parameters* ppar, double *x)
+void matrix_ecL_ip::solve_forward(const int N, double *x)
 {
     int i,j,k;
     double *xc = x; // 6 current elements of x
@@ -434,7 +433,7 @@ void matrix_ecL_ip::solve_forward(const problem_parameters* ppar, double *x)
     }
 
 
-    for (i = 1; i < ppar->N; i++)
+    for (i = 1; i < N; i++)
     {
         // switch to the next level of L / next 6 elements
         xp = xc;
@@ -469,18 +468,18 @@ void matrix_ecL_ip::solve_forward(const problem_parameters* ppar, double *x)
 /**
  * @brief Solve system ecL' * x = b using backward substitution.
  *
- * @param[in] ppar parameters.
+ * @param[in] N number of states in the preview window
  * @param[in,out] x vector "b" as input, vector "x" as output.
  */
-void matrix_ecL_ip::solve_backward (const problem_parameters* ppar, double *x)
+void matrix_ecL_ip::solve_backward (const int N, double *x)
 {
     int i,j,k;
-    double *xc = & x[(ppar->N-1)*NUM_STATE_VAR]; // current 6 elements of result
+    double *xc = & x[(N-1)*NUM_STATE_VAR]; // current 6 elements of result
     double *xp; // 6 elements computed on the previous iteration
     
     // elements of these matrices accessed as if they were transposed
     // lower triangular matrix lying on the diagonal of L
-    double *ecL_cur = &ecL[2 * (ppar->N - 1) * MATRIX_SIZE_6x6];
+    double *ecL_cur = &ecL[2 * (N - 1) * MATRIX_SIZE_6x6];
     // upper triangular matrix lying to the right from ecL_cur at the same level of L'
     double *ecL_prev; 
 
@@ -496,7 +495,7 @@ void matrix_ecL_ip::solve_backward (const problem_parameters* ppar, double *x)
     }
 
 
-    for (i = ppar->N-2; i >= 0 ; i--)
+    for (i = N-2; i >= 0 ; i--)
     {
         xp = xc;
         xc = & x[i*NUM_STATE_VAR];

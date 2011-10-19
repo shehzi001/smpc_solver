@@ -68,6 +68,7 @@ class chol_solve_as
         /// - (X + problem_parameters#iHg)
         double *XiHg;
 
+        /// matrix of equality constraints
         matrix_E E;
 
         /// L for equality constraints, see '@ref pDetCholesky'

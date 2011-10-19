@@ -141,7 +141,7 @@ void chol_solve_as::solve(
 
 
     // generate L
-    ecL.form (ppar, ppar->N);
+    ecL.form (ppar);
 
     // -(x + inv(H) * g)
     //  x - initial feasible point
