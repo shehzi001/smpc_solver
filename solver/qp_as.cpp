@@ -25,7 +25,7 @@
  * @param[in] ub_ upper bound
  * @param[in] active activity of the bound
  */
-void bound::set(const int var_num_, const double lb_, const double ub_, const int active)
+void bound::set(const int var_num_, const double lb_, const double ub_, const bool active)
 {
     var_num = var_num_;
     lb = lb_;
@@ -151,8 +151,8 @@ void qp_as::form_bounds(const double *lb, const double *ub)
 {
     for (int i=0; i < N; i++)
     {
-        Bounds[i*2].set(NUM_STATE_VAR*i, lb[i*2], ub[i*2], 0);
-        Bounds[i*2+1].set(NUM_STATE_VAR*i+3, lb[i*2+1], ub[i*2+1], 0);
+        Bounds[i*2].set(NUM_STATE_VAR*i, lb[i*2], ub[i*2], false);
+        Bounds[i*2+1].set(NUM_STATE_VAR*i+3, lb[i*2+1], ub[i*2+1], false);
     }
 }
 
@@ -176,7 +176,7 @@ int qp_as::check_blocking_bounds()
         // Check only inactive constraints for violation. 
         // The constraints in the working set will not be violated regardless of 
         // the depth of descent
-        if (Bounds[i].isActive == 0)
+        if (!Bounds[i].isActive)
         {
             int ind = Bounds[i].var_num;
 #ifdef QPAS_DOWNDATE
@@ -195,11 +195,6 @@ int qp_as::check_blocking_bounds()
             {
                 t = (Bounds[i].ub - X[ind])/dX[ind];
             }
-            else
-            {
-                // do nothing because dX[Bounds[i].var_num] = 0 (numerically speaking)
-                t = 1;
-            }
 
             if (t < alpha)
             {
@@ -215,7 +210,7 @@ int qp_as::check_blocking_bounds()
     {
         W[nW] = activated_var_num;    
         nW++;
-        Bounds[activated_var_num].isActive = 1;
+        Bounds[activated_var_num].isActive = true;
     }
 
     return (activated_var_num);
@@ -253,7 +248,7 @@ int qp_as::choose_excl_constr (const double *lambda)
 
     if (ind_exclude != -1)
     {
-        Bounds[W[ind_exclude]].isActive = 0;
+        Bounds[W[ind_exclude]].isActive = false;
         for (int i = ind_exclude; i < nW-1; i++)
         {
             W[i] = W[i + 1];

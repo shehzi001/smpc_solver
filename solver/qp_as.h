@@ -33,7 +33,7 @@ using namespace std;
 class bound
 {
     public:
-        void set (const int, const double, const double, const int);
+        void set (const int, const double, const double, const bool);
 
 
         /** Variable number (on which to impose the bounds). */
@@ -46,10 +46,10 @@ class bound
         double ub;
 
         /** 
-         * If isActive = 1 then one of the bounds is in the 
-         * working set (if isActive = 0 it is not). 
+         * If isActive then one of the bounds is in the 
+         * working set.
          */
-        int isActive;
+        bool isActive;
 };
 
 

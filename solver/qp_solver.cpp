@@ -41,8 +41,6 @@ qp_solver::qp_solver(
     gain_beta  = Beta;
     gain_gamma = Gamma;
 
-    alpha = 1;
-    
     dX = new double[NUM_VAR*N]();
 }
 
