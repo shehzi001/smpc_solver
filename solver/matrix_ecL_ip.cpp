@@ -129,6 +129,7 @@ void matrix_ecL_ip::chol_dec (double *mx)
  *
  * @param[in] B a vector of 3 elements.
  * @param[in] i2P 0.5 * inv(P) (only one number)
+ * @param[out] result result.
  *
  * @attention Only elements lying below the main diagonal of 4x4 matrix
  *            are initialized (other elements are not unique).
@@ -153,7 +154,7 @@ void matrix_ecL_ip::form_MBiPB (const double *B, const double i2P, double *resul
 /**
  * @brief Forms matrix MAT = M * A'
  *
- * @param[in] T 4th and 7th elements of A.
+ * @param[in] A3 4th and 7th elements of A.
  * @param[in] A6 6th element of A.
  */
 void matrix_ecL_ip::form_MAT (const double A3, const double A6)
