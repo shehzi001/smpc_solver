@@ -43,7 +43,8 @@ qp_ip::qp_ip(
 {
     g = new double[2*N];
     i2hess = new double[2*N];
-    i2hess_grad = new double[2*N];
+    i2hess_grad = new double[N*NUM_VAR];
+    grad = new double[N*NUM_VAR];
 
     Q2[0] = Beta;
     Q2[1] = Alpha;
@@ -61,6 +62,8 @@ qp_ip::~qp_ip()
         delete i2hess;
     if (i2hess_grad != NULL)
         delete i2hess_grad;
+    if (grad != NULL)
+        delete grad;
 }
 
 
@@ -122,8 +125,8 @@ void qp_ip::form_g (const double *zref_x, const double *zref_y)
 
 
 /**
- * @brief Compute gradient of phi (stored in i2hess_grad), varying
- *        elements of i2hess, logarithmic barrier of phi.
+ * @brief Compute gradient of phi, varying elements of i2hess, 
+ *  logarithmic barrier of phi.
  *
  * @param[in] kappa 1/t, a logarithmic barrier multiplicator.
  */
@@ -137,11 +140,11 @@ void qp_ip::form_grad_hess_logbar (const double kappa)
     // initialize grad = H*X
     for (i = 0; i < N*NUM_STATE_VAR; i++)
     {
-        i2hess_grad[i] = Q2[i%3] * X[i];
+        grad[i] = Q2[i%3] * X[i];
     }
     for (; i < N*NUM_VAR; i++)
     {
-        i2hess_grad[i] = P2 * X[i];
+        grad[i] = P2 * X[i];
     }
 
     // finish initalization of grad 
@@ -159,7 +162,7 @@ void qp_ip::form_grad_hess_logbar (const double kappa)
         ub_diff = 1/ub_diff;
 
         // grad += g + kappa * (ub_diff - lb_diff)
-        i2hess_grad[j] += g[i] + kappa * (ub_diff - lb_diff);
+        grad[j] += g[i] + kappa * (ub_diff - lb_diff);
 
         // only elements 1:3:N*NUM_STATE_VAR on the diagonal of hessian 
         // can change
@@ -179,16 +182,16 @@ void qp_ip::form_i2hess_grad ()
     int i,j;
     for (i = 0, j = 0; i < N*2; i++)
     {
-        i2hess_grad[j] *= - i2hess[i]; 
+        i2hess_grad[j] = - grad[j] * i2hess[i]; 
         j++;
-        i2hess_grad[j] *= - i2Q[1]; 
+        i2hess_grad[j] = - grad[j] * i2Q[1]; 
         j++;
-        i2hess_grad[j] *= - i2Q[2]; 
+        i2hess_grad[j] = - grad[j] * i2Q[2]; 
         j++;
     }
     for (i = N*NUM_STATE_VAR; i < N*NUM_VAR; i++)
     {
-        i2hess_grad[i] *= - i2P;
+        i2hess_grad[i] = - grad[j] * i2P;
     }
 }
 
@@ -220,16 +223,167 @@ void qp_ip::form_phi_X ()
 }
 
 
+/**
+ * @brief Find maximum allowed alpha.
+ *
+ * @param[in] bs_beta backtracking search parameter.
+ */
+void qp_ip::init_alpha(const double bs_beta)
+{
+    double min_alpha = 1;
+    alpha = 1;
+
+    for (int i = 0; i < 2*N; i++)
+    {
+        // lower bound may be violated
+        if (dX[i*3] < -tol)
+        {
+            double tmp_alpha = (lb[i]-X[i*3])/X[i*3];
+            if (tmp_alpha < min_alpha)
+            {
+                min_alpha = tmp_alpha;
+            }
+        }
+        // upper bound may be violated
+        else if (dX[i*3] > tol)
+        {
+            double tmp_alpha = (ub[i]-X[i*3])/X[i*3];
+            if (tmp_alpha < min_alpha)
+            {
+                min_alpha = tmp_alpha;
+            }
+        }
+    }
+    while (alpha > min_alpha)
+    {
+        alpha *= bs_beta;
+    }
+}
 
 
 
-void qp_ip::solve(const double t)
+/**
+ * @brief Forms bs_alpha * grad' * dX.
+ *
+ * @param[in] bs_alpha backtracking search parameter.
+ *
+ * @return result of multiplication.
+ */
+double qp_ip::form_bs_alpha_grad_dX (const double bs_alpha)
+{
+    double res = 0;
+    
+    for (int i = 0; i < N*NUM_VAR; i++)
+    {
+        res += grad[i]*dX[i];
+    }
+
+    return (res*bs_alpha);
+}
+
+
+/**
+ * @brief Forms phi(X+alpha*dX)
+ *
+ * @param[in] kappa logarithmic barrier multiplicator.
+ *
+ * @return a value of phi.
+ */
+double qp_ip::form_phi_X_tmp (const double kappa)
+{
+    int i,j;
+    double res = 0;
+    double X_tmp;
+
+
+    // phi_X += X'*H*X
+    for (i = 0,j = 0; i < 2*N; i++)
+    {
+        X_tmp = X[j] + alpha * dX[j];
+        j++;
+
+        // logarithmic barrier
+        res -= kappa * log(-lb[i] + X_tmp) + log(ub[i] - X_tmp);
+
+        // phi_X += g'*X
+        res += g[i] * X_tmp;
+
+
+        // phi_X += X'*H*X // states
+        res += 0.5*Q2[0] * X_tmp*X_tmp;
+
+        X_tmp = X[j] + alpha * dX[j];
+        res += 0.5*Q2[1] * X_tmp*X_tmp;
+        j++;
+
+        X_tmp = X[j] + alpha * dX[j];
+        res += 0.5*Q2[2] * X_tmp*X_tmp;
+        j++;
+    }
+    // phi_X += X'*H*X // controls
+    for (i = N*NUM_STATE_VAR; i < N*NUM_VAR; i++)
+    {
+        X_tmp = X[i] + alpha * dX[i];
+        res += 0.5*P2 * X_tmp * X_tmp;
+    }
+
+    return (res);
+}
+
+
+
+bool qp_ip::solve(const double t, const double bs_alpha, const double bs_beta, const int max_iter)
 {
     double kappa = 1/t;
+    double bs_alpha_grad_dX;
+    int i;
 
-    form_grad_hess_logbar (kappa);
-    form_phi_X ();
-    form_i2hess_grad ();
 
-    chol.solve(this, i2hess_grad, i2hess, X, dX);
+    for (i = 0; i < max_iter; i++)
+    {
+        form_grad_hess_logbar (kappa);
+        form_phi_X ();
+        form_i2hess_grad ();
+
+        chol.solve (this, i2hess_grad, i2hess, X, dX);
+
+        init_alpha(bs_beta);
+        if (alpha < tol)
+        {
+            break; // done
+        }
+
+        bs_alpha_grad_dX = form_bs_alpha_grad_dX (bs_alpha);
+        for(;;)
+        {
+            double phi_X_tmp = form_phi_X_tmp (kappa);
+            if (phi_X_tmp <= phi_X + alpha * bs_alpha_grad_dX)
+            {
+                break;
+            }
+
+            alpha = bs_beta * alpha;
+
+            if (alpha < tol)
+            {
+                //XXX hm?
+                break;
+            }
+        }
+
+        // Move in the feasible descent direction
+        for (int j = 0; j < N*NUM_VAR ; j++)
+        {
+            X[j] += alpha * dX[j];
+        }
+    }
+
+    if (i == max_iter)
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
 }

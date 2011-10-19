@@ -56,7 +56,7 @@ class qp_ip : public qp_solver
                 const double*);
 
 
-        void solve (const double);
+        bool solve(const double, const double, const double, const int);
 
 
     private:
@@ -64,6 +64,7 @@ class qp_ip : public qp_solver
         double *g;
         double *i2hess;
         double *i2hess_grad;
+        double *grad;
         double phi_X;
 
         void form_grad_hess_logbar (const double);
@@ -72,6 +73,9 @@ class qp_ip : public qp_solver
 
         double Q2[3];
         double P2;
+        void init_alpha(const double);
+        double form_bs_alpha_grad_dX (const double);
+        double form_phi_X_tmp (const double);
 
         /// An instance of #chol_solve_ip class.
         chol_solve_ip chol;
