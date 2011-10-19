@@ -5,8 +5,8 @@
  */
 
 
-#ifndef MATRIX_ECL_H
-#define MATRIX_ECL_H
+#ifndef MATRIX_ECL_AS_H
+#define MATRIX_ECL_AS_H
 
 
 /****************************************
@@ -37,37 +37,37 @@ using namespace std;
  * @brief Initializes lower diagonal matrix @ref pCholesky "L" and 
  * performs backward and forward substitutions using this matrix.
  */
-class matrix_ecL
+class matrix_ecL_as
 {
     public:
         /*********** Constructors / Destructors ************/
-        matrix_ecL(const int);
-        ~matrix_ecL();
+        matrix_ecL_as(const int);
+        ~matrix_ecL_as();
 
         void form (const problem_parameters*, const int);
 
-        void solve_backward (const problem_parameters*, double *);
-        void solve_forward (const problem_parameters*, double *);
+        void solve_backward (const int, double *);
+        void solve_forward (const int, double *);
 
         double *ecL;
 
     private:
         void chol_dec (double *);
 
-        void form_iQBiPB (const double *, const double *, const double);
+        void form_iQBiPB (const double *, const double *, const double, double*);
         void form_iQAT (const double, const double, const double *);
-        void form_AiQATiQBiPB (const double, const double);
+        void form_AiQATiQBiPB (const problem_parameters*, const state_parameters, double *);
 
         void form_L_non_diag(const double *, double *);
-        void form_L_diag(double *);
         void form_L_diag(const double *, double *);
 
 
         // intermediate results used in computation of L
-        double *iQBiPB;     /// inv(Q) + B * inv(P) * B'
         double *iQAT;       /// inv(Q) * A'
+#ifndef SMPC_VARIABLE_T_h
         double *AiQATiQBiPB;/// A * inv(Q) * A' + inv(Q) + B * inv(P) * B'
+#endif
 };
 /// @}
 
-#endif /*MATRIX_ECL_H*/
+#endif /*MATRIX_ECL_AS_H*/

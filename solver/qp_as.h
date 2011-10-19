@@ -96,7 +96,7 @@ class qp_as : public qp_solver
         int choose_excl_constr (const double *);
 #endif
 
-        /// An instance of #chol_solve class.
+        /// An instance of #chol_solve_as class.
         chol_solve_as chol;
 
 

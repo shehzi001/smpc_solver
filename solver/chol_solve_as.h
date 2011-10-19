@@ -13,7 +13,7 @@
 
 #include "smpc_common.h"
 #include "matrix_E.h"
-#include "matrix_ecL.h"
+#include "matrix_ecL_as.h"
 #include "problem_param.h"
 
 
@@ -71,7 +71,7 @@ class chol_solve_as
         matrix_E E;
 
         /// L for equality constraints, see '@ref pDetCholesky'
-        matrix_ecL ecL;
+        matrix_ecL_as ecL;
 
         /// L for inequality constraints, see '@ref pDetCholesky'
         double **icL;   

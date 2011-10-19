@@ -158,13 +158,13 @@ void chol_solve_as::solve(
     E.form_Ex (ppar, XiHg, s_nu);
 
     // obtain nu
-    ecL.solve_forward(ppar, s_nu);
+    ecL.solve_forward(ppar->N, s_nu);
     // make copy of z - it is constant
     for (i = 0; i < NUM_STATE_VAR * ppar->N; i++)
     {
         z[i] = s_nu[i];
     }
-    ecL.solve_backward(ppar, s_nu);
+    ecL.solve_backward(ppar->N, s_nu);
 
     // E' * nu
     E.form_ETx (ppar, s_nu, dx);
@@ -396,7 +396,7 @@ void chol_solve_as::resolve (
         nu[i] = nui;
     }
     // backward substituition for ecL
-    ecL.solve_backward(ppar, nu);
+    ecL.solve_backward(ppar->N, nu);
 
 
     // E' * nu

@@ -9,7 +9,7 @@
  * INCLUDES 
  ****************************************/
 
-#include "matrix_ecL.h"
+#include "matrix_ecL_as.h"
 
 #include <cmath> // sqrt
 
@@ -21,27 +21,29 @@
 //==============================================
 // constructors / destructors
 
-matrix_ecL::matrix_ecL (const int N)
+matrix_ecL_as::matrix_ecL_as (const int N)
 {
     ecL = new double[MATRIX_SIZE_3x3*N + MATRIX_SIZE_3x3*(N-1)]();
 
-    iQBiPB = new double[MATRIX_SIZE_3x3];
     iQAT = new double[MATRIX_SIZE_3x3];
+#ifndef SMPC_VARIABLE_T_h
     AiQATiQBiPB = new double[MATRIX_SIZE_3x3];
+#endif
 }
 
 
-matrix_ecL::~matrix_ecL()
+matrix_ecL_as::~matrix_ecL_as()
 {
     if (ecL != NULL)
         delete ecL;
 
-    if (iQBiPB != NULL)
-        delete iQBiPB;
-    if (iQAT != NULL)
-        delete iQAT;
+#ifndef SMPC_VARIABLE_T_h
     if (AiQATiQBiPB != NULL)
         delete AiQATiQBiPB;
+#endif
+
+    if (iQAT != NULL)
+        delete iQAT;
 }
 //==============================================
 
@@ -55,7 +57,7 @@ matrix_ecL::~matrix_ecL()
  *
  * @attention Only the elements below the main diagonal are initialized.
  */
-void matrix_ecL::chol_dec (double *mx9)
+void matrix_ecL_as::chol_dec (double *mx9)
 {
     // 1st line
     mx9[0] = sqrt (mx9[0]);
@@ -82,20 +84,21 @@ void matrix_ecL::chol_dec (double *mx9)
  * @param[in] i2Q a vector of 3 elements, which contains
  *              diagonal elements of 0.5 * inv(Q).
  * @param[in] i2P 0.5 * inv(P) (only one number)
+ * @param[out] result the result
  *
  * @attention Only the elements below the main diagonal are initialized.
  */
-void matrix_ecL::form_iQBiPB (const double *B, const double *i2Q, const double i2P)
+void matrix_ecL_as::form_iQBiPB (const double *B, const double *i2Q, const double i2P, double* result)
 {
     // diagonal elements
-    iQBiPB[0] = i2P * B[0]*B[0] + i2Q[0];
-    iQBiPB[4] = i2P * B[1]*B[1] + i2Q[1];
-    iQBiPB[8] = i2P * B[2]*B[2] + i2Q[2];
+    result[0] = i2P * B[0]*B[0] + i2Q[0];
+    result[4] = i2P * B[1]*B[1] + i2Q[1];
+    result[8] = i2P * B[2]*B[2] + i2Q[2];
 
     // symmetric elements (no need to initialize all of them)
-    iQBiPB[1] = /*iQBiPB[3] =*/ i2P * B[0]*B[1];
-    iQBiPB[2] = /*iQBiPB[6] =*/ i2P * B[0]*B[2];
-    iQBiPB[5] = /*iQBiPB[7] =*/ i2P * B[1]*B[2];
+    result[1] = /*result[3] =*/ i2P * B[0]*B[1];
+    result[2] = /*result[6] =*/ i2P * B[0]*B[2];
+    result[5] = /*result[7] =*/ i2P * B[1]*B[2];
 }
 
 
@@ -103,12 +106,12 @@ void matrix_ecL::form_iQBiPB (const double *B, const double *i2Q, const double i
 /**
  * @brief Forms matrix iQAT = 0.5 * inv (Q) * A'
  *
- * @param[in] T 4th and 7th elements of A.
+ * @param[in] A3 4th and 7th elements of A.
  * @param[in] A6 6th element of A.
  * @param[in] i2Q a vector of 3 elements, which contains
  *              diagonal elements of 0.5*inv(Q).
  */
-void matrix_ecL::form_iQAT (const double A3, const double A6, const double *i2Q)
+void matrix_ecL_as::form_iQAT (const double A3, const double A6, const double *i2Q)
 {
     iQAT[0] = i2Q[0];
     iQAT[1] = A3 * i2Q[1];
@@ -123,28 +126,31 @@ void matrix_ecL::form_iQAT (const double A3, const double A6, const double *i2Q)
  * @brief Forms matrix AiQATiQBiPB = 
  *  A * inv(Q) * A' + 0.5 * inv(Q) + 0.5 * B * inv(P) * B
  *
- * @param[in] T 4th and 7th elements of A.
- * @param[in] A6 6th element of A.
+ * @param[in] ppar problem parameters.
+ * @param[in] stp state parameters.
+ * @param[out] result result
  *
  * @attention Only the elements below the main diagonal are initialized.
  */
-void matrix_ecL::form_AiQATiQBiPB (const double A3, const double A6)
+void matrix_ecL_as::form_AiQATiQBiPB (const problem_parameters *ppar, const state_parameters stp, double *result)
 {
+    form_iQBiPB (stp.B, ppar->i2Q, ppar->i2P, result);
+
     // 1st column
-    AiQATiQBiPB[0] = iQBiPB[0] + iQAT[0] + A3*iQAT[1] + A6*iQAT[2];
-    AiQATiQBiPB[1] = iQBiPB[1] +              iQAT[1] + A3*iQAT[2];
-    AiQATiQBiPB[2] = iQBiPB[2] +                           iQAT[2];
+    result[0] += iQAT[0] + stp.A3*iQAT[1] + stp.A6*iQAT[2];
+    result[1] +=                  iQAT[1] + stp.A3*iQAT[2];
+    result[2] +=                                   iQAT[2];
 
     // 2nd column
     // symmetric elements are not initialized
-//    AiQATiQBiPB[3] = iQBiPB[3] + A3*iQAT[4] + A6*iQAT[5];
-    AiQATiQBiPB[4] = iQBiPB[4] +   iQAT[4] +  A3*iQAT[5];
-    AiQATiQBiPB[5] = iQBiPB[5] +                 iQAT[5];
+//    result[3] = iQBiPB[3] + A3*iQAT[4] + A6*iQAT[5];
+    result[4] += iQAT[4] + stp.A3*iQAT[5];
+    result[5] +=                  iQAT[5];
 
     // 3rd column
-//    AiQATiQBiPB[6] = iQBiPB[6] + A6*iQAT[8];
-//    AiQATiQBiPB[7] = iQBiPB[7] + A3*iQAT[8];
-    AiQATiQBiPB[8] = iQBiPB[8] +    iQAT[8];
+//    result[6] = iQBiPB[6] + A6*iQAT[8];
+//    result[7] = iQBiPB[7] + A3*iQAT[8];
+    result[8] += iQAT[8];
 }
 
 
@@ -156,7 +162,7 @@ void matrix_ecL::form_AiQATiQBiPB (const double A3, const double A6)
  * @param[in] ecLp previous matrix lying on the diagonal of L
  * @param[in] ecLc the result is stored here
  */
-void matrix_ecL::form_L_non_diag(const double *ecLp, double *ecLc)
+void matrix_ecL_as::form_L_non_diag(const double *ecLp, double *ecLc)
 {
     /* L(k+1,k) * L(k,k)' = - inv(Q) * A'
      *
@@ -181,32 +187,9 @@ void matrix_ecL::form_L_non_diag(const double *ecLp, double *ecLc)
 }
 
 
-/**
- * @brief Forms a 3x3 matrix L(k+1, k+1), which lies below the 
- *  diagonal of L.
- *
- * @param[in] ecLc the result is stored here
- *
- * @attention Only the elements below the main diagonal are initialized.
- */
-void matrix_ecL::form_L_diag(double *ecLc)
-{
-    //0.5*inv(Q) + 0.5*B*inv(P)*B'
-    // matrix is symmetric (no need to initialize all elements)
-    ecLc[0] = iQBiPB[0];
-    ecLc[1] = iQBiPB[1];
-    ecLc[2] = iQBiPB[2];
-    ecLc[4] = iQBiPB[4];
-    ecLc[5] = iQBiPB[5];
-    ecLc[8] = iQBiPB[8];
-
-    // chol (L(k+1,k+1))
-    chol_dec (ecLc);
-}
-
 
 /**
- * @brief Forms a 3x3 matrix L(k+1, k+1), which lies below the 
+ * @brief Forms a 3x3 matrix L(k+1, k+1), which lies on the main
  *  diagonal of L.
  *
  * @param[in] ecLp upper triangular matrix matrix lying to the left
@@ -215,17 +198,27 @@ void matrix_ecL::form_L_diag(double *ecLc)
  *
  * @attention Only the elements below the main diagonal are initialized.
  */
-void matrix_ecL::form_L_diag(const double *ecLp, double *ecLc)
+void matrix_ecL_as::form_L_diag(const double *ecLp, double *ecLc)
 {
+#ifndef SMPC_VARIABLE_T_h
+    ecLc[0] = AiQATiQBiPB[0];
+    ecLc[4] = AiQATiQBiPB[4];
+    ecLc[8] = AiQATiQBiPB[8];
+    // symmetric nondiagonal elements (no need to initialize all of them)
+    ecLc[1] = AiQATiQBiPB[1];
+    ecLc[2] = AiQATiQBiPB[2];
+    ecLc[5] = AiQATiQBiPB[5];
+#endif
+
     // L(k+1,k+1) = (- L(k+1,k) * L(k+1,k)') + (A * inv(Q) * A' + inv(Q) + B * inv(P) * B)
     // diagonal elements
-    ecLc[0] = -(ecLp[0]*ecLp[0] + ecLp[3]*ecLp[3] + ecLp[6]*ecLp[6]) + AiQATiQBiPB[0];
-    ecLc[4] = -(ecLp[4]*ecLp[4] + ecLp[7]*ecLp[7]) + AiQATiQBiPB[4];
-    ecLc[8] = -(ecLp[8]*ecLp[8]) + AiQATiQBiPB[8];
+    ecLc[0] -= ecLp[0]*ecLp[0] + ecLp[3]*ecLp[3] + ecLp[6]*ecLp[6];
+    ecLc[4] -= ecLp[4]*ecLp[4] + ecLp[7]*ecLp[7];
+    ecLc[8] -= ecLp[8]*ecLp[8];
     // symmetric nondiagonal elements (no need to initialize all of them)
-    ecLc[1] = /*ecLc[3] =*/ -(ecLp[3]*ecLp[4] + ecLp[6]*ecLp[7]) + AiQATiQBiPB[1];
-    ecLc[2] = /*ecLc[6] =*/ -ecLp[6]*ecLp[8] + AiQATiQBiPB[2];
-    ecLc[5] = /*ecLc[7] =*/ -ecLp[7]*ecLp[8] + AiQATiQBiPB[5];
+    ecLc[1] -= /*ecLc[3] =*/ ecLp[3]*ecLp[4] + ecLp[6]*ecLp[7];
+    ecLc[2] -= /*ecLc[6] =*/ ecLp[6]*ecLp[8];
+    ecLc[5] -= /*ecLc[7] =*/ ecLp[7]*ecLp[8];
 
     // chol (L(k+1,k+1))
     chol_dec (ecLc);
@@ -238,54 +231,50 @@ void matrix_ecL::form_L_diag(const double *ecLp, double *ecLc)
  *
  * @param[in] ppar parameters.
  * @param[in] N number of states in preview window.
- * @param[out] ecL the memory allocated for L.
  */
-void matrix_ecL::form (const problem_parameters* ppar, const int N)
+void matrix_ecL_as::form (const problem_parameters* ppar, const int N)
 {
     int i;
-    int cur_offset;
-    int prev_offset;
     state_parameters stp;
 
 
     stp = ppar->spar[0];
 
     // form all matrices
-    form_iQBiPB (stp.B, ppar->i2Q, ppar->i2P);
 #ifndef SMPC_VARIABLE_T_h
     form_iQAT (stp.A3, stp.A6, ppar->i2Q);
-    form_AiQATiQBiPB (stp.A3, stp.A6);
+    form_AiQATiQBiPB (ppar, stp, AiQATiQBiPB);
 #endif
 
     // the first matrix on diagonal
-    form_L_diag (ecL);
+    form_iQBiPB (stp.B, ppar->i2Q, ppar->i2P, ecL);
+    chol_dec (ecL);
 
 
     // offsets
-    cur_offset = MATRIX_SIZE_3x3;
-    prev_offset = 0;
+    double *ecL_cur = &ecL[MATRIX_SIZE_3x3];
+    double *ecL_prev = ecL;
     for (i = 1; i < N; i++)
     {
 #ifdef SMPC_VARIABLE_T_h
         stp = ppar->spar[i];
-
-        // form all matrices
-        form_iQBiPB (stp.B, ppar->i2Q, ppar->i2P);
         form_iQAT (stp.A3, stp.A6, ppar->i2Q);
-        form_AiQATiQBiPB (stp.A3, stp.A6);
 #endif
 
         // form (b), (d), (f) ... 
-        form_L_non_diag(&ecL[prev_offset], &ecL[cur_offset]);
+        form_L_non_diag(ecL_prev, ecL_cur);
         // update offsets
-        cur_offset += MATRIX_SIZE_3x3;
-        prev_offset += MATRIX_SIZE_3x3;
+        ecL_cur = &ecL_cur[MATRIX_SIZE_3x3];
+        ecL_prev = &ecL_prev[MATRIX_SIZE_3x3];
 
         // form (c), (e), (g) ...
-        form_L_diag(&ecL[prev_offset], &ecL[cur_offset]);
+#ifdef SMPC_VARIABLE_T_h
+        form_AiQATiQBiPB (ppar, stp, ecL_cur);
+#endif
+        form_L_diag(ecL_prev, ecL_cur);
         // update offsets
-        cur_offset += MATRIX_SIZE_3x3;
-        prev_offset += MATRIX_SIZE_3x3;
+        ecL_cur = &ecL_cur[MATRIX_SIZE_3x3];
+        ecL_prev = &ecL_prev[MATRIX_SIZE_3x3];
     }
 }
 
@@ -293,11 +282,11 @@ void matrix_ecL::form (const problem_parameters* ppar, const int N)
 /**
  * @brief Solve system ecL * x = b using forward substitution.
  *
- * @param[in] ppar parameters.
+ * @param[in] N number of states in the preview window
  * @param[in,out] x vector "b" as input, vector "x" as output
  *                  (N * #NUM_STATE_VAR)
  */
-void matrix_ecL::solve_forward(const problem_parameters* ppar, double *x)
+void matrix_ecL_as::solve_forward(const int N, double *x)
 {
     int i;
     double *xc = x; // 6 current elements of x
@@ -325,7 +314,7 @@ void matrix_ecL::solve_forward(const problem_parameters* ppar, double *x)
     xc[5] /= cur_ecL[8];
 
 
-    for (i = 1; i < ppar->N; i++)
+    for (i = 1; i < N; i++)
     {
         // switch to the next level of L / next 6 elements
         xp = xc;
@@ -362,18 +351,18 @@ void matrix_ecL::solve_forward(const problem_parameters* ppar, double *x)
 /**
  * @brief Solve system ecL' * x = b using backward substitution.
  *
- * @param[in] ppar parameters.
+ * @param[in] N number of states in the preview window
  * @param[in,out] x vector "b" as input, vector "x" as output.
  */
-void matrix_ecL::solve_backward (const problem_parameters* ppar, double *x)
+void matrix_ecL_as::solve_backward (const int N, double *x)
 {
     int i;
-    double *xc = & x[(ppar->N-1)*NUM_STATE_VAR]; // current 6 elements of result
+    double *xc = & x[(N-1)*NUM_STATE_VAR]; // current 6 elements of result
     double *xp; // 6 elements computed on the previous iteration
     
     // elements of these matrices accessed as if they were transposed
     // lower triangular matrix lying on the diagonal of L
-    double *cur_ecL = &ecL[2 * (ppar->N - 1) * MATRIX_SIZE_3x3];
+    double *cur_ecL = &ecL[2 * (N - 1) * MATRIX_SIZE_3x3];
     // upper triangular matrix lying to the right from cur_ecL at the same level of L'
     double *prev_ecL; 
 
@@ -393,7 +382,7 @@ void matrix_ecL::solve_backward (const problem_parameters* ppar, double *x)
     xc[3] /= cur_ecL[0];
 
 
-    for (i = ppar->N-2; i >= 0 ; i--)
+    for (i = N-2; i >= 0 ; i--)
     {
         xp = xc;
         xc = & x[i*NUM_STATE_VAR];
