@@ -304,7 +304,7 @@
     @anchor pGains
     where @f$\alpha, \beta, \gamma > 0@f$ are gains.
 
-
+    @anchor pg
     @f$
     \frac{\beta}{2}\mbm{z}_k^T\mbm{z}_k - \beta\mbm{z}_k^T\mbm{z}^{\mbox{ref}}_k =
 
