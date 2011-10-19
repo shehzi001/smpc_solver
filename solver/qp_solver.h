@@ -35,11 +35,11 @@ class qp_solver : public problem_parameters
 // functions        
         qp_solver(
                 const int N_, 
-                const double Alpha = 150.0, 
-                const double Beta = 2000.0, 
-                const double Gamma = 1.0,
-                const double regularization = 0.01,
-                const double tol_ = 1e-7);
+                const double, 
+                const double, 
+                const double,
+                const double,
+                const double);
 
         virtual ~qp_solver()
         {

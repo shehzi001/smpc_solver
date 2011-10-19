@@ -65,11 +65,11 @@ class qp_as : public qp_solver
 // functions        
         qp_as(
                 const int N_, 
-                const double Alpha = 150.0, 
-                const double Beta = 2000.0, 
-                const double Gamma = 1.0,
-                const double regularization = 0.01,
-                const double tol = 1e-7);
+                const double, 
+                const double, 
+                const double,
+                const double,
+                const double);
         ~qp_as();
 
         void set_parameters(
