@@ -224,9 +224,11 @@ void qp_ip::form_phi_X ()
 
 
 /**
- * @brief Find maximum allowed alpha.
+ * @brief Find initial value of alpha.
  *
  * @param[in] bs_beta backtracking search parameter.
+ *
+ * @note sets alpha to 0, if it is too small.
  */
 void qp_ip::init_alpha(const double bs_beta)
 {
@@ -236,7 +238,7 @@ void qp_ip::init_alpha(const double bs_beta)
     for (int i = 0; i < 2*N; i++)
     {
         // lower bound may be violated
-        if (dX[i*3] < -tol)
+        if (dX[i*3] < 0)
         {
             double tmp_alpha = (lb[i]-X[i*3])/X[i*3];
             if (tmp_alpha < min_alpha)
@@ -245,7 +247,7 @@ void qp_ip::init_alpha(const double bs_beta)
             }
         }
         // upper bound may be violated
-        else if (dX[i*3] > tol)
+        else if (dX[i*3] > 0)
         {
             double tmp_alpha = (ub[i]-X[i*3])/X[i*3];
             if (tmp_alpha < min_alpha)
@@ -254,9 +256,17 @@ void qp_ip::init_alpha(const double bs_beta)
             }
         }
     }
-    while (alpha > min_alpha)
+
+    if (min_alpha > tol)
     {
-        alpha *= bs_beta;
+        while (alpha > min_alpha)
+        {
+            alpha *= bs_beta;
+        }
+    }
+    else
+    {
+        alpha = 0;
     }
 }
 
@@ -332,58 +342,91 @@ double qp_ip::form_phi_X_tmp (const double kappa)
 
 
 
-bool qp_ip::solve(const double t, const double bs_alpha, const double bs_beta, const int max_iter)
+/**
+ * @brief Solve QP using interior-point method.
+ *
+ * @param[in] t logarithmic barrier parameter
+ * @param[in] mu multiplier of t, >1.
+ * @param[in] bs_alpha backtracking search parameter alpha
+ * @param[in] bs_beta  backtracking search parameter beta
+ * @param[in] max_iter maximum number of internal loop iterations
+ *
+ * @return true if ok, false if the number of iterations is exceeded.
+ */
+bool qp_ip::solve(const double t, const double mu, const double bs_alpha, const double bs_beta, const int max_iter)
 {
     double kappa = 1/t;
-    double bs_alpha_grad_dX;
     int i;
 
+    double duality_gap = 2*N*kappa;
 
-    for (i = 0; i < max_iter; i++)
+
+    while (duality_gap > tol)
     {
-        form_grad_hess_logbar (kappa);
-        form_phi_X ();
-        form_i2hess_grad ();
+        for (i = 0; i < max_iter; i++)
+        {
+            solve_onestep(kappa, bs_alpha, bs_beta, max_iter);
+        }
+        if (i == max_iter)
+        {
+            return (false);
+        }
 
-        chol.solve (this, i2hess_grad, i2hess, X, dX);
+        kappa /= mu;
+        duality_gap = 2*N*kappa;
+    }
+    return (true);
+}
 
-        init_alpha(bs_beta);
+
+/**
+ * @brief One step of interior point method.
+ *
+ * @param[in] kappa logarithmic barrier multiplier
+ * @param[in] bs_alpha backtracking search parameter alpha
+ * @param[in] bs_beta  backtracking search parameter beta
+ * @param[in] max_iter maximum number of internal loop iterations
+ */
+void qp_ip::solve_onestep (const double kappa, const double bs_alpha, const double bs_beta, const int max_iter)
+{
+    form_grad_hess_logbar (kappa);
+    form_phi_X ();
+    form_i2hess_grad ();
+
+    chol.solve (this, i2hess_grad, i2hess, X, dX);
+
+    init_alpha(bs_beta);
+    if (alpha < tol)
+    {
+        return; // done
+    }
+
+    double bs_alpha_grad_dX = form_bs_alpha_grad_dX (bs_alpha);
+    for (;;)
+    {
+        double phi_X_tmp = form_phi_X_tmp (kappa);
+        if (phi_X_tmp <= phi_X + alpha * bs_alpha_grad_dX)
+        {
+            break;
+        }
+
+        alpha = bs_beta * alpha;
+
         if (alpha < tol)
         {
-            break; // done
-        }
-
-        bs_alpha_grad_dX = form_bs_alpha_grad_dX (bs_alpha);
-        for(;;)
-        {
-            double phi_X_tmp = form_phi_X_tmp (kappa);
-            if (phi_X_tmp <= phi_X + alpha * bs_alpha_grad_dX)
-            {
-                break;
-            }
-
-            alpha = bs_beta * alpha;
-
-            if (alpha < tol)
-            {
-                //XXX hm?
-                break;
-            }
-        }
-
-        // Move in the feasible descent direction
-        for (int j = 0; j < N*NUM_VAR ; j++)
-        {
-            X[j] += alpha * dX[j];
+            //XXX hm?
+            break;
         }
     }
 
-    if (i == max_iter)
+    if (alpha < tol)
     {
-        return false;
+        return; // done
     }
-    else
+
+    // Move in the feasible descent direction
+    for (int j = 0; j < N*NUM_VAR ; j++)
     {
-        return true;
+        X[j] += alpha * dX[j];
     }
 }
