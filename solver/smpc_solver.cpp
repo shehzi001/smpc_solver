@@ -14,6 +14,7 @@
 
 #include "qp_solver.h"
 #include "qp_as.h"
+#include "qp_ip.h"
 #include "smpc_solver.h"
 #include "state_handling.h"
 
@@ -30,14 +31,13 @@ smpc_solver::smpc_solver (
                 const double Alpha, const double Beta, const double Gamma,
                 const double regularization, const double tol)
 {
-    if (sol_type == SMPC_QPAS)
+    if (sol_type == SMPC_AS)
     {
         qp_sol = new qp_as (N, Alpha, Beta, Gamma, regularization, tol);
     }
-    else
+    else if (sol_type == SMPC_IP)
     {
-        // should never happen
-        qp_sol = NULL;
+        qp_sol = new qp_ip (N, Alpha, Beta, Gamma, regularization, tol);
     }
 }
 
@@ -51,6 +51,23 @@ smpc_solver::~smpc_solver()
 }
 
 
+
+void smpc_solver::set_ip_parameters (
+        const double t,
+        const double mu,
+        const double bs_alpha,
+        const double bs_beta,
+        const int max_iter)
+{
+    qp_ip * qpip_solver = dynamic_cast<qp_ip*> (qp_sol);
+    if (qpip_solver != NULL)
+    {
+        qpip_solver->set_ip_parameters (t, mu, bs_alpha, bs_beta, max_iter);
+    }
+}
+
+
+
 void smpc_solver::set_parameters(
         const double* T, const double* h,
         const double* angle,
@@ -62,6 +79,8 @@ void smpc_solver::set_parameters(
         qp_sol->set_parameters(T, h, angle, zref_x, zref_y, lb, ub);
     }
 }
+
+
 
 void smpc_solver::form_init_fp (
         const double *x_coord,
@@ -79,15 +98,11 @@ void smpc_solver::form_init_fp (
 
 int smpc_solver::solve()
 {
-    qp_as * qpas_solver = dynamic_cast<qp_as*> (qp_sol);
-    if (qpas_solver != NULL)
+    if (qp_sol != NULL)
     {
-        return (qpas_solver->solve ());
+        return (qp_sol->solve ());
     }
-    else
-    {
-        return (-1);
-    }
+    return (-1);
 }
 
 
@@ -98,6 +113,8 @@ void smpc_solver::get_next_state_tilde (double *state)
         state_handling::get_next_state_tilde (qp_sol, qp_sol->X, state);
     }
 }
+
+
 
 void smpc_solver::get_next_state (double *state)
 {

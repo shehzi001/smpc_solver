@@ -226,11 +226,9 @@ void qp_ip::form_phi_X ()
 /**
  * @brief Find initial value of alpha.
  *
- * @param[in] bs_beta backtracking search parameter.
- *
  * @note sets alpha to 0, if it is too small.
  */
-void qp_ip::init_alpha(const double bs_beta)
+void qp_ip::init_alpha()
 {
     double min_alpha = 1;
     alpha = 1;
@@ -275,11 +273,9 @@ void qp_ip::init_alpha(const double bs_beta)
 /**
  * @brief Forms bs_alpha * grad' * dX.
  *
- * @param[in] bs_alpha backtracking search parameter.
- *
  * @return result of multiplication.
  */
-double qp_ip::form_bs_alpha_grad_dX (const double bs_alpha)
+double qp_ip::form_bs_alpha_grad_dX ()
 {
     double res = 0;
     
@@ -343,17 +339,36 @@ double qp_ip::form_phi_X_tmp (const double kappa)
 
 
 /**
+ * @brief Set parameters of interior-point method.
+ *
+ * @param[in] t_ logarithmic barrier parameter
+ * @param[in] mu_ multiplier of t, >1.
+ * @param[in] bs_alpha_ backtracking search parameter alpha
+ * @param[in] bs_beta_  backtracking search parameter beta
+ * @param[in] max_iter_ maximum number of internal loop iterations
+ */
+void qp_ip::set_ip_parameters (
+        const double t_, 
+        const double mu_, 
+        const double bs_alpha_, 
+        const double bs_beta_, 
+        const int max_iter_)
+{
+    t = t_;
+    mu = mu_;
+    bs_alpha = bs_alpha_;
+    bs_beta = bs_beta_;
+    max_iter = max_iter_;
+}
+
+
+
+/**
  * @brief Solve QP using interior-point method.
  *
- * @param[in] t logarithmic barrier parameter
- * @param[in] mu multiplier of t, >1.
- * @param[in] bs_alpha backtracking search parameter alpha
- * @param[in] bs_beta  backtracking search parameter beta
- * @param[in] max_iter maximum number of internal loop iterations
- *
- * @return true if ok, false if the number of iterations is exceeded.
+ * @return 0 if ok, non-zero number otherwise.
  */
-bool qp_ip::solve(const double t, const double mu, const double bs_alpha, const double bs_beta, const int max_iter)
+int qp_ip::solve()
 {
     double kappa = 1/t;
     int i;
@@ -365,17 +380,17 @@ bool qp_ip::solve(const double t, const double mu, const double bs_alpha, const 
     {
         for (i = 0; i < max_iter; i++)
         {
-            solve_onestep(kappa, bs_alpha, bs_beta, max_iter);
+            solve_onestep(kappa);
         }
         if (i == max_iter)
         {
-            return (false);
+            return (1);
         }
 
         kappa /= mu;
         duality_gap = 2*N*kappa;
     }
-    return (true);
+    return (0);
 }
 
 
@@ -383,11 +398,8 @@ bool qp_ip::solve(const double t, const double mu, const double bs_alpha, const 
  * @brief One step of interior point method.
  *
  * @param[in] kappa logarithmic barrier multiplier
- * @param[in] bs_alpha backtracking search parameter alpha
- * @param[in] bs_beta  backtracking search parameter beta
- * @param[in] max_iter maximum number of internal loop iterations
  */
-void qp_ip::solve_onestep (const double kappa, const double bs_alpha, const double bs_beta, const int max_iter)
+void qp_ip::solve_onestep (const double kappa)
 {
     form_grad_hess_logbar (kappa);
     form_phi_X ();
@@ -395,13 +407,13 @@ void qp_ip::solve_onestep (const double kappa, const double bs_alpha, const doub
 
     chol.solve (this, i2hess_grad, i2hess, X, dX);
 
-    init_alpha(bs_beta);
+    init_alpha ();
     if (alpha < tol)
     {
         return; // done
     }
 
-    double bs_alpha_grad_dX = form_bs_alpha_grad_dX (bs_alpha);
+    double bs_alpha_grad_dX = form_bs_alpha_grad_dX ();
     for (;;)
     {
         double phi_X_tmp = form_phi_X_tmp (kappa);

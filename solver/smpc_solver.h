@@ -18,7 +18,8 @@ class qp_solver;
 
 enum solver_type
 {
-    SMPC_QPAS
+    SMPC_AS, /// Active set method
+    SMPC_IP  /// Interior-point method
 };
 
 
@@ -45,7 +46,7 @@ class smpc_solver
         */
         smpc_solver(
                 const int N, 
-                const solver_type sol_type = SMPC_QPAS,
+                const solver_type sol_type = SMPC_AS,
                 const double Alpha = 150.0, 
                 const double Beta = 2000.0, 
                 const double Gamma = 1.0,
@@ -96,9 +97,30 @@ class smpc_solver
 
 
         /**
+         * @brief Sets parameters of interior-point method.
+         *
+         * @param[in] t logarithmic barrier parameter
+         * @param[in] mu multiplier of t, >1.
+         * @param[in] bs_alpha backtracking search parameter 0 < alpha < 0.5
+         * @param[in] bs_beta  backtracking search parameter 0 < beta < 1
+         * @param[in] max_iter maximum number of internal loop iterations
+         *
+         * @note Applicable only for #SMPC_IP, does nothing if #SMPC_AS
+         *       is chosen.
+         */
+        void set_ip_parameters (
+                const double t,
+                const double mu,
+                const double bs_alpha,
+                const double bs_beta,
+                const int max_iter);
+
+
+        /**
          * @brief Solve QP problem.
          *
-         * @return number of activated constraints
+         * @return A negative number on error. Number of activated constraints 
+         *         for #SMPC_AS and 0 for #SMPC_IP on success.
          */
         int solve ();
    

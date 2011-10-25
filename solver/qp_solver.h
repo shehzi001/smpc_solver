@@ -47,6 +47,11 @@ class qp_solver : public problem_parameters
                 delete dX;
         };
 
+
+
+        void form_init_fp(const double *, const double *, const double *, double *);
+
+
         virtual void set_parameters(
                 const double*,
                 const double*,
@@ -54,10 +59,8 @@ class qp_solver : public problem_parameters
                 const double*,
                 const double*,
                 const double*,
-                const double*) {};
-
-
-        void form_init_fp(const double *, const double *, const double *, double *);
+                const double*) = 0;
+        virtual int solve () = 0;
    
 
 // variables

@@ -56,37 +56,63 @@ class qp_ip : public qp_solver
                 const double*);
 
 
-        bool solve(const double, const double, const double, const double, const int);
+        void set_ip_parameters (const double, const double, const double, const double, const int);
+        int solve();
 
 
     private:
-        void form_g (const double *, const double *);
+        /// 2*#N non-zero elements of vector @ref pg "g".
         double *g;
+
+        /// Inverted hessian: non-repeating diagonal elements
+        /// 1:3:#N*#NUM_STATE_VAR, 2*#N in total.
         double *i2hess;
+
+        /// Inverted hessian * gradient (#N*#NUM_VAR vector)
         double *i2hess_grad;
+
+        /// #N*#NUM_VAR gradient vector
         double *grad;
-        double phi_X;
 
-        void form_grad_hess_logbar (const double);
-        void form_i2hess_grad ();
-        void form_phi_X ();
+        
+        /// Value of phi(X), where phi is the cost function + log barrier.
+        double phi_X; 
 
+
+        ///@{
+        /// Diagonal elements of 2*H.
         double Q2[3];
         double P2;
-        void init_alpha(const double);
-        double form_bs_alpha_grad_dX (const double);
-        double form_phi_X_tmp (const double);
-        void solve_onestep (const double, const double, const double, const int);
+        ///@}
+        
 
         /// An instance of #chol_solve_ip class.
         chol_solve_ip chol;
 
-// functions        
+
         ///@{
         /// lower and upper bounds
         const double *lb;
         const double *ub;
         ///@}
+        
+// IP parameters
+        double t; /// logarithmic barrier parameter
+        double mu; /// multiplier of t, >1.
+        double bs_alpha; /// backtracking search parameter alpha
+        double bs_beta; /// backtracking search parameter beta
+        int max_iter; /// maximum number of internal loop iterations
+
+
+// functions        
+        void init_alpha();
+        double form_bs_alpha_grad_dX ();
+        double form_phi_X_tmp (const double);
+        void solve_onestep (const double);
+        void form_g (const double *, const double *);
+        void form_grad_hess_logbar (const double);
+        void form_i2hess_grad ();
+        void form_phi_X ();
 };
 
 ///@}
