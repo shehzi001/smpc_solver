@@ -37,7 +37,7 @@ int main(int argc, char **argv)
     {
         // reference states generated using thr implementation of
         // the algorithm in Octave/MATLAB
-        inFile.open ("./data/states_inv_downdate.dat");
+        inFile.open ("./data/as_states_inv_downdate.dat");
         //inFile.open ("./data/states_chol_downdate.dat");
     }
 

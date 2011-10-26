@@ -8,7 +8,7 @@
  *
  *
  * @todo (low priority) Interface with Matlab/Octave.
- * @todo Implement interior point method.
+ * @todo Document interior point method.
  */
 
 
@@ -18,20 +18,26 @@
 /**
  * @mainpage A sparse MPC solver for walking motion generation.
  *
+ * \par Contents & links
+ * - @ref MainIntro
+ * - @ref MainRef
+ * - @ref MainLicense
+ * - @ref MainHowTo
+ * - @ref MainInternals
+ * - @ref MainNotes
+ * \par
+ * - Sources: http://github.com/asherikov/smpc_solver
+ * - Documentation: http://asherikov.github.com/smpc_solver/index.html
+ *
+ *
  * @section MainIntro Introduction
  * @verbinclude "README"
  *
  * For more information on the sparse MPC refer to the papers listed 
  * in the '@ref MainRef' section. 
- *
  * Section '@ref MainHowTo' contains instructions for application 
  * programmer. 
- *
  * Implementaion details are given in section '@ref MainInternals'.
- *
- * The sources are published on 
- * <a href="http://github.com/asherikov/smpc_solver">GitHub</a>.
- * \n\n
  *
  *
  * @section MainRef References
@@ -62,7 +68,7 @@
  * - @ref gWMG_INTERNALS
  * \n\n
  *
- * @section MainNote Important notes
+ * @section MainNotes Important notes
  * @todo The library is not thoroughly tested with variable period T and variable height of ZMP.
  */
 

@@ -12,7 +12,7 @@
 #include "state_handling.h"
 
 
-#include <cmath> // log
+#include <cmath> // log, fabs
 
 /****************************************
  * FUNCTIONS
@@ -309,7 +309,7 @@ double qp_ip::form_phi_X_tmp (const double kappa)
         j++;
 
         // logarithmic barrier
-        res -= kappa * log(-lb[i] + X_tmp) + log(ub[i] - X_tmp);
+        res -= kappa * (log(-lb[i] + X_tmp) + log(ub[i] - X_tmp));
 
         // phi_X += g'*X
         res += g[i] * X_tmp;
@@ -319,12 +319,12 @@ double qp_ip::form_phi_X_tmp (const double kappa)
         res += 0.5*Q2[0] * X_tmp*X_tmp;
 
         X_tmp = X[j] + alpha * dX[j];
-        res += 0.5*Q2[1] * X_tmp*X_tmp;
         j++;
+        res += 0.5*Q2[1] * X_tmp*X_tmp;
 
         X_tmp = X[j] + alpha * dX[j];
-        res += 0.5*Q2[2] * X_tmp*X_tmp;
         j++;
+        res += 0.5*Q2[2] * X_tmp*X_tmp;
     }
     // phi_X += X'*H*X // controls
     for (i = N*NUM_STATE_VAR; i < N*NUM_VAR; i++)
@@ -371,21 +371,13 @@ void qp_ip::set_ip_parameters (
 int qp_ip::solve()
 {
     double kappa = 1/t;
-    int i;
-
     double duality_gap = 2*N*kappa;
+    int i;
 
 
     while (duality_gap > tol)
     {
-        for (i = 0; i < max_iter; i++)
-        {
-            solve_onestep(kappa);
-            if (alpha < tol)
-            {
-                break; // done
-            }
-        }
+        for (i = 0; (i < max_iter) && solve_onestep(kappa); i++);
         if (i == max_iter)
         {
             return (-1);
@@ -402,8 +394,10 @@ int qp_ip::solve()
  * @brief One step of interior point method.
  *
  * @param[in] kappa logarithmic barrier multiplier
+ *
+ * @return true if a step was made, false if alpha or dX are too small.
  */
-void qp_ip::solve_onestep (const double kappa)
+bool qp_ip::solve_onestep (const double kappa)
 {
     form_grad_i2hess_logbar (kappa);
     form_phi_X ();
@@ -411,10 +405,25 @@ void qp_ip::solve_onestep (const double kappa)
 
     chol.solve (this, i2hess_grad, i2hess, X, dX);
 
+
+    double max_dX = 0;
+    for (int i = 0; i < N*NUM_VAR; i++)
+    {
+        if (max_dX < fabs(dX[i]))
+        {
+            max_dX = fabs(dX[i]);
+        }
+    }
+    if (max_dX < tol)
+    {
+        return (false);
+    }
+
+
     init_alpha ();
     if (alpha < tol)
     {
-        return; // done
+        return (false); // done
     }
 
     double bs_alpha_grad_dX = form_bs_alpha_grad_dX ();
@@ -436,7 +445,7 @@ void qp_ip::solve_onestep (const double kappa)
 
     if (alpha < tol)
     {
-        return; // done
+        return (false); // done
     }
 
     // Move in the feasible descent direction
@@ -444,4 +453,6 @@ void qp_ip::solve_onestep (const double kappa)
     {
         X[j] += alpha * dX[j];
     }
+
+    return (true);
 }

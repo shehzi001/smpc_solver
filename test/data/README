@@ -1,15 +1,15 @@
 States:
     All reference data was produced by solvers implemented in Matlab.
 
-    - states_chol_nodowndate.dat
-        produced by the solver based on Cholesky decomposition, active
-        constraints are never removed from active set.
+    - as_states_chol_downdate.dat
+        active set method
+        Cholesky decomposition
 
-    - states_chol_downdate.dat
-        produced by the solver based on Cholesky decomposition, active
-        constraints are removed when necessary.
+    - as_states_inv_downdate.dat
+        active set method
+        matrix inverse
 
-    - states_inv_downdate.dat
-        produced by the solver based on matrix inverse, active constraints 
-        are removed when necessary.
+    - ip_states_inv.dat
+        interior-point method
+        matrix inverse
 

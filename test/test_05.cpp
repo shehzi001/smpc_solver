@@ -37,7 +37,7 @@ int main(int argc, char **argv)
     {
         // reference states generated using thr implementation of
         // the algorithm in Octave/MATLAB
-        inFile.open ("./data/states_ip_inv.dat");
+        inFile.open ("./data/ip_states_inv.dat");
         //inFile.open ("./data/states_chol_downdate.dat");
     }
 
@@ -108,7 +108,7 @@ int main(int argc, char **argv)
                 {
                     max_err = err;
                 }
-                printf("value: % 8e   ref: % 8e   err: % 8e\n", wmg.X[i], dataref, err);
+                //printf("value: % 8e   ref: % 8e   err: % 8e\n", wmg.X[i], dataref, err);
             }
             cout << "Max. error (first state, all steps): " << max_err_first_state << endl;
             cout << "Max. error (all states, all steps): " << max_err << endl;
