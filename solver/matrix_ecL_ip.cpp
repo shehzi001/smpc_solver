@@ -208,7 +208,7 @@ void matrix_ecL_ip::form_L_non_diag(const double *ecLp, double *ecLc)
      */
 
 
-    // copy MAT' to ecLc
+    // copy (MAT)' to ecLc
     ecLc[0]  = -MAT[0];
     ecLc[27] = ecLc[6]  = -MAT[1];
     ecLc[33] = ecLc[12] = -MAT[2];
@@ -222,10 +222,9 @@ void matrix_ecL_ip::form_L_non_diag(const double *ecLp, double *ecLc)
 
     ecLc[21] = -MAT[21];
 
-    ecLc[21] = -MAT[21];
-
     // reset elements
-    ecLc[9]  = ecLc[15] = 0;
+    ecLc[9]  = ecLc[15] = ecLc[19] = ecLc[20] = ecLc[24] = ecLc[25] =
+        ecLc[26] = ecLc[30] = ecLc[31] = ecLc[32] = 0;
 
 
     for (int i = 0; i < MATRIX_SIDE_6x6; i++) // row of L(k+1,k)
@@ -424,13 +423,13 @@ void matrix_ecL_ip::solve_forward(const int N, double *x)
 
 
     // compute the first 6 elements using forward substitution
-    for (j = 0; j < MATRIX_SIZE_6x6; j++) // row
+    for (j = 0; j < MATRIX_SIDE_6x6; j++) // row
     {
         for (k = 0; k < j; k++) // column
         {
-            xc[j] -= xc[k]*ecL_cur[j+k*MATRIX_SIZE_6x6];
+            xc[j] -= xc[k]*ecL_cur[j+k*MATRIX_SIDE_6x6];
         }
-        xc[j] /= ecL_cur[j+j*MATRIX_SIZE_6x6];
+        xc[j] /= ecL_cur[j+j*MATRIX_SIDE_6x6];
     }
 
 
@@ -445,22 +444,22 @@ void matrix_ecL_ip::solve_forward(const int N, double *x)
 
         
         // update the right part of the equation
-        for (j = 0; j < MATRIX_SIZE_6x6; j++) // column
+        for (j = 0; j < MATRIX_SIDE_6x6; j++) // column
         {
-            for (k = 0; k < MATRIX_SIZE_6x6; k++) // row
+            for (k = 0; k < MATRIX_SIDE_6x6; k++) // row
             {
-                xc[k] -= xp[j]*ecL_prev[j*MATRIX_SIZE_6x6 + k];
+                xc[k] -= xp[j]*ecL_prev[j*MATRIX_SIDE_6x6 + k];
             }
         }
 
         // forward substitution
-        for (j = 0; j < MATRIX_SIZE_6x6; j++) // row
+        for (j = 0; j < MATRIX_SIDE_6x6; j++) // row
         {
             for (k = 0; k < j; k++) // column
             {
-                xc[j] -= xc[k]*ecL_cur[j+k*MATRIX_SIZE_6x6];
+                xc[j] -= xc[k]*ecL_cur[j+k*MATRIX_SIDE_6x6];
             }
-            xc[j] /= ecL_cur[j+j*MATRIX_SIZE_6x6];
+            xc[j] /= ecL_cur[j+j*MATRIX_SIDE_6x6];
         }
     }
 }
@@ -486,13 +485,13 @@ void matrix_ecL_ip::solve_backward (const int N, double *x)
 
 
     // compute the last 6 elements using backward substitution
-    for (j = MATRIX_SIZE_6x6-1; j >= 0; j--) // row
+    for (j = MATRIX_SIDE_6x6-1; j >= 0; j--) // row
     {
-        for (k = MATRIX_SIZE_6x6-1; k > j; k--) // column
+        for (k = MATRIX_SIDE_6x6-1; k > j; k--) // column
         {
-            xc[j] -= xc[k]*ecL_cur[k+j*MATRIX_SIZE_6x6];
+            xc[j] -= xc[k]*ecL_cur[k+j*MATRIX_SIDE_6x6];
         }
-        xc[j] /= ecL_cur[j+j*MATRIX_SIZE_6x6];
+        xc[j] /= ecL_cur[j+j*MATRIX_SIDE_6x6];
     }
 
 
@@ -506,22 +505,22 @@ void matrix_ecL_ip::solve_backward (const int N, double *x)
 
 
         // update the right part of the equation
-        for (j = 0; j < MATRIX_SIZE_6x6; j++) // row
+        for (j = 0; j < MATRIX_SIDE_6x6; j++) // row
         {
-            for (k = 0; k < MATRIX_SIZE_6x6; k++) // column
+            for (k = 0; k < MATRIX_SIDE_6x6; k++) // column
             {
-                xc[j] -= xp[k]*ecL_prev[j*MATRIX_SIZE_6x6 + k];
+                xc[j] -= xp[k]*ecL_prev[j*MATRIX_SIDE_6x6 + k];
             }
         }
 
         // backward substitution
-        for (j = MATRIX_SIZE_6x6-1; j >= 0; j--) // row
+        for (j = MATRIX_SIDE_6x6-1; j >= 0; j--) // row
         {
-            for (k = MATRIX_SIZE_6x6-1; k > j; k--) // column
+            for (k = MATRIX_SIDE_6x6-1; k > j; k--) // column
             {
-                xc[j] -= xc[k]*ecL_cur[k+j*MATRIX_SIZE_6x6];
+                xc[j] -= xc[k]*ecL_cur[k+j*MATRIX_SIDE_6x6];
             }
-            xc[j] /= ecL_cur[j+j*MATRIX_SIZE_6x6];
+            xc[j] /= ecL_cur[j+j*MATRIX_SIDE_6x6];
         }
     }
 }

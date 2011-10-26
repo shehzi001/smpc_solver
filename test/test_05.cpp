@@ -1,0 +1,130 @@
+/** 
+ * @file
+ * @author Alexander Sherikov
+ * @brief Performs a full simulation and compares results with 
+ *  reference data produced by Octave.
+ */
+
+
+#include <cstring> //strcmp
+#include "tests_common.h"
+
+///@addtogroup gTEST
+///@{
+
+int main(int argc, char **argv)
+{
+    bool dump_to_stdout = false;
+    ifstream inFile;
+    ofstream fs_out;
+
+    //-----------------------------------------------------------
+    // initialize
+    WMG wmg;
+    init_01 (&wmg);
+
+    std::string fs_out_filename("test_05_fs.m");
+    wmg.FS2file(fs_out_filename); // output results for later use in Matlab/Octave
+    //-----------------------------------------------------------
+
+
+    if ((argc == 2) && (strcmp (argv[1], "stdout") == 0))
+    {
+        dump_to_stdout = true;
+        cout.precision (numeric_limits<double>::digits10);
+    }
+    else
+    {
+        // reference states generated using thr implementation of
+        // the algorithm in Octave/MATLAB
+        inFile.open ("./data/states_ip_inv.dat");
+        //inFile.open ("./data/states_chol_downdate.dat");
+    }
+
+
+    if (!dump_to_stdout)
+        test_start(argv[0]);
+
+
+    smpc_solver solver(wmg.N, SMPC_IP, 150, 2000, 1, 0.01, 1e-3);
+
+    double err = 0;
+    double max_err = 0;
+    double max_err_first_state = 0;
+
+
+    double X[6];
+    fs_out.open(fs_out_filename.c_str(), fstream::app);
+    fs_out.precision (numeric_limits<double>::digits10);
+    fs_out << endl << endl;
+    fs_out << "CoM_ZMP = [";
+   
+
+
+    for(;;)
+    {
+        //------------------------------------------------------
+        if (wmg.FormPreviewWindow() == WMG_HALT)
+        {
+            cout << "EXIT (halt = 1)" << endl;
+            break;
+        }
+        //------------------------------------------------------
+
+
+        //------------------------------------------------------
+        solver.set_parameters (wmg.T, wmg.h, wmg.angle, wmg.zref_x, wmg.zref_y, wmg.lb, wmg.ub);
+        solver.form_init_fp (wmg.zref_x, wmg.zref_y, wmg.X_tilde, wmg.X);
+        solver.set_ip_parameters (100, 15, 0.01, 0.5, 100);
+        solver.solve();
+        solver.get_next_state_tilde (wmg.X_tilde);
+        //------------------------------------------------------
+
+        solver.get_next_state (X);
+        fs_out << endl << X[0] << " " << X[3] << " " << wmg.X_tilde[0] << " " << wmg.X_tilde[3] << ";";
+
+        if (dump_to_stdout)
+        {
+            for (int i = 0; i < wmg.N*NUM_VAR; i++)
+            {
+                cout << wmg.X[i] << endl;
+            }
+        }
+        else
+        {
+            //------------------------------------------------------
+            // compare with reference results
+            for (int i = 0; i < wmg.N*NUM_VAR; i++)
+            {
+                double dataref;
+
+                inFile >> dataref;
+                err = abs(wmg.X[i] - dataref);
+                if ((i < 6) && (err > max_err_first_state))
+                {
+                    max_err_first_state = err;
+                }
+                if (err > max_err)
+                {
+                    max_err = err;
+                }
+                printf("value: % 8e   ref: % 8e   err: % 8e\n", wmg.X[i], dataref, err);
+            }
+            cout << "Max. error (first state, all steps): " << max_err_first_state << endl;
+            cout << "Max. error (all states, all steps): " << max_err << endl;
+            //------------------------------------------------------
+        }
+    }
+    inFile.close();
+
+    fs_out << "];" << endl;
+    fs_out << "plot (CoM_ZMP(:,1), CoM_ZMP(:,2), 'b');" << endl;
+    fs_out << "plot (CoM_ZMP(:,3), CoM_ZMP(:,4), 'ks','MarkerSize',5);" << endl;
+    fs_out.close();
+
+    if (!dump_to_stdout)
+        test_end(argv[0]);
+
+    return 0;
+}
+///@}

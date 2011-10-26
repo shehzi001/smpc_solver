@@ -110,7 +110,7 @@ class qp_ip : public qp_solver
         double form_phi_X_tmp (const double);
         void solve_onestep (const double);
         void form_g (const double *, const double *);
-        void form_grad_hess_logbar (const double);
+        void form_grad_i2hess_logbar (const double);
         void form_i2hess_grad ();
         void form_phi_X ();
 };

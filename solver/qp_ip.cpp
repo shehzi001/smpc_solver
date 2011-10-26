@@ -117,8 +117,8 @@ void qp_ip::form_g (const double *zref_x, const double *zref_y)
         p1 = zref_y[i];
 
         // inv (2*H) * R' * Cp' * zref
-        g[i*2] += (cosA*p0 + sinA*p1)*gain_beta;
-        g[i*2 + 1] += (-sinA*p0 + cosA*p1)*gain_beta; 
+        g[i*2] = -(cosA*p0 + sinA*p1)*gain_beta;
+        g[i*2 + 1] = -(-sinA*p0 + cosA*p1)*gain_beta; 
     }
 }
 
@@ -130,7 +130,7 @@ void qp_ip::form_g (const double *zref_x, const double *zref_y)
  *
  * @param[in] kappa 1/t, a logarithmic barrier multiplicator.
  */
-void qp_ip::form_grad_hess_logbar (const double kappa)
+void qp_ip::form_grad_i2hess_logbar (const double kappa)
 {
     phi_X = 0;
     int i,j;
@@ -191,7 +191,7 @@ void qp_ip::form_i2hess_grad ()
     }
     for (i = N*NUM_STATE_VAR; i < N*NUM_VAR; i++)
     {
-        i2hess_grad[i] = - grad[j] * i2P;
+        i2hess_grad[i] = - grad[i] * i2P;
     }
 }
 
@@ -238,7 +238,7 @@ void qp_ip::init_alpha()
         // lower bound may be violated
         if (dX[i*3] < 0)
         {
-            double tmp_alpha = (lb[i]-X[i*3])/X[i*3];
+            double tmp_alpha = (lb[i]-X[i*3])/dX[i*3];
             if (tmp_alpha < min_alpha)
             {
                 min_alpha = tmp_alpha;
@@ -247,7 +247,7 @@ void qp_ip::init_alpha()
         // upper bound may be violated
         else if (dX[i*3] > 0)
         {
-            double tmp_alpha = (ub[i]-X[i*3])/X[i*3];
+            double tmp_alpha = (ub[i]-X[i*3])/dX[i*3];
             if (tmp_alpha < min_alpha)
             {
                 min_alpha = tmp_alpha;
@@ -366,7 +366,7 @@ void qp_ip::set_ip_parameters (
 /**
  * @brief Solve QP using interior-point method.
  *
- * @return 0 if ok, non-zero number otherwise.
+ * @return 0 if ok, negative number otherwise.
  */
 int qp_ip::solve()
 {
@@ -381,10 +381,14 @@ int qp_ip::solve()
         for (i = 0; i < max_iter; i++)
         {
             solve_onestep(kappa);
+            if (alpha < tol)
+            {
+                break; // done
+            }
         }
         if (i == max_iter)
         {
-            return (1);
+            return (-1);
         }
 
         kappa /= mu;
@@ -401,7 +405,7 @@ int qp_ip::solve()
  */
 void qp_ip::solve_onestep (const double kappa)
 {
-    form_grad_hess_logbar (kappa);
+    form_grad_i2hess_logbar (kappa);
     form_phi_X ();
     form_i2hess_grad ();
 
@@ -416,8 +420,7 @@ void qp_ip::solve_onestep (const double kappa)
     double bs_alpha_grad_dX = form_bs_alpha_grad_dX ();
     for (;;)
     {
-        double phi_X_tmp = form_phi_X_tmp (kappa);
-        if (phi_X_tmp <= phi_X + alpha * bs_alpha_grad_dX)
+        if (form_phi_X_tmp (kappa) <= phi_X + alpha * bs_alpha_grad_dX)
         {
             break;
         }
