@@ -46,10 +46,10 @@ qp_ip::qp_ip(
     i2hess_grad = new double[N*NUM_VAR];
     grad = new double[N*NUM_VAR];
 
-    Q2[0] = Beta;
-    Q2[1] = Alpha;
-    Q2[2] = regularization*2;
-    P2 = Gamma;
+    Q[0] = Beta/2;
+    Q[1] = Alpha/2;
+    Q[2] = regularization;
+    P = Gamma/2;
 }
 
 
@@ -140,11 +140,11 @@ void qp_ip::form_grad_i2hess_logbar (const double kappa)
     // initialize grad = H*X
     for (i = 0; i < N*NUM_STATE_VAR; i++)
     {
-        grad[i] = Q2[i%3] * X[i];
+        grad[i] = X[i] / i2Q[i%3];
     }
     for (; i < N*NUM_VAR; i++)
     {
-        grad[i] = P2 * X[i];
+        grad[i] = X[i] / i2P;
     }
 
     // finish initalization of grad 
@@ -167,7 +167,7 @@ void qp_ip::form_grad_i2hess_logbar (const double kappa)
         // only elements 1:3:N*NUM_STATE_VAR on the diagonal of hessian 
         // can change
         // hess = H + kappa * (ub_diff^2 - lb_diff^2)
-        i2hess[i] = 1/(Q2[0] + kappa * (ub_diff*ub_diff + lb_diff*lb_diff));
+        i2hess[i] = 1/(2*Q[0] + kappa * (ub_diff*ub_diff + lb_diff*lb_diff));
     }
     phi_X *= kappa;
 }
@@ -208,11 +208,11 @@ void qp_ip::form_phi_X ()
     // phi_X += X'*H*X
     for (i = 0; i < N*NUM_STATE_VAR; i++)
     {
-        phi_X += 0.5*Q2[i%3] * X[i] * X[i];
+        phi_X += Q[i%3] * X[i] * X[i];
     }
     for (; i < N*NUM_VAR; i++)
     {
-        phi_X += 0.5*P2 * X[i] * X[i];
+        phi_X += P * X[i] * X[i];
     }
 
     // phi_X += g'*X
@@ -316,21 +316,21 @@ double qp_ip::form_phi_X_tmp (const double kappa)
 
 
         // phi_X += X'*H*X // states
-        res += 0.5*Q2[0] * X_tmp*X_tmp;
+        res += Q[0] * X_tmp*X_tmp;
 
         X_tmp = X[j] + alpha * dX[j];
         j++;
-        res += 0.5*Q2[1] * X_tmp*X_tmp;
+        res += Q[1] * X_tmp*X_tmp;
 
         X_tmp = X[j] + alpha * dX[j];
         j++;
-        res += 0.5*Q2[2] * X_tmp*X_tmp;
+        res += Q[2] * X_tmp*X_tmp;
     }
     // phi_X += X'*H*X // controls
     for (i = N*NUM_STATE_VAR; i < N*NUM_VAR; i++)
     {
         X_tmp = X[i] + alpha * dX[i];
-        res += 0.5*P2 * X_tmp * X_tmp;
+        res += P * X_tmp * X_tmp;
     }
 
     return (res);
@@ -346,19 +346,22 @@ double qp_ip::form_phi_X_tmp (const double kappa)
  * @param[in] bs_alpha_ backtracking search parameter alpha
  * @param[in] bs_beta_  backtracking search parameter beta
  * @param[in] max_iter_ maximum number of internal loop iterations
+ * @param[in] tol_out_ tolerance of the outer loop
  */
 void qp_ip::set_ip_parameters (
         const double t_, 
         const double mu_, 
         const double bs_alpha_, 
         const double bs_beta_, 
-        const int max_iter_)
+        const int max_iter_,
+        const double tol_out_)
 {
     t = t_;
     mu = mu_;
     bs_alpha = bs_alpha_;
     bs_beta = bs_beta_;
     max_iter = max_iter_;
+    tol_out = tol_out_;
 }
 
 
@@ -375,7 +378,7 @@ int qp_ip::solve()
     int i;
 
 
-    while (duality_gap > tol)
+    while (duality_gap > tol_out)
     {
         for (i = 0; (i < max_iter) && solve_onestep(kappa); i++);
         if (i == max_iter)
@@ -399,6 +402,9 @@ int qp_ip::solve()
  */
 bool qp_ip::solve_onestep (const double kappa)
 {
+    int i,j;
+
+
     form_grad_i2hess_logbar (kappa);
     form_phi_X ();
     form_i2hess_grad ();
@@ -406,26 +412,36 @@ bool qp_ip::solve_onestep (const double kappa)
     chol.solve (this, i2hess_grad, i2hess, X, dX);
 
 
-    double max_dX = 0;
-    for (int i = 0; i < N*NUM_VAR; i++)
+    // stopping criterion (decrement)
+    double decrement = 0;
+    for (i = 0, j = 0; i < N*2; i++)
     {
-        if (max_dX < fabs(dX[i]))
-        {
-            max_dX = fabs(dX[i]);
-        }
+        decrement += dX[j] * dX[j] / i2hess[i];
+        j++;
+        decrement += dX[j] * dX[j] / i2Q[1];
+        j++;
+        decrement += dX[j] * dX[j] / i2Q[2];
+        j++;
     }
-    if (max_dX < tol)
+    for (i = N*NUM_STATE_VAR; i < N*NUM_VAR; i++)
+    {
+        decrement += dX[i] * dX[i] / i2P;
+    }
+    if (decrement < tol)
     {
         return (false);
     }
 
 
     init_alpha ();
+    // stopping criterion (step size)
     if (alpha < tol)
     {
         return (false); // done
     }
 
+
+    // backtracking search
     double bs_alpha_grad_dX = form_bs_alpha_grad_dX ();
     for (;;)
     {
@@ -436,20 +452,16 @@ bool qp_ip::solve_onestep (const double kappa)
 
         alpha = bs_beta * alpha;
 
+        // stopping criterion (step size)
         if (alpha < tol)
         {
-            //XXX hm?
-            break;
+            return (false); // done
         }
     }
 
-    if (alpha < tol)
-    {
-        return (false); // done
-    }
 
     // Move in the feasible descent direction
-    for (int j = 0; j < N*NUM_VAR ; j++)
+    for (j = 0; j < N*NUM_VAR ; j++)
     {
         X[j] += alpha * dX[j];
     }

@@ -104,16 +104,21 @@ class smpc_solver
          * @param[in] bs_alpha backtracking search parameter 0 < alpha < 0.5
          * @param[in] bs_beta  backtracking search parameter 0 < beta < 1
          * @param[in] max_iter maximum number of internal loop iterations
+         * @param[in] tol_ext tolerance of the outer loop, which resolves
+         *                    the problem with new t (kappa) parameter.
          *
          * @note Applicable only for #SMPC_IP, does nothing if #SMPC_AS
          *       is chosen.
+         * @note The tolerance specified in the constructor is used only in 
+         *       internal loop.
          */
         void set_ip_parameters (
                 const double t,
                 const double mu,
                 const double bs_alpha,
                 const double bs_beta,
-                const int max_iter);
+                const int max_iter,
+                const double tol_out);
 
 
         /**

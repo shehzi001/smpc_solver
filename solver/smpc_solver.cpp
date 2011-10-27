@@ -57,12 +57,13 @@ void smpc_solver::set_ip_parameters (
         const double mu,
         const double bs_alpha,
         const double bs_beta,
-        const int max_iter)
+        const int max_iter,
+        const double tol_out)
 {
     qp_ip * qpip_solver = dynamic_cast<qp_ip*> (qp_sol);
     if (qpip_solver != NULL)
     {
-        qpip_solver->set_ip_parameters (t, mu, bs_alpha, bs_beta, max_iter);
+        qpip_solver->set_ip_parameters (t, mu, bs_alpha, bs_beta, max_iter, tol_out);
     }
 }
 

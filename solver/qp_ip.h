@@ -56,7 +56,13 @@ class qp_ip : public qp_solver
                 const double*);
 
 
-        void set_ip_parameters (const double, const double, const double, const double, const int);
+        void set_ip_parameters (
+                const double, 
+                const double, 
+                const double, 
+                const double, 
+                const int,
+                const double);
         int solve();
 
 
@@ -79,9 +85,9 @@ class qp_ip : public qp_solver
 
 
         ///@{
-        /// Diagonal elements of 2*H.
-        double Q2[3];
-        double P2;
+        /// Diagonal elements of H.
+        double Q[3];
+        double P;
         ///@}
         
 
@@ -101,6 +107,7 @@ class qp_ip : public qp_solver
         double bs_alpha; /// backtracking search parameter alpha
         double bs_beta; /// backtracking search parameter beta
         int max_iter; /// maximum number of internal loop iterations
+        double tol_out; /// tolerance of the outer loop
 
 
 // functions        
