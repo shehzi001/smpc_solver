@@ -26,7 +26,7 @@
 
 using namespace std;
 
-/// @addtogroup gINTERNALS
+/// @addtogroup gAS
 /// @{
 
 /** \brief Defines simple bounds associated with variables. */

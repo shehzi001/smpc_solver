@@ -18,8 +18,10 @@ class qp_solver;
 
 enum solver_type
 {
-    SMPC_AS, /// Active set method
-    SMPC_IP  /// Interior-point method
+    /// Active set method   
+    SMPC_AS,
+    /// Interior-point method
+    SMPC_IP 
 };
 
 

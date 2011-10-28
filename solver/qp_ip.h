@@ -26,12 +26,12 @@
 
 using namespace std;
 
-/// @addtogroup gINTERNALS
+/// @addtogroup gIP
 /// @{
 
 /** 
  * @brief Solve a quadratic program with a specific structure. 
- * qp_as = Quadratic Programming / Active Set
+ * qp_ip = Quadratic Programming / Interior-point method
  */
 class qp_ip : public qp_solver
 {

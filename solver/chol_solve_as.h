@@ -23,7 +23,7 @@
 
 using namespace std;
 
-/// @addtogroup gINTERNALS
+/// @addtogroup gAS
 /// @{
 
 /**

@@ -17,6 +17,9 @@
 #include "problem_param.h"
 
 
+/// @addtogroup gAS
+/// @{
+
 /****************************************
  * DEFINES
  ****************************************/
@@ -30,8 +33,6 @@
 
 using namespace std;
 
-/// @addtogroup gINTERNALS
-/// @{
 
 /**
  * @brief Initializes lower diagonal matrix @ref pCholesky "L" and 

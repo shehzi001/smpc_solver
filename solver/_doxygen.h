@@ -89,11 +89,15 @@
  *      - @ref pIP
  *      - @ref pIPSMPC
  *          - @ref pIPSchur
+ *      - @ref pIPImplementation
+ *          - @ref pIPChol
  * \n\n
  *
  * @section MainSrcDocs Documentation extracted from the sources
  * @par
  * - @ref gINTERNALS
+ *      - @ref gAS
+ *      - @ref gIP
  * - @ref gWMG_INTERNALS
  * \n\n
  *
@@ -106,6 +110,12 @@
  * @defgroup gAPI API of the solver library
  *  
  * @defgroup gINTERNALS Internal classes, functions and definitions of the solver library
+ *
+ * @defgroup gAS Active set method
+ * @ingroup gINTERNALS
+ *
+ * @defgroup gIP Interior-point method
+ * @ingroup gINTERNALS
  *
  * @defgroup gWMG_API API of the simulation support library
  *

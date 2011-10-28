@@ -299,9 +299,7 @@ Output:
 
 
 /**
- * @page pDetails Minor implemetation details
-@section pDetNotes Notes
-    It is implicitly supposed that we have 6 state variables and 2 control variables.
+ * @page pDetails Notes on implementation
 
 @section pDetMatrices Representation of matrices
     Note, that parts of state and control matrices (@ref pPDModel) corresponding to x 

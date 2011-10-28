@@ -144,7 +144,7 @@
     and corresponds to state k, is denoted @f$\mbm{B}_k@f$. Each such matrix
     has only two non-zero elements: (1,1) and (4,4).
 
-@section pIPSchur Schur complement
+@section pIPSchur Schur complement (IP method)
 
     The Schur complement for the new objective function is defined in a similar way
     as for the original objective (see '@ref pSchurComplement'). The part of the hessian 
@@ -165,6 +165,21 @@
 
     where @f$\mbm{M}_{ii} = \bar{\mbm{R}}_i\hat{\mbm{Q}}^{-1}_i\bar{\mbm{R}}_i^T@f$ and
     @f$\hat{\mbm{Q}}_i = \tilde{\mbm{Q}_i} + \mbm{B}_i@f$.
+ */
+
+/**
+ * @page pIPImplementation Notes on implementation
+ 
+@section pIPChol Cholesky decomposition
+
+    The Cholesky factor of the Schur complement must be formed on each iteration.
+    Due to the differences in the Schur complement (see '@ref pIPSchur') caused 
+    by addition of the logarithic barrier, the Cholesky factor is not so well 
+    structured as in the case of the active set method.
+
+    Each 6x6 @f$\mbm{L}_{ij}@f$ matrix of the factor (see '@ref pCholesky') must
+    be stored. The matrices are stored sequentially from the top left to the bottom
+    right.
  */
 
 #endif /*DOXYGEN_IP_H*/
