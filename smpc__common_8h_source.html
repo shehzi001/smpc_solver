@@ -57,47 +57,20 @@
 <a name="l00020"></a>00020 <span class="comment"> ****************************************/</span>
 <a name="l00021"></a>00021 
 <a name="l00024"></a>00024 
-<a name="l00026"></a><a class="code" href="group__gINTERNALS.html#ga3c414d4a5dac1481cc163546b4aa4851">00026</a> <span class="preprocessor">#define MATRIX_DIM_SIZE 3</span>
+<a name="l00026"></a><a class="code" href="group__gINTERNALS.html#gab43ce21b9a9ab92538b62f7e8419556b">00026</a> <span class="preprocessor">#define SMPC_VARIABLE_T_h</span>
 <a name="l00027"></a>00027 <span class="preprocessor"></span>
-<a name="l00028"></a><a class="code" href="group__gINTERNALS.html#ga2bd32349fcbeb6ee86434a65226cba1a">00028</a> <span class="preprocessor">#define MATRIX_SIZE 9</span>
+<a name="l00028"></a><a class="code" href="group__gINTERNALS.html#ga26acbba1c13f0a9a5cd82b15c29d75fb">00028</a> <span class="preprocessor">#define QPAS_DOWNDATE</span>
 <a name="l00029"></a>00029 <span class="preprocessor"></span>
-<a name="l00031"></a><a class="code" href="group__gINTERNALS.html#ga45a4401e7b4814428e554135b7e872b6">00031</a> <span class="preprocessor">#define QPAS_VARIABLE_T_h</span>
-<a name="l00032"></a>00032 <span class="preprocessor"></span>
-<a name="l00033"></a><a class="code" href="group__gINTERNALS.html#ga26acbba1c13f0a9a5cd82b15c29d75fb">00033</a> <span class="preprocessor">#define QPAS_DOWNDATE</span>
-<a name="l00034"></a>00034 <span class="preprocessor"></span>
-<a name="l00035"></a>00035 
-<a name="l00036"></a>00036 <span class="comment">/****************************************</span>
-<a name="l00037"></a>00037 <span class="comment"> * TYPEDEFS </span>
-<a name="l00038"></a>00038 <span class="comment"> ****************************************/</span>
-<a name="l00039"></a>00039 
-<a name="l00043"></a><a class="code" href="structchol__solve__param.html">00043</a> <span class="keyword">struct </span><a class="code" href="structchol__solve__param.html" title="A set of parameters used by chol_solve class.">chol_solve_param</a> 
-<a name="l00044"></a>00044 {
-<a name="l00045"></a>00045 <span class="comment">// static matrices and vectors</span>
-<a name="l00047"></a><a class="code" href="structchol__solve__param.html#a3432ea7cd2cede8f12713d2fa3497c7e">00047</a> <span class="comment"></span>    <span class="keywordtype">double</span> <a class="code" href="structchol__solve__param.html#a3432ea7cd2cede8f12713d2fa3497c7e">i2Q</a>[3];
-<a name="l00048"></a>00048 
-<a name="l00050"></a><a class="code" href="structchol__solve__param.html#a7fc0216270bba41da3c05f87c30af6a9">00050</a>     <span class="keywordtype">double</span> <a class="code" href="structchol__solve__param.html#a7fc0216270bba41da3c05f87c30af6a9">i2P</a>;
-<a name="l00051"></a>00051 
-<a name="l00053"></a><a class="code" href="structchol__solve__param.html#a79cf71be21fe8cb44babcc19284721a3">00053</a>     <span class="keywordtype">double</span> *<a class="code" href="structchol__solve__param.html#a79cf71be21fe8cb44babcc19284721a3">iHg</a>;
-<a name="l00054"></a>00054 
-<a name="l00055"></a>00055 
-<a name="l00056"></a><a class="code" href="structchol__solve__param.html#ad0a0aa23e83947a1e871857c8e35e1c9">00056</a>     <span class="keywordtype">double</span> *<a class="code" href="structchol__solve__param.html#ad0a0aa23e83947a1e871857c8e35e1c9">angle_cos</a>;
-<a name="l00057"></a><a class="code" href="structchol__solve__param.html#a403c7d75ef6f5166fc4dc540ee1fa6bc">00057</a>     <span class="keywordtype">double</span> *<a class="code" href="structchol__solve__param.html#a403c7d75ef6f5166fc4dc540ee1fa6bc">angle_sin</a>;
-<a name="l00058"></a>00058 
-<a name="l00059"></a>00059 
-<a name="l00060"></a>00060 <span class="comment">// parameters used in generation of A and B matrices</span>
-<a name="l00062"></a><a class="code" href="structchol__solve__param.html#aabc974063472b1d3317a34a782cff95a">00062</a> <span class="comment"></span>    <span class="keyword">const</span> <span class="keywordtype">double</span> *<a class="code" href="structchol__solve__param.html#aabc974063472b1d3317a34a782cff95a">T</a>;
-<a name="l00064"></a><a class="code" href="structchol__solve__param.html#a136357a85d0d65710f9a82cb38df5cfe">00064</a>     <span class="keyword">const</span> <span class="keywordtype">double</span> *<a class="code" href="structchol__solve__param.html#a136357a85d0d65710f9a82cb38df5cfe">h</a>;
-<a name="l00065"></a>00065 
-<a name="l00066"></a>00066 <span class="preprocessor">#ifdef QPAS_VARIABLE_T_h</span>
-<a name="l00067"></a><a class="code" href="structchol__solve__param.html#a134a99b291015b74666c77717fe9f4c4">00067</a> <span class="preprocessor"></span>    <span class="keywordtype">double</span> *<a class="code" href="structchol__solve__param.html#a134a99b291015b74666c77717fe9f4c4">dh</a>;
-<a name="l00068"></a>00068 <span class="preprocessor">#endif</span>
-<a name="l00069"></a>00069 <span class="preprocessor"></span>};
-<a name="l00070"></a>00070 
-<a name="l00071"></a>00071 <span class="comment">/****************************************</span>
-<a name="l00072"></a>00072 <span class="comment"> * PROTOTYPES </span>
-<a name="l00073"></a>00073 <span class="comment"> ****************************************/</span>
-<a name="l00075"></a>00075 <span class="preprocessor">#endif </span><span class="comment">/*SMPC_COMMON_H*/</span>
-<a name="l00076"></a>00076 
+<a name="l00030"></a>00030 
+<a name="l00031"></a>00031 <span class="comment">/****************************************</span>
+<a name="l00032"></a>00032 <span class="comment"> * TYPEDEFS </span>
+<a name="l00033"></a>00033 <span class="comment"> ****************************************/</span>
+<a name="l00034"></a>00034 
+<a name="l00035"></a>00035 <span class="comment">/****************************************</span>
+<a name="l00036"></a>00036 <span class="comment"> * PROTOTYPES </span>
+<a name="l00037"></a>00037 <span class="comment"> ****************************************/</span>
+<a name="l00039"></a>00039 <span class="preprocessor">#endif </span><span class="comment">/*SMPC_COMMON_H*/</span>
+<a name="l00040"></a>00040 
 </pre></div></div>
 </div>
 <hr class="footer"/><address class="footer"><small>Generated by&#160;

@@ -49,123 +49,95 @@
 <a name="l00013"></a>00013 <span class="comment"> * INCLUDES </span>
 <a name="l00014"></a>00014 <span class="comment"> ****************************************/</span>
 <a name="l00015"></a>00015 <span class="preprocessor">#include &quot;<a class="code" href="smpc__common_8h.html">smpc_common.h</a>&quot;</span>
-<a name="l00016"></a>00016 <span class="preprocessor">#include &quot;<a class="code" href="chol__solve_8h.html">chol_solve.h</a>&quot;</span>
-<a name="l00017"></a>00017 
-<a name="l00018"></a>00018 <span class="preprocessor">#include &lt;vector&gt;</span>
-<a name="l00019"></a>00019 
+<a name="l00016"></a>00016 <span class="preprocessor">#include &quot;<a class="code" href="chol__solve__as_8h.html">chol_solve_as.h</a>&quot;</span>
+<a name="l00017"></a>00017 <span class="preprocessor">#include &quot;<a class="code" href="qp__solver_8h.html">qp_solver.h</a>&quot;</span>
+<a name="l00018"></a>00018 
+<a name="l00019"></a>00019 <span class="preprocessor">#include &lt;vector&gt;</span>
 <a name="l00020"></a>00020 
-<a name="l00021"></a>00021 <span class="comment">/****************************************</span>
-<a name="l00022"></a>00022 <span class="comment"> * Defines</span>
-<a name="l00023"></a>00023 <span class="comment"> ****************************************/</span>
-<a name="l00024"></a>00024 
+<a name="l00021"></a>00021 
+<a name="l00022"></a>00022 <span class="comment">/****************************************</span>
+<a name="l00023"></a>00023 <span class="comment"> * Defines</span>
+<a name="l00024"></a>00024 <span class="comment"> ****************************************/</span>
 <a name="l00025"></a>00025 
-<a name="l00026"></a>00026 <span class="keyword">using namespace </span>std;
-<a name="l00027"></a>00027 
-<a name="l00030"></a>00030 
-<a name="l00032"></a><a class="code" href="classbound.html">00032</a> <span class="keyword">class </span><a class="code" href="classbound.html" title="Defines simple bounds associated with variables.">bound</a>
-<a name="l00033"></a>00033 {
-<a name="l00034"></a>00034     <span class="keyword">public</span>:
-<a name="l00035"></a>00035         <span class="keywordtype">void</span> <span class="keyword">set</span> (<span class="keyword">const</span> int, <span class="keyword">const</span> double, <span class="keyword">const</span> double, <span class="keyword">const</span> int);
-<a name="l00036"></a>00036 
+<a name="l00026"></a>00026 
+<a name="l00027"></a>00027 <span class="keyword">using namespace </span>std;
+<a name="l00028"></a>00028 
+<a name="l00031"></a>00031 
+<a name="l00033"></a><a class="code" href="classbound.html">00033</a> <span class="keyword">class </span><a class="code" href="classbound.html" title="Defines simple bounds associated with variables.">bound</a>
+<a name="l00034"></a>00034 {
+<a name="l00035"></a>00035     <span class="keyword">public</span>:
+<a name="l00036"></a>00036         <span class="keywordtype">void</span> <span class="keyword">set</span> (<span class="keyword">const</span> int, <span class="keyword">const</span> double, <span class="keyword">const</span> double, <span class="keyword">const</span> bool);
 <a name="l00037"></a>00037 
-<a name="l00039"></a><a class="code" href="classbound.html#aacb615b31fdb1fa5c5b4b8499ab022ee">00039</a>         <span class="keywordtype">int</span> <a class="code" href="classbound.html#aacb615b31fdb1fa5c5b4b8499ab022ee">var_num</a>;
-<a name="l00040"></a>00040 
-<a name="l00042"></a><a class="code" href="classbound.html#abebf4201fee42aa574dfd9e49486c48f">00042</a>         <span class="keywordtype">double</span> <a class="code" href="classbound.html#abebf4201fee42aa574dfd9e49486c48f">lb</a>;
-<a name="l00043"></a>00043 
-<a name="l00045"></a><a class="code" href="classbound.html#aeac3321fd3fc71e1352ad78c7bebdfee">00045</a>         <span class="keywordtype">double</span> <a class="code" href="classbound.html#aeac3321fd3fc71e1352ad78c7bebdfee">ub</a>;
-<a name="l00046"></a>00046 
-<a name="l00051"></a><a class="code" href="classbound.html#a33283f389b4005e07624b2c89175efe9">00051</a>         <span class="keywordtype">int</span> <a class="code" href="classbound.html#a33283f389b4005e07624b2c89175efe9">isActive</a>;
-<a name="l00052"></a>00052 };
-<a name="l00053"></a>00053 
+<a name="l00038"></a>00038 
+<a name="l00040"></a><a class="code" href="classbound.html#aacb615b31fdb1fa5c5b4b8499ab022ee">00040</a>         <span class="keywordtype">int</span> <a class="code" href="classbound.html#aacb615b31fdb1fa5c5b4b8499ab022ee">var_num</a>;
+<a name="l00041"></a>00041 
+<a name="l00043"></a><a class="code" href="classbound.html#abebf4201fee42aa574dfd9e49486c48f">00043</a>         <span class="keywordtype">double</span> <a class="code" href="classbound.html#abebf4201fee42aa574dfd9e49486c48f">lb</a>;
+<a name="l00044"></a>00044 
+<a name="l00046"></a><a class="code" href="classbound.html#aeac3321fd3fc71e1352ad78c7bebdfee">00046</a>         <span class="keywordtype">double</span> <a class="code" href="classbound.html#aeac3321fd3fc71e1352ad78c7bebdfee">ub</a>;
+<a name="l00047"></a>00047 
+<a name="l00052"></a><a class="code" href="classbound.html#ac42cf7a5c946c468cdf7d4c8050c4582">00052</a>         <span class="keywordtype">bool</span> <a class="code" href="classbound.html#ac42cf7a5c946c468cdf7d4c8050c4582">isActive</a>;
+<a name="l00053"></a>00053 };
 <a name="l00054"></a>00054 
 <a name="l00055"></a>00055 
-<a name="l00060"></a><a class="code" href="classqp__as.html">00060</a> <span class="keyword">class </span><a class="code" href="classqp__as.html" title="Solve a quadratic program with a specific structure. qp_as = Quadratic Programming / Active Set...">qp_as</a>
-<a name="l00061"></a>00061 {
-<a name="l00062"></a>00062     <span class="keyword">public</span>:
-<a name="l00063"></a>00063 <span class="comment">// functions        </span>
-<a name="l00064"></a>00064         <a class="code" href="classqp__as.html" title="Solve a quadratic program with a specific structure. qp_as = Quadratic Programming / Active Set...">qp_as</a>(
-<a name="l00065"></a>00065                 <span class="keyword">const</span> <span class="keywordtype">int</span> N_, 
-<a name="l00066"></a>00066                 <span class="keyword">const</span> <span class="keywordtype">double</span> Alpha = 150.0, 
-<a name="l00067"></a>00067                 <span class="keyword">const</span> <span class="keywordtype">double</span> Beta = 2000.0, 
-<a name="l00068"></a>00068                 <span class="keyword">const</span> <span class="keywordtype">double</span> Gamma = 1.0,
-<a name="l00069"></a>00069                 <span class="keyword">const</span> <span class="keywordtype">double</span> regularization = 0.01,
-<a name="l00070"></a>00070                 <span class="keyword">const</span> <span class="keywordtype">double</span> tol = 1e-7);
-<a name="l00071"></a>00071         ~<a class="code" href="classqp__as.html" title="Solve a quadratic program with a specific structure. qp_as = Quadratic Programming / Active Set...">qp_as</a>();
-<a name="l00072"></a>00072 
-<a name="l00073"></a>00073         <span class="keywordtype">void</span> init(
-<a name="l00074"></a>00074                 <span class="keyword">const</span> <span class="keywordtype">double</span>*, 
-<a name="l00075"></a>00075                 <span class="keyword">const</span> <span class="keywordtype">double</span>*, 
+<a name="l00056"></a>00056 
+<a name="l00057"></a>00057 
+<a name="l00062"></a><a class="code" href="classqp__as.html">00062</a> <span class="keyword">class </span><a class="code" href="classqp__as.html" title="Solve a quadratic program with a specific structure. qp_as = Quadratic Programming / Active Set...">qp_as</a> : <span class="keyword">public</span> <a class="code" href="classqp__solver.html" title="Solve a quadratic program with a specific structure.">qp_solver</a>
+<a name="l00063"></a>00063 {
+<a name="l00064"></a>00064     <span class="keyword">public</span>:
+<a name="l00065"></a>00065 <span class="comment">// functions        </span>
+<a name="l00066"></a>00066         <a class="code" href="classqp__as.html" title="Solve a quadratic program with a specific structure. qp_as = Quadratic Programming / Active Set...">qp_as</a>(
+<a name="l00067"></a>00067                 <span class="keyword">const</span> <span class="keywordtype">int</span> N_, 
+<a name="l00068"></a>00068                 <span class="keyword">const</span> <span class="keywordtype">double</span>, 
+<a name="l00069"></a>00069                 <span class="keyword">const</span> <span class="keywordtype">double</span>, 
+<a name="l00070"></a>00070                 <span class="keyword">const</span> <span class="keywordtype">double</span>,
+<a name="l00071"></a>00071                 <span class="keyword">const</span> <span class="keywordtype">double</span>,
+<a name="l00072"></a>00072                 <span class="keyword">const</span> <span class="keywordtype">double</span>);
+<a name="l00073"></a>00073         ~<a class="code" href="classqp__as.html" title="Solve a quadratic program with a specific structure. qp_as = Quadratic Programming / Active Set...">qp_as</a>();
+<a name="l00074"></a>00074 
+<a name="l00075"></a>00075         <span class="keywordtype">void</span> set_parameters(
 <a name="l00076"></a>00076                 <span class="keyword">const</span> <span class="keywordtype">double</span>*, 
 <a name="l00077"></a>00077                 <span class="keyword">const</span> <span class="keywordtype">double</span>*, 
 <a name="l00078"></a>00078                 <span class="keyword">const</span> <span class="keywordtype">double</span>*, 
 <a name="l00079"></a>00079                 <span class="keyword">const</span> <span class="keywordtype">double</span>*, 
 <a name="l00080"></a>00080                 <span class="keyword">const</span> <span class="keywordtype">double</span>*, 
 <a name="l00081"></a>00081                 <span class="keyword">const</span> <span class="keywordtype">double</span>*, 
-<a name="l00082"></a>00082                 <span class="keywordtype">double</span>*);
-<a name="l00083"></a>00083    
+<a name="l00082"></a>00082                 <span class="keyword">const</span> <span class="keywordtype">double</span>*);
+<a name="l00083"></a>00083 
 <a name="l00084"></a>00084 
 <a name="l00085"></a>00085         <span class="keywordtype">int</span> solve ();
 <a name="l00086"></a>00086 
-<a name="l00087"></a>00087         <span class="keywordtype">void</span> <a class="code" href="namespacestate__handling.html#a995670cb04241d60481d3f8a0e6ec061" title="Returns the next state as X_tilde.">get_next_state_tilde</a> (<span class="keyword">const</span> <span class="keywordtype">double</span> *);
-<a name="l00088"></a>00088         <span class="keywordtype">void</span> <a class="code" href="namespacestate__handling.html#a6461e663f646fcf0d6a27dbd7472d4f4" title="Returns the next state represented by original variables.">get_next_state</a> (<span class="keyword">const</span> <span class="keywordtype">double</span> *);
+<a name="l00087"></a>00087 
+<a name="l00088"></a>00088     <span class="keyword">private</span>:
 <a name="l00089"></a>00089 
-<a name="l00090"></a>00090 
-<a name="l00091"></a>00091 <span class="comment">// variables</span>
-<a name="l00093"></a><a class="code" href="classqp__as.html#a24321a3e24c1cd4ed4b5b5a217c58e11">00093</a> <span class="comment"></span>        <a class="code" href="structchol__solve__param.html" title="A set of parameters used by chol_solve class.">chol_solve_param</a> <a class="code" href="classqp__as.html#a24321a3e24c1cd4ed4b5b5a217c58e11" title="Parameters, which are fed to the methods of chol_solve class.">chol_param</a>;
+<a name="l00090"></a>00090 <span class="comment">// functions        </span>
+<a name="l00091"></a>00091         <span class="keywordtype">void</span> form_iHg(<span class="keyword">const</span> <span class="keywordtype">double</span> *, <span class="keyword">const</span> <span class="keywordtype">double</span> *);
+<a name="l00092"></a>00092         <span class="keywordtype">void</span> form_bounds(<span class="keyword">const</span> <span class="keywordtype">double</span> *, <span class="keyword">const</span> <span class="keywordtype">double</span> *);
+<a name="l00093"></a>00093         <span class="keywordtype">int</span> check_blocking_bounds();
 <a name="l00094"></a>00094 
-<a name="l00098"></a><a class="code" href="classqp__as.html#afc3e9ed1c081763d05f5f8d1decca8f3">00098</a>         <span class="keywordtype">double</span> *<a class="code" href="classqp__as.html#afc3e9ed1c081763d05f5f8d1decca8f3">X</a>;
-<a name="l00099"></a>00099 
-<a name="l00100"></a>00100 
-<a name="l00101"></a>00101     <span class="keyword">private</span>:
+<a name="l00095"></a>00095 <span class="preprocessor">#ifdef QPAS_DOWNDATE</span>
+<a name="l00096"></a>00096 <span class="preprocessor"></span>        <span class="keywordtype">int</span> choose_excl_constr (<span class="keyword">const</span> <span class="keywordtype">double</span> *);
+<a name="l00097"></a>00097 <span class="preprocessor">#endif</span>
+<a name="l00098"></a>00098 <span class="preprocessor"></span>
+<a name="l00100"></a><a class="code" href="classqp__as.html#a875cbe7a59ff89a72cf69c2b799e2566">00100</a>         <a class="code" href="classchol__solve__as.html" title="Solves KKT system using Cholesky decomposition.">chol_solve_as</a> <a class="code" href="classqp__as.html#a875cbe7a59ff89a72cf69c2b799e2566" title="An instance of chol_solve_as class.">chol</a>;
+<a name="l00101"></a>00101 
 <a name="l00102"></a>00102 
-<a name="l00103"></a>00103 <span class="comment">// functions        </span>
-<a name="l00104"></a>00104         <span class="keywordtype">void</span> form_init_fp(<span class="keyword">const</span> <span class="keywordtype">double</span> *, <span class="keyword">const</span> <span class="keywordtype">double</span> *, <span class="keyword">const</span> <span class="keywordtype">double</span> *);
-<a name="l00105"></a>00105         <span class="keywordtype">void</span> form_iHg(<span class="keyword">const</span> <span class="keywordtype">double</span> *, <span class="keyword">const</span> <span class="keywordtype">double</span> *);
-<a name="l00106"></a>00106         <span class="keywordtype">void</span> initialize_bounds();
-<a name="l00107"></a>00107         <span class="keywordtype">void</span> form_bounds(<span class="keyword">const</span> <span class="keywordtype">double</span> *, <span class="keyword">const</span> <span class="keywordtype">double</span> *);
-<a name="l00108"></a>00108         <span class="keywordtype">int</span> check_blocking_bounds();
-<a name="l00109"></a>00109 
-<a name="l00110"></a>00110 <span class="preprocessor">#ifdef QPAS_DOWNDATE</span>
-<a name="l00111"></a>00111 <span class="preprocessor"></span>        <span class="keywordtype">int</span> choose_excl_constr (<span class="keyword">const</span> <span class="keywordtype">double</span> *);
-<a name="l00112"></a>00112 <span class="preprocessor">#endif</span>
+<a name="l00104"></a><a class="code" href="classqp__as.html#a0ce9bd78fbd4e9b8d02c0f7e970833cc">00104</a>         <span class="keywordtype">double</span> *<a class="code" href="classqp__as.html#a0ce9bd78fbd4e9b8d02c0f7e970833cc" title="inv(H) * g">iHg</a>;
+<a name="l00105"></a>00105 
+<a name="l00106"></a>00106 
+<a name="l00107"></a>00107     <span class="comment">// active set        </span>
+<a name="l00110"></a><a class="code" href="classqp__as.html#adb95e9cb39b791fad69e41b27497b951">00110</a> <span class="comment"></span>        <span class="keywordtype">int</span> *<a class="code" href="classqp__as.html#adb95e9cb39b791fad69e41b27497b951">W</a>;
+<a name="l00111"></a>00111 
+<a name="l00112"></a>00112 <span class="preprocessor">#ifdef QPAS_DOWNDATE</span>
 <a name="l00113"></a>00113 <span class="preprocessor"></span>
-<a name="l00114"></a>00114 <span class="preprocessor">#ifdef SMPCS_DEBUG</span>
-<a name="l00115"></a>00115 <span class="preprocessor"></span>        <span class="keywordtype">void</span> print_objective();
-<a name="l00116"></a>00116 <span class="preprocessor">#endif</span>
-<a name="l00117"></a>00117 <span class="preprocessor"></span>
-<a name="l00118"></a>00118 <span class="comment">// variables</span>
-<a name="l00120"></a><a class="code" href="classqp__as.html#a99df86781d02a46d077d0e2dc42c1729">00120</a> <span class="comment"></span>        <span class="keywordtype">int</span> <a class="code" href="classqp__as.html#a99df86781d02a46d077d0e2dc42c1729">N</a>;
-<a name="l00121"></a>00121 
-<a name="l00122"></a>00122 
-<a name="l00124"></a><a class="code" href="classqp__as.html#a25918a9df0e80d5289c36779f243cc12">00124</a>         <a class="code" href="classchol__solve.html" title="Solves KKT system using Cholesky decomposition.">chol_solve</a> <a class="code" href="classqp__as.html#a25918a9df0e80d5289c36779f243cc12" title="An instance of chol_solve class.">chol</a>;
-<a name="l00125"></a>00125 
-<a name="l00126"></a>00126 
-<a name="l00129"></a><a class="code" href="classqp__as.html#afde4ceb30a8f4760d806e462762fe4c2">00129</a>         <span class="keywordtype">double</span> <a class="code" href="classqp__as.html#afde4ceb30a8f4760d806e462762fe4c2" title="Gains used in objective function.">gain_alpha</a>;
-<a name="l00130"></a><a class="code" href="classqp__as.html#af8de01b4c112e024b9a9c838d6b6526f">00130</a>         <span class="keywordtype">double</span> <a class="code" href="classqp__as.html#af8de01b4c112e024b9a9c838d6b6526f">gain_beta</a>;
-<a name="l00131"></a><a class="code" href="classqp__as.html#a0cb953117d095d43b80b80750b8355f5">00131</a>         <span class="keywordtype">double</span> <a class="code" href="classqp__as.html#a0cb953117d095d43b80b80750b8355f5">gain_gamma</a>;
-<a name="l00133"></a>00133 
-<a name="l00135"></a><a class="code" href="classqp__as.html#af45d1d497ff63c59467f7c8c650b0158">00135</a>         <span class="keywordtype">double</span> <a class="code" href="classqp__as.html#af45d1d497ff63c59467f7c8c650b0158" title="tolerance">tol</a>;
-<a name="l00136"></a>00136 
-<a name="l00137"></a>00137     <span class="comment">// variables and descent direction</span>
-<a name="l00138"></a>00138      
-<a name="l00140"></a><a class="code" href="classqp__as.html#a40696d975ffb89c9f1e43f71f3207ac8">00140</a>         <span class="keywordtype">double</span> *<a class="code" href="classqp__as.html#a40696d975ffb89c9f1e43f71f3207ac8">dX</a>;
-<a name="l00141"></a>00141 
-<a name="l00143"></a><a class="code" href="classqp__as.html#a0484715f0ba7d0c35f6b9c8183d958d4">00143</a>         <span class="keywordtype">double</span> <a class="code" href="classqp__as.html#a0484715f0ba7d0c35f6b9c8183d958d4">alpha</a>;
-<a name="l00144"></a>00144 
-<a name="l00145"></a>00145     <span class="comment">// active set        </span>
-<a name="l00148"></a><a class="code" href="classqp__as.html#adb95e9cb39b791fad69e41b27497b951">00148</a> <span class="comment"></span>        <span class="keywordtype">int</span> *<a class="code" href="classqp__as.html#adb95e9cb39b791fad69e41b27497b951">W</a>;
-<a name="l00149"></a>00149 
-<a name="l00150"></a>00150 <span class="preprocessor">#ifdef QPAS_DOWNDATE</span>
-<a name="l00151"></a>00151 <span class="preprocessor"></span>
-<a name="l00156"></a><a class="code" href="classqp__as.html#ad7ff73b80e9955bf99e1ef0765d4a850">00156</a>         <span class="keywordtype">int</span> *<a class="code" href="classqp__as.html#ad7ff73b80e9955bf99e1ef0765d4a850">W_sign</a>;
-<a name="l00157"></a>00157 <span class="preprocessor">#endif</span>
-<a name="l00158"></a>00158 <span class="preprocessor"></span>
-<a name="l00161"></a><a class="code" href="classqp__as.html#a0b6f465d0de92c4aa47fcd4676795238">00161</a>         <span class="keywordtype">int</span> <a class="code" href="classqp__as.html#a0b6f465d0de92c4aa47fcd4676795238">nW</a>;
-<a name="l00162"></a>00162 
-<a name="l00164"></a><a class="code" href="classqp__as.html#a666c41482c7512440dd1a15bd2674c94">00164</a>         std::vector &lt;bound&gt; <a class="code" href="classqp__as.html#a666c41482c7512440dd1a15bd2674c94" title="Vector of bounds.">Bounds</a>;
-<a name="l00165"></a>00165 };
-<a name="l00166"></a>00166 
-<a name="l00168"></a>00168 <span class="preprocessor">#endif </span><span class="comment">/*QPAS_H*/</span>
+<a name="l00118"></a><a class="code" href="classqp__as.html#ad7ff73b80e9955bf99e1ef0765d4a850">00118</a>         <span class="keywordtype">int</span> *<a class="code" href="classqp__as.html#ad7ff73b80e9955bf99e1ef0765d4a850">W_sign</a>;
+<a name="l00119"></a>00119 <span class="preprocessor">#endif</span>
+<a name="l00120"></a>00120 <span class="preprocessor"></span>
+<a name="l00123"></a><a class="code" href="classqp__as.html#a0b6f465d0de92c4aa47fcd4676795238">00123</a>         <span class="keywordtype">int</span> <a class="code" href="classqp__as.html#a0b6f465d0de92c4aa47fcd4676795238">nW</a>;
+<a name="l00124"></a>00124 
+<a name="l00126"></a><a class="code" href="classqp__as.html#a666c41482c7512440dd1a15bd2674c94">00126</a>         std::vector &lt;bound&gt; <a class="code" href="classqp__as.html#a666c41482c7512440dd1a15bd2674c94" title="Vector of bounds.">Bounds</a>;
+<a name="l00127"></a>00127 };
+<a name="l00128"></a>00128 
+<a name="l00130"></a>00130 <span class="preprocessor">#endif </span><span class="comment">/*QPAS_H*/</span>
 </pre></div></div>
 </div>
 <hr class="footer"/><address class="footer"><small>Generated by&#160;

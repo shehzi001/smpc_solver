@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>A sparse MPC solver for walking motion generation.: Cholesky decomposition of projected Hessian</title>
+<title>A sparse MPC solver for walking motion generation.: Cholesky decomposition of Schur complement</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -33,13 +33,13 @@
 </div>
 <div class="header">
   <div class="headertitle">
-<h1>Cholesky decomposition of projected Hessian </h1>  </div>
+<h1>Cholesky decomposition of Schur complement </h1>  </div>
 </div>
 <div class="contents">
-<div class="textblock"><p>Once projected Hessian is formed we can use Cholesky decomposition <img class="formulaInl" alt="$\mbm{S} = \mbm{L}\mbm{L}^T$" src="form_50.png"/>. to obtain Langrange multipliers.</p>
+<div class="textblock"><p>Once Schur complement is formed we can use Cholesky decomposition <img class="formulaInl" alt="$\mbm{S} = \mbm{L}\mbm{L}^T$" src="form_50.png"/>. to obtain Langrange multipliers.</p>
 <p><img class="formulaInl" alt="$ \mbm{L} = \left[ \begin{array}{cccccc} \mbm{L}_{11} &amp; \mbm{0} &amp; \mbm{0} &amp; \dots &amp; \mbm{0} &amp; \mbm{0} \\ \mbm{L}_{21} &amp; \mbm{L}_{22} &amp; \mbm{0} &amp; \dots &amp; \mbm{0} &amp; \mbm{0} \\ \mbm{0} &amp; \mbm{L}_{32} &amp; \mbm{L}_{33} &amp; \dots &amp; \mbm{0} &amp; \mbm{0} \\ \vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots &amp; \vdots \\ \mbm{0} &amp; \mbm{0} &amp; \mbm{0} &amp; \dots &amp; \mbm{L}_{N-1,N-1} &amp; \mbm{0} \\ \mbm{0} &amp; \mbm{0} &amp; \mbm{0} &amp; \dots &amp; \mbm{L}_{N,N-1} &amp; \mbm{L}_{NN} \end{array} \right], $" src="form_51.png"/></p>
 <p>Directly from observation we have</p>
-<p><img class="formulaInl" alt="$ \mbm{S}_{11} = \mbm{L}_{11}\mbm{L}_{11}^T, \\ \mbm{S}_{12} = \mbm{S}_{21}^T = \mbm{L}_{11}\mbm{L}_{21}^T, \quad \mbm{L}_{21}^T = \mbm{L}_{11}^{-1}\mbm{S}_{12}, \\ \mbm{S}_{22} = \mbm{L}_{21}\mbm{L}_{21}^T + \mbm{L}_{22}\mbm{L}_{22}^T, \quad \dots $" src="form_52.png"/></p>
+<p><img class="formulaInl" alt="$ \\ \mbm{S}_{11} = \mbm{L}_{11}\mbm{L}_{11}^T, \\ \mbm{S}_{12} = \mbm{S}_{21}^T = \mbm{L}_{11}\mbm{L}_{21}^T, \quad \mbm{L}_{21}^T = \mbm{L}_{11}^{-1}\mbm{S}_{12}, \\ \mbm{S}_{22} = \mbm{L}_{21}\mbm{L}_{21}^T + \mbm{L}_{22}\mbm{L}_{22}^T, \quad \dots $" src="form_52.png"/></p>
 <p>In the second step <img class="formulaInl" alt="$\mbm{L}_{21}^T$" src="form_53.png"/> is computed by forward substitution, and in the third step, forming <img class="formulaInl" alt="$\mbm{L}_{22}$" src="form_54.png"/> requires the computation of the Cholesky factors of <img class="formulaInl" alt="$\mbm{S}_{22} - \mbm{L}_{21}\mbm{L}_{21}^T$" src="form_55.png"/>. <br/>
 <br/>
  </p>

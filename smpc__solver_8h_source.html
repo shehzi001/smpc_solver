@@ -45,62 +45,84 @@
 <a name="l00010"></a>00010 <span class="preprocessor">#ifndef SMPC_SOLVER_H</span>
 <a name="l00011"></a>00011 <span class="preprocessor"></span><span class="preprocessor">#define SMPC_SOLVER_H</span>
 <a name="l00012"></a>00012 <span class="preprocessor"></span>
-<a name="l00013"></a>00013 <span class="keyword">class </span><a class="code" href="classqp__as.html" title="Solve a quadratic program with a specific structure. qp_as = Quadratic Programming / Active Set...">qp_as</a>;
+<a name="l00013"></a>00013 <span class="keyword">class </span><a class="code" href="classqp__solver.html" title="Solve a quadratic program with a specific structure.">qp_solver</a>;
 <a name="l00014"></a>00014 
 <a name="l00015"></a>00015 
 <a name="l00018"></a>00018 
-<a name="l00021"></a><a class="code" href="classsmpc__solver.html">00021</a> <span class="keyword">class </span><a class="code" href="classsmpc__solver.html" title="API of the sparse MPC solver.">smpc_solver</a>
-<a name="l00022"></a>00022 {
-<a name="l00023"></a>00023     <span class="keyword">public</span>:
-<a name="l00024"></a>00024 
-<a name="l00025"></a>00025 
-<a name="l00026"></a>00026         <span class="comment">// -------------------------------</span>
+<a name="l00019"></a><a class="code" href="group__gAPI.html#ga4775bc060a554f018f85756eadd690d1">00019</a> <span class="keyword">enum</span> <a class="code" href="group__gAPI.html#ga4775bc060a554f018f85756eadd690d1">solver_type</a>
+<a name="l00020"></a>00020 {
+<a name="l00022"></a><a class="code" href="group__gAPI.html#gga4775bc060a554f018f85756eadd690d1a3c32659e7a477e4e4ac2e63375e1523b">00022</a>     <a class="code" href="group__gAPI.html#gga4775bc060a554f018f85756eadd690d1a3c32659e7a477e4e4ac2e63375e1523b" title="Active set method.">SMPC_AS</a>,
+<a name="l00024"></a><a class="code" href="group__gAPI.html#gga4775bc060a554f018f85756eadd690d1a0828b63db39a47400e9e691298161826">00024</a>     <a class="code" href="group__gAPI.html#gga4775bc060a554f018f85756eadd690d1a0828b63db39a47400e9e691298161826" title="Interior-point method.">SMPC_IP</a> 
+<a name="l00025"></a>00025 };
+<a name="l00026"></a>00026 
 <a name="l00027"></a>00027 
-<a name="l00028"></a>00028 
-<a name="l00038"></a>00038         <a class="code" href="classsmpc__solver.html#ab4c2f4a558ca4aa2393a7c81cf5a80f5" title="Constructor: initialization of the constant parameters.">smpc_solver</a>(
-<a name="l00039"></a>00039                 <span class="keyword">const</span> <span class="keywordtype">int</span> N, 
-<a name="l00040"></a>00040                 <span class="keyword">const</span> <span class="keywordtype">double</span> Alpha = 150.0, 
-<a name="l00041"></a>00041                 <span class="keyword">const</span> <span class="keywordtype">double</span> Beta = 2000.0, 
-<a name="l00042"></a>00042                 <span class="keyword">const</span> <span class="keywordtype">double</span> Gamma = 1.0,
-<a name="l00043"></a>00043                 <span class="keyword">const</span> <span class="keywordtype">double</span> regularization = 0.01,
-<a name="l00044"></a>00044                 <span class="keyword">const</span> <span class="keywordtype">double</span> tol = 1e-7);
-<a name="l00045"></a>00045 
-<a name="l00046"></a>00046         <a class="code" href="classsmpc__solver.html#a05e4dab88f8d24401f6f93def87b3b25">~smpc_solver</a>();
-<a name="l00047"></a>00047 
-<a name="l00048"></a>00048 
-<a name="l00049"></a>00049         <span class="comment">// -------------------------------</span>
-<a name="l00050"></a>00050 
-<a name="l00051"></a>00051 
-<a name="l00064"></a>00064         <span class="keywordtype">void</span> <a class="code" href="classsmpc__solver.html#acc92a2506c8af11024494d4c768840c5" title="Initializes quadratic problem.">init</a>(
-<a name="l00065"></a>00065                 <span class="keyword">const</span> <span class="keywordtype">double</span>* T,
-<a name="l00066"></a>00066                 <span class="keyword">const</span> <span class="keywordtype">double</span>* h,
-<a name="l00067"></a>00067                 <span class="keyword">const</span> <span class="keywordtype">double</span>* angle,
-<a name="l00068"></a>00068                 <span class="keyword">const</span> <span class="keywordtype">double</span>* zref_x,
-<a name="l00069"></a>00069                 <span class="keyword">const</span> <span class="keywordtype">double</span>* zref_y,
-<a name="l00070"></a>00070                 <span class="keyword">const</span> <span class="keywordtype">double</span>* lb,
-<a name="l00071"></a>00071                 <span class="keyword">const</span> <span class="keywordtype">double</span>* ub,
-<a name="l00072"></a>00072                 <span class="keyword">const</span> <span class="keywordtype">double</span>* X_tilde,
-<a name="l00073"></a>00073                 <span class="keywordtype">double</span>* X);
-<a name="l00074"></a>00074 
-<a name="l00075"></a>00075 
-<a name="l00081"></a>00081         <span class="keywordtype">int</span> <a class="code" href="classsmpc__solver.html#a180099519887349235c2a90a3839ef71" title="Solve QP problem.">solve</a> ();
-<a name="l00082"></a>00082    
+<a name="l00031"></a><a class="code" href="classsmpc__solver.html">00031</a> <span class="keyword">class </span><a class="code" href="classsmpc__solver.html" title="API of the sparse MPC solver.">smpc_solver</a>
+<a name="l00032"></a>00032 {
+<a name="l00033"></a>00033     <span class="keyword">public</span>:
+<a name="l00034"></a>00034 
+<a name="l00035"></a>00035 
+<a name="l00036"></a>00036         <span class="comment">// -------------------------------</span>
+<a name="l00037"></a>00037 
+<a name="l00038"></a>00038 
+<a name="l00049"></a>00049         <a class="code" href="classsmpc__solver.html#aaaefe82472f792a12d266b0c69f04681" title="Constructor: initialization of the constant parameters.">smpc_solver</a>(
+<a name="l00050"></a>00050                 <span class="keyword">const</span> <span class="keywordtype">int</span> N, 
+<a name="l00051"></a>00051                 <span class="keyword">const</span> <a class="code" href="group__gAPI.html#ga4775bc060a554f018f85756eadd690d1">solver_type</a> sol_type = <a class="code" href="group__gAPI.html#gga4775bc060a554f018f85756eadd690d1a3c32659e7a477e4e4ac2e63375e1523b" title="Active set method.">SMPC_AS</a>,
+<a name="l00052"></a>00052                 <span class="keyword">const</span> <span class="keywordtype">double</span> Alpha = 150.0, 
+<a name="l00053"></a>00053                 <span class="keyword">const</span> <span class="keywordtype">double</span> Beta = 2000.0, 
+<a name="l00054"></a>00054                 <span class="keyword">const</span> <span class="keywordtype">double</span> Gamma = 1.0,
+<a name="l00055"></a>00055                 <span class="keyword">const</span> <span class="keywordtype">double</span> regularization = 0.01,
+<a name="l00056"></a>00056                 <span class="keyword">const</span> <span class="keywordtype">double</span> tol = 1e-7);
+<a name="l00057"></a>00057 
+<a name="l00058"></a>00058         <a class="code" href="classsmpc__solver.html#a05e4dab88f8d24401f6f93def87b3b25">~smpc_solver</a>();
+<a name="l00059"></a>00059 
+<a name="l00060"></a>00060 
+<a name="l00061"></a>00061         <span class="comment">// -------------------------------</span>
+<a name="l00062"></a>00062 
+<a name="l00063"></a>00063 
+<a name="l00074"></a>00074         <span class="keywordtype">void</span> <a class="code" href="classsmpc__solver.html#a13e1f3370abb59ed7c266542903daf1a" title="Initializes quadratic problem.">set_parameters</a> (
+<a name="l00075"></a>00075                 <span class="keyword">const</span> <span class="keywordtype">double</span>* T,
+<a name="l00076"></a>00076                 <span class="keyword">const</span> <span class="keywordtype">double</span>* h,
+<a name="l00077"></a>00077                 <span class="keyword">const</span> <span class="keywordtype">double</span>* angle,
+<a name="l00078"></a>00078                 <span class="keyword">const</span> <span class="keywordtype">double</span>* zref_x,
+<a name="l00079"></a>00079                 <span class="keyword">const</span> <span class="keywordtype">double</span>* zref_y,
+<a name="l00080"></a>00080                 <span class="keyword">const</span> <span class="keywordtype">double</span>* lb,
+<a name="l00081"></a>00081                 <span class="keyword">const</span> <span class="keywordtype">double</span>* ub);
+<a name="l00082"></a>00082 
 <a name="l00083"></a>00083 
-<a name="l00084"></a>00084         <span class="comment">// -------------------------------</span>
-<a name="l00085"></a>00085 
-<a name="l00100"></a>00100         <span class="keywordtype">void</span> <a class="code" href="classsmpc__solver.html#a80a01e0024c61b37a7f3f18136808a1f" title="Returns the next state as X_tilde.">get_next_state_tilde</a> (<span class="keywordtype">double</span> *state);
-<a name="l00101"></a>00101 
-<a name="l00102"></a>00102 
-<a name="l00117"></a>00117         <span class="keywordtype">void</span> <a class="code" href="classsmpc__solver.html#a6b2b9892becce07b98aaab20f492e84b" title="Returns the next state represented by original variables.">get_next_state</a> (<span class="keywordtype">double</span> *state);
-<a name="l00118"></a>00118 
-<a name="l00119"></a>00119         <span class="comment">// -------------------------------</span>
-<a name="l00120"></a>00120 
-<a name="l00121"></a>00121 
-<a name="l00122"></a>00122     <span class="keyword">private</span>:
-<a name="l00123"></a><a class="code" href="classsmpc__solver.html#a3728888f2f460b2877dc281e13c5434b">00123</a>         <a class="code" href="classqp__as.html" title="Solve a quadratic program with a specific structure. qp_as = Quadratic Programming / Active Set...">qp_as</a> *<a class="code" href="classsmpc__solver.html#a3728888f2f460b2877dc281e13c5434b">qpas_solver</a>;
-<a name="l00124"></a>00124 };
-<a name="l00126"></a>00126 
-<a name="l00127"></a>00127 <span class="preprocessor">#endif </span><span class="comment">/*SMPC_SOLVER_H*/</span>
+<a name="l00094"></a>00094         <span class="keywordtype">void</span> <a class="code" href="classsmpc__solver.html#a6d6927ce35ace029762eee1853fafd05" title="Generates an initial feasible point.">form_init_fp</a> (
+<a name="l00095"></a>00095                 <span class="keyword">const</span> <span class="keywordtype">double</span> *x_coord,
+<a name="l00096"></a>00096                 <span class="keyword">const</span> <span class="keywordtype">double</span> *y_coord,
+<a name="l00097"></a>00097                 <span class="keyword">const</span> <span class="keywordtype">double</span> *X_tilde,
+<a name="l00098"></a>00098                 <span class="keywordtype">double</span>* X);
+<a name="l00099"></a>00099 
+<a name="l00100"></a>00100 
+<a name="l00117"></a>00117         <span class="keywordtype">void</span> <a class="code" href="classsmpc__solver.html#a778520fc4edc0c8278cecda3a0c202f0" title="Sets parameters of interior-point method.">set_ip_parameters</a> (
+<a name="l00118"></a>00118                 <span class="keyword">const</span> <span class="keywordtype">double</span> t,
+<a name="l00119"></a>00119                 <span class="keyword">const</span> <span class="keywordtype">double</span> mu,
+<a name="l00120"></a>00120                 <span class="keyword">const</span> <span class="keywordtype">double</span> bs_alpha,
+<a name="l00121"></a>00121                 <span class="keyword">const</span> <span class="keywordtype">double</span> bs_beta,
+<a name="l00122"></a>00122                 <span class="keyword">const</span> <span class="keywordtype">int</span> max_iter,
+<a name="l00123"></a>00123                 <span class="keyword">const</span> <span class="keywordtype">double</span> tol_out);
+<a name="l00124"></a>00124 
+<a name="l00125"></a>00125 
+<a name="l00132"></a>00132         <span class="keywordtype">int</span> <a class="code" href="classsmpc__solver.html#a180099519887349235c2a90a3839ef71" title="Solve QP problem.">solve</a> ();
+<a name="l00133"></a>00133    
+<a name="l00134"></a>00134 
+<a name="l00135"></a>00135         <span class="comment">// -------------------------------</span>
+<a name="l00136"></a>00136 
+<a name="l00151"></a>00151         <span class="keywordtype">void</span> <a class="code" href="classsmpc__solver.html#a80a01e0024c61b37a7f3f18136808a1f" title="Returns the next state as X_tilde.">get_next_state_tilde</a> (<span class="keywordtype">double</span> *state);
+<a name="l00152"></a>00152 
+<a name="l00153"></a>00153 
+<a name="l00168"></a>00168         <span class="keywordtype">void</span> <a class="code" href="classsmpc__solver.html#a6b2b9892becce07b98aaab20f492e84b" title="Returns the next state represented by original variables.">get_next_state</a> (<span class="keywordtype">double</span> *state);
+<a name="l00169"></a>00169 
+<a name="l00170"></a>00170         <span class="comment">// -------------------------------</span>
+<a name="l00171"></a>00171 
+<a name="l00172"></a>00172 
+<a name="l00173"></a>00173     <span class="keyword">private</span>:
+<a name="l00174"></a><a class="code" href="classsmpc__solver.html#a7e8f293f8ca9d2b39fcb8dff8e86e5a8">00174</a>         <a class="code" href="classqp__solver.html" title="Solve a quadratic program with a specific structure.">qp_solver</a> *<a class="code" href="classsmpc__solver.html#a7e8f293f8ca9d2b39fcb8dff8e86e5a8">qp_sol</a>;
+<a name="l00175"></a>00175 };
+<a name="l00177"></a>00177 
+<a name="l00178"></a>00178 <span class="preprocessor">#endif </span><span class="comment">/*SMPC_SOLVER_H*/</span>
 </pre></div></div>
 </div>
 <hr class="footer"/><address class="footer"><small>Generated by&#160;

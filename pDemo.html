@@ -109,7 +109,7 @@ Setup solver:</h2>
             wmg.<a class="code" href="classWMG.html#abb248bd581bb239890067b5a73b4c4bd" title="Number of iterations in a preview window.">N</a>); <span class="comment">// size of the preview window</span>
                     <span class="comment">// other parameters are optional</span>
     <span class="comment">//-----------------------------------------------------------</span>
-</pre></div> The gains are defined <a class="el" href="pProblemDef.html#pGains">here</a>. The default values of optional parameters can be found here: <a class="el" href="classsmpc__solver.html#ab4c2f4a558ca4aa2393a7c81cf5a80f5" title="Constructor: initialization of the constant parameters.">smpc_solver::smpc_solver</a>.</p>
+</pre></div> The gains are defined <a class="el" href="pProblemDef.html#pGains">here</a>. The default values of optional parameters can be found here: <a class="el" href="classsmpc__solver.html#aaaefe82472f792a12d266b0c69f04681" title="Constructor: initialization of the constant parameters.">smpc_solver::smpc_solver</a>.</p>
 <h2><a class="anchor" id="pDemo4"></a>
 Start simulation:</h2>
 <p><div class="fragment"><pre class="fragment">
@@ -130,7 +130,7 @@ Initialize QP</h3>
 <p><div class="fragment"><pre class="fragment">
 
         <span class="comment">// initialize quadratic problem</span>
-        solver.init(
+        solver.set_parameters(
                 <span class="comment">// sampling time for each time step [sec.]</span>
                 wmg.<a class="code" href="classWMG.html#a951aff39ccdf6b194bcdc8ee7b83755f" title="Preview sampling time.">T</a>,
                 <span class="comment">// height of the center of mass divided by gravity for each time step</span>
@@ -144,14 +144,20 @@ Initialize QP</h3>
                 <span class="comment">// array of lower bounds for coordinates of ZMP</span>
                 wmg.<a class="code" href="classWMG.html#a0ae585fc064a79f71612a3602a209a7a">lb</a>, 
                 <span class="comment">// array of upper bounds for coordinates of ZMP</span>
-                wmg.<a class="code" href="classWMG.html#a5aff192ac43f6e2abc81d59c67c97b80">ub</a>, 
+                wmg.<a class="code" href="classWMG.html#a5aff192ac43f6e2abc81d59c67c97b80">ub</a>);
+
+        solver.form_init_fp (
+                <span class="comment">// coordinates of points, that can be used to generate</span>
+                <span class="comment">// an initial feasible point</span>
+                wmg.<a class="code" href="classWMG.html#a19055d653eec01f23713f8576b17f5d6">zref_x</a>, 
+                wmg.<a class="code" href="classWMG.html#a9261037da75150ded329be163ffae710">zref_y</a>, 
                 <span class="comment">// current state</span>
                 wmg.<a class="code" href="classWMG.html#a831e486340b6774dfe0b1b2d7f52d286" title="Initial state.">X_tilde</a>, 
                 <span class="comment">// solution of the optimization problem</span>
                 wmg.<a class="code" href="classWMG.html#a801c492c750f587cb1cf873aaec5a96f" title="A chunk of memory allocated for solution.">X</a>);
 
         <span class="comment">//------------------------------------------------------</span>
-</pre></div> See also <a class="el" href="classsmpc__solver.html#acc92a2506c8af11024494d4c768840c5" title="Initializes quadratic problem.">smpc_solver::init</a>. Note, that the current state must be given after <a class="el" href="pProblemDef.html#pX_tilde">first variable substitution</a>.</p>
+</pre></div> See also smpc_solver::init. Note, that the current state must be given after <a class="el" href="pProblemDef.html#pX_tilde">first variable substitution</a>.</p>
 <h3><a class="anchor" id="pDemo52"></a>
 Solve QP</h3>
 <p><div class="fragment"><pre class="fragment">

@@ -43,7 +43,7 @@
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a>  </div>
   <div class="headertitle">
-<h1>bound Class Reference<div class="ingroups"><a class="el" href="group__gINTERNALS.html">Internal classes, functions and definitions of the solver library</a></div></h1>  </div>
+<h1>bound Class Reference<div class="ingroups"><a class="el" href="group__gAS.html">Active set method</a></div></h1>  </div>
 </div>
 <div class="contents">
 <!-- doxytag: class="bound" -->
@@ -56,21 +56,21 @@
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbound.html#a1d4cdcf4141740edc0dd3ce54c6a835e">set</a> (const int, const double, const double, const int)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Set parameters of the bound.  <a href="#a1d4cdcf4141740edc0dd3ce54c6a835e"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbound.html#ae137a7090dca5e9b9f90f7f00565128d">set</a> (const int, const double, const double, const bool)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Set parameters of the bound.  <a href="#ae137a7090dca5e9b9f90f7f00565128d"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbound.html#aacb615b31fdb1fa5c5b4b8499ab022ee">var_num</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbound.html#abebf4201fee42aa574dfd9e49486c48f">lb</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbound.html#aeac3321fd3fc71e1352ad78c7bebdfee">ub</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbound.html#a33283f389b4005e07624b2c89175efe9">isActive</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbound.html#ac42cf7a5c946c468cdf7d4c8050c4582">isActive</a></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Defines simple bounds associated with variables. </p>
 
-<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00032">32</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00033">33</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
 </div><hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="a1d4cdcf4141740edc0dd3ce54c6a835e"></a><!-- doxytag: member="bound::set" ref="a1d4cdcf4141740edc0dd3ce54c6a835e" args="(const int, const double, const double, const int)" -->
+<a class="anchor" id="ae137a7090dca5e9b9f90f7f00565128d"></a><!-- doxytag: member="bound::set" ref="ae137a7090dca5e9b9f90f7f00565128d" args="(const int, const double, const double, const bool)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -95,7 +95,7 @@ Public Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const int&#160;</td>
+          <td class="paramtype">const bool&#160;</td>
           <td class="paramname"><em>active</em>&#160;</td>
         </tr>
         <tr>
@@ -118,24 +118,24 @@ Public Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00031">31</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00028">28</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
 
 </div>
 </div>
 <hr/><h2>Member Data Documentation</h2>
-<a class="anchor" id="a33283f389b4005e07624b2c89175efe9"></a><!-- doxytag: member="bound::isActive" ref="a33283f389b4005e07624b2c89175efe9" args="" -->
+<a class="anchor" id="ac42cf7a5c946c468cdf7d4c8050c4582"></a><!-- doxytag: member="bound::isActive" ref="ac42cf7a5c946c468cdf7d4c8050c4582" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int <a class="el" href="classbound.html#a33283f389b4005e07624b2c89175efe9">bound::isActive</a></td>
+          <td class="memname">bool <a class="el" href="classbound.html#ac42cf7a5c946c468cdf7d4c8050c4582">bound::isActive</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
-<p>If isActive = 1 then one of the bounds is in the working set (if isActive = 0 it is not). </p>
+<p>If isActive then one of the bounds is in the working set. </p>
 
-<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00051">51</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00052">52</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
 
 </div>
 </div>
@@ -151,7 +151,7 @@ Public Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Lower bound. </p>
 
-<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00042">42</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00043">43</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
 
 </div>
 </div>
@@ -167,7 +167,7 @@ Public Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Upper bound. </p>
 
-<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00045">45</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00046">46</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
 
 </div>
 </div>
@@ -183,7 +183,7 @@ Public Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Variable number (on which to impose the bounds). </p>
 
-<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00039">39</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00040">40</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
 
 </div>
 </div>

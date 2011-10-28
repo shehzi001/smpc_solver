@@ -35,6 +35,7 @@
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
+<a href="#groups">Modules</a> &#124;
 <a href="#define-members">Defines</a>  </div>
   <div class="headertitle">
 <h1>Internal classes, functions and definitions of the solver library</h1>  </div>
@@ -43,16 +44,10 @@
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classchol__solve.html">chol_solve</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves <a class="el" href="pKKT.html">KKT system</a> using <a class="el" href="pCholesky.html">Cholesky decomposition</a>.  <a href="classchol__solve.html#_details">More...</a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classL__initializer.html">L_initializer</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes lower diagonal matrix <a class="el" href="pCholesky.html">L</a>.  <a href="classL__initializer.html#_details">More...</a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbound.html">bound</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines simple bounds associated with variables.  <a href="classbound.html#_details">More...</a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html">qp_as</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Solve a quadratic program with a specific structure. <a class="el" href="classqp__as.html" title="Solve a quadratic program with a specific structure. qp_as = Quadratic Programming / Active Set...">qp_as</a> = Quadratic Programming / Active Set.  <a href="classqp__as.html#_details">More...</a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchol__solve__param.html">chol_solve_param</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">A set of parameters used by <a class="el" href="classchol__solve.html" title="Solves KKT system using Cholesky decomposition.">chol_solve</a> class.  <a href="structchol__solve__param.html#_details">More...</a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmatrix__E.html">matrix_E</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements multiplication of matrix E and E' by a vector.  <a href="classmatrix__E.html#_details">More...</a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__solver.html">qp_solver</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Solve a quadratic program with a specific structure.  <a href="classqp__solver.html#_details">More...</a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__handling.html">state_handling</a></td></tr>
@@ -60,6 +55,10 @@ Namespaces</h2></td></tr>
 <p><tr><td class="mdescLeft">&#160;</td><td class="mdescRight"><p>Various operations on the vector of states. </p>
 <br/></td></tr>
 </p>
+<tr><td colspan="2"><h2><a name="groups"></a>
+Modules</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__gAS.html">Active set method</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__gIP.html">Interior-point method</a></td></tr>
 <tr><td colspan="2"><h2><a name="define-members"></a>
 Defines</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__gINTERNALS.html#ga37814f52692ffc71ef43e6b06e891440">NUM_STATE_VAR</a>&#160;&#160;&#160;6</td></tr>
@@ -68,50 +67,12 @@ Defines</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of control variables.  <a href="#gab0a71c4132da016934940303a45594a8"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__gINTERNALS.html#gae8780c341d0ab405a8d820726f7e3b5c">NUM_VAR</a>&#160;&#160;&#160;8</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Total number of variables.  <a href="#gae8780c341d0ab405a8d820726f7e3b5c"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__gINTERNALS.html#ga3c414d4a5dac1481cc163546b4aa4851">MATRIX_DIM_SIZE</a>&#160;&#160;&#160;3</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The size of one dimension of 3x3 matrix.  <a href="#ga3c414d4a5dac1481cc163546b4aa4851"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__gINTERNALS.html#ga2bd32349fcbeb6ee86434a65226cba1a">MATRIX_SIZE</a>&#160;&#160;&#160;9</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of elements in 3x3 matrix.  <a href="#ga2bd32349fcbeb6ee86434a65226cba1a"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__gINTERNALS.html#ga45a4401e7b4814428e554135b7e872b6">QPAS_VARIABLE_T_h</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Allow variable <a class="el" href="structchol__solve__param.html#aabc974063472b1d3317a34a782cff95a">chol_solve_param::T</a> and <a class="el" href="structchol__solve__param.html#a136357a85d0d65710f9a82cb38df5cfe">chol_solve_param::h</a>.  <a href="#ga45a4401e7b4814428e554135b7e872b6"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__gINTERNALS.html#gab43ce21b9a9ab92538b62f7e8419556b">SMPC_VARIABLE_T_h</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Allow variable problem_parameters::T and problem_parameters::h.  <a href="#gab43ce21b9a9ab92538b62f7e8419556b"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__gINTERNALS.html#ga26acbba1c13f0a9a5cd82b15c29d75fb">QPAS_DOWNDATE</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Allow removal of constraints from active set.  <a href="#ga26acbba1c13f0a9a5cd82b15c29d75fb"></a><br/></td></tr>
 </table>
 <hr/><h2>Define Documentation</h2>
-<a class="anchor" id="ga3c414d4a5dac1481cc163546b4aa4851"></a><!-- doxytag: member="smpc_common.h::MATRIX_DIM_SIZE" ref="ga3c414d4a5dac1481cc163546b4aa4851" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MATRIX_DIM_SIZE&#160;&#160;&#160;3</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>The size of one dimension of 3x3 matrix. </p>
-
-<p>Definition at line <a class="el" href="smpc__common_8h_source.html#l00026">26</a> of file <a class="el" href="smpc__common_8h_source.html">smpc_common.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ga2bd32349fcbeb6ee86434a65226cba1a"></a><!-- doxytag: member="smpc_common.h::MATRIX_SIZE" ref="ga2bd32349fcbeb6ee86434a65226cba1a" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MATRIX_SIZE&#160;&#160;&#160;9</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>The number of elements in 3x3 matrix. </p>
-
-<p>Definition at line <a class="el" href="smpc__common_8h_source.html#l00028">28</a> of file <a class="el" href="smpc__common_8h_source.html">smpc_common.h</a>.</p>
-
-</div>
-</div>
 <a class="anchor" id="gab0a71c4132da016934940303a45594a8"></a><!-- doxytag: member="common_const.h::NUM_CONTROL_VAR" ref="gab0a71c4132da016934940303a45594a8" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -176,24 +137,24 @@ Defines</h2></td></tr>
 
 <p>Allow removal of constraints from active set. </p>
 
-<p>Definition at line <a class="el" href="smpc__common_8h_source.html#l00033">33</a> of file <a class="el" href="smpc__common_8h_source.html">smpc_common.h</a>.</p>
+<p>Definition at line <a class="el" href="smpc__common_8h_source.html#l00028">28</a> of file <a class="el" href="smpc__common_8h_source.html">smpc_common.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ga45a4401e7b4814428e554135b7e872b6"></a><!-- doxytag: member="smpc_common.h::QPAS_VARIABLE_T_h" ref="ga45a4401e7b4814428e554135b7e872b6" args="" -->
+<a class="anchor" id="gab43ce21b9a9ab92538b62f7e8419556b"></a><!-- doxytag: member="smpc_common.h::SMPC_VARIABLE_T_h" ref="gab43ce21b9a9ab92538b62f7e8419556b" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define QPAS_VARIABLE_T_h</td>
+          <td class="memname">#define SMPC_VARIABLE_T_h</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Allow variable <a class="el" href="structchol__solve__param.html#aabc974063472b1d3317a34a782cff95a">chol_solve_param::T</a> and <a class="el" href="structchol__solve__param.html#a136357a85d0d65710f9a82cb38df5cfe">chol_solve_param::h</a>. </p>
+<p>Allow variable problem_parameters::T and problem_parameters::h. </p>
 
-<p>Definition at line <a class="el" href="smpc__common_8h_source.html#l00031">31</a> of file <a class="el" href="smpc__common_8h_source.html">smpc_common.h</a>.</p>
+<p>Definition at line <a class="el" href="smpc__common_8h_source.html#l00026">26</a> of file <a class="el" href="smpc__common_8h_source.html">smpc_common.h</a>.</p>
 
 </div>
 </div>

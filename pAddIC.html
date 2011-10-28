@@ -42,13 +42,13 @@ Update of Cholesky factor</h2>
 <p>Let <img class="formulaInl" alt="$\mbm{a}_i^T$" src="form_56.png"/> be the normal to the i-th inequality constraint (assumed to be a simple bound). Define the matrix</p>
 <p><img class="formulaInl" alt="$ \mbm{C} = \left[\begin{array}{c} \mbm{E} \\ \mbm{A}_{W}\end{array}\right] $" src="form_57.png"/></p>
 <p>where the rows of <img class="formulaInl" alt="$\mbm{A}_W$" src="form_58.png"/> contain the normals to the inequality constraints in the working set.</p>
-<p>If a new constraint must be added to the active set, then the projected Hessian matrix must be updated:</p>
+<p>If a new constraint must be added to the active set, then the Schur complement must be updated:</p>
 <p><img class="formulaInl" alt="$ \frac{1}{2} \left[ \begin{array}{c} \mbm{C}\\ \mbm{a}^T\\ \end{array} \right] \mbm{H}^{-1} \left[\mbm{C}^T \quad \mbm{a}\right] = \frac{1}{2} \left[ \begin{array}{cc} \mbm{C} \mbm{H}^{-1} \mbm{C}^T &amp; \mbm{C} \mbm{H}^{-1} \mbm{a}\\ \mbm{a}^T \mbm{H}^{-1} \mbm{C}^T &amp; \mbm{a}^T \mbm{H}^{-1} \mbm{a}\\ \end{array} \right] $" src="form_59.png"/></p>
 <p>In general the last line is</p>
 <p><img class="formulaInl" alt="$ \mbm{s_a}^T = \frac{1}{2} \left[ \mbm{a}^T \mbm{H}^{-1} \mbm{C}^T \quad \mbm{a}^T \mbm{H}^{-1} \mbm{A}_W^T \quad \mbm{a}^T \mbm{H}^{-1} \mbm{a} \right] $" src="form_60.png"/></p>
 <p>Note that <img class="formulaInl" alt="$ \frac{1}{2} \mbm{a}^T \mbm{H}^{-1} \mbm{A}_W^T $" src="form_61.png"/> is a vector of zeros. While <img class="formulaInl" alt="$ \frac{1}{2} \mbm{a}^T \mbm{H}^{-1} \mbm{a} = \frac{1}{2\beta} $" src="form_62.png"/> is a number.</p>
 <p><img class="formulaInl" alt="$ \frac{1}{2} \mbm{a}^T \mbm{H}^{-1} \mbm{C}^T $" src="form_63.png"/> selects and scales one column of E, this column corresponds to ZMP coordinates and can have at most 4 non-zero elements.</p>
-<p>The total number of non-zero elements in the new row of projected Hessian is 5 or 3 (for the last state in the preview window). <br/>
+<p>The total number of non-zero elements in the new row of Schur complement is 5 or 3 (for the last state in the preview window). <br/>
 <br/>
 </p>
 <h3><a class="anchor" id="pCholUpAlg"></a>
@@ -58,7 +58,7 @@ Input:
     m_e % the number of equality constraints
     m_a % the current cardinality of the active set
     L   % Cholesky factor
-    s_a % a row added to the projected Hessian
+    s_a % a row added to the Schur complement
 
 Output:
     l   % a new (the last) row of L
@@ -103,7 +103,7 @@ Update of z</h2>
 <p>Now consider the forward substitution</p>
 <p><img class="formulaInl" alt="$ \underbrace{\left[\begin{array}{cc} \mbm{L} &amp; \mbm{0} \\ \mbm{l}^T &amp; \ell \end{array}\right]}_{\mbm{L}^{+}} \underbrace{\left[\begin{array}{c} \mbm{z} \\ z_n \end{array}\right]}_{\mbm{z}^{+}} = \underbrace{\left[\begin{array}{c} \mbm{s} \\ s_n \end{array}\right]}_{\mbm{s}^{+}}, $" src="form_74.png"/></p>
 <p>where <img class="formulaInl" alt="$\left[\begin{array}{cc} \mbm{l}^T \ell \end{array}\right]$" src="form_75.png"/> is an appended row. These are two equations</p>
-<p><img class="formulaInl" alt="$ \mbm{L}\mbm{z} = \mbm{s} \\ \mbm{l}^T\mbm{z} + bz_n = s_n $" src="form_76.png"/></p>
+<p><img class="formulaInl" alt="$\\ \mbm{L}\mbm{z} = \mbm{s} \\ \mbm{l}^T\mbm{z} + bz_n = s_n $" src="form_76.png"/></p>
 <p>From the second one we can compute (note that <img class="formulaInl" alt="$\ell\neq0$" src="form_77.png"/>)</p>
 <p><img class="formulaInl" alt="$ z_n = \frac{s_n - \mbm{l}^T\mbm{z}}{\ell}. $" src="form_78.png"/></p>
 <p>Hence, forming <img class="formulaInl" alt="$\mbm{z}^{+}$" src="form_79.png"/> amounts to performing one dot product. </p>

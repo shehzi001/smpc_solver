@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>A sparse MPC solver for walking motion generation.: Minor implemetation details</title>
+<title>A sparse MPC solver for walking motion generation.: Notes on implementation</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -33,13 +33,10 @@
 </div>
 <div class="header">
   <div class="headertitle">
-<h1>Minor implemetation details </h1>  </div>
+<h1>Notes on implementation </h1>  </div>
 </div>
 <div class="contents">
-<div class="textblock"><h2><a class="anchor" id="pDetNotes"></a>
-Notes</h2>
-<p>It is implicitly supposed that we have 6 state variables and 2 control variables.</p>
-<h2><a class="anchor" id="pDetMatrices"></a>
+<div class="textblock"><h2><a class="anchor" id="pDetMatrices"></a>
 Representation of matrices</h2>
 <p>Note, that parts of state and control matrices (<a class="el" href="pProblemDef.html#pPDModel">Model of the system</a>) corresponding to x and y coordinates are identical. This property is preserved in all subsequent transformations, hence there is no need to compute and store all elements of static matrices (Cholesky factor for example). Consequently, we mainly operate on 3x3 matrices, which are stored in the following way: </p>
 <div class="fragment"><pre class="fragment">
@@ -83,11 +80,11 @@ Implementing bounds</h2>
 <p>Consider the variable</p>
 <p><img class="formulaInl" alt="$ \mbm{x} = \left[\begin{array}{c} x_1 \\ x_2 \\ x_3 \\ x_4 \\ x_5 \\ x_6 \end{array}\right]. $" src="form_90.png"/></p>
 <p>Suppose that variables <img class="formulaInl" alt="$x_1$" src="form_91.png"/> and <img class="formulaInl" alt="$x_4$" src="form_92.png"/> have simple bounds (and the rest of the variables are are not subject to inequality constraints), i.e.,</p>
-<p><img class="formulaInl" alt="$ lb_1 \leq x_1 \leq ub_1 \\ lb_2 \leq x_2 \leq ub_2 $" src="form_93.png"/></p>
+<p><img class="formulaInl" alt="$\\ lb_1 \leq x_1 \leq ub_1 \\ lb_2 \leq x_2 \leq ub_2 $" src="form_93.png"/></p>
 <p>The above four inequality constraints can be written as</p>
-<p><img class="formulaInl" alt="$ \mbm{a}_1^T\mbm{x} \leq ub_1 \\ \mbm{a}_1^T\mbm{x} \geq lb_1 \\ \mbm{a}_2^T\mbm{x} \leq ub_2 \\ \mbm{a}_2^T\mbm{x} \geq lb_1, $" src="form_94.png"/></p>
+<p><img class="formulaInl" alt="$\\ \mbm{a}_1^T\mbm{x} \leq ub_1 \\ \mbm{a}_1^T\mbm{x} \geq lb_1 \\ \mbm{a}_2^T\mbm{x} \leq ub_2 \\ \mbm{a}_2^T\mbm{x} \geq lb_1, $" src="form_94.png"/></p>
 <p>where</p>
-<p><img class="formulaInl" alt="$ \mbm{a}_1^T = \left[\begin{array}{cccccc} 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \end{array}\right] \\ \mbm{a}_2^T = \left[\begin{array}{cccccc} 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \end{array}\right]. $" src="form_95.png"/></p>
+<p><img class="formulaInl" alt="$\\ \mbm{a}_1^T = \left[\begin{array}{cccccc} 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \end{array}\right] \\ \mbm{a}_2^T = \left[\begin{array}{cccccc} 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \end{array}\right]. $" src="form_95.png"/></p>
 <p>Note that both <img class="formulaInl" alt="$\mbm{a}_1^T\mbm{x} \leq ub_1$" src="form_96.png"/> and <img class="formulaInl" alt="$\mbm{a}_1^T\mbm{x} \geq lb_1$" src="form_97.png"/> can not be in the working set at the same time (because if we are on one of the bounds we can not be on the other one).</p>
 <dl class="attention"><dt><b>Attention:</b></dt><dd>Note, that if we do not distinguish lower and upper bounds, Lagrange multipliers can be negative. </dd></dl>
 </div></div>

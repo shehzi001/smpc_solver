@@ -56,10 +56,10 @@ Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts state from <a class="el" href="pProblemDef.html#pX_tilde">X_tilde</a> to <a class="el" href="pProblemDef.html#pX_bar">X_bar</a>.  <a href="#a69960d3947b12aa4f525b82508c91868"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__handling.html#a44e8698f1054f74680b6668038142d0a">tilde_to_orig</a> (const double h, double *state)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts state from <a class="el" href="pProblemDef.html#pX_tilde">X_tilde</a> to original variables.  <a href="#a44e8698f1054f74680b6668038142d0a"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__handling.html#a995670cb04241d60481d3f8a0e6ec061">get_next_state_tilde</a> (const <a class="el" href="structchol__solve__param.html">chol_solve_param</a> &amp;csp, const double *X, double *state)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the next state as <a class="el" href="pProblemDef.html#pX_tilde">X_tilde</a>.  <a href="#a995670cb04241d60481d3f8a0e6ec061"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__handling.html#a6461e663f646fcf0d6a27dbd7472d4f4">get_next_state</a> (const <a class="el" href="structchol__solve__param.html">chol_solve_param</a> &amp;csp, const double *X, double *state)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the next state represented by original variables.  <a href="#a6461e663f646fcf0d6a27dbd7472d4f4"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__handling.html#a2299e0c13ecb98d00bea34bb17d78e2f">get_next_state_tilde</a> (const <a class="el" href="classproblem__parameters.html">problem_parameters</a> *sp, const double *X, double *state)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the next state as <a class="el" href="pProblemDef.html#pX_tilde">X_tilde</a>.  <a href="#a2299e0c13ecb98d00bea34bb17d78e2f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__handling.html#a601dbcc09f8d69f1b9b5f9f8fdc7e264">get_next_state</a> (const <a class="el" href="classproblem__parameters.html">problem_parameters</a> *sp, const double *X, double *state)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the next state represented by original variables.  <a href="#a601dbcc09f8d69f1b9b5f9f8fdc7e264"></a><br/></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Various operations on the vector of states. </p>
@@ -109,15 +109,15 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a6461e663f646fcf0d6a27dbd7472d4f4"></a><!-- doxytag: member="state_handling::get_next_state" ref="a6461e663f646fcf0d6a27dbd7472d4f4" args="(const chol_solve_param &amp;csp, const double *X, double *state)" -->
+<a class="anchor" id="a601dbcc09f8d69f1b9b5f9f8fdc7e264"></a><!-- doxytag: member="state_handling::get_next_state" ref="a601dbcc09f8d69f1b9b5f9f8fdc7e264" args="(const problem_parameters *sp, const double *X, double *state)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void state_handling::get_next_state </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structchol__solve__param.html">chol_solve_param</a> &amp;&#160;</td>
-          <td class="paramname"><em>csp</em>, </td>
+          <td class="paramtype">const <a class="el" href="classproblem__parameters.html">problem_parameters</a> *&#160;</td>
+          <td class="paramname"><em>sp</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -143,7 +143,7 @@ Functions</h2></td></tr>
 <p>Returns the next state represented by original variables. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">csp</td><td>parameters. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">sp</td><td>parameters. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">X</td><td>a solution. </td></tr>
     <tr><td class="paramdir">[in,out]</td><td class="paramname">state</td><td>the state (<a class="el" href="group__gINTERNALS.html#ga37814f52692ffc71ef43e6b06e891440" title="Number of state variables.">NUM_STATE_VAR</a> elements). </td></tr>
   </table>
@@ -154,15 +154,15 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a995670cb04241d60481d3f8a0e6ec061"></a><!-- doxytag: member="state_handling::get_next_state_tilde" ref="a995670cb04241d60481d3f8a0e6ec061" args="(const chol_solve_param &amp;csp, const double *X, double *state)" -->
+<a class="anchor" id="a2299e0c13ecb98d00bea34bb17d78e2f"></a><!-- doxytag: member="state_handling::get_next_state_tilde" ref="a2299e0c13ecb98d00bea34bb17d78e2f" args="(const problem_parameters *sp, const double *X, double *state)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void state_handling::get_next_state_tilde </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structchol__solve__param.html">chol_solve_param</a> &amp;&#160;</td>
-          <td class="paramname"><em>csp</em>, </td>
+          <td class="paramtype">const <a class="el" href="classproblem__parameters.html">problem_parameters</a> *&#160;</td>
+          <td class="paramname"><em>sp</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -188,7 +188,7 @@ Functions</h2></td></tr>
 <p>Returns the next state as <a class="el" href="pProblemDef.html#pX_tilde">X_tilde</a>. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">csp</td><td>parameters. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">sp</td><td>parameters. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">X</td><td>a solution. </td></tr>
     <tr><td class="paramdir">[in,out]</td><td class="paramname">state</td><td>the state (<a class="el" href="group__gINTERNALS.html#ga37814f52692ffc71ef43e6b06e891440" title="Number of state variables.">NUM_STATE_VAR</a> elements). </td></tr>
   </table>

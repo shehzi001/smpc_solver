@@ -49,22 +49,23 @@
 <a name="l00012"></a>00012 <span class="comment"> * INCLUDES</span>
 <a name="l00013"></a>00013 <span class="comment"> ****************************************/</span>
 <a name="l00014"></a>00014 <span class="preprocessor">#include &quot;<a class="code" href="smpc__common_8h.html">smpc_common.h</a>&quot;</span>
-<a name="l00015"></a>00015 
+<a name="l00015"></a>00015 <span class="preprocessor">#include &quot;<a class="code" href="problem__param_8h.html">problem_param.h</a>&quot;</span>
 <a name="l00016"></a>00016 
-<a name="l00017"></a>00017 <span class="comment">/****************************************</span>
-<a name="l00018"></a>00018 <span class="comment"> * PROTOTYPES </span>
-<a name="l00019"></a>00019 <span class="comment"> ****************************************/</span>
-<a name="l00022"></a>00022 
-<a name="l00026"></a>00026 <span class="keyword">namespace </span>state_handling
-<a name="l00027"></a>00027 {
-<a name="l00028"></a>00028     <span class="keywordtype">void</span> <a class="code" href="namespacestate__handling.html#ace1f521bb3caac6e4f4b2ea053e23b5b" title="Converts state from X_tilde to X_bar.">tilde_to_bar</a> (<span class="keyword">const</span> <span class="keywordtype">double</span>, <span class="keyword">const</span> <span class="keywordtype">double</span>, <span class="keywordtype">double</span> *);
-<a name="l00029"></a>00029     <span class="keywordtype">void</span> <a class="code" href="namespacestate__handling.html#a69960d3947b12aa4f525b82508c91868" title="Converts state from X_tilde to X_bar.">bar_to_tilde</a> (<span class="keyword">const</span> <span class="keywordtype">double</span>, <span class="keyword">const</span> <span class="keywordtype">double</span>, <span class="keywordtype">double</span> *);
-<a name="l00030"></a>00030     <span class="keywordtype">void</span> <a class="code" href="namespacestate__handling.html#a44e8698f1054f74680b6668038142d0a" title="Converts state from X_tilde to original variables.">tilde_to_orig</a> (<span class="keyword">const</span> <span class="keywordtype">double</span>, <span class="keywordtype">double</span> *);
-<a name="l00031"></a>00031 
-<a name="l00032"></a>00032     <span class="keywordtype">void</span> <a class="code" href="namespacestate__handling.html#a995670cb04241d60481d3f8a0e6ec061" title="Returns the next state as X_tilde.">get_next_state_tilde</a> (<span class="keyword">const</span> <a class="code" href="structchol__solve__param.html" title="A set of parameters used by chol_solve class.">chol_solve_param</a>&amp;, <span class="keyword">const</span> <span class="keywordtype">double</span> *, <span class="keywordtype">double</span> *);
-<a name="l00033"></a>00033     <span class="keywordtype">void</span> <a class="code" href="namespacestate__handling.html#a6461e663f646fcf0d6a27dbd7472d4f4" title="Returns the next state represented by original variables.">get_next_state</a> (<span class="keyword">const</span> <a class="code" href="structchol__solve__param.html" title="A set of parameters used by chol_solve class.">chol_solve_param</a>&amp;, <span class="keyword">const</span> <span class="keywordtype">double</span> *, <span class="keywordtype">double</span> *);
-<a name="l00034"></a>00034 }
-<a name="l00036"></a>00036 <span class="preprocessor">#endif </span><span class="comment">/*STATE_HANDLING_H*/</span>
+<a name="l00017"></a>00017 
+<a name="l00018"></a>00018 <span class="comment">/****************************************</span>
+<a name="l00019"></a>00019 <span class="comment"> * PROTOTYPES </span>
+<a name="l00020"></a>00020 <span class="comment"> ****************************************/</span>
+<a name="l00023"></a>00023 
+<a name="l00027"></a>00027 <span class="keyword">namespace </span>state_handling
+<a name="l00028"></a>00028 {
+<a name="l00029"></a>00029     <span class="keywordtype">void</span> <a class="code" href="namespacestate__handling.html#ace1f521bb3caac6e4f4b2ea053e23b5b" title="Converts state from X_tilde to X_bar.">tilde_to_bar</a> (<span class="keyword">const</span> <span class="keywordtype">double</span>, <span class="keyword">const</span> <span class="keywordtype">double</span>, <span class="keywordtype">double</span> *);
+<a name="l00030"></a>00030     <span class="keywordtype">void</span> <a class="code" href="namespacestate__handling.html#a69960d3947b12aa4f525b82508c91868" title="Converts state from X_tilde to X_bar.">bar_to_tilde</a> (<span class="keyword">const</span> <span class="keywordtype">double</span>, <span class="keyword">const</span> <span class="keywordtype">double</span>, <span class="keywordtype">double</span> *);
+<a name="l00031"></a>00031     <span class="keywordtype">void</span> <a class="code" href="namespacestate__handling.html#a44e8698f1054f74680b6668038142d0a" title="Converts state from X_tilde to original variables.">tilde_to_orig</a> (<span class="keyword">const</span> <span class="keywordtype">double</span>, <span class="keywordtype">double</span> *);
+<a name="l00032"></a>00032 
+<a name="l00033"></a>00033     <span class="keywordtype">void</span> <a class="code" href="namespacestate__handling.html#a2299e0c13ecb98d00bea34bb17d78e2f" title="Returns the next state as X_tilde.">get_next_state_tilde</a> (<span class="keyword">const</span> <a class="code" href="classproblem__parameters.html" title="A set of problem parameters.">problem_parameters</a>*, <span class="keyword">const</span> <span class="keywordtype">double</span> *, <span class="keywordtype">double</span> *);
+<a name="l00034"></a>00034     <span class="keywordtype">void</span> <a class="code" href="namespacestate__handling.html#a601dbcc09f8d69f1b9b5f9f8fdc7e264" title="Returns the next state represented by original variables.">get_next_state</a> (<span class="keyword">const</span> <a class="code" href="classproblem__parameters.html" title="A set of problem parameters.">problem_parameters</a>*, <span class="keyword">const</span> <span class="keywordtype">double</span> *, <span class="keywordtype">double</span> *);
+<a name="l00035"></a>00035 }
+<a name="l00037"></a>00037 <span class="preprocessor">#endif </span><span class="comment">/*STATE_HANDLING_H*/</span>
 </pre></div></div>
 </div>
 <hr class="footer"/><address class="footer"><small>Generated by&#160;
