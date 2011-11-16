@@ -27,18 +27,26 @@
 
 smpc_solver::smpc_solver (
                 const int N,
-                const solver_type sol_type,
                 const double Alpha, const double Beta, const double Gamma,
                 const double regularization, const double tol)
 {
-    if (sol_type == SMPC_AS)
-    {
-        qp_sol = new qp_as (N, Alpha, Beta, Gamma, regularization, tol);
-    }
-    else if (sol_type == SMPC_IP)
-    {
-        qp_sol = new qp_ip (N, Alpha, Beta, Gamma, regularization, tol);
-    }
+    qp_sol = new qp_as (N, Alpha, Beta, Gamma, regularization, tol);
+}
+
+
+smpc_solver::smpc_solver (
+                const int N,
+                const int max_iter,
+                const double Alpha, const double Beta, const double Gamma,
+                const double regularization, 
+                const double tol, const double tol_out,
+                const double t,
+                const double mu,
+                const double bs_alpha, const double bs_beta)
+{
+    qp_ip * qpip_solver = new qp_ip (N, Alpha, Beta, Gamma, regularization, tol);
+    qpip_solver->set_ip_parameters (t, mu, bs_alpha, bs_beta, max_iter, tol_out);
+    qp_sol = qpip_solver;
 }
 
 
@@ -52,20 +60,6 @@ smpc_solver::~smpc_solver()
 
 
 
-void smpc_solver::set_ip_parameters (
-        const double t,
-        const double mu,
-        const double bs_alpha,
-        const double bs_beta,
-        const int max_iter,
-        const double tol_out)
-{
-    qp_ip * qpip_solver = dynamic_cast<qp_ip*> (qp_sol);
-    if (qpip_solver != NULL)
-    {
-        qpip_solver->set_ip_parameters (t, mu, bs_alpha, bs_beta, max_iter, tol_out);
-    }
-}
 
 
 

@@ -74,7 +74,7 @@
     \frac{1}{2}
     \mbm{a}^T \mbm{H}^{-1} \mbm{a} = \frac{1}{2\beta}
     @f$
-    is a number.
+    is a scalar.
 
     @f$
     \frac{1}{2}

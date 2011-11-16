@@ -16,14 +16,6 @@ class qp_solver;
 /// @addtogroup gAPI 
 /// @{
 
-enum solver_type
-{
-    /// Active set method   
-    SMPC_AS,
-    /// Interior-point method
-    SMPC_IP 
-};
-
 
 /**
  * @brief API of the sparse MPC solver.
@@ -36,9 +28,8 @@ class smpc_solver
         // -------------------------------
 
 
-        /** @brief Constructor: initialization of the constant parameters
-
-            @param[in] sol_type type of the solver (see #solver_type)
+        /** @brief Constructor: initialize an active set method solver.
+         *
             @param[in] N Number of sampling times in a preview window
             @param[in] Alpha Velocity gain
             @param[in] Beta Position gain
@@ -46,14 +37,46 @@ class smpc_solver
             @param[in] regularization regularization
             @param[in] tol tolerance
         */
-        smpc_solver(
+        smpc_solver (
                 const int N, 
-                const solver_type sol_type = SMPC_AS,
                 const double Alpha = 150.0, 
                 const double Beta = 2000.0, 
                 const double Gamma = 1.0,
                 const double regularization = 0.01,
                 const double tol = 1e-7);
+
+
+        /** @brief Constructor: initialize an interior-point method solver.
+         *
+         * @param[in] N Number of sampling times in a preview window
+         * @param[in] max_iter maximum number of internal loop iterations
+         * @param[in] Alpha Velocity gain
+         * @param[in] Beta Position gain
+         * @param[in] Gamma Jerk gain
+         * @param[in] regularization regularization
+         * @param[in] tol tolerance (internal loop)
+         * @param[in] tol_out tolerance of the outer loop, which resolves
+         *                    the problem with new t (kappa) parameter.
+         * @param[in] t logarithmic barrier parameter
+         * @param[in] mu multiplier of t, >1.
+         * @param[in] bs_alpha backtracking search parameter 0 < alpha < 0.5
+         * @param[in] bs_beta  backtracking search parameter 0 < beta < 1
+         */
+        smpc_solver (
+                const int N, 
+                const int max_iter, // no default to avoid ambiguity
+                ///@todo A more reasonable defaults are needed.
+                const double Alpha = 150.0, 
+                const double Beta = 2000.0, 
+                const double Gamma = 1.0,
+                const double regularization = 0.01,
+                const double tol = 1e-3,
+                const double tol_out = 1e-2,
+                const double t = 100,
+                const double mu = 15,
+                const double bs_alpha = 0.01,
+                const double bs_beta = 0.5);
+
 
         ~smpc_solver();
 
@@ -99,35 +122,10 @@ class smpc_solver
 
 
         /**
-         * @brief Sets parameters of interior-point method.
-         *
-         * @param[in] t logarithmic barrier parameter
-         * @param[in] mu multiplier of t, >1.
-         * @param[in] bs_alpha backtracking search parameter 0 < alpha < 0.5
-         * @param[in] bs_beta  backtracking search parameter 0 < beta < 1
-         * @param[in] max_iter maximum number of internal loop iterations
-         * @param[in] tol_out tolerance of the outer loop, which resolves
-         *                    the problem with new t (kappa) parameter.
-         *
-         * @note Applicable only for #SMPC_IP, does nothing if #SMPC_AS
-         *       is chosen.
-         * @note The tolerance specified in the constructor is used only in 
-         *       internal loop.
-         */
-        void set_ip_parameters (
-                const double t,
-                const double mu,
-                const double bs_alpha,
-                const double bs_beta,
-                const int max_iter,
-                const double tol_out);
-
-
-        /**
          * @brief Solve QP problem.
          *
          * @return A negative number on error. Number of activated constraints 
-         *         for #SMPC_AS and 0 for #SMPC_IP on success.
+         *         for active set method and 0 for interior-point method on success.
          */
         int solve ();
    

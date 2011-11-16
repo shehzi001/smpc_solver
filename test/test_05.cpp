@@ -46,7 +46,19 @@ int main(int argc, char **argv)
         test_start(argv[0]);
 
 
-    smpc_solver solver(wmg.N, SMPC_IP, 150, 2000, 1, 0.01, 1e-3);
+    smpc_solver solver(
+            wmg.N, 
+            100,
+            150, 
+            2000, 
+            1, 
+            0.01, 
+            1e-3,
+            1e-2,
+            100, 
+            15, 
+            0.01, 
+            0.5);
 
     double err = 0;
     double max_err = 0;
@@ -75,7 +87,6 @@ int main(int argc, char **argv)
         //------------------------------------------------------
         solver.set_parameters (wmg.T, wmg.h, wmg.angle, wmg.zref_x, wmg.zref_y, wmg.lb, wmg.ub);
         solver.form_init_fp (wmg.zref_x, wmg.zref_y, wmg.X_tilde, wmg.X);
-        solver.set_ip_parameters (100, 15, 0.01, 0.5, 100, 1e-2);
         solver.solve();
         solver.get_next_state_tilde (wmg.X_tilde);
         //------------------------------------------------------
