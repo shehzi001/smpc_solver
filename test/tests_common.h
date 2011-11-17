@@ -56,7 +56,7 @@ void init_02 (WMG *wmg)
 {
     wmg->init(15, 0.1, 0.261);
 
-    double d[4] = {0.09 , 0.025, 0.03, 0.075};
+    double d[4] = {0.03 , 0.01, 0.01, 0.11};
     wmg->AddFootstep(0.0, 0.05, 0.0, 3, 3, d);
     
     double z = 5.0*M_PI/180.0;
