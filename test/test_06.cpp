@@ -17,7 +17,7 @@ int main(int argc, char **argv)
     test_start(argv[0]);
 
 
-    for (int j = 0; j < 3; j++)
+    for (int j = 0; j < 6; j++)
     {
         ofstream fs_out;
         WMG wmg;
@@ -36,6 +36,18 @@ int main(int argc, char **argv)
             case 2:
                 init_03 (&wmg);
                 fs_out_filename = "test_06_init_03_fs.m";
+                break;
+            case 3:
+                init_04 (&wmg);
+                fs_out_filename = "test_06_init_04_fs.m";
+                break;
+            case 4:
+                init_05 (&wmg);
+                fs_out_filename = "test_06_init_05_fs.m";
+                break;
+            case 5:
+                init_06 (&wmg);
+                fs_out_filename = "test_06_init_06_fs.m";
                 break;
         }
 
