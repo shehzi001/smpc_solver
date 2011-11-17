@@ -36,8 +36,10 @@ enum WMGret
 
 enum fs_type
 {
-    FS_TYPE_SS,
-    FS_TYPE_DS
+    FS_TYPE_AUTO,   // let the library decide
+    FS_TYPE_SS_L,   // left single support
+    FS_TYPE_SS_R,   // right single support
+    FS_TYPE_DS      // double support
 };
 
 /** \brief Defines the parameters of the Walking Pattern Generator. */
@@ -54,19 +56,19 @@ class WMG
                 const int, 
                 const int, 
                 const double *, 
-                const fs_type type = FS_TYPE_SS);
+                const fs_type type = FS_TYPE_AUTO);
         void AddFootstep(
                 const double, 
                 const double, 
                 const double, 
                 const int, 
                 const int, 
-                const fs_type type = FS_TYPE_SS);
+                const fs_type type = FS_TYPE_AUTO);
         void AddFootstep(
                 const double, 
                 const double, 
                 const double, 
-                const fs_type type = FS_TYPE_SS);
+                fs_type type = FS_TYPE_AUTO);
         WMGret FormPreviewWindow();
         void FS2file(const std::string);
 

@@ -205,11 +205,16 @@ void WMG::AddFootstep(
         const double x_relative, 
         const double y_relative, 
         const double angle_relative, 
-        const fs_type type)
+        fs_type type)
 {
     if (FS.size() == 0)
     {
         // this is the first ("virtual") step.
+        if (type == FS_TYPE_AUTO)
+        {
+            type = FS_TYPE_DS;
+        }
+
         FS.push_back(
                 FootStep(
                     angle_relative, 
@@ -225,6 +230,23 @@ void WMG::AddFootstep(
         double prev_a = FS.back().angle;
         Point2D prev_p(FS.back());        
 
+        // determine type of the step
+        if (type == FS_TYPE_AUTO)
+        {
+            switch (FS.back().type)
+            {
+                case FS_TYPE_SS_L:
+                    type = FS_TYPE_SS_R;
+                    break;
+                case FS_TYPE_SS_R:
+                    type = FS_TYPE_SS_L;
+                    break;
+                case FS_TYPE_DS:
+                default:
+                    type = FS_TYPE_SS_R;
+                    break;
+            }
+        }
 
         // Position of the next step
         Point2D next_p(prev_p);        
@@ -363,7 +385,7 @@ void WMG::FS2file(const std::string filename)
         {
             fprintf(file_op, "FS(%i).type = 1;\n\n", i+1);
         }
-        if (FS[i].type == FS_TYPE_SS)
+        if ((FS[i].type == FS_TYPE_SS_L) || (FS[i].type == FS_TYPE_SS_R))
         {
             fprintf(file_op, "FS(%i).type = 2;\n\n", i+1);
         }
