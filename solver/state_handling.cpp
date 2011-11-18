@@ -92,4 +92,18 @@ namespace state_handling
         get_next_state_tilde (sp, X, state);
         state_handling::tilde_to_orig (sp->spar[0].h, state);
     }
+
+
+    /**
+     * @brief Returns the controls,that must be applied to reach the next state.
+     *
+     * @param[in] preview_window_size size of the preview window
+     * @param[in] X a solution
+     * @param[in,out] controls the controls (2 double values)
+     */
+    void get_first_controls (const int preview_window_size, const double *X, double *controls)
+    {
+        controls[0] = X[preview_window_size*NUM_STATE_VAR + 0];
+        controls[1] = X[preview_window_size*NUM_STATE_VAR + 1];
+    }
 }

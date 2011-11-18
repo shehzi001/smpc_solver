@@ -13,6 +13,8 @@
  * @todo Try -ffast-math.
  * @todo Error processing. Exceptions?
  * @todo Add introductory documentation: basic terminology and overview.
+ * @todo Downdate complexity
+ * @todo Nao cross compilation
  */
 
 

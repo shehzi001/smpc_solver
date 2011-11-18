@@ -106,16 +106,16 @@ class WMG
         double *lb;
         double *ub;
 
+        /** \brief This is the step in FS that is at the start of the current preview window. I don't need
+        to pop_front steps from FS and that is why I use stl vector and not stl deque). */
+        int current_step_number;
+
     private:
         double def_constraint[4];
         int def_repeat_times;
 
         double def_ds_constraint[4];
         int def_ds_num;
-
-        /** \brief This is the step in FS that is at the start of the current preview window. I don't need
-        to pop_front steps from FS and that is why I use stl vector and not stl deque). */
-        int current_step_number;
 };
 
 ///@}

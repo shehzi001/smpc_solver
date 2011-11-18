@@ -118,3 +118,11 @@ void smpc_solver::get_next_state (double *state)
         state_handling::get_next_state (qp_sol, qp_sol->X, state);
     }
 }
+
+void smpc_solver::get_first_controls (double *controls)
+{
+    if (qp_sol != NULL)
+    {
+        state_handling::get_first_controls (qp_sol->N, qp_sol->X, controls);
+    }
+}

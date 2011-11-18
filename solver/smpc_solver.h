@@ -165,6 +165,19 @@ class smpc_solver
          */
         void get_next_state (double *state);
 
+
+        /**
+         * @brief Returns the controls that must be applied to reach the 
+         *  next state.
+         *
+         * @param[in,out] controls the controls (#NUM_CONTROL_VAR).
+         * @verbatim
+            control[0] - jerk along x axis
+            control[1] - jerk along y axis
+           @endverbatim
+         */
+        void get_first_controls (double *controls);
+
         // -------------------------------
 
 
