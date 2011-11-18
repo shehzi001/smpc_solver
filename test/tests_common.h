@@ -130,16 +130,28 @@ void init_03 (WMG *wmg)
  */
 void init_04 (WMG *wmg)
 {
+    double d[4];
     wmg->init(15, 0.1, 0.261);
-
-    // Initial double support
-    double d[4] = {0.09 , 0.075, 0.03, 0.025};
-    wmg->AddFootstep(0.0, 0.0, 0.0, 2, 3, d, FS_TYPE_DS);
-    // ZMP, CoM are at [0;0]
 
     // each step is defined relatively to the previous step
     double step_x = 0.035;      // relative X position
     double step_y = 0.1;       // relative Y position
+
+
+    d[0] = 0.09;
+    d[1] = 0.025;
+    d[2] = 0.03;
+    d[3] = 0.025;
+    wmg->AddFootstep(0.0, step_y/2, 0.0, 0, 0, d, FS_TYPE_SS_L);
+
+    // Initial double support
+    d[0] = 0.09;
+    d[1] = 0.075;
+    d[2] = 0.03;
+    d[3] = 0.025;
+    wmg->AddFootstep(0.0, -step_y/2, 0.0, 2, 2, d, FS_TYPE_DS);
+    // ZMP, CoM are at [0;0]
+
 
     // all subsequent steps have normal feet size
     d[0] = 0.09;
@@ -155,10 +167,6 @@ void init_04 (WMG *wmg)
     wmg->AddFootstep(step_x,  step_y, 0.0);
     wmg->AddFootstep(step_x, -step_y, 0.0);
     wmg->AddFootstep(step_x,  step_y, 0.0);
-    wmg->AddFootstep(step_x, -step_y, 0.0);
-    wmg->AddFootstep(step_x,  step_y, 0.0);
-    wmg->AddFootstep(step_x, -step_y, 0.0);
-    wmg->AddFootstep(step_x,  step_y, 0.0);
 
     // here we give many reference points, since otherwise we 
     // would not have enough steps in preview window to reach 
@@ -168,6 +176,11 @@ void init_04 (WMG *wmg)
     d[2] = 0.03;
     d[3] = 0.075;
     wmg->AddFootstep(0.0   , -step_y/2, 0.0, 30, 30, d, FS_TYPE_DS);
+    d[0] = 0.09;
+    d[1] = 0.025;
+    d[2] = 0.03;
+    d[3] = 0.025;
+    wmg->AddFootstep(0.0   , -step_y/2, 0.0 , 0,  0, d, FS_TYPE_SS_R);
 }
 
 

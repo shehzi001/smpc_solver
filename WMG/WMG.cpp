@@ -331,7 +331,7 @@ WMGret WMG::FormPreviewWindow()
     }
 
     FS[current_step_number].repeat_times--;
-    if (FS[current_step_number].repeat_times == 0)
+    if (FS[current_step_number].repeat_times <= 0)
     {
         current_step_number++;
     }
