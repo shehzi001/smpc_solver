@@ -72,7 +72,7 @@ class WMG
         WMGret FormPreviewWindow();
         void FS2file(const std::string);
 
-
+        fs_type get_feet_configuration (double *, double *, double *);
 
         /** \brief A vector of footsteps. */
         std::vector<FootStep> FS; 
@@ -111,6 +111,9 @@ class WMG
         int current_step_number;
 
     private:
+        int get_next_SS (const int, const fs_type type = FS_TYPE_AUTO);
+        int get_prev_SS (const int, const fs_type type = FS_TYPE_AUTO);
+
         double def_constraint[4];
         int def_repeat_times;
 

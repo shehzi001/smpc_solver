@@ -287,6 +287,140 @@ void WMG::AddFootstep(
 
 
 /**
+ * @brief Returns index of the next SS.
+ *
+ * @param[in] start_ind start search from this index.
+ * @param[in] type search for a footstep of certain type,
+ *                 by default (FS_TYPE_AUTO) both left and right
+ *                 are searched.
+ *
+ * @return index of the next SS.
+ */
+int WMG::get_next_SS(const int start_ind, const fs_type type)
+{
+    int index = start_ind;
+    for (; index < (int) FS.size(); index++) 
+    {
+        if (FS[index].type != FS_TYPE_DS)
+        {
+            if (type == FS_TYPE_AUTO)
+            {
+                break;
+            }
+            else
+            {
+                if (FS[index].type == type)
+                {
+                    break;
+                }
+            }
+        }
+    }
+    return (index);
+}
+
+
+
+/**
+ * @brief Returns index of the previous SS.
+ *
+ * @param[in] start_ind start search from this index.
+ * @param[in] type search for a footstep of certain type,
+ *                 by default (FS_TYPE_AUTO) both left and right
+ *                 are searched.
+ *
+ * @return index of the previous SS.
+ */
+int WMG::get_prev_SS(const int start_ind, const fs_type type)
+{
+    int index = start_ind;
+    for (; index >= 0; index--)
+    {
+        if (FS[index].type != FS_TYPE_DS)
+        {
+            if (type == FS_TYPE_AUTO)
+            {
+                break;
+            }
+            else
+            {
+                if (FS[index].type == type)
+                {
+                    break;
+                }
+            }
+        }
+    }
+    return (index);
+}
+
+
+
+/**
+ * @brief Returns current feet configuration.
+ *
+ * @param[in,out] support_pos position of support foot 3x1 vector = [x, y, angle].
+ * @param[in,out] prev_swing_pos the previous position of the swing foot.
+ * @param[in,out] next_swing_pos the next position of the swing foot.
+ *
+ * @return type of the current support feet: left or right.
+ *
+ * @attention This function requires the walking pattern to be started and finished
+ * by single support.
+ *
+ * @note If we are in the double support then prev_swing_pos = next_swing_pos.
+ */
+fs_type WMG::get_feet_configuration (
+        double *support_pos,
+        double *prev_swing_pos,
+        double *next_swing_pos)
+{
+    fs_type cur_fs_type = FS[current_step_number].type;
+    int sup_ind, next_swing_ind, prev_swing_ind;
+
+    switch (cur_fs_type)
+    {
+        case FS_TYPE_SS_L:
+        case FS_TYPE_SS_R:
+            sup_ind = current_step_number;
+            prev_swing_ind = get_prev_SS(sup_ind, (cur_fs_type == FS_TYPE_SS_R) ? FS_TYPE_SS_L : FS_TYPE_SS_R);
+            next_swing_ind = get_next_SS(sup_ind, (cur_fs_type == FS_TYPE_SS_R) ? FS_TYPE_SS_L : FS_TYPE_SS_R);
+            break;
+
+        case FS_TYPE_DS:
+            sup_ind = get_next_SS (current_step_number);
+            cur_fs_type = FS[sup_ind].type;
+            next_swing_ind = get_next_SS(sup_ind, (cur_fs_type == FS_TYPE_SS_R) ? FS_TYPE_SS_L : FS_TYPE_SS_R);
+            if (FS[next_swing_ind].type == FS_TYPE_DS)
+            {
+                next_swing_ind = get_prev_SS(sup_ind, (cur_fs_type == FS_TYPE_SS_R) ? FS_TYPE_SS_L : FS_TYPE_SS_R);
+            }
+            prev_swing_ind = next_swing_ind;
+            break;
+
+        default:
+            // should never happen, since type is checked when steps are added.
+            return (cur_fs_type);
+    }
+
+    support_pos[0] = FS[sup_ind].x;
+    support_pos[1] = FS[sup_ind].y;
+    support_pos[2] = FS[sup_ind].angle;
+
+    prev_swing_pos[0] = FS[prev_swing_ind].x;
+    prev_swing_pos[1] = FS[prev_swing_ind].y;
+    prev_swing_pos[2] = FS[prev_swing_ind].angle;
+
+    next_swing_pos[0] = FS[next_swing_ind].x;
+    next_swing_pos[1] = FS[next_swing_ind].y;
+    next_swing_pos[2] = FS[next_swing_ind].angle;
+
+    return (cur_fs_type);
+}
+
+
+
+/**
  * @brief Forms a preview window.
  *
  * @return WMG_OK or WMG_HALT (simulation must be stopped)
