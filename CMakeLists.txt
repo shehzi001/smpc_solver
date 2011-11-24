@@ -1,0 +1,60 @@
+# General parameters
+cmake_minimum_required (VERSION 2.6)
+project (smpc_solver CXX)
+
+#set(CMAKE_BUILD_TYPE "" CACHE INTERNAL "") # hide this option
+
+####################################
+# Options
+####################################
+#option (SMPC_DEBUG          "Enable debug mode / disable optimization" OFF) 
+option (BUILD_TESTS         "Build tests" OFF)
+
+
+####################################
+# Settings
+####################################
+set (smpc_solver_SOURCE_DIR "${PROJECT_SOURCE_DIR}/solver/")
+set (wmg_SOURCE_DIR "${PROJECT_SOURCE_DIR}/WMG/")
+set (CMAKE_SKIP_ASSEMBLY_SOURCE_RULES ON)
+set (CMAKE_SKIP_PREPROCESSED_SOURCE_RULES ON)
+set (CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/test/")
+set (CMAKE_VERBOSE_MAKEFILE ON)
+set (CMAKE_RULE_MESSAGES OFF CACHE BOOL "")
+
+
+####################################
+# Process options
+####################################
+#if (SMPC_DEBUG)
+#    set (CMAKE_CXX_FLAGS "-g -Wall -pedantic")
+#endif ()
+
+
+
+####################################
+# Other parameters
+####################################
+
+# configure a header file to pass some of the CMake settings
+# to the source code
+include_directories ("${smpc_solver_SOURCE_DIR}")
+include_directories ("${wmg_SOURCE_DIR}")
+
+
+file (GLOB SMPC_SRC "${smpc_solver_SOURCE_DIR}/*.cpp")
+add_library (smpc_solver STATIC ${SMPC_SRC})
+
+file (GLOB WMG_SRC "${wmg_SOURCE_DIR}/*.cpp")
+add_library (wmg STATIC ${WMG_SRC})
+
+
+if (BUILD_TESTS)
+    set (test_DIR "${PROJECT_SOURCE_DIR}/test/")
+    file (GLOB TESTS RELATIVE "${test_DIR}" "${test_DIR}test_*.cpp")
+    foreach (testname ${TESTS})
+        string(REPLACE ".cpp" ".a" targetname "${testname}")
+        add_executable (${targetname} "${test_DIR}/${testname}")
+        target_link_libraries (${targetname} smpc_solver wmg)
+    endforeach (testname ${TESTS})
+endif (BUILD_TESTS)
