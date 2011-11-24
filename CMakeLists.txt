@@ -2,12 +2,11 @@
 cmake_minimum_required (VERSION 2.6)
 project (smpc_solver CXX)
 
-#set(CMAKE_BUILD_TYPE "" CACHE INTERNAL "") # hide this option
+set(CMAKE_BUILD_TYPE "Release") # hide this option
 
 ####################################
 # Options
 ####################################
-#option (SMPC_DEBUG          "Enable debug mode / disable optimization" OFF) 
 option (BUILD_TESTS         "Build tests" OFF)
 
 
@@ -21,14 +20,6 @@ set (CMAKE_SKIP_PREPROCESSED_SOURCE_RULES ON)
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/test/")
 set (CMAKE_VERBOSE_MAKEFILE ON)
 set (CMAKE_RULE_MESSAGES OFF CACHE BOOL "")
-
-
-####################################
-# Process options
-####################################
-#if (SMPC_DEBUG)
-#    set (CMAKE_CXX_FLAGS "-g -Wall -pedantic")
-#endif ()
 
 
 

@@ -8,13 +8,9 @@
  *
  *
  * @todo (low priority) Interface with Matlab/Octave.
- * @todo Try feenableexcept(FE_DENORMAL) (<fenv.h>), I believe we should 
- *      never have denormal numbers.
- * @todo Try -ffast-math.
  * @todo Error processing. Exceptions?
  * @todo Add introductory documentation: basic terminology and overview.
  * @todo Downdate complexity
- * @todo Nao cross compilation
  */
 
 

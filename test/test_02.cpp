@@ -9,7 +9,6 @@
 #include <sys/time.h>
 #include <time.h>
 
-
 #include "tests_common.h" 
 
 ///@addtogroup gTEST
