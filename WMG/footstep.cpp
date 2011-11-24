@@ -44,4 +44,5 @@ FootStep::FootStep(
     sa = sin(angle);
     rotate_translate(ca, sa, *this);
     repeat_times = repeat_times_;
+    repeat_counter = repeat_times;
 }

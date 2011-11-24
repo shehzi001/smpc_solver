@@ -72,7 +72,7 @@ class WMG
         WMGret FormPreviewWindow();
         void FS2file(const std::string);
 
-        fs_type get_feet_configuration (double *, double *, double *);
+        fs_type get_swing_foot_pos (double *, double *, int *, int *);
 
         /** \brief A vector of footsteps. */
         std::vector<FootStep> FS; 

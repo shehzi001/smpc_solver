@@ -359,9 +359,11 @@ int WMG::get_prev_SS(const int start_ind, const fs_type type)
 /**
  * @brief Returns current feet configuration.
  *
- * @param[in,out] support_pos position of support foot 3x1 vector = [x, y, angle].
  * @param[in,out] prev_swing_pos the previous position of the swing foot.
  * @param[in,out] next_swing_pos the next position of the swing foot.
+ * @param[out] repeat_times number of SS iterations in the current support.
+ * @param[out] repeated_times the number of iterations, which were already
+ *      spent in the current support.
  *
  * @return type of the current support feet: left or right.
  *
@@ -370,10 +372,11 @@ int WMG::get_prev_SS(const int start_ind, const fs_type type)
  *
  * @note If we are in the double support then prev_swing_pos = next_swing_pos.
  */
-fs_type WMG::get_feet_configuration (
-        double *support_pos,
+fs_type WMG::get_swing_foot_pos (
         double *prev_swing_pos,
-        double *next_swing_pos)
+        double *next_swing_pos,
+        int *repeat_times,
+        int *repeated_times)
 {
     fs_type cur_fs_type = FS[current_step_number].type;
     int sup_ind, next_swing_ind, prev_swing_ind;
@@ -382,9 +385,12 @@ fs_type WMG::get_feet_configuration (
     {
         case FS_TYPE_SS_L:
         case FS_TYPE_SS_R:
-            sup_ind = current_step_number;
-            prev_swing_ind = get_prev_SS(sup_ind, (cur_fs_type == FS_TYPE_SS_R) ? FS_TYPE_SS_L : FS_TYPE_SS_R);
-            next_swing_ind = get_next_SS(sup_ind, (cur_fs_type == FS_TYPE_SS_R) ? FS_TYPE_SS_L : FS_TYPE_SS_R);
+            prev_swing_ind = get_prev_SS(
+                    current_step_number, 
+                    (cur_fs_type == FS_TYPE_SS_R) ? FS_TYPE_SS_L : FS_TYPE_SS_R);
+            next_swing_ind = get_next_SS(
+                    current_step_number, 
+                    (cur_fs_type == FS_TYPE_SS_R) ? FS_TYPE_SS_L : FS_TYPE_SS_R);
             break;
 
         case FS_TYPE_DS:
@@ -398,14 +404,14 @@ fs_type WMG::get_feet_configuration (
             prev_swing_ind = next_swing_ind;
             break;
 
+        case FS_TYPE_AUTO:
         default:
             // should never happen, since type is checked when steps are added.
             return (cur_fs_type);
     }
 
-    support_pos[0] = FS[sup_ind].x;
-    support_pos[1] = FS[sup_ind].y;
-    support_pos[2] = FS[sup_ind].angle;
+    *repeat_times = FS[current_step_number].repeat_times;
+    *repeated_times = *repeat_times - FS[current_step_number].repeat_counter;
 
     prev_swing_pos[0] = FS[prev_swing_ind].x;
     prev_swing_pos[1] = FS[prev_swing_ind].y;
@@ -429,7 +435,7 @@ WMGret WMG::FormPreviewWindow()
 {
     WMGret retval = WMG_OK;
     int win_step_num = current_step_number;
-    int step_repeat_times = FS[win_step_num].repeat_times;
+    int step_repeat_times = FS[win_step_num].repeat_counter;
 
 
     for (int i = 0; i < N;)
@@ -460,12 +466,12 @@ WMGret WMG::FormPreviewWindow()
                 printf(" \n====================================\n\n ");        
                 break;
             }
-            step_repeat_times = FS[win_step_num].repeat_times;
+            step_repeat_times = FS[win_step_num].repeat_counter;
         }
     }
 
-    FS[current_step_number].repeat_times--;
-    if (FS[current_step_number].repeat_times <= 0)
+    FS[current_step_number].repeat_counter--;
+    if (FS[current_step_number].repeat_counter <= 0)
     {
         current_step_number++;
     }

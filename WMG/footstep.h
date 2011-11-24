@@ -44,6 +44,9 @@ class FootStep : public Point2D, public RectangularConstraint_ZMP
         /// number of times this step appears in the preview window.
         int repeat_times;
 
+        /// a counter of repeats,on initialization = repeat_times.
+        int repeat_counter;
+
         /// type of the step.
         fs_type type;
 };
