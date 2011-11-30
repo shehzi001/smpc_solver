@@ -1,8 +1,5 @@
 include ../common.mk
 
-IFLAGS+=-I../solver/ -I../WMG/
-LDFLAGS+=-L../solver/ -lsmpc_solver -L../WMG/ -lwmg
-
 
 TESTS=\
 	  test_01 \
@@ -16,11 +13,11 @@ TESTS=\
 all: ${TESTS} demo
 
 ${TESTS}:
-	${CXX} ${CXXFLAGS} ${IFLAGS} -c $@.cpp
+	${CXX} ${CXXFLAGS} -c $@.cpp
 	${CXX} -o $@.a $@.o ${LDFLAGS}
 
 demo:
-	${CXX} ${CXXFLAGS} ${IFLAGS} -c $@.cpp
+	${CXX} ${CXXFLAGS} -c $@.cpp
 	${CXX} -o $@.a $@.o ${LDFLAGS}
 
 clean:

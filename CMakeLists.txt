@@ -18,6 +18,7 @@ set (wmg_SOURCE_DIR "${PROJECT_SOURCE_DIR}/WMG/")
 set (CMAKE_SKIP_ASSEMBLY_SOURCE_RULES ON)
 set (CMAKE_SKIP_PREPROCESSED_SOURCE_RULES ON)
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/test/")
+set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/lib/")
 set (CMAKE_VERBOSE_MAKEFILE ON)
 set (CMAKE_RULE_MESSAGES OFF CACHE BOOL "")
 
@@ -29,8 +30,7 @@ set (CMAKE_RULE_MESSAGES OFF CACHE BOOL "")
 
 # configure a header file to pass some of the CMake settings
 # to the source code
-include_directories ("${smpc_solver_SOURCE_DIR}")
-include_directories ("${wmg_SOURCE_DIR}")
+include_directories ("${PROJECT_SOURCE_DIR}/include/")
 
 
 file (GLOB SMPC_SRC "${smpc_solver_SOURCE_DIR}/*.cpp")

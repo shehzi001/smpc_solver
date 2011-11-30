@@ -8,13 +8,13 @@ test: smpc_solver wmg
 	cd test; ${MAKE}
 
 cross: 
+	-mkdir build;
 ifdef TOOLCHAIN
 	cd build; cmake -DCMAKE_TOOLCHAIN_DIR=${TOOLCHAIN} ..;
-	cd build; ${MAKE}
 else
 	cd build; cmake ..;
-	cd build; ${MAKE}
 endif
+	cd build; ${MAKE}
 
 clean:
 	cd test; ${MAKE} clean
@@ -25,6 +25,7 @@ clean:
 	rm -f docs/*.css
 	rm -f docs/formula.repository
 	rm -Rf build/*
+	rm -f lib/*.a
 
 copydoc: clean
 	doxygen

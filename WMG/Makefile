@@ -4,11 +4,11 @@ CXXFLAGS+=-I../solver/
 
 all: 
 	${CXX} ${CXXFLAGS} ${IFLAGS} -c *.cpp
-	${AR} -rc libwmg.a *.o
+	${AR} -rc ../lib/libwmg.a *.o
 
 
 clean:
-	rm -f *.o *.a
+	rm -f *.o
 
 
 # dummy targets

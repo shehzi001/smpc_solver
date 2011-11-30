@@ -2,11 +2,11 @@ include ../common.mk
 
 all: 
 	${CXX} ${CXXFLAGS} ${IFLAGS} -c *.cpp
-	${AR} -rc libsmpc_solver.a *.o
+	${AR} -rc ../lib/libsmpc_solver.a *.o
 
 
 clean:
-	rm -f *.o *.a
+	rm -f *.o
 
 
 # dummy targets
