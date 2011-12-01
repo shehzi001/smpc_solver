@@ -2,7 +2,6 @@
 cmake_minimum_required (VERSION 2.6)
 project (smpc_solver CXX)
 
-set(CMAKE_BUILD_TYPE "Release") # hide this option
 
 ####################################
 # Options
@@ -13,6 +12,7 @@ option (BUILD_TESTS         "Build tests" OFF)
 ####################################
 # Settings
 ####################################
+set (CMAKE_BUILD_TYPE "Release")
 set (smpc_solver_SOURCE_DIR "${PROJECT_SOURCE_DIR}/solver/")
 set (wmg_SOURCE_DIR "${PROJECT_SOURCE_DIR}/WMG/")
 set (CMAKE_SKIP_ASSEMBLY_SOURCE_RULES ON)
@@ -28,8 +28,6 @@ set (CMAKE_RULE_MESSAGES OFF CACHE BOOL "")
 # Other parameters
 ####################################
 
-# configure a header file to pass some of the CMake settings
-# to the source code
 include_directories ("${PROJECT_SOURCE_DIR}/include/")
 
 

@@ -7,10 +7,10 @@ wmg:
 test: smpc_solver wmg
 	cd test; ${MAKE}
 
-cross: 
+cmake: 
 	-mkdir build;
 ifdef TOOLCHAIN
-	cd build; cmake -DCMAKE_TOOLCHAIN_DIR=${TOOLCHAIN} ..;
+	cd build; cmake -DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN} ..;
 else
 	cd build; cmake ..;
 endif
