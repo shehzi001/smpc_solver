@@ -36,7 +36,8 @@ class FootStep;
 enum WMGret
 {
     WMG_OK,
-    WMG_HALT
+    WMG_HALT,
+    WMG_SWITCH_SUPPORT
 };
 
 enum fs_type

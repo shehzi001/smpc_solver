@@ -445,6 +445,18 @@ WMGret WMG::FormPreviewWindow()
     int step_repeat_times = FS[win_step_num].repeat_counter;
 
 
+    // Indicate switch of support foot
+    if (    // if we are not in the initial support
+            (win_step_num != 0) && 
+            // we are in DS
+            (FS[win_step_num].type == FS_TYPE_DS) &&
+            // this is the first iteration in DS
+            (FS[win_step_num].repeat_counter == FS[win_step_num].repeat_times))
+    {
+        retval = WMG_SWITCH_SUPPORT;
+    }
+
+
     for (int i = 0; i < N;)
     {
         if (step_repeat_times > 0)
