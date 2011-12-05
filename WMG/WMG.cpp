@@ -74,17 +74,13 @@ WMG::~WMG()
 /** \brief Initializes a WMG object.
 
     \param[in] _N Number of sampling times in a preview window
-    \param[in] _T Sampling time (for the moment it is assumed to be constant) [sec.]
-    \param[in] _hCoM Height of the Center of Mass [meter]
  */
-void WMG::init(const int _N, const double _T, const double _hCoM)
+void WMG::init(const int _N)
 {
     current_step_number = 0;
     gravity = 9.81; // hard-coded
 
     N = _N;
-    hCoM = _hCoM;      
-
 
 
     X = new double[NUM_VAR*N];
@@ -96,11 +92,6 @@ void WMG::init(const int _N, const double _T, const double _hCoM)
 
     T = new double[N];
     h = new double[N];
-    for (int i = 0; i < N; i++)
-    {
-        T[i] = _T;
-        h[i] = hCoM/gravity;
-    }
 
     angle = new double[N];
     zref_x = new double[N];
@@ -124,6 +115,22 @@ void WMG::init(const int _N, const double _T, const double _hCoM)
     def_ds_num = 0;
 }
 
+
+/** \brief Initializes a WMG object.
+
+    \param[in] _T Sampling time (for the moment it is assumed to be constant) [sec.]
+    \param[in] _hCoM Height of the Center of Mass [meter]
+ */
+void WMG::init_param(const double _T, const double _hCoM)
+{
+    hCoM = _hCoM;      
+
+    for (int i = 0; i < N; i++)
+    {
+        T[i] = _T;
+        h[i] = hCoM/gravity;
+    }
+}
 
 
 /**

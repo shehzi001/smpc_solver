@@ -28,7 +28,7 @@ void test_end (char *name)
 
 void init_01 (WMG *wmg)
 {
-    wmg->init(15, 0.1, 0.261);
+    wmg->init(15);
 
     double d[4] = {0.09 , 0.025, 0.03, 0.075};
     wmg->AddFootstep(0.0, 0.05, 0.0, 3, 3, d, FS_TYPE_DS);
@@ -49,12 +49,14 @@ void init_01 (WMG *wmg)
     wmg->AddFootstep(step_x, -step_y, z);
     wmg->AddFootstep(step_x,  step_y, 0.0);
     wmg->AddFootstep(0.0   , -step_y, 0.0, 30, 30);
+
+    wmg->init_param(0.1, 0.261);
 }
 
 
 void init_02 (WMG *wmg)
 {
-    wmg->init(15, 0.1, 0.261);
+    wmg->init(15);
 
     double d[4] = {0.03 , 0.01, 0.01, 0.11};
     wmg->AddFootstep(0.0, 0.05, 0.0, 3, 3, d);
@@ -79,13 +81,15 @@ void init_02 (WMG *wmg)
     wmg->AddFootstep(step_x, -step_y, z);
     wmg->AddFootstep(step_x,  step_y, 0.0, 30, 30);
     wmg->AddFootstep(0.0   , -step_y, 0.0);
+
+    wmg->init_param(0.1, 0.261);
 }
 
 
 
 void init_03 (WMG *wmg)
 {
-    wmg->init(15, 0.1, 0.261);
+    wmg->init(15);
 
     // Initial double support
     double d[4] = {0.09 , 0.075, 0.03, 0.025};
@@ -122,6 +126,8 @@ void init_03 (WMG *wmg)
     d[2] = 0.03;
     d[3] = 0.075;
     wmg->AddFootstep(0.0   , -step_y/2, 0.0, 30, 30, d, FS_TYPE_DS);
+
+    wmg->init_param(0.1, 0.261);
 }
 
 
@@ -131,7 +137,7 @@ void init_03 (WMG *wmg)
 void init_04 (WMG *wmg)
 {
     double d[4];
-    wmg->init(15, 0.1, 0.261);
+    wmg->init(15);
 
     // each step is defined relatively to the previous step
     double step_x = 0.035;      // relative X position
@@ -181,6 +187,8 @@ void init_04 (WMG *wmg)
     d[2] = 0.03;
     d[3] = 0.025;
     wmg->AddFootstep(0.0   , -step_y/2, 0.0 , 0,  0, d, FS_TYPE_SS_R);
+
+    wmg->init_param(0.1, 0.261);
 }
 
 
@@ -189,7 +197,7 @@ void init_04 (WMG *wmg)
  */
 void init_05 (WMG *wmg)
 {
-    wmg->init(15, 0.1, 0.261);
+    wmg->init(15);
 
     // Initial double support
     double d[4] = {0.09 , 0.075, 0.03, 0.025};
@@ -228,6 +236,8 @@ void init_05 (WMG *wmg)
     d[2] = 0.03;
     d[3] = 0.075;
     wmg->AddFootstep(0.0   , -step_y/2, 0.0, 30, 30, d, FS_TYPE_DS);
+
+    wmg->init_param(0.1, 0.261);
 }
 
 
@@ -236,7 +246,7 @@ void init_05 (WMG *wmg)
  */
 void init_06 (WMG *wmg)
 {
-    wmg->init(15, 0.1, 0.261);
+    wmg->init(15);
 
     // Initial double support
     double d[4] = {0.09 , 0.075, 0.03, 0.025};
@@ -275,6 +285,8 @@ void init_06 (WMG *wmg)
     d[2] = 0.03;
     d[3] = 0.075;
     wmg->AddFootstep(0.0   , -step_y/2, 0.0, 30, 30, d, FS_TYPE_DS);
+
+    wmg->init_param(0.1, 0.261);
 }
 
 ///@}

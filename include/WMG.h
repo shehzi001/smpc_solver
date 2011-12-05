@@ -58,7 +58,8 @@ class WMG
     public:
         WMG();
         ~WMG();
-        void init (const int, const double, const double);
+        void init (const int);
+        void init_param (const double, const double);
         void AddFootstep(
                 const double, 
                 const double, 

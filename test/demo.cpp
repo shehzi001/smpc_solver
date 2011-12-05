@@ -18,7 +18,8 @@ int main(int argc, char **argv)
     WMG wmg;
 
     wmg.init (
-            15,     // size of the preview window
+            15);    // size of the preview window
+    wmg.init_param (
             0.1,    // sampling time [sec.]
             0.261); // height of the center of mass [meter]
 
