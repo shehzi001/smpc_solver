@@ -348,7 +348,7 @@ Output:
     - A less structured part corresponding to inequality constraints. It is 
       altered each time the active set is changed. This part is stored as a
       set of 2*N vectors. The length of each vector could not be longer than
-      N*#NUM_VAR.
+      N*#SMPC_NUM_VAR.
 \n\n
 
 @section pBounds Implementing bounds

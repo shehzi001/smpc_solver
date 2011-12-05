@@ -71,7 +71,7 @@ int main(int argc, char **argv)
     
         if (dump_to_stdout)
         {
-            for (int i = 0; i < wmg.N*NUM_VAR; i++)
+            for (int i = 0; i < wmg.N*SMPC_NUM_VAR; i++)
             {
                 cout << wmg.X[i] << endl;
             }

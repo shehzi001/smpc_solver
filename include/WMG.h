@@ -16,16 +16,11 @@
 #include <string>
 #include <vector>
 
+#include "smpc_solver.h"
 
 /****************************************
  * DEFINES
  ****************************************/
-/// Number of state variables.
-#define NUM_STATE_VAR 6
-/// Number of control variables.
-#define NUM_CONTROL_VAR 2
-/// Total number of variables.
-#define NUM_VAR 8
 
 
 
@@ -109,7 +104,7 @@ class WMG
         double *X;
 
         /** \brief Initial state. */
-        double X_tilde[NUM_STATE_VAR];
+        double X_tilde[SMPC_NUM_STATE_VAR];
 
         double *angle;
         double *zref_x;

@@ -22,8 +22,8 @@
  * @brief Forms E*x.
  *
  * @param[in] ppar parameters.
- * @param[in] x vector x (#NUM_VAR * N).
- * @param[out] result vector E*x (#NUM_STATE_VAR * N)
+ * @param[in] x vector x (#SMPC_NUM_VAR * N).
+ * @param[out] result vector E*x (#SMPC_NUM_STATE_VAR * N)
  */
 void matrix_E::form_Ex (const problem_parameters* ppar, const double *x, double *result)
 {
@@ -31,7 +31,7 @@ void matrix_E::form_Ex (const problem_parameters* ppar, const double *x, double 
     state_parameters stp;
 
 
-    const double *control = &x[ppar->N*NUM_STATE_VAR];
+    const double *control = &x[ppar->N*SMPC_NUM_STATE_VAR];
     // a pointer to 6 current elements of result
     double *res = result;
 
@@ -40,7 +40,7 @@ void matrix_E::form_Ex (const problem_parameters* ppar, const double *x, double 
         stp = ppar->spar[i];
 
         // a pointer to 6 current state variables
-        const double *xc = &x[i*NUM_STATE_VAR];
+        const double *xc = &x[i*SMPC_NUM_STATE_VAR];
 
 
         // result = -R * x + B * u
@@ -57,7 +57,7 @@ void matrix_E::form_Ex (const problem_parameters* ppar, const double *x, double 
             double cosA = ppar->spar[i-1].cos;
             double sinA = ppar->spar[i-1].sin;
 
-            xc = &x[(i-1)*NUM_STATE_VAR];
+            xc = &x[(i-1)*SMPC_NUM_STATE_VAR];
 
 
             // result += A*R*x
@@ -70,8 +70,8 @@ void matrix_E::form_Ex (const problem_parameters* ppar, const double *x, double 
         }
 
         // next control variables
-        control = &control[NUM_CONTROL_VAR];
-        res = &res[NUM_STATE_VAR];
+        control = &control[SMPC_NUM_CONTROL_VAR];
+        res = &res[SMPC_NUM_STATE_VAR];
     }
 }
 
@@ -80,8 +80,8 @@ void matrix_E::form_Ex (const problem_parameters* ppar, const double *x, double 
  * @brief Forms E' * x
  *
  * @param[in] ppar parameters.
- * @param[in] x vector x (#NUM_STATE_VAR * N).
- * @param[out] result vector E' * nu (#NUM_VAR * N)
+ * @param[in] x vector x (#SMPC_NUM_STATE_VAR * N).
+ * @param[out] result vector E' * nu (#SMPC_NUM_VAR * N)
  */
 void matrix_E::form_ETx (const problem_parameters* ppar, const double *x, double *result)
 {
@@ -91,7 +91,7 @@ void matrix_E::form_ETx (const problem_parameters* ppar, const double *x, double
 
 
     double *res = result;
-    double *control_res = &result[ppar->N*NUM_STATE_VAR];
+    double *control_res = &result[ppar->N*SMPC_NUM_STATE_VAR];
 
     for (i = 0; i < ppar->N; i++)
     {
@@ -100,7 +100,7 @@ void matrix_E::form_ETx (const problem_parameters* ppar, const double *x, double
 
         // a pointer to 6 current elements of result
         // a pointer to 6 current elements of nu
-        const double *xc = &x[i*NUM_STATE_VAR];
+        const double *xc = &x[i*SMPC_NUM_STATE_VAR];
 
 
         // result = -R' * nu
@@ -117,7 +117,7 @@ void matrix_E::form_ETx (const problem_parameters* ppar, const double *x, double
             double A3 = ppar->spar[i+1].T;
             double A6 = ppar->spar[i+1].A6;
 
-            xc = &x[i*NUM_STATE_VAR + NUM_STATE_VAR];
+            xc = &x[i*SMPC_NUM_STATE_VAR + SMPC_NUM_STATE_VAR];
 
             // result += R' * A' * x
             res[0] += stp.cos * xc[0] + stp.sin * xc[3];
@@ -130,14 +130,14 @@ void matrix_E::form_ETx (const problem_parameters* ppar, const double *x, double
         }
 
 
-        xc = &x[i*NUM_STATE_VAR];
+        xc = &x[i*SMPC_NUM_STATE_VAR];
 
         // result = B' * x
         control_res[0] = stp.B[0] * xc[0] + stp.B[1] * xc[1] + stp.B[2] * xc[2];
         control_res[1] = stp.B[0] * xc[3] + stp.B[1] * xc[4] + stp.B[2] * xc[5];
 
 
-        res = &res[NUM_STATE_VAR];
-        control_res = &control_res[NUM_CONTROL_VAR];
+        res = &res[SMPC_NUM_STATE_VAR];
+        control_res = &control_res[SMPC_NUM_CONTROL_VAR];
     }
 }

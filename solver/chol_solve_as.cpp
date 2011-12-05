@@ -30,15 +30,15 @@
  */
 chol_solve_as::chol_solve_as (const int N) : ecL(N)
 {
-    nu = new double[NUM_VAR*N];
-    XiHg = new double[NUM_VAR*N];
-    z = new double[NUM_VAR*N];
+    nu = new double[SMPC_NUM_VAR*N];
+    XiHg = new double[SMPC_NUM_VAR*N];
+    z = new double[SMPC_NUM_VAR*N];
 
     icL = new double*[N*2];
-    icL_mem = new double[NUM_VAR*N*N*2];
+    icL_mem = new double[SMPC_NUM_VAR*N*N*2];
     for(int i = 0; i < N*2; i++)
     {
-        icL[i] = &icL_mem[i * NUM_VAR*N];
+        icL[i] = &icL_mem[i * SMPC_NUM_VAR*N];
     }
 }
 
@@ -76,13 +76,13 @@ void chol_solve_as::form_sa_row(
 {
     double aiH = ppar->i2Q[0]; // a'*inv(H) = a'*inv(H)*a
     int state_num = var_num / 2; // number of state in the preview window
-    int first_num = state_num * NUM_STATE_VAR; // first !=0 element
+    int first_num = state_num * SMPC_NUM_STATE_VAR; // first !=0 element
     double aiHcosA;
     double aiHsinA;
 
 
     // reset memory
-    memset(row, 0, (NUM_STATE_VAR * ppar->N + ic_num) * sizeof(double));
+    memset(row, 0, (SMPC_NUM_STATE_VAR * ppar->N + ic_num) * sizeof(double));
 
     aiHcosA = aiH * ppar->spar[state_num].cos;
     aiHsinA = aiH * ppar->spar[state_num].sin;
@@ -116,7 +116,7 @@ void chol_solve_as::form_sa_row(
     }
 
     // initialize the last element in the row
-    row[ic_num + ppar->N*NUM_STATE_VAR] = aiH;
+    row[ic_num + ppar->N*SMPC_NUM_STATE_VAR] = aiH;
 }
 
 
@@ -145,7 +145,7 @@ void chol_solve_as::solve(
 
     // -(x + inv(H) * g)
     //  x - initial feasible point
-    for (i = 0; i < NUM_VAR * ppar->N; i++)
+    for (i = 0; i < SMPC_NUM_VAR * ppar->N; i++)
     {
         XiHg[i] = -x[i];
     }
@@ -160,7 +160,7 @@ void chol_solve_as::solve(
     // obtain nu
     ecL.solve_forward(ppar->N, s_nu);
     // make copy of z - it is constant
-    for (i = 0; i < NUM_STATE_VAR * ppar->N; i++)
+    for (i = 0; i < SMPC_NUM_STATE_VAR * ppar->N; i++)
     {
         z[i] = s_nu[i];
     }
@@ -175,12 +175,12 @@ void chol_solve_as::solve(
     // dx = -(x + inv(H) * g + inv(H) * E' * nu)
     //        ~~~~~~~~~~~~~~            ~~~~~~~
     // dx   -(   -XiHg       + inv(H) *   dx   ) 
-    for (i = 0; i < ppar->N*NUM_STATE_VAR; i++)
+    for (i = 0; i < ppar->N*SMPC_NUM_STATE_VAR; i++)
     {
         // dx for state variables
         dx[i] = XiHg[i] - i2Q[i%3] * dx[i];
     }
-    for (; i < ppar->N*NUM_VAR; i++)
+    for (; i < ppar->N*SMPC_NUM_VAR; i++)
     {
         // dx for control variables
         dx[i] = XiHg[i] - ppar->i2P * dx[i];
@@ -229,7 +229,7 @@ void chol_solve_as::update (const problem_parameters* ppar, const int nW, const 
     int state_num = W[ic_num] / 2; // number of state in the preview window
     double *new_row = icL[ic_num]; // current row in icL
 
-    int last_num = ic_num + ppar->N*NUM_STATE_VAR; // the last !=0 element
+    int last_num = ic_num + ppar->N*SMPC_NUM_STATE_VAR; // the last !=0 element
 
     // a matrix on diagonal of ecL
     double* ecL_diag = &ecL.ecL[state_num * MATRIX_SIZE_3x3 * 2];
@@ -241,12 +241,12 @@ void chol_solve_as::update (const problem_parameters* ppar, const int nW, const 
     form_sa_row(ppar, ic_num, W[ic_num], new_row);
 
     // update elements starting from the first non-zero
-    // element in the row to NUM_STATE_VAR * N (size of ecL)
+    // element in the row to SMPC_NUM_STATE_VAR * N (size of ecL)
     // the calculation of the last elements is completed
     // in a separate loop
     // each number in row 'a' causes update of only 3 elements following
     // it, they can be 1,2,6; 1,5,6; 4,5,6
-    k = state_num*NUM_STATE_VAR;
+    k = state_num*SMPC_NUM_STATE_VAR;
     double* cur_pos = &new_row[k];
     for(i = state_num*2; i < ppar->N*2; i++) // variables corresponding to x and 
     {                                  // y are computed using the same matrices
@@ -289,11 +289,11 @@ void chol_solve_as::update (const problem_parameters* ppar, const int nW, const 
                            + tmp_copy_el[1] * tmp_copy_el[1] 
                            + tmp_copy_el[2] * tmp_copy_el[2];
 
-        // update elements after N*NUM_STATE_VAR using the previously added rows
+        // update elements after N*SMPC_NUM_STATE_VAR using the previously added rows
         // in icL
         for (j = 0; j < ic_num; j++)
         {
-            new_row[ppar->N*NUM_STATE_VAR + j] -= tmp_copy_el[0] * icL[j][k]
+            new_row[ppar->N*SMPC_NUM_STATE_VAR + j] -= tmp_copy_el[0] * icL[j][k]
                                           + tmp_copy_el[1] * icL[j][k+1]
                                           + tmp_copy_el[2] * icL[j][k+2];
         }
@@ -302,9 +302,9 @@ void chol_solve_as::update (const problem_parameters* ppar, const int nW, const 
     }
 
     // update elements in the end of icL
-    for(i = NUM_STATE_VAR * ppar->N; i < last_num; i++)
+    for(i = SMPC_NUM_STATE_VAR * ppar->N; i < last_num; i++)
     {
-        new_row[i] /= icL[i - ppar->N*NUM_STATE_VAR][i];
+        new_row[i] /= icL[i - ppar->N*SMPC_NUM_STATE_VAR][i];
         double tmp_copy_el = new_row[i];
 
         // determine number in the row of L
@@ -312,9 +312,9 @@ void chol_solve_as::update (const problem_parameters* ppar, const int nW, const 
         // update the last (diagonal) number in the row
         new_row[last_num] -= tmp_copy_el * tmp_copy_el;
 
-        for (j = (i - ppar->N*NUM_STATE_VAR) + 1; j < ic_num; j++)
+        for (j = (i - ppar->N*SMPC_NUM_STATE_VAR) + 1; j < ic_num; j++)
         {
-            new_row[ppar->N*NUM_STATE_VAR + j] -= tmp_copy_el * icL[j][i];
+            new_row[ppar->N*SMPC_NUM_STATE_VAR + j] -= tmp_copy_el * icL[j][i];
         }
     }
 
@@ -342,7 +342,7 @@ void chol_solve_as::update_z (
 {
     int ic_num = nW-1; // index of added constraint in W
     // update lagrange multipliers
-    int zind = ppar->N*NUM_STATE_VAR + ic_num;
+    int zind = ppar->N*SMPC_NUM_STATE_VAR + ic_num;
     // sn
     double zn = -iHg[W[ic_num]] - x[W[ic_num]*3];
 
@@ -383,10 +383,10 @@ void chol_solve_as::resolve (
 
 
     // backward substituition for icL
-    for (i = NUM_STATE_VAR*ppar->N + nW-1; i >= NUM_STATE_VAR*ppar->N; i--)
+    for (i = SMPC_NUM_STATE_VAR*ppar->N + nW-1; i >= SMPC_NUM_STATE_VAR*ppar->N; i--)
     {
         double nui = nu[i];
-        double *icL_row = icL[i-ppar->N*NUM_STATE_VAR];
+        double *icL_row = icL[i-ppar->N*SMPC_NUM_STATE_VAR];
 
         nui = nui / icL_row[i];
         for (j = i - 1; j >= 0; j--)
@@ -407,12 +407,12 @@ void chol_solve_as::resolve (
     // dx = -(x + inv(H) * g + inv(H) * E' * nu)
     //            ~~~~~~~~~~            ~~~~~~~
     // dx   -(x +  iHg       + inv(H) *   dx   ) 
-    for (i = 0; i < ppar->N*NUM_STATE_VAR; i++)
+    for (i = 0; i < ppar->N*SMPC_NUM_STATE_VAR; i++)
     {
         // dx for state variables
         dx[i] = -x[i] - i2Q[i%3] * dx[i];
     }
-    for (; i < ppar->N*NUM_VAR; i++)
+    for (; i < ppar->N*SMPC_NUM_VAR; i++)
     {
         // dx for control variables
         dx[i] = -x[i] - ppar->i2P * dx[i];
@@ -424,7 +424,7 @@ void chol_solve_as::resolve (
     }
 
     // -iH * A(W,:)' * lambda
-    double *lambda = &nu[ppar->N*NUM_STATE_VAR];
+    double *lambda = &nu[ppar->N*SMPC_NUM_STATE_VAR];
     for (i = 0; i < nW; i++)
     {
         dx[W[i]*3] -= i2Q[0] * lambda[i];
@@ -462,17 +462,17 @@ void chol_solve_as::down_resolve(
     double z_tmp = 0;
     for (int i = nW; i > ind_exclude; i--)
     {
-        int zind = ppar->N*NUM_STATE_VAR + i;
+        int zind = ppar->N*SMPC_NUM_STATE_VAR + i;
         double zn = z[zind] * icL[i][zind];
         z[zind] = z_tmp;
 
-        for (int j = ppar->N*NUM_STATE_VAR + ind_exclude; j < zind; j++)
+        for (int j = ppar->N*SMPC_NUM_STATE_VAR + ind_exclude; j < zind; j++)
         {
             zn += z[j] * icL[i][j];
         }
         z_tmp = zn;
     }
-    z[ppar->N*NUM_STATE_VAR + ind_exclude] = z_tmp;
+    z[ppar->N*SMPC_NUM_STATE_VAR + ind_exclude] = z_tmp;
 
 
     // downdate L
@@ -482,12 +482,12 @@ void chol_solve_as::down_resolve(
     // recompute elements of z
     for (int i = ind_exclude; i < nW; i++)
     {
-        int zind = ppar->N*NUM_STATE_VAR + i;
+        int zind = ppar->N*SMPC_NUM_STATE_VAR + i;
         double zn = z[zind];
 
         // zn
         // start from the first !=0 element
-        for (int j = ppar->N*NUM_STATE_VAR+ind_exclude; j < zind; j++)
+        for (int j = ppar->N*SMPC_NUM_STATE_VAR+ind_exclude; j < zind; j++)
         {
             zn -= z[j] * icL[i][j];
         }
@@ -495,7 +495,7 @@ void chol_solve_as::down_resolve(
     }
 
     // copy z to nu
-    for (int i = 0; i < ppar->N*NUM_STATE_VAR + nW; i++)
+    for (int i = 0; i < ppar->N*SMPC_NUM_STATE_VAR + nW; i++)
     {
         nu[i] = z[i];
     }
@@ -512,7 +512,7 @@ void chol_solve_as::down_resolve(
  */
 double * chol_solve_as::get_lambda(const problem_parameters* ppar)
 {
-    return(&nu[NUM_STATE_VAR*ppar->N]);
+    return(&nu[SMPC_NUM_STATE_VAR*ppar->N]);
 }
 
 
@@ -543,7 +543,7 @@ void chol_solve_as::downdate(
 
     for (int i = ind_exclude; i < nW; i++)
     {
-        int el_index = NUM_STATE_VAR*ppar->N + i;
+        int el_index = SMPC_NUM_STATE_VAR*ppar->N + i;
         double *cur_el = &icL[i][el_index];
         double x1 = cur_el[0];
         double x2 = cur_el[1];

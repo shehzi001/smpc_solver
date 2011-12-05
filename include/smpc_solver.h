@@ -16,6 +16,14 @@ class qp_solver;
 /// @addtogroup gAPI 
 /// @{
 
+/// Number of state variables.
+#define SMPC_NUM_STATE_VAR 6
+/// Number of control variables.
+#define SMPC_NUM_CONTROL_VAR 2
+/// Total number of variables.
+#define SMPC_NUM_VAR 8
+
+
 
 /**
  * @brief API of the sparse MPC solver.

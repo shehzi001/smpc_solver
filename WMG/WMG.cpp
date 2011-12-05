@@ -83,9 +83,9 @@ void WMG::init(const int _N)
     N = _N;
 
 
-    X = new double[NUM_VAR*N];
+    X = new double[SMPC_NUM_VAR*N];
 
-    for(int i=0; i<NUM_STATE_VAR; i++)
+    for(int i=0; i<SMPC_NUM_STATE_VAR; i++)
     {
         X_tilde[i] = 0.0;
     }

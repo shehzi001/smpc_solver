@@ -67,11 +67,11 @@ namespace state_handling
      *
      * @param[in] sp parameters. 
      * @param[in] X a solution.
-     * @param[in,out] state the state (#NUM_STATE_VAR elements).
+     * @param[in,out] state the state (#SMPC_NUM_STATE_VAR elements).
      */
     void get_next_state_tilde (const problem_parameters* sp, const double *X, double *state)
     {
-        for (int i = 0; i < NUM_STATE_VAR; i++)
+        for (int i = 0; i < SMPC_NUM_STATE_VAR; i++)
         {
             state[i] = X[i];
         }
@@ -85,7 +85,7 @@ namespace state_handling
      *
      * @param[in] sp parameters. 
      * @param[in] X a solution.
-     * @param[in,out] state the state (#NUM_STATE_VAR elements).
+     * @param[in,out] state the state (#SMPC_NUM_STATE_VAR elements).
      */
     void get_next_state (const problem_parameters* sp, const double *X, double *state)
     {
@@ -103,7 +103,7 @@ namespace state_handling
      */
     void get_first_controls (const int preview_window_size, const double *X, double *controls)
     {
-        controls[0] = X[preview_window_size*NUM_STATE_VAR + 0];
-        controls[1] = X[preview_window_size*NUM_STATE_VAR + 1];
+        controls[0] = X[preview_window_size*SMPC_NUM_STATE_VAR + 0];
+        controls[1] = X[preview_window_size*SMPC_NUM_STATE_VAR + 1];
     }
 }

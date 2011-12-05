@@ -27,7 +27,7 @@
  */
 chol_solve_ip::chol_solve_ip (const int N) : ecL(N)
 {
-    w = new double[N*NUM_STATE_VAR];
+    w = new double[N*SMPC_NUM_STATE_VAR];
 }
 
 
@@ -87,7 +87,7 @@ void chol_solve_ip::solve(
         dx[j] = i2hess_grad[j] - i2Q[1] * dx[j]; 
         j++;
     }
-    for (i = ppar->N*NUM_STATE_VAR; i < ppar->N*NUM_VAR; i++)
+    for (i = ppar->N*SMPC_NUM_STATE_VAR; i < ppar->N*SMPC_NUM_VAR; i++)
     {
         // dx for control variables
         dx[i] = i2hess_grad[i] - ppar->i2P * dx[i];

@@ -283,7 +283,7 @@ void matrix_ecL_as::form (const problem_parameters* ppar)
  *
  * @param[in] N number of states in the preview window
  * @param[in,out] x vector "b" as input, vector "x" as output
- *                  (N * #NUM_STATE_VAR)
+ *                  (N * #SMPC_NUM_STATE_VAR)
  */
 void matrix_ecL_as::solve_forward(const int N, double *x)
 {
@@ -317,7 +317,7 @@ void matrix_ecL_as::solve_forward(const int N, double *x)
     {
         // switch to the next level of L / next 6 elements
         xp = xc;
-        xc = &xc[NUM_STATE_VAR];
+        xc = &xc[SMPC_NUM_STATE_VAR];
 
         prev_ecL = &cur_ecL[MATRIX_SIZE_3x3];
         cur_ecL = &cur_ecL[2 * MATRIX_SIZE_3x3];
@@ -356,7 +356,7 @@ void matrix_ecL_as::solve_forward(const int N, double *x)
 void matrix_ecL_as::solve_backward (const int N, double *x)
 {
     int i;
-    double *xc = & x[(N-1)*NUM_STATE_VAR]; // current 6 elements of result
+    double *xc = & x[(N-1)*SMPC_NUM_STATE_VAR]; // current 6 elements of result
     double *xp; // 6 elements computed on the previous iteration
     
     // elements of these matrices accessed as if they were transposed
@@ -384,7 +384,7 @@ void matrix_ecL_as::solve_backward (const int N, double *x)
     for (i = N-2; i >= 0 ; i--)
     {
         xp = xc;
-        xc = & x[i*NUM_STATE_VAR];
+        xc = & x[i*SMPC_NUM_STATE_VAR];
 
         cur_ecL = &ecL[2 * i * MATRIX_SIZE_3x3];
         prev_ecL = &cur_ecL[MATRIX_SIZE_3x3];

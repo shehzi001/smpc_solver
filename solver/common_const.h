@@ -22,11 +22,11 @@
 /// @{
 
 /// Number of state variables.
-#define NUM_STATE_VAR 6
+#define SMPC_NUM_STATE_VAR 6
 /// Number of control variables.
-#define NUM_CONTROL_VAR 2
+#define SMPC_NUM_CONTROL_VAR 2
 /// Total number of variables.
-#define NUM_VAR 8
+#define SMPC_NUM_VAR 8
 
 /// @}
 

@@ -71,13 +71,13 @@ class qp_ip : public qp_solver
         double *g;
 
         /// Inverted hessian: non-repeating diagonal elements
-        /// 1:3:#N*#NUM_STATE_VAR, 2*#N in total.
+        /// 1:3:#N*#SMPC_NUM_STATE_VAR, 2*#N in total.
         double *i2hess;
 
-        /// Inverted hessian * gradient (#N*#NUM_VAR vector)
+        /// Inverted hessian * gradient (#N*#SMPC_NUM_VAR vector)
         double *i2hess_grad;
 
-        /// #N*#NUM_VAR gradient vector
+        /// #N*#SMPC_NUM_VAR gradient vector
         double *grad;
 
         /// Value of phi(X), where phi is the cost function + log barrier.

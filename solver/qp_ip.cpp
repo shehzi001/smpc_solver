@@ -43,8 +43,8 @@ qp_ip::qp_ip(
 {
     g = new double[2*N];
     i2hess = new double[2*N];
-    i2hess_grad = new double[N*NUM_VAR];
-    grad = new double[N*NUM_VAR];
+    i2hess_grad = new double[N*SMPC_NUM_VAR];
+    grad = new double[N*SMPC_NUM_VAR];
 
     Q[0] = Beta/2;
     Q[1] = Alpha/2;
@@ -138,11 +138,11 @@ void qp_ip::form_grad_i2hess_logbar (const double kappa)
 
     // grad = H*X + g + kappa * b;
     // initialize grad = H*X
-    for (i = 0; i < N*NUM_STATE_VAR; i++)
+    for (i = 0; i < N*SMPC_NUM_STATE_VAR; i++)
     {
         grad[i] = X[i] / i2Q[i%3];
     }
-    for (; i < N*NUM_VAR; i++)
+    for (; i < N*SMPC_NUM_VAR; i++)
     {
         grad[i] = X[i] / i2P;
     }
@@ -164,7 +164,7 @@ void qp_ip::form_grad_i2hess_logbar (const double kappa)
         // grad += g + kappa * (ub_diff - lb_diff)
         grad[j] += g[i] + kappa * (ub_diff - lb_diff);
 
-        // only elements 1:3:N*NUM_STATE_VAR on the diagonal of hessian 
+        // only elements 1:3:N*SMPC_NUM_STATE_VAR on the diagonal of hessian 
         // can change
         // hess = H + kappa * (ub_diff^2 - lb_diff^2)
         i2hess[i] = 1/(2*Q[0] + kappa * (ub_diff*ub_diff + lb_diff*lb_diff));
@@ -189,7 +189,7 @@ void qp_ip::form_i2hess_grad ()
         i2hess_grad[j] = - grad[j] * i2Q[2]; 
         j++;
     }
-    for (i = N*NUM_STATE_VAR; i < N*NUM_VAR; i++)
+    for (i = N*SMPC_NUM_STATE_VAR; i < N*SMPC_NUM_VAR; i++)
     {
         i2hess_grad[i] = - grad[i] * i2P;
     }
@@ -206,11 +206,11 @@ void qp_ip::form_phi_X ()
     int i;
 
     // phi_X += X'*H*X
-    for (i = 0; i < N*NUM_STATE_VAR; i++)
+    for (i = 0; i < N*SMPC_NUM_STATE_VAR; i++)
     {
         phi_X += Q[i%3] * X[i] * X[i];
     }
-    for (; i < N*NUM_VAR; i++)
+    for (; i < N*SMPC_NUM_VAR; i++)
     {
         phi_X += P * X[i] * X[i];
     }
@@ -279,7 +279,7 @@ double qp_ip::form_bs_alpha_grad_dX ()
 {
     double res = 0;
     
-    for (int i = 0; i < N*NUM_VAR; i++)
+    for (int i = 0; i < N*SMPC_NUM_VAR; i++)
     {
         res += grad[i]*dX[i];
     }
@@ -327,7 +327,7 @@ double qp_ip::form_phi_X_tmp (const double kappa)
         res += Q[2] * X_tmp*X_tmp;
     }
     // phi_X += X'*H*X // controls
-    for (i = N*NUM_STATE_VAR; i < N*NUM_VAR; i++)
+    for (i = N*SMPC_NUM_STATE_VAR; i < N*SMPC_NUM_VAR; i++)
     {
         X_tmp = X[i] + alpha * dX[i];
         res += P * X_tmp * X_tmp;
@@ -423,7 +423,7 @@ bool qp_ip::solve_onestep (const double kappa)
         decrement += dX[j] * dX[j] / i2Q[2];
         j++;
     }
-    for (i = N*NUM_STATE_VAR; i < N*NUM_VAR; i++)
+    for (i = N*SMPC_NUM_STATE_VAR; i < N*SMPC_NUM_VAR; i++)
     {
         decrement += dX[i] * dX[i] / i2P;
     }
@@ -461,7 +461,7 @@ bool qp_ip::solve_onestep (const double kappa)
 
 
     // Move in the feasible descent direction
-    for (j = 0; j < N*NUM_VAR ; j++)
+    for (j = 0; j < N*SMPC_NUM_VAR ; j++)
     {
         X[j] += alpha * dX[j];
     }

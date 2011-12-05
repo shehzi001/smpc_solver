@@ -41,7 +41,7 @@ qp_solver::qp_solver(
     gain_beta  = Beta;
     gain_gamma = Gamma;
 
-    dX = new double[NUM_VAR*N]();
+    dX = new double[SMPC_NUM_VAR*N]();
 }
 
 
@@ -63,7 +63,7 @@ void qp_solver::form_init_fp (
 {
     X = X_;
 
-    double *control = &X[NUM_STATE_VAR*N];
+    double *control = &X[SMPC_NUM_STATE_VAR*N];
     double *cur_state = X;
     const double *prev_state = X_tilde;
 
@@ -102,9 +102,9 @@ void qp_solver::form_init_fp (
         cur_state[5] =                                                       prev_state[5] + spar[i].B[2]*control[1];
 
 
-        prev_state = &X[NUM_STATE_VAR*i];
-        cur_state = &X[NUM_STATE_VAR*(i+1)];
-        control = &control[NUM_CONTROL_VAR];
+        prev_state = &X[SMPC_NUM_STATE_VAR*i];
+        cur_state = &X[SMPC_NUM_STATE_VAR*(i+1)];
+        control = &control[SMPC_NUM_CONTROL_VAR];
     }
 
 
@@ -113,6 +113,6 @@ void qp_solver::form_init_fp (
     for (int i=0; i<N; i++)
     {
         state_handling::tilde_to_bar (spar[i].sin, spar[i].cos, cur_state);
-        cur_state = &cur_state[NUM_STATE_VAR];
+        cur_state = &cur_state[SMPC_NUM_STATE_VAR];
     }
 }

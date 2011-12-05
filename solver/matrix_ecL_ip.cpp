@@ -53,7 +53,7 @@ matrix_ecL_ip::~matrix_ecL_ip()
  * @param[in] cosA cos of rotation angle.
  * @param[in] i2Q a vector of three repeating diagonal elements of inv(Q)
  * @param[in] i2hess a 2*N vector of diagonal elements of hess_phi 
- *                  (indicies of these elements are 1:3:N*NUM_STATE_VAR)
+ *                  (indicies of these elements are 1:3:N*SMPC_NUM_STATE_VAR)
  *
  * @attention Only elements lying below the main diagonal of 4x4 matrix
  *            are initialized (other elements are not unique).
@@ -409,7 +409,7 @@ void matrix_ecL_ip::form (const problem_parameters* ppar, const double *i2hess)
  *
  * @param[in] N number of states in the preview window
  * @param[in,out] x vector "b" as input, vector "x" as output
- *                  (N * #NUM_STATE_VAR)
+ *                  (N * #SMPC_NUM_STATE_VAR)
  */
 void matrix_ecL_ip::solve_forward(const int N, double *x)
 {
@@ -437,7 +437,7 @@ void matrix_ecL_ip::solve_forward(const int N, double *x)
     {
         // switch to the next level of L / next 6 elements
         xp = xc;
-        xc = &xc[NUM_STATE_VAR];
+        xc = &xc[SMPC_NUM_STATE_VAR];
 
         ecL_prev = &ecL_cur[MATRIX_SIZE_6x6];
         ecL_cur = &ecL_prev[MATRIX_SIZE_6x6];
@@ -474,7 +474,7 @@ void matrix_ecL_ip::solve_forward(const int N, double *x)
 void matrix_ecL_ip::solve_backward (const int N, double *x)
 {
     int i,j,k;
-    double *xc = & x[(N-1)*NUM_STATE_VAR]; // current 6 elements of result
+    double *xc = & x[(N-1)*SMPC_NUM_STATE_VAR]; // current 6 elements of result
     double *xp; // 6 elements computed on the previous iteration
     
     // elements of these matrices accessed as if they were transposed
@@ -498,7 +498,7 @@ void matrix_ecL_ip::solve_backward (const int N, double *x)
     for (i = N-2; i >= 0 ; i--)
     {
         xp = xc;
-        xc = & x[i*NUM_STATE_VAR];
+        xc = & x[i*SMPC_NUM_STATE_VAR];
 
         ecL_cur = &ecL[2 * i * MATRIX_SIZE_6x6];
         ecL_prev = &ecL_cur[MATRIX_SIZE_6x6];

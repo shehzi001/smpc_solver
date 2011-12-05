@@ -151,8 +151,8 @@ void qp_as::form_bounds(const double *lb, const double *ub)
 {
     for (int i=0; i < N; i++)
     {
-        Bounds[i*2].set(NUM_STATE_VAR*i, lb[i*2], ub[i*2], false);
-        Bounds[i*2+1].set(NUM_STATE_VAR*i+3, lb[i*2+1], ub[i*2+1], false);
+        Bounds[i*2].set(SMPC_NUM_STATE_VAR*i, lb[i*2], ub[i*2], false);
+        Bounds[i*2+1].set(SMPC_NUM_STATE_VAR*i+3, lb[i*2+1], ub[i*2+1], false);
     }
 }
 
@@ -277,7 +277,7 @@ int qp_as::solve ()
         int activated_var_num = check_blocking_bounds();
 
         // Move in the feasible descent direction
-        for (int i = 0; i < N*NUM_VAR ; i++)
+        for (int i = 0; i < N*SMPC_NUM_VAR ; i++)
         {
             X[i] += alpha * dX[i];
         }
