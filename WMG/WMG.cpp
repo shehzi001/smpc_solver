@@ -5,7 +5,7 @@
  */
 
 
-#include <iostream>
+#include <stdio.h>
 
 
 #include "WMG.h"
@@ -480,9 +480,6 @@ WMGret WMG::FormPreviewWindow()
             if (win_step_num == (int) FS.size())
             {
                 retval = WMG_HALT;
-                printf(" \n\n====================================\n ");        
-                printf(" WARNING: not enough steps in FS.");
-                printf(" \n====================================\n\n ");        
                 break;
             }
             step_repeat_times = FS[win_step_num].repeat_counter;
@@ -513,7 +510,7 @@ void WMG::FS2file(const std::string filename)
     
     if(!file_op)
     {
-        std::cerr << "Cannot open file (for writing) " << std::endl;
+        fprintf(stderr, "Cannot open file (for writing)\n");
         return;
     }
     
