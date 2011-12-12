@@ -25,10 +25,8 @@ int main(int argc, char **argv)
 
     for(;;)
     {
-        int num_iter_in_ss;
-        int num_iter_in_ss_passed;
-        double prev_swing_pos[3];
-        double next_swing_pos[3];
+        double swing_foot_position[3];
+        double angle;
 
 
 
@@ -39,12 +37,12 @@ int main(int argc, char **argv)
             break;
         }
         //------------------------------------------------------
-
-        wmg.get_swing_foot_pos (
-                prev_swing_pos,
-                next_swing_pos,
-                &num_iter_in_ss,
-                &num_iter_in_ss_passed);
+        wmg.getSwingFootPosition (
+                WMG_SWING_PARABOLA,
+                10,
+                0,
+                swing_foot_position,
+                &angle);
 
         //------------------------------------------------------
         solver.set_parameters (wmg.T, wmg.h, wmg.angle, wmg.zref_x, wmg.zref_y, wmg.lb, wmg.ub);

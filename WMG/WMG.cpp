@@ -26,6 +26,8 @@ WMG::WMG()
     zref_y = NULL;
     lb = NULL;
     ub = NULL;
+
+    current_reference_foot = FS_TYPE_AUTO;
 }
 
 
@@ -116,20 +118,27 @@ void WMG::init(const int _N)
 }
 
 
-/** \brief Initializes a WMG object.
-
-    \param[in] _T Sampling time (for the moment it is assumed to be constant) [sec.]
-    \param[in] _hCoM Height of the Center of Mass [meter]
+/** 
+ * @brief Initializes a WMG object.
+ *
+ * @param[in] T_ Sampling time (for the moment it is assumed to be constant) [sec.]
+ * @param[in] hCoM_ Height of the Center of Mass [meter]
+ * @param[in] step_height_ step hight (for interpolation of feet movements)
  */
-void WMG::init_param(const double _T, const double _hCoM)
+void WMG::init_param(
+        const double T_, 
+        const double hCoM_,
+        const double step_height_)
 {
-    hCoM = _hCoM;      
+    hCoM = hCoM_;      
 
     for (int i = 0; i < N; i++)
     {
-        T[i] = _T;
+        T[i] = T_;
         h[i] = hCoM/gravity;
     }
+
+    step_height = step_height_;
 }
 
 
@@ -377,7 +386,8 @@ int WMG::get_prev_SS(const int start_ind, const fs_type type)
  * @attention This function requires the walking pattern to be started and finished
  * by single support.
  *
- * @attention Cannot be called on the first or last SS.
+ * @attention Cannot be called on the first or last SS  =>  must be called after 
+ * FormPreviewWindow().
  *
  * @note If we are in the double support then prev_swing_pos = next_swing_pos, and
  * repeat_times = repeated_times = 0.
@@ -389,32 +399,35 @@ fs_type WMG::get_swing_foot_pos (
         int *repeated_times)
 {
     fs_type cur_fs_type = FS[current_step_number].type;
-    int sup_ind, next_swing_ind, prev_swing_ind;
+    int next_swing_ind, prev_swing_ind;
+    int next_ss_ind, prev_ss_ind;
 
     switch (cur_fs_type)
     {
         case FS_TYPE_SS_L:
         case FS_TYPE_SS_R:
-            prev_swing_ind = get_prev_SS(
+            prev_swing_ind = get_prev_SS (
                     current_step_number, 
-                    (cur_fs_type == FS_TYPE_SS_R) ? FS_TYPE_SS_L : FS_TYPE_SS_R);
-            next_swing_ind = get_next_SS(
+                    (current_reference_foot == FS_TYPE_SS_R) ? FS_TYPE_SS_L : FS_TYPE_SS_R);
+            next_swing_ind = get_next_SS (
                     current_step_number, 
-                    (cur_fs_type == FS_TYPE_SS_R) ? FS_TYPE_SS_L : FS_TYPE_SS_R);
+                    (current_reference_foot == FS_TYPE_SS_R) ? FS_TYPE_SS_L : FS_TYPE_SS_R);
 
             *repeat_times = FS[current_step_number].repeat_times;
             *repeated_times = *repeat_times - FS[current_step_number].repeat_counter;
             break;
 
         case FS_TYPE_DS:
-            sup_ind = get_next_SS (current_step_number);
-            cur_fs_type = FS[sup_ind].type;
-            next_swing_ind = get_next_SS(sup_ind, (cur_fs_type == FS_TYPE_SS_R) ? FS_TYPE_SS_L : FS_TYPE_SS_R);
-            if (FS[next_swing_ind].type == FS_TYPE_DS)
+            next_ss_ind = get_next_SS (current_step_number);
+            prev_ss_ind = get_prev_SS (current_step_number);
+            if (FS[next_ss_ind].type == current_reference_foot)
             {
-                next_swing_ind = get_prev_SS(sup_ind, (cur_fs_type == FS_TYPE_SS_R) ? FS_TYPE_SS_L : FS_TYPE_SS_R);
+                next_swing_ind = prev_swing_ind = prev_ss_ind;
             }
-            prev_swing_ind = next_swing_ind;
+            else
+            {
+                next_swing_ind = prev_swing_ind = next_ss_ind;
+            }
 
             *repeat_times = 0;
             *repeated_times = 0;
@@ -439,6 +452,65 @@ fs_type WMG::get_swing_foot_pos (
 }
 
 
+/**
+ * @brief Determine position of the swing foot
+ *
+ * @param[in] swing_type which method to use.
+ * @param[in] loops_per_preview_iter number of control loops per preview iteration
+ * @param[out] swing_foot_position 3x1 vector of coordinates [x y z]
+ * @param[out] angle orientation of the foot in x axis
+ */
+void WMG::getSwingFootPosition (
+        const swing_foot_pos_type swing_type,
+        const int loops_per_preview_iter,
+        const int loops_in_current_preview,
+        double *swing_foot_pos,
+        double *angle_x)
+{
+    if (swing_type == WMG_SWING_PARABOLA)
+    {
+        int num_iter_in_ss;
+        int num_iter_in_ss_passed;
+        double prev_swing_pos[3];
+        double next_swing_pos[3];
+
+        if (get_swing_foot_pos (
+                prev_swing_pos,
+                next_swing_pos,
+                &num_iter_in_ss,
+                &num_iter_in_ss_passed) != FS_TYPE_DS)
+        {
+            double theta =
+                (loops_per_preview_iter * num_iter_in_ss_passed + loops_in_current_preview) /
+                (loops_per_preview_iter * num_iter_in_ss);
+
+            double x[3] = {
+                prev_swing_pos[0],
+                (prev_swing_pos[0] + next_swing_pos[0])/2,
+                next_swing_pos[0]};
+
+            double b_coef = - (x[2]*x[2] - x[0]*x[0])/(x[2] - x[0]);
+            double a = step_height / (x[1]*x[1] - x[0]*x[0] + b_coef*(x[1] - x[0]));
+            double b = a * b_coef;
+            double c = - a*x[0]*x[0] - b*x[0];
+
+            swing_foot_pos[0] = (1-theta)*x[2] + theta*x[0]; // linear equation
+            swing_foot_pos[1] = next_swing_pos[1];
+            swing_foot_pos[2] = a * swing_foot_pos[0] * swing_foot_pos[0] + b * swing_foot_pos[0] + c;
+        }
+        else
+        {
+            swing_foot_pos[0] = next_swing_pos[0];
+            swing_foot_pos[1] = next_swing_pos[1];
+            swing_foot_pos[2] = 0.0;
+        }
+
+        *angle_x = next_swing_pos[2];
+    }
+}
+
+
+
 
 /**
  * @brief Forms a preview window.
@@ -452,6 +524,14 @@ WMGret WMG::FormPreviewWindow()
     int step_repeat_times = FS[win_step_num].repeat_counter;
 
 
+    // If reference foot is unknown, this function is executed
+    // for the first time: we need to use the next SS as the
+    // reference foot, since the first SS must be fake.
+    if (current_reference_foot == FS_TYPE_AUTO)
+    {
+        current_reference_foot = FS[get_next_SS (win_step_num)].type;
+    }
+
     // Indicate switch of support foot
     if (    // if we are not in the initial support
             (win_step_num != 0) && 
@@ -460,7 +540,8 @@ WMGret WMG::FormPreviewWindow()
             // this is the first iteration in DS
             (FS[win_step_num].repeat_counter == FS[win_step_num].repeat_times))
     {
-        retval = WMG_SWITCH_SUPPORT;
+        retval = WMG_SWITCH_REFERENCE_FOOT;
+        current_reference_foot = FS[get_next_SS (win_step_num)].type;
     }
 
 

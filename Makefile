@@ -1,3 +1,5 @@
+include ./common.mk
+
 smpc_solver:
 	cd solver; ${MAKE}
 
@@ -10,9 +12,9 @@ test: smpc_solver wmg
 cmake: 
 	-mkdir build;
 ifdef TOOLCHAIN
-	cd build; cmake -DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN} ..;
+	cd build; cmake -DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN} ${CMAKEFLAGS} ..;
 else
-	cd build; cmake ..;
+	cd build; cmake ${CMAKEFLAGS} ..;
 endif
 	cd build; ${MAKE}
 

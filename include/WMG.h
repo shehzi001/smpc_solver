@@ -37,7 +37,7 @@ enum WMGret
 {
     WMG_OK,
     WMG_HALT,
-    WMG_SWITCH_SUPPORT
+    WMG_SWITCH_REFERENCE_FOOT
 };
 
 enum fs_type
@@ -48,6 +48,12 @@ enum fs_type
     FS_TYPE_DS      // double support
 };
 
+enum swing_foot_pos_type
+{
+    WMG_SWING_PARABOLA
+};
+
+
 /** \brief Defines the parameters of the Walking Pattern Generator. */
 class WMG
 {
@@ -55,7 +61,10 @@ class WMG
         WMG();
         ~WMG();
         void init (const int);
-        void init_param (const double, const double);
+        void init_param (
+                const double, 
+                const double,
+                const double step_height = 0.0135);
         void AddFootstep(
                 const double, 
                 const double, 
@@ -79,7 +88,13 @@ class WMG
         WMGret FormPreviewWindow();
         void FS2file(const std::string);
 
-        fs_type get_swing_foot_pos (double *, double *, int *, int *);
+        void getSwingFootPosition (
+                const swing_foot_pos_type,
+                const int,
+                const int,
+                double *,
+                double *);
+
 
         /** \brief A vector of footsteps. */
         std::vector<FootStep> FS; 
@@ -113,11 +128,17 @@ class WMG
         double *lb;
         double *ub;
 
-        /** \brief This is the step in FS that is at the start of the current preview window. I don't need
-        to pop_front steps from FS and that is why I use stl vector and not stl deque). */
+        /** This is the step in FS that is at the start of the current preview window. */
         int current_step_number;
 
+        /// Reference foot (R/L), even in DS we need to choose a reference foot.
+        fs_type current_reference_foot;
+
+        /// The maximum height, that can be reached by a swing foot.
+        int step_height;
+
     private:
+        fs_type get_swing_foot_pos (double *, double *, int *, int *);
         int get_next_SS (const int, const fs_type type = FS_TYPE_AUTO);
         int get_prev_SS (const int, const fs_type type = FS_TYPE_AUTO);
 
