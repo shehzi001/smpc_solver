@@ -377,7 +377,10 @@ int WMG::get_prev_SS(const int start_ind, const fs_type type)
  * @attention This function requires the walking pattern to be started and finished
  * by single support.
  *
- * @note If we are in the double support then prev_swing_pos = next_swing_pos.
+ * @attention Cannot be called on the first or last SS.
+ *
+ * @note If we are in the double support then prev_swing_pos = next_swing_pos, and
+ * repeat_times = repeated_times = 0.
  */
 fs_type WMG::get_swing_foot_pos (
         double *prev_swing_pos,
@@ -398,6 +401,9 @@ fs_type WMG::get_swing_foot_pos (
             next_swing_ind = get_next_SS(
                     current_step_number, 
                     (cur_fs_type == FS_TYPE_SS_R) ? FS_TYPE_SS_L : FS_TYPE_SS_R);
+
+            *repeat_times = FS[current_step_number].repeat_times;
+            *repeated_times = *repeat_times - FS[current_step_number].repeat_counter;
             break;
 
         case FS_TYPE_DS:
@@ -409,6 +415,9 @@ fs_type WMG::get_swing_foot_pos (
                 next_swing_ind = get_prev_SS(sup_ind, (cur_fs_type == FS_TYPE_SS_R) ? FS_TYPE_SS_L : FS_TYPE_SS_R);
             }
             prev_swing_ind = next_swing_ind;
+
+            *repeat_times = 0;
+            *repeated_times = 0;
             break;
 
         case FS_TYPE_AUTO:
@@ -417,8 +426,6 @@ fs_type WMG::get_swing_foot_pos (
             return (cur_fs_type);
     }
 
-    *repeat_times = FS[current_step_number].repeat_times;
-    *repeated_times = *repeat_times - FS[current_step_number].repeat_counter;
 
     prev_swing_pos[0] = FS[prev_swing_ind].x;
     prev_swing_pos[1] = FS[prev_swing_ind].y;
