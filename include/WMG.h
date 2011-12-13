@@ -64,7 +64,7 @@ class WMG
         void init_param (
                 const double, 
                 const double,
-                const double step_height = 0.0135);
+                const double step_height_ = 0.0135);
         void AddFootstep(
                 const double, 
                 const double, 
@@ -135,12 +135,12 @@ class WMG
         fs_type current_reference_foot;
 
         /// The maximum height, that can be reached by a swing foot.
-        int step_height;
+        double step_height;
 
     private:
-        fs_type get_swing_foot_pos (double *, double *, int *, int *);
-        int get_next_SS (const int, const fs_type type = FS_TYPE_AUTO);
-        int get_prev_SS (const int, const fs_type type = FS_TYPE_AUTO);
+        fs_type getSwingFootNextPrevPos (double *, double *, int *, int *);
+        int getNextSS (const int, const fs_type type = FS_TYPE_AUTO);
+        int getPrevSS (const int, const fs_type type = FS_TYPE_AUTO);
 
         double def_constraint[4];
         int def_repeat_times;

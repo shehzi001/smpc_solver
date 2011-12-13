@@ -312,7 +312,7 @@ void WMG::AddFootstep(
  *
  * @return index of the next SS.
  */
-int WMG::get_next_SS(const int start_ind, const fs_type type)
+int WMG::getNextSS(const int start_ind, const fs_type type)
 {
     int index = start_ind;
     for (; index < (int) FS.size(); index++) 
@@ -347,7 +347,7 @@ int WMG::get_next_SS(const int start_ind, const fs_type type)
  *
  * @return index of the previous SS.
  */
-int WMG::get_prev_SS(const int start_ind, const fs_type type)
+int WMG::getPrevSS(const int start_ind, const fs_type type)
 {
     int index = start_ind;
     for (; index >= 0; index--)
@@ -392,7 +392,7 @@ int WMG::get_prev_SS(const int start_ind, const fs_type type)
  * @note If we are in the double support then prev_swing_pos = next_swing_pos, and
  * repeat_times = repeated_times = 0.
  */
-fs_type WMG::get_swing_foot_pos (
+fs_type WMG::getSwingFootNextPrevPos (
         double *prev_swing_pos,
         double *next_swing_pos,
         int *repeat_times,
@@ -406,10 +406,10 @@ fs_type WMG::get_swing_foot_pos (
     {
         case FS_TYPE_SS_L:
         case FS_TYPE_SS_R:
-            prev_swing_ind = get_prev_SS (
+            prev_swing_ind = getPrevSS (
                     current_step_number, 
                     (current_reference_foot == FS_TYPE_SS_R) ? FS_TYPE_SS_L : FS_TYPE_SS_R);
-            next_swing_ind = get_next_SS (
+            next_swing_ind = getNextSS (
                     current_step_number, 
                     (current_reference_foot == FS_TYPE_SS_R) ? FS_TYPE_SS_L : FS_TYPE_SS_R);
 
@@ -418,8 +418,8 @@ fs_type WMG::get_swing_foot_pos (
             break;
 
         case FS_TYPE_DS:
-            next_ss_ind = get_next_SS (current_step_number);
-            prev_ss_ind = get_prev_SS (current_step_number);
+            next_ss_ind = getNextSS (current_step_number);
+            prev_ss_ind = getPrevSS (current_step_number);
             if (FS[next_ss_ind].type == current_reference_foot)
             {
                 next_swing_ind = prev_swing_ind = prev_ss_ind;
@@ -452,13 +452,20 @@ fs_type WMG::get_swing_foot_pos (
 }
 
 
+
 /**
- * @brief Determine position of the swing foot
+ * @brief Determine position and orientation of the swing foot
  *
  * @param[in] swing_type which method to use.
  * @param[in] loops_per_preview_iter number of control loops per preview iteration
  * @param[out] swing_foot_position 3x1 vector of coordinates [x y z]
  * @param[out] angle orientation of the foot in x axis
+ *
+ * @attention This function requires the walking pattern to be started and finished
+ * by single support.
+ *
+ * @attention Cannot be called on the first or last SS  =>  must be called after 
+ * FormPreviewWindow().
  */
 void WMG::getSwingFootPosition (
         const swing_foot_pos_type swing_type,
@@ -474,14 +481,14 @@ void WMG::getSwingFootPosition (
         double prev_swing_pos[3];
         double next_swing_pos[3];
 
-        if (get_swing_foot_pos (
+        if (getSwingFootNextPrevPos(
                 prev_swing_pos,
                 next_swing_pos,
                 &num_iter_in_ss,
                 &num_iter_in_ss_passed) != FS_TYPE_DS)
         {
             double theta =
-                (loops_per_preview_iter * num_iter_in_ss_passed + loops_in_current_preview) /
+                (double) (loops_per_preview_iter * num_iter_in_ss_passed + loops_in_current_preview) /
                 (loops_per_preview_iter * num_iter_in_ss);
 
             double x[3] = {
@@ -529,7 +536,7 @@ WMGret WMG::FormPreviewWindow()
     // reference foot, since the first SS must be fake.
     if (current_reference_foot == FS_TYPE_AUTO)
     {
-        current_reference_foot = FS[get_next_SS (win_step_num)].type;
+        current_reference_foot = FS[getNextSS (win_step_num)].type;
     }
 
     // Indicate switch of support foot
@@ -541,7 +548,7 @@ WMGret WMG::FormPreviewWindow()
             (FS[win_step_num].repeat_counter == FS[win_step_num].repeat_times))
     {
         retval = WMG_SWITCH_REFERENCE_FOOT;
-        current_reference_foot = FS[get_next_SS (win_step_num)].type;
+        current_reference_foot = FS[getNextSS (win_step_num)].type;
     }
 
 
