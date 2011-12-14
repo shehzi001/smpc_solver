@@ -65,9 +65,6 @@ class matrix_ecL_as
 
         // intermediate results used in computation of L
         double *iQAT;       /// inv(Q) * A'
-#ifndef SMPC_VARIABLE_T_h
-        double *AiQATiQBiPB;/// A * inv(Q) * A' + inv(Q) + B * inv(P) * B'
-#endif
 };
 /// @}
 

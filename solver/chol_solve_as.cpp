@@ -433,7 +433,6 @@ void chol_solve_as::resolve (
 
 
 
-#ifdef QPAS_DOWNDATE
 /**
  * @brief A wrapper around private functions, which downdate Cholesky factor and 
  *  resolve the system.
@@ -585,4 +584,3 @@ void chol_solve_as::downdate(
         }
     }
 }
-#endif

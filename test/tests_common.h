@@ -154,7 +154,7 @@ void init_04 (WMG *wmg)
     d[0] = 0.09;
     d[1] = 0.075;
     d[2] = 0.03;
-    d[3] = 0.025;
+    d[3] = 0.075;
     wmg->AddFootstep(0.0, -step_y/2, 0.0, 2, 2, d, FS_TYPE_DS);
     // ZMP, CoM are at [0;0]
 
@@ -178,7 +178,7 @@ void init_04 (WMG *wmg)
     // would not have enough steps in preview window to reach 
     // the last footsteps
     d[0] = 0.09;
-    d[1] = 0.025;
+    d[1] = 0.075;
     d[2] = 0.03;
     d[3] = 0.075;
     wmg->AddFootstep(0.0   , -step_y/2, 0.0, 30, 30, d, FS_TYPE_DS);

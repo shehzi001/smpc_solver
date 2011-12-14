@@ -114,7 +114,7 @@ void matrix_E::form_ETx (const problem_parameters* ppar, const double *x, double
 
         if (i != ppar->N-1) // no multiplication by A on the last iteration
         {
-            double A3 = ppar->spar[i+1].T;
+            double A3 = ppar->spar[i+1].A3;
             double A6 = ppar->spar[i+1].A6;
 
             xc = &x[i*SMPC_NUM_STATE_VAR + SMPC_NUM_STATE_VAR];

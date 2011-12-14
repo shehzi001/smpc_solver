@@ -41,19 +41,15 @@ class chol_solve_as
 
         void up_resolve(const problem_parameters*, const double *, const int, const int *, const double *, double *);
 
-#ifdef QPAS_DOWNDATE
         double * get_lambda(const problem_parameters*);
         void down_resolve(const problem_parameters*, const double *, const int, const int *, const int, const double *, double *);
-#endif
 
 
     private:
         void update (const problem_parameters*, const int, const int *);
         void update_z (const problem_parameters*, const double *, const int, const int *, const double *);
-#ifdef QPAS_DOWNDATE
         void downdate(const problem_parameters*, const int, const int, const double *);
         void downdate_z (const problem_parameters*, const int, const int *, const int, const double *);
-#endif
 
         void resolve (const problem_parameters*, const double *, const int, const int *, const double *, double *);
 

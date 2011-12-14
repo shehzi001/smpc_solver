@@ -26,9 +26,6 @@ matrix_ecL_as::matrix_ecL_as (const int N)
     ecL = new double[MATRIX_SIZE_3x3*N + MATRIX_SIZE_3x3*(N-1)]();
 
     iQAT = new double[MATRIX_SIZE_3x3];
-#ifndef SMPC_VARIABLE_T_h
-    AiQATiQBiPB = new double[MATRIX_SIZE_3x3];
-#endif
 }
 
 
@@ -36,11 +33,6 @@ matrix_ecL_as::~matrix_ecL_as()
 {
     if (ecL != NULL)
         delete ecL;
-
-#ifndef SMPC_VARIABLE_T_h
-    if (AiQATiQBiPB != NULL)
-        delete AiQATiQBiPB;
-#endif
 
     if (iQAT != NULL)
         delete iQAT;
@@ -200,16 +192,6 @@ void matrix_ecL_as::form_L_non_diag(const double *ecLp, double *ecLc)
  */
 void matrix_ecL_as::form_L_diag(const double *ecLp, double *ecLc)
 {
-#ifndef SMPC_VARIABLE_T_h
-    ecLc[0] = AiQATiQBiPB[0];
-    ecLc[4] = AiQATiQBiPB[4];
-    ecLc[8] = AiQATiQBiPB[8];
-    // symmetric nondiagonal elements (no need to initialize all of them)
-    ecLc[1] = AiQATiQBiPB[1];
-    ecLc[2] = AiQATiQBiPB[2];
-    ecLc[5] = AiQATiQBiPB[5];
-#endif
-
     // L(k+1,k+1) = (- L(k+1,k) * L(k+1,k)') + (A * inv(Q) * A' + inv(Q) + B * inv(P) * B)
     // diagonal elements
     ecLc[0] -= ecLp[0]*ecLp[0] + ecLp[3]*ecLp[3] + ecLp[6]*ecLp[6];
@@ -237,15 +219,9 @@ void matrix_ecL_as::form (const problem_parameters* ppar)
     state_parameters stp;
 
 
-    stp = ppar->spar[0];
-
-    // form all matrices
-#ifndef SMPC_VARIABLE_T_h
-    form_iQAT (stp.A3, stp.A6, ppar->i2Q);
-    form_AiQATiQBiPB (ppar, stp, AiQATiQBiPB);
-#endif
 
     // the first matrix on diagonal
+    stp = ppar->spar[0];
     form_iQBiPB (stp.B, ppar->i2Q, ppar->i2P, ecL);
     chol_dec (ecL);
 
@@ -255,10 +231,8 @@ void matrix_ecL_as::form (const problem_parameters* ppar)
     double *ecL_prev = ecL;
     for (i = 1; i < ppar->N; i++)
     {
-#ifdef SMPC_VARIABLE_T_h
         stp = ppar->spar[i];
         form_iQAT (stp.A3, stp.A6, ppar->i2Q);
-#endif
 
         // form (b), (d), (f) ... 
         form_L_non_diag(ecL_prev, ecL_cur);
@@ -267,9 +241,7 @@ void matrix_ecL_as::form (const problem_parameters* ppar)
         ecL_prev = &ecL_prev[MATRIX_SIZE_3x3];
 
         // form (c), (e), (g) ...
-#ifdef SMPC_VARIABLE_T_h
         form_AiQATiQBiPB (ppar, stp, ecL_cur);
-#endif
         form_L_diag(ecL_prev, ecL_cur);
         // update offsets
         ecL_cur = &ecL_cur[MATRIX_SIZE_3x3];

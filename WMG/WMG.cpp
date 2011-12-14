@@ -314,7 +314,7 @@ void WMG::AddFootstep(
  */
 int WMG::getNextSS(const int start_ind, const fs_type type)
 {
-    int index = start_ind;
+    int index = start_ind + 1;
     for (; index < (int) FS.size(); index++) 
     {
         if (FS[index].type != FS_TYPE_DS)
@@ -349,7 +349,7 @@ int WMG::getNextSS(const int start_ind, const fs_type type)
  */
 int WMG::getPrevSS(const int start_ind, const fs_type type)
 {
-    int index = start_ind;
+    int index = start_ind - 1;
     for (; index >= 0; index--)
     {
         if (FS[index].type != FS_TYPE_DS)
@@ -501,7 +501,7 @@ void WMG::getSwingFootPosition (
             double b = a * b_coef;
             double c = - a*x[0]*x[0] - b*x[0];
 
-            swing_foot_pos[0] = (1-theta)*x[2] + theta*x[0]; // linear equation
+            swing_foot_pos[0] = (1-theta)*x[0] + theta*x[2]; // linear equation
             swing_foot_pos[1] = next_swing_pos[1];
             swing_foot_pos[2] = a * swing_foot_pos[0] * swing_foot_pos[0] + b * swing_foot_pos[0] + c;
         }
@@ -539,7 +539,7 @@ WMGret WMG::FormPreviewWindow()
         current_reference_foot = FS[getNextSS (win_step_num)].type;
     }
 
-    // Indicate switch of support foot
+    // Indicate switch of the reference foot
     if (    // if we are not in the initial support
             (win_step_num != 0) && 
             // we are in DS
@@ -581,8 +581,14 @@ WMGret WMG::FormPreviewWindow()
         }
     }
 
+
+    if (FS[current_step_number].repeat_counter == 0)
+    {
+        current_step_number++;
+    }
+
     FS[current_step_number].repeat_counter--;
-    if (FS[current_step_number].repeat_counter <= 0)
+    if (FS[current_step_number].repeat_counter == 0)
     {
         current_step_number++;
     }
@@ -653,6 +659,6 @@ void WMG::FS2file(const std::string filename)
     fprintf(file_op,"        plot (FS(i).v(:,1), FS(i).v(:,2), 'r');\n");
     fprintf(file_op,"    end\n");
     fprintf(file_op,"end\n");
-    fprintf(file_op,"grid on; axis equal\n");
+    fprintf(file_op,"grid on; %%axis equal\n");
     fclose(file_op);  
 }

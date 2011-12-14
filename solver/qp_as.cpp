@@ -61,9 +61,7 @@ qp_as::qp_as(
 
     // there are no inequality constraints in the initial working set (no hot-starting for the moment)
     W = new int[2*N];
-#ifdef QPAS_DOWNDATE
     W_sign = new int[2*N];
-#endif
 
     Bounds.resize(2*N);
 }
@@ -78,10 +76,8 @@ qp_as::~qp_as()
     if (iHg != NULL)
         delete iHg;
 
-#ifdef QPAS_DOWNDATE
     if (W_sign != NULL)
         delete W_sign;
-#endif
 }
 
 
@@ -179,17 +175,13 @@ int qp_as::check_blocking_bounds()
         if (!Bounds[i].isActive)
         {
             int ind = Bounds[i].var_num;
-#ifdef QPAS_DOWNDATE
             int sign = 1;
-#endif
             double t = 1;
 
             if ( dX[ind] < -tol )
             {
                 t = (Bounds[i].lb - X[ind])/dX[ind];
-#ifdef QPAS_DOWNDATE
                 sign = -1;
-#endif
             }
             else if ( dX[ind] > tol ) 
             {
@@ -200,9 +192,7 @@ int qp_as::check_blocking_bounds()
             {
                 alpha = t;
                 activated_var_num = i;
-#ifdef QPAS_DOWNDATE
                 W_sign[nW] = sign;
-#endif
             }
         }
     }
@@ -217,7 +207,6 @@ int qp_as::check_blocking_bounds()
 }  
 
 
-#ifdef QPAS_DOWNDATE
 /**
  * @brief Selects a constraint for removal from active set.
  *
@@ -259,7 +248,6 @@ int qp_as::choose_excl_constr (const double *lambda)
 
     return (ind_exclude);
 }
-#endif /* QPAS_DOWNDATE */
 
 
 /**
@@ -285,7 +273,6 @@ int qp_as::solve ()
         // no new inequality constraints
         if (activated_var_num == -1)
         {
-#ifdef QPAS_DOWNDATE
             int ind_exclude = choose_excl_constr (chol.get_lambda(this));
             if (ind_exclude != -1)
             {
@@ -295,9 +282,6 @@ int qp_as::solve ()
             {
                 break;
             }
-#else
-            break;
-#endif /*QPAS_DOWNDATE*/
         }
         else
         {

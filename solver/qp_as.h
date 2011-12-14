@@ -92,9 +92,7 @@ class qp_as : public qp_solver
         void form_bounds(const double *, const double *);
         int check_blocking_bounds();
 
-#ifdef QPAS_DOWNDATE
         int choose_excl_constr (const double *);
-#endif
 
         /// An instance of #chol_solve_as class.
         chol_solve_as chol;
@@ -109,14 +107,12 @@ class qp_as : public qp_solver
             the only inequality constraints are simple bounds. See also '@ref pBounds'. */
         int *W;
 
-#ifdef QPAS_DOWNDATE
         /** 
          * Since we do not distinguish lower/upper bounds of active constraints (<= and => 
          * inequlities are treated in the same way), we have to adjust signs of lagrange 
          * multipliers before downdate. See also '@ref pBounds'.
          */
         int *W_sign;
-#endif
 
         /** Number of inequality constraints already included in #W. #W(#nW-1) is the
             index of the last inequality constraint added to #W. */
