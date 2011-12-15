@@ -576,8 +576,8 @@ WMGret WMG::FormPreviewWindow()
             fp_y[i] = FS[win_step_num].y;
 
             /// @todo A more sophisticated method is needed.
-            zref_x[i] = FS[win_step_num].x + 0.02;
-            zref_y[i] = FS[win_step_num].y;
+            zref_x[i] = FS[win_step_num].x + 0.02*FS[win_step_num].ca;
+            zref_y[i] = FS[win_step_num].y + 0.02*FS[win_step_num].sa;
 
             lb[i*2] = -FS[win_step_num].d[2];
             ub[i*2] = FS[win_step_num].d[0];
