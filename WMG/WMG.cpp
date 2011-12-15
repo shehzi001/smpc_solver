@@ -24,6 +24,8 @@ WMG::WMG()
     angle = NULL;
     zref_x = NULL;
     zref_y = NULL;
+    fp_x = NULL;
+    fp_y = NULL;
     lb = NULL;
     ub = NULL;
 
@@ -60,6 +62,14 @@ WMG::~WMG()
     if (zref_y != NULL)
     {
         delete zref_y;
+    }
+    if (fp_x != NULL)
+    {
+        delete fp_x;
+    }
+    if (fp_y != NULL)
+    {
+        delete fp_y;
     }
     if (lb != NULL)
     {
@@ -98,6 +108,8 @@ void WMG::init(const int _N)
     angle = new double[N];
     zref_x = new double[N];
     zref_y = new double[N];
+    fp_x = new double[N];
+    fp_y = new double[N];
     lb = new double[2*N];
     ub = new double[2*N];
 
@@ -559,7 +571,12 @@ WMGret WMG::FormPreviewWindow()
         if (step_repeat_times > 0)
         {
             angle[i] = FS[win_step_num].angle;
-            zref_x[i] = FS[win_step_num].x;
+
+            fp_x[i] = FS[win_step_num].x;
+            fp_y[i] = FS[win_step_num].y;
+
+            /// @todo A more sophisticated method is needed.
+            zref_x[i] = FS[win_step_num].x + 0.02;
             zref_y[i] = FS[win_step_num].y;
 
             lb[i*2] = -FS[win_step_num].d[2];

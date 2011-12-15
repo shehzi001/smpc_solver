@@ -122,11 +122,27 @@ class WMG
         /** \brief Initial state. */
         double X_tilde[SMPC_NUM_STATE_VAR];
 
+        /// Array of N absolute angles corresponding to supports in the preview window.
         double *angle;
-        double *zref_x;
-        double *zref_y;
+
+        ///@{
+        /// Coordinates of N points satisfying constraints, 
+        double *fp_x;
+        double *fp_y;
+        ///@}
+        
+        ///@{
+        /// 2*N bounds for coordinates of ZMP position.
         double *lb;
         double *ub;
+        ///@}
+
+        ///@{
+        /// N reference coordinates of ZMP.
+        double *zref_x;
+        double *zref_y;
+        ///@}
+
 
         /** This is the step in FS that is at the start of the current preview window. */
         int current_step_number;

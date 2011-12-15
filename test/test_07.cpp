@@ -76,8 +76,38 @@ int main(int argc, char **argv)
     vector<double> swing_foot_x;
     vector<double> swing_foot_y;
     vector<double> swing_foot_z;
+
+    wmg.X_tilde[0] = 0.019978839010709938;
+    wmg.X_tilde[3] = -6.490507362468014e-05;
+
     for(int i=0 ;; i++)
     {
+        if (next_preview_len_ms == 0)
+        {
+            WMGret wmg_retval = wmg.FormPreviewWindow();
+
+            if (wmg_retval == WMG_HALT)
+            {
+                cout << "EXIT (halt = 1)" << endl;
+                break;
+            }
+
+            next_preview_len_ms = preview_sampling_time_ms;
+        }   
+
+       
+        /// @attention wmg.X_tilde does not always satisfy the lower and upper bounds!
+        /// (but wmg.X does)
+        
+        wmg.T[0] = (double) next_preview_len_ms / 1000; // get seconds
+        //------------------------------------------------------
+        solver.set_parameters (wmg.T, wmg.h, wmg.angle, wmg.fp_x, wmg.fp_y, wmg.lb, wmg.ub);
+        solver.form_init_fp (wmg.fp_x, wmg.fp_y, wmg.X_tilde, wmg.X);
+        solver.solve();
+        solver.get_next_state (X);
+        solver.get_first_controls (cur_control);
+        //------------------------------------------------------
+        
         //-----------------------------------------------------------
         // update state
         wmg.X_tilde[0] = wmg.X_tilde[0] * A[0] 
@@ -106,33 +136,6 @@ int main(int argc, char **argv)
         //-----------------------------------------------------------
 
 
-
-
-        if (next_preview_len_ms == 0)
-        {
-            WMGret wmg_retval = wmg.FormPreviewWindow();
-
-            if (wmg_retval == WMG_HALT)
-            {
-                cout << "EXIT (halt = 1)" << endl;
-                break;
-            }
-
-            next_preview_len_ms = preview_sampling_time_ms;
-        }   
-
-       
-        /// @attention wmg.X_tilde does not always satisfy the lower and upper bounds!
-        /// (but wmg.X does)
-        
-        wmg.T[0] = (double) next_preview_len_ms / 1000; // get seconds
-        //------------------------------------------------------
-        solver.set_parameters (wmg.T, wmg.h, wmg.angle, wmg.zref_x, wmg.zref_y, wmg.lb, wmg.ub);
-        solver.form_init_fp (wmg.zref_x, wmg.zref_y, wmg.X_tilde, wmg.X);
-        solver.solve();
-        solver.get_next_state (X);
-        solver.get_first_controls (cur_control);
-        //------------------------------------------------------
         ZMP_x.push_back(wmg.X_tilde[0]);
         ZMP_y.push_back(wmg.X_tilde[3]);
         CoM_x.push_back(X[0]);

@@ -87,9 +87,9 @@ int main(int argc, char **argv)
                 // rotation angle for each state relative to the world frame
                 wmg.angle, 
                 // reference values of x coordinate of ZMP
-                wmg.zref_x, 
+                wmg.fp_x, 
                 // reference values of y coordinate of ZMP
-                wmg.zref_y, 
+                wmg.fp_y, 
                 // array of lower bounds for coordinates of ZMP
                 wmg.lb, 
                 // array of upper bounds for coordinates of ZMP
@@ -98,8 +98,8 @@ int main(int argc, char **argv)
         solver.form_init_fp (
                 // coordinates of points, that can be used to generate
                 // an initial feasible point
-                wmg.zref_x, 
-                wmg.zref_y, 
+                wmg.fp_x, 
+                wmg.fp_y, 
                 // current state
                 wmg.X_tilde, 
                 // solution of the optimization problem
