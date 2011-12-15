@@ -544,6 +544,8 @@ WMGret WMG::FormPreviewWindow()
             (win_step_num != 0) && 
             // we are in DS
             (FS[win_step_num].type == FS_TYPE_DS) &&
+            // the previous footstep was not DS
+            (FS[win_step_num-1].type != FS_TYPE_DS) &&
             // this is the first iteration in DS
             (FS[win_step_num].repeat_counter == FS[win_step_num].repeat_times))
     {

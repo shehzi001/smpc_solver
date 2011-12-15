@@ -158,6 +158,35 @@ class smpc_solver
 
 
         /**
+         * @brief Converts state from original variables to @ref pX_tilde "X_tilde".
+         *
+         * @param[in] h height of CoM divided by gravity.
+         * @param[in,out] state see below:
+         *
+         * Input:
+         *  \verbatim
+            state[0] - x CoM position [meter]
+            state[1] - x CoM velocity [meter/s]
+            state[2] - x CoM acceleration [meter/s^2]
+            state[3] - y CoM position [meter]
+            state[4] - y CoM velocity [meter/s]
+            state[5] - y CoM acceleration [meter/s^2]
+            \endverbatim
+         *   
+         * Output:
+         *  \verbatim
+            state[0] - x ZMP position [meter]
+            state[1] - x CoM velocity [meter/s]
+            state[2] - x CoM acceleration [meter/s^2]
+            state[3] - y ZMP position [meter]
+            state[4] - y CoM velocity [meter/s]
+            state[5] - y CoM acceleration [meter/s^2]
+            \endverbatim
+         */
+        void convert_to_tilde (double h, double *state);
+
+
+        /**
          * @brief Returns the next state represented by original variables.
          *  
          * @param[in,out] state the state (#NUM_STATE_VAR elements).

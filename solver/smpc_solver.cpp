@@ -119,6 +119,11 @@ void smpc_solver::get_next_state (double *state)
     }
 }
 
+void smpc_solver::convert_to_tilde (double h, double *state)
+{
+    state_handling::orig_to_tilde (h, state);
+}
+
 void smpc_solver::get_first_controls (double *controls)
 {
     if (qp_sol != NULL)

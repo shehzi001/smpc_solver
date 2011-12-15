@@ -61,6 +61,18 @@ namespace state_handling
         state[3] = state[3] + h * state[5];
     }
 
+    /**
+     * @brief Converts state from original variables to @ref pX_tilde "X_tilde".
+     *
+     * @param[in] h @ref ph "hCoM/gravity".
+     * @param[in,out] state the state (position, velocity and acceleration of CoM).
+     */
+    void orig_to_tilde (const double h, double *state)
+    {
+        state[0] = state[0] - h * state[2];
+        state[3] = state[3] - h * state[5];
+    }
+
 
     /**
      * @brief Returns the next state as @ref pX_tilde "X_tilde".
