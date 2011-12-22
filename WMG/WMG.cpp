@@ -29,6 +29,9 @@ WMG::WMG()
     lb = NULL;
     ub = NULL;
 
+    A = NULL;
+    B = NULL;
+
     current_reference_foot = FS_TYPE_AUTO;
 }
 
@@ -78,6 +81,16 @@ WMG::~WMG()
     if (ub != NULL)
     {
         delete ub;
+    }
+
+
+    if (A != NULL)
+    {
+        delete A;
+    }
+    if (B != NULL)
+    {
+        delete B;
     }
 }
 
@@ -613,6 +626,101 @@ WMGret WMG::FormPreviewWindow()
     }
 
     return (retval);
+}
+
+
+
+/**
+ * @brief Initialize state (#A) and control #(B) matrices for inverted 
+ * pendulum model.
+ *
+ * @param[in] sampling_time period of time T.
+ *
+ * @attention h is assumed to be constant.
+ */
+void WMG::initABMatrices (const double sampling_time)
+{
+    A = new double[9];
+    B = new double[3];
+
+    A[0] = A[4] = A[8] = 1;
+    A[1] = A[2] = A[5] = 0;
+    A[3] = A[7] = sampling_time;
+    A[6] = sampling_time * sampling_time/2 /*- delta_hCoM = 0*/;
+
+    B[0] = sampling_time * sampling_time * sampling_time / 6 - hCoM/gravity * sampling_time;
+    B[1] = sampling_time * sampling_time/2;
+    B[2] = sampling_time;
+}
+
+
+
+/**
+ * @brief Initialize #X_tilde state.
+ *
+ * @param[in] CoM_x x coorrdinate of center of mass
+ * @param[in] CoM_y y coorrdinate of center of mass
+ * @param[out] state 1x6 state vector (@ref pX_tilde "X_tilde")
+ *
+ * @attention h is assumed to be constant.
+ * @attention velocities and accelerations are assumed to be 0.
+ */
+void WMG::initState (const double CoM_x, const double CoM_y, double *state)
+{
+    for (int i = 0; i < 6; i++)
+    {
+        state[i] = 0;
+    }
+
+
+    double h_tmp  = hCoM/gravity;
+    // Note that state[2] and state[5] are zeros.
+    state[0] = CoM_x - h_tmp * state[2]; 
+    state[3] = CoM_y - h_tmp * state[5];
+}
+
+
+
+/**
+ * @brief Calculate next state (@ref pX_tilde "X_tilde") using inverted
+ * pendulum model (#A and #B matrices).
+ *
+ * @param[in] control 1x2 vector of controls
+ * @param[in,out] state 1x6 state vector (@ref pX_tilde "X_tilde")
+ *
+ * @attention If #A or #B are not initialized, the function does nothing.
+ */
+void WMG::calculateNextState (const double *control, double *state)
+{
+    if ((A == NULL) || (B == NULL))
+    {
+        return;
+    }
+
+
+    state[0] = state[0] * A[0]
+             + state[1] * A[3]
+             + state[2] * A[6]
+             + control[0] * B[0];
+
+    state[1] = state[1] * A[4]
+             + state[2] * A[7]
+             + control[0] * B[1];
+
+    state[2] = state[2] * A[8]
+             + control[0] * B[2];
+
+    state[3] = state[3] * A[0]
+             + state[4] * A[3]
+             + state[5] * A[6]
+             + control[1] * B[0];
+
+    state[4] = state[4] * A[4]
+             + state[5] * A[7]
+             + control[1] * B[1];
+
+    state[5] = state[5] * A[8]
+             + control[1] * B[2];
 }
 
 

@@ -58,6 +58,7 @@ enum swing_foot_pos_type
 class WMG
 {
     public:
+// methods
         WMG();
         ~WMG();
         void init (const int);
@@ -96,6 +97,12 @@ class WMG
                 double *);
 
 
+        void initABMatrices (const double);
+        void calculateNextState (const double *, double *);
+        void initState (const double, const double, double *);
+
+
+// variables
         /** \brief A vector of footsteps. */
         std::vector<FootStep> FS; 
 
@@ -163,6 +170,14 @@ class WMG
 
         double def_ds_constraint[4];
         int def_ds_num;
+
+        
+        ///@{
+        /// State and control matrices, that can be used to estimate a
+        /// @ref pX_tilde "state" based on the current state and controls.
+        double *A;
+        double *B;
+        ///@}
 };
 
 ///@}
