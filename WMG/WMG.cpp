@@ -485,8 +485,8 @@ fs_type WMG::getSwingFootNextPrevPos (
  * @param[in] loops_per_preview_iter number of control loops per preview iteration
  * @param[in] loops_in_current_preview number of control loops passed in the current 
  *                                     preview iteration
- * @param[out] swing_foot_position 3x1 vector of coordinates [x y z]
- * @param[out] angle orientation of the foot in x axis
+ * @param[out] swing_foot_pos 3x1 vector of coordinates [x y z]
+ * @param[out] angle_xy orientation of the foot in x,y plane
  *
  * @attention This function requires the walking pattern to be started and finished
  * by single support.
@@ -502,7 +502,7 @@ void WMG::getSwingFootPosition (
         const int loops_per_preview_iter,
         const int loops_in_current_preview,
         double *swing_foot_pos,
-        double *angle_x)
+        double *angle_xy)
 {
     if (swing_type == WMG_SWING_2D_PARABOLA)
     {
@@ -542,7 +542,7 @@ void WMG::getSwingFootPosition (
             swing_foot_pos[2] = 0.0;
         }
 
-        *angle_x = next_swing_pos[2];
+        *angle_xy = next_swing_pos[2];
     }
 }
 

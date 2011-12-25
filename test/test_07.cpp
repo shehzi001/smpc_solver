@@ -1,6 +1,7 @@
 /** 
  * @file
  * @author Alexander Sherikov
+ * @brief Simulate control loop, which is shorter than preview window iteration.
  */
 
 

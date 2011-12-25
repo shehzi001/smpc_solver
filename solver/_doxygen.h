@@ -9,7 +9,6 @@
  *
  * @todo (low priority) Interface with Matlab/Octave.
  * @todo Error processing. Exceptions?
- * @todo Add introductory documentation: basic terminology and overview.
  * @todo Downdate complexity
  */
 
@@ -22,8 +21,9 @@
  *
  * @par Contents & links
  * - @ref MainIntro
- * - @ref MainRef
  * - @ref MainLicense
+ * - @ref MainRef
+ * - @ref MainOverview
  * - @ref MainHowTo
  * - @ref MainFormulas
  * - @ref MainSrcDocs
@@ -39,6 +39,11 @@
  * \n
  *
  *
+ * @section MainLicense License
+ * @verbinclude "LICENSE"
+ * \n
+ *
+ *
  * @section MainRef References
  *
  * Dimitar Nikolaev Dimitrov, Alexander Sherikov, and Pierre-Brice Wieber\n
@@ -47,11 +52,41 @@
  * IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS),\n
  * September 25-30, 2011, San Francisco, California
  * \n\n
- * 
  *
- * @section MainLicense License
- * @verbinclude "LICENSE"
- * \n
+ *
+ * @section MainOverview Purpose of the library
+ * Walk of a robot can be controlled using the following scheme:
+ * - (1) determine a desired position of the center of mass (CoM);
+ * - (2) determine desired positions of the end-effectors (feet);
+ * - (3) using the model of the robot compute necessary changes of joint positions.
+ *
+ * The smpc_solver library addresses the first step. The position of the CoM is
+ * determined using MPC scheme, where it is modeled using inverted pendulum in 3 
+ * dimensions. MPC implies, that we have to solve an optimization problem. The 
+ * objective function is quadratic, additional constraints are imposed by position 
+ * of the support foot/feet: we need to satisfy certain requrements to
+ * prevent robot from falling.
+ *
+ * The WMG library contains functions, which are necessary to define footsteps, 
+ * prepare parameters for the solver library, determine positions of the feet.
+ *
+ * Terms and abbreviations:
+ * - CoM -- center of mass.
+ * - ZMP -- zero moment point.
+ * - MPC -- model predictive control.
+ * - SMPC -- sparse model predictive control, this term is introduced by us.
+ * - Support foot -- the foot, on which a robot is standing.
+ * - Single support -- a situation, when a robot stands on only one foot.
+ * - Double support -- a situation, when a robot stands on both feet.
+ * - Reference foot -- even when a robot is in double support, we use one foot 
+ *   as the reference.
+ * - Reference ZMP coordinates -- the objective function contains term, that
+ *   tries to minimize the difference between the solution an reference points.
+ *   This is allows tuning of the solution.
+ * 
+ * For more information refer to the papers listed in '@ref MainRef'. Also, the
+ * '@ref pProblemDef' section contains more detailed explanations.
+ * \n\n
  *
  *
  * @section MainHowTo API & examples
@@ -124,10 +159,6 @@
  * @defgroup gWMG_API API of the simulation support library
  *
  * @defgroup gWMG_INTERNALS Internal classes, functions and definitions of the simulation support library.
- *
- * @defgroup gTEST Tests and benchmarks
- * @todo Currently tests are not included in the doxygen documentation,
- * doxygen does not handle multiple main functions well.
  */
 
 

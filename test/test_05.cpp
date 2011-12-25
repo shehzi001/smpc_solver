@@ -1,8 +1,8 @@
 /** 
  * @file
  * @author Alexander Sherikov
- * @brief Performs a full simulation and compares results with 
- *  reference data produced by Octave.
+ * @brief Performs a full simulation using interior point method and compares 
+ *  results with reference data produced by Octave.
  */
 
 

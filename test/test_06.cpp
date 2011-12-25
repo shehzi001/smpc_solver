@@ -1,8 +1,7 @@
 /** 
  * @file
  * @author Alexander Sherikov
- * @brief Performs a full simulation and compares results with 
- *  reference data produced by Octave.
+ * @brief Perform simulation using different footstep patterns.
  */
 
 

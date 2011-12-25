@@ -69,11 +69,12 @@ class smpc_solver
          * @param[in] mu multiplier of t, >1.
          * @param[in] bs_alpha backtracking search parameter 0 < alpha < 0.5
          * @param[in] bs_beta  backtracking search parameter 0 < beta < 1
+         *
+         * @todo Which defaults are good?
          */
         smpc_solver (
                 const int N, 
                 const int max_iter, // no default to avoid ambiguity
-                ///@todo A more reasonable defaults are needed.
                 const double Alpha = 150.0, 
                 const double Beta = 2000.0, 
                 const double Gamma = 1.0,
@@ -143,7 +144,7 @@ class smpc_solver
         /**
          * @brief Returns the next state as @ref pX_tilde "X_tilde".
          *  
-         * @param[in,out] state the state (#NUM_STATE_VAR elements).
+         * @param[in,out] state the state (#SMPC_NUM_STATE_VAR elements).
          *
          *  \verbatim
             state[0] - x ZMP position [meter]
@@ -189,7 +190,7 @@ class smpc_solver
         /**
          * @brief Returns the next state represented by original variables.
          *  
-         * @param[in,out] state the state (#NUM_STATE_VAR elements).
+         * @param[in,out] state the state (#SMPC_NUM_STATE_VAR elements).
          *
          *  \verbatim
             state[0] - x CoM position [meter]
@@ -207,7 +208,7 @@ class smpc_solver
          * @brief Returns the controls that must be applied to reach the 
          *  next state.
          *
-         * @param[in,out] controls the controls (#NUM_CONTROL_VAR).
+         * @param[in,out] controls the controls (#SMPC_NUM_CONTROL_VAR).
          * @verbatim
             control[0] - jerk along x axis
             control[1] - jerk along y axis
