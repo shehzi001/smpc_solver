@@ -493,6 +493,9 @@ fs_type WMG::getSwingFootNextPrevPos (
  *
  * @attention Cannot be called on the first or last SS  =>  must be called after 
  * FormPreviewWindow().
+ *
+ * @note If loops_per_preview_iter is set to 1, then the function returns a position 
+ * at the end of preview window with number loops_in_current_preview.
  */
 void WMG::getSwingFootPosition (
         const swing_foot_pos_type swing_type,
