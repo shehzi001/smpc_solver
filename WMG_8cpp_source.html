@@ -42,10 +42,10 @@
 </div>
 <div class="contents">
 <a href="WMG_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 
-<a name="l00008"></a>00008 <span class="preprocessor">#include &lt;iostream&gt;</span>
+<a name="l00008"></a>00008 <span class="preprocessor">#include &lt;stdio.h&gt;</span>
 <a name="l00009"></a>00009 
 <a name="l00010"></a>00010 
-<a name="l00011"></a>00011 <span class="preprocessor">#include &quot;<a class="code" href="WMG_8h.html">WMG.h</a>&quot;</span>
+<a name="l00011"></a>00011 <span class="preprocessor">#include &quot;WMG.h&quot;</span>
 <a name="l00012"></a>00012 <span class="preprocessor">#include &quot;<a class="code" href="point2d_8h.html">point2d.h</a>&quot;</span>
 <a name="l00013"></a>00013 <span class="preprocessor">#include &quot;<a class="code" href="footstep_8h.html">footstep.h</a>&quot;</span>
 <a name="l00014"></a>00014 
@@ -57,309 +57,628 @@
 <a name="l00021"></a>00021     <a class="code" href="classWMG.html#a951aff39ccdf6b194bcdc8ee7b83755f" title="Preview sampling time.">T</a> = NULL;
 <a name="l00022"></a>00022     <a class="code" href="classWMG.html#a7df4b6f818bd1bebe6a2994f261bda85" title="h = hCoM/gravity.">h</a> = NULL;
 <a name="l00023"></a>00023 
-<a name="l00024"></a>00024     <a class="code" href="classWMG.html#aecb09f9e0fa4b9e5dd1dafe17fad7a44">angle</a> = NULL;
-<a name="l00025"></a>00025     <a class="code" href="classWMG.html#a19055d653eec01f23713f8576b17f5d6">zref_x</a> = NULL;
+<a name="l00024"></a>00024     <a class="code" href="classWMG.html#aecb09f9e0fa4b9e5dd1dafe17fad7a44" title="Array of N absolute angles corresponding to supports in the preview window.">angle</a> = NULL;
+<a name="l00025"></a>00025     <a class="code" href="classWMG.html#a19055d653eec01f23713f8576b17f5d6" title="N reference coordinates of ZMP.">zref_x</a> = NULL;
 <a name="l00026"></a>00026     <a class="code" href="classWMG.html#a9261037da75150ded329be163ffae710">zref_y</a> = NULL;
-<a name="l00027"></a>00027     <a class="code" href="classWMG.html#a0ae585fc064a79f71612a3602a209a7a">lb</a> = NULL;
-<a name="l00028"></a>00028     <a class="code" href="classWMG.html#a5aff192ac43f6e2abc81d59c67c97b80">ub</a> = NULL;
-<a name="l00029"></a>00029 }
-<a name="l00030"></a>00030 
+<a name="l00027"></a>00027     <a class="code" href="classWMG.html#aef8b7df19ecc03d9bc759d9a340111ac" title="Coordinates of N points satisfying constraints,.">fp_x</a> = NULL;
+<a name="l00028"></a>00028     <a class="code" href="classWMG.html#a733113b0c76e60c15ed33075733e07e4">fp_y</a> = NULL;
+<a name="l00029"></a>00029     <a class="code" href="classWMG.html#a0ae585fc064a79f71612a3602a209a7a" title="2*N bounds for coordinates of ZMP position.">lb</a> = NULL;
+<a name="l00030"></a>00030     <a class="code" href="classWMG.html#a5aff192ac43f6e2abc81d59c67c97b80">ub</a> = NULL;
 <a name="l00031"></a>00031 
-<a name="l00033"></a><a class="code" href="classWMG.html#a9c401ba3687308b65cffbff340142b3f">00033</a> <a class="code" href="classWMG.html#a9c401ba3687308b65cffbff340142b3f" title="Default destructor.">WMG::~WMG</a>()
-<a name="l00034"></a>00034 {
-<a name="l00035"></a>00035     <span class="keywordflow">if</span> (<a class="code" href="classWMG.html#a801c492c750f587cb1cf873aaec5a96f" title="A chunk of memory allocated for solution.">X</a> != NULL)
-<a name="l00036"></a>00036     {
-<a name="l00037"></a>00037         <span class="keyword">delete</span> [] <a class="code" href="classWMG.html#a801c492c750f587cb1cf873aaec5a96f" title="A chunk of memory allocated for solution.">X</a>;
-<a name="l00038"></a>00038         <a class="code" href="classWMG.html#a801c492c750f587cb1cf873aaec5a96f" title="A chunk of memory allocated for solution.">X</a> = NULL;
-<a name="l00039"></a>00039     }
-<a name="l00040"></a>00040 
-<a name="l00041"></a>00041     <span class="keywordflow">if</span> (<a class="code" href="classWMG.html#a951aff39ccdf6b194bcdc8ee7b83755f" title="Preview sampling time.">T</a> != NULL)
-<a name="l00042"></a>00042     {
-<a name="l00043"></a>00043         <span class="keyword">delete</span> <a class="code" href="classWMG.html#a951aff39ccdf6b194bcdc8ee7b83755f" title="Preview sampling time.">T</a>;
-<a name="l00044"></a>00044     }
-<a name="l00045"></a>00045     <span class="keywordflow">if</span> (<a class="code" href="classWMG.html#a7df4b6f818bd1bebe6a2994f261bda85" title="h = hCoM/gravity.">h</a> != NULL)
-<a name="l00046"></a>00046     {
-<a name="l00047"></a>00047         <span class="keyword">delete</span> <a class="code" href="classWMG.html#a7df4b6f818bd1bebe6a2994f261bda85" title="h = hCoM/gravity.">h</a>;
-<a name="l00048"></a>00048     }
-<a name="l00049"></a>00049 
-<a name="l00050"></a>00050     <span class="keywordflow">if</span> (<a class="code" href="classWMG.html#aecb09f9e0fa4b9e5dd1dafe17fad7a44">angle</a> != NULL)
-<a name="l00051"></a>00051     {
-<a name="l00052"></a>00052         <span class="keyword">delete</span> <a class="code" href="classWMG.html#aecb09f9e0fa4b9e5dd1dafe17fad7a44">angle</a>;
-<a name="l00053"></a>00053     }
-<a name="l00054"></a>00054     <span class="keywordflow">if</span> (<a class="code" href="classWMG.html#a19055d653eec01f23713f8576b17f5d6">zref_x</a> != NULL)
-<a name="l00055"></a>00055     {
-<a name="l00056"></a>00056         <span class="keyword">delete</span> <a class="code" href="classWMG.html#a19055d653eec01f23713f8576b17f5d6">zref_x</a>;
-<a name="l00057"></a>00057     }
-<a name="l00058"></a>00058     <span class="keywordflow">if</span> (<a class="code" href="classWMG.html#a9261037da75150ded329be163ffae710">zref_y</a> != NULL)
-<a name="l00059"></a>00059     {
-<a name="l00060"></a>00060         <span class="keyword">delete</span> <a class="code" href="classWMG.html#a9261037da75150ded329be163ffae710">zref_y</a>;
-<a name="l00061"></a>00061     }
-<a name="l00062"></a>00062     <span class="keywordflow">if</span> (<a class="code" href="classWMG.html#a0ae585fc064a79f71612a3602a209a7a">lb</a> != NULL)
-<a name="l00063"></a>00063     {
-<a name="l00064"></a>00064         <span class="keyword">delete</span> <a class="code" href="classWMG.html#a0ae585fc064a79f71612a3602a209a7a">lb</a>;
-<a name="l00065"></a>00065     }
-<a name="l00066"></a>00066     <span class="keywordflow">if</span> (<a class="code" href="classWMG.html#a5aff192ac43f6e2abc81d59c67c97b80">ub</a> != NULL)
-<a name="l00067"></a>00067     {
-<a name="l00068"></a>00068         <span class="keyword">delete</span> <a class="code" href="classWMG.html#a5aff192ac43f6e2abc81d59c67c97b80">ub</a>;
-<a name="l00069"></a>00069     }
-<a name="l00070"></a>00070 }
-<a name="l00071"></a>00071 
-<a name="l00072"></a>00072 
-<a name="l00073"></a>00073 
-<a name="l00080"></a><a class="code" href="classWMG.html#a0758ae4958f2d9ca521141ca9331517d">00080</a> <span class="keywordtype">void</span> <a class="code" href="classWMG.html#a0758ae4958f2d9ca521141ca9331517d" title="Initializes a WMG object.">WMG::init</a>(<span class="keyword">const</span> <span class="keywordtype">int</span> _N, <span class="keyword">const</span> <span class="keywordtype">double</span> _T, <span class="keyword">const</span> <span class="keywordtype">double</span> _hCoM)
-<a name="l00081"></a>00081 {
-<a name="l00082"></a>00082     <a class="code" href="classWMG.html#a6770fc44d46e4fdda9ad584c02516ce5" title="This is the step in FS that is at the start of the current preview window. I don&amp;#39;t need to pop_fr...">current_step_number</a> = 0;
-<a name="l00083"></a>00083     <a class="code" href="classWMG.html#adebe1dbad97447d7194bc58af9fdf208" title="Norm of the acceleration due to gravity. For the moment gravity is set equal to 9.81.">gravity</a> = 9.81; <span class="comment">// hard-coded</span>
-<a name="l00084"></a>00084 
-<a name="l00085"></a>00085     <a class="code" href="classWMG.html#abb248bd581bb239890067b5a73b4c4bd" title="Number of iterations in a preview window.">N</a> = _N;
-<a name="l00086"></a>00086     <a class="code" href="classWMG.html#aa84378e22b50ebce4f9f9056e68d2ead" title="Height of the CoM.">hCoM</a> = _hCoM;      
-<a name="l00087"></a>00087 
-<a name="l00088"></a>00088 
-<a name="l00089"></a>00089 
-<a name="l00090"></a>00090     <a class="code" href="classWMG.html#a801c492c750f587cb1cf873aaec5a96f" title="A chunk of memory allocated for solution.">X</a> = <span class="keyword">new</span> <span class="keywordtype">double</span>[<a class="code" href="group__gINTERNALS.html#gae8780c341d0ab405a8d820726f7e3b5c" title="Total number of variables.">NUM_VAR</a>*<a class="code" href="classWMG.html#abb248bd581bb239890067b5a73b4c4bd" title="Number of iterations in a preview window.">N</a>];
-<a name="l00091"></a>00091 
-<a name="l00092"></a>00092     <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i=0; i&lt;<a class="code" href="group__gINTERNALS.html#ga37814f52692ffc71ef43e6b06e891440" title="Number of state variables.">NUM_STATE_VAR</a>; i++)
-<a name="l00093"></a>00093     {
-<a name="l00094"></a>00094         <a class="code" href="classWMG.html#a831e486340b6774dfe0b1b2d7f52d286" title="Initial state.">X_tilde</a>[i] = 0.0;
-<a name="l00095"></a>00095     }
+<a name="l00032"></a>00032     <a class="code" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to estimate a state based on the current state and contr...">A</a> = NULL;
+<a name="l00033"></a>00033     <a class="code" href="classWMG.html#af36d87c015ef4af6ed9eecf635913715">B</a> = NULL;
+<a name="l00034"></a>00034 
+<a name="l00035"></a>00035     <a class="code" href="classWMG.html#a0addaffea4f4983363f7e531510eb095" title="Reference foot (R/L), even in DS we need to choose a reference foot.">current_reference_foot</a> = <a class="code" href="group__gWMG__API.html#gga45147e528b9243fa8842d38163498449a8fde2d0cdecdd9eb8caf0bede2665815">FS_TYPE_AUTO</a>;
+<a name="l00036"></a>00036 }
+<a name="l00037"></a>00037 
+<a name="l00038"></a>00038 
+<a name="l00040"></a><a class="code" href="classWMG.html#a9c401ba3687308b65cffbff340142b3f">00040</a> <a class="code" href="classWMG.html#a9c401ba3687308b65cffbff340142b3f" title="Default destructor.">WMG::~WMG</a>()
+<a name="l00041"></a>00041 {
+<a name="l00042"></a>00042     <span class="keywordflow">if</span> (<a class="code" href="classWMG.html#a801c492c750f587cb1cf873aaec5a96f" title="A chunk of memory allocated for solution.">X</a> != NULL)
+<a name="l00043"></a>00043     {
+<a name="l00044"></a>00044         <span class="keyword">delete</span> [] <a class="code" href="classWMG.html#a801c492c750f587cb1cf873aaec5a96f" title="A chunk of memory allocated for solution.">X</a>;
+<a name="l00045"></a>00045         <a class="code" href="classWMG.html#a801c492c750f587cb1cf873aaec5a96f" title="A chunk of memory allocated for solution.">X</a> = NULL;
+<a name="l00046"></a>00046     }
+<a name="l00047"></a>00047 
+<a name="l00048"></a>00048     <span class="keywordflow">if</span> (<a class="code" href="classWMG.html#a951aff39ccdf6b194bcdc8ee7b83755f" title="Preview sampling time.">T</a> != NULL)
+<a name="l00049"></a>00049     {
+<a name="l00050"></a>00050         <span class="keyword">delete</span> <a class="code" href="classWMG.html#a951aff39ccdf6b194bcdc8ee7b83755f" title="Preview sampling time.">T</a>;
+<a name="l00051"></a>00051     }
+<a name="l00052"></a>00052     <span class="keywordflow">if</span> (<a class="code" href="classWMG.html#a7df4b6f818bd1bebe6a2994f261bda85" title="h = hCoM/gravity.">h</a> != NULL)
+<a name="l00053"></a>00053     {
+<a name="l00054"></a>00054         <span class="keyword">delete</span> <a class="code" href="classWMG.html#a7df4b6f818bd1bebe6a2994f261bda85" title="h = hCoM/gravity.">h</a>;
+<a name="l00055"></a>00055     }
+<a name="l00056"></a>00056 
+<a name="l00057"></a>00057     <span class="keywordflow">if</span> (<a class="code" href="classWMG.html#aecb09f9e0fa4b9e5dd1dafe17fad7a44" title="Array of N absolute angles corresponding to supports in the preview window.">angle</a> != NULL)
+<a name="l00058"></a>00058     {
+<a name="l00059"></a>00059         <span class="keyword">delete</span> <a class="code" href="classWMG.html#aecb09f9e0fa4b9e5dd1dafe17fad7a44" title="Array of N absolute angles corresponding to supports in the preview window.">angle</a>;
+<a name="l00060"></a>00060     }
+<a name="l00061"></a>00061     <span class="keywordflow">if</span> (<a class="code" href="classWMG.html#a19055d653eec01f23713f8576b17f5d6" title="N reference coordinates of ZMP.">zref_x</a> != NULL)
+<a name="l00062"></a>00062     {
+<a name="l00063"></a>00063         <span class="keyword">delete</span> <a class="code" href="classWMG.html#a19055d653eec01f23713f8576b17f5d6" title="N reference coordinates of ZMP.">zref_x</a>;
+<a name="l00064"></a>00064     }
+<a name="l00065"></a>00065     <span class="keywordflow">if</span> (<a class="code" href="classWMG.html#a9261037da75150ded329be163ffae710">zref_y</a> != NULL)
+<a name="l00066"></a>00066     {
+<a name="l00067"></a>00067         <span class="keyword">delete</span> <a class="code" href="classWMG.html#a9261037da75150ded329be163ffae710">zref_y</a>;
+<a name="l00068"></a>00068     }
+<a name="l00069"></a>00069     <span class="keywordflow">if</span> (<a class="code" href="classWMG.html#aef8b7df19ecc03d9bc759d9a340111ac" title="Coordinates of N points satisfying constraints,.">fp_x</a> != NULL)
+<a name="l00070"></a>00070     {
+<a name="l00071"></a>00071         <span class="keyword">delete</span> <a class="code" href="classWMG.html#aef8b7df19ecc03d9bc759d9a340111ac" title="Coordinates of N points satisfying constraints,.">fp_x</a>;
+<a name="l00072"></a>00072     }
+<a name="l00073"></a>00073     <span class="keywordflow">if</span> (<a class="code" href="classWMG.html#a733113b0c76e60c15ed33075733e07e4">fp_y</a> != NULL)
+<a name="l00074"></a>00074     {
+<a name="l00075"></a>00075         <span class="keyword">delete</span> <a class="code" href="classWMG.html#a733113b0c76e60c15ed33075733e07e4">fp_y</a>;
+<a name="l00076"></a>00076     }
+<a name="l00077"></a>00077     <span class="keywordflow">if</span> (<a class="code" href="classWMG.html#a0ae585fc064a79f71612a3602a209a7a" title="2*N bounds for coordinates of ZMP position.">lb</a> != NULL)
+<a name="l00078"></a>00078     {
+<a name="l00079"></a>00079         <span class="keyword">delete</span> <a class="code" href="classWMG.html#a0ae585fc064a79f71612a3602a209a7a" title="2*N bounds for coordinates of ZMP position.">lb</a>;
+<a name="l00080"></a>00080     }
+<a name="l00081"></a>00081     <span class="keywordflow">if</span> (<a class="code" href="classWMG.html#a5aff192ac43f6e2abc81d59c67c97b80">ub</a> != NULL)
+<a name="l00082"></a>00082     {
+<a name="l00083"></a>00083         <span class="keyword">delete</span> <a class="code" href="classWMG.html#a5aff192ac43f6e2abc81d59c67c97b80">ub</a>;
+<a name="l00084"></a>00084     }
+<a name="l00085"></a>00085 
+<a name="l00086"></a>00086 
+<a name="l00087"></a>00087     <span class="keywordflow">if</span> (<a class="code" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to estimate a state based on the current state and contr...">A</a> != NULL)
+<a name="l00088"></a>00088     {
+<a name="l00089"></a>00089         <span class="keyword">delete</span> <a class="code" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to estimate a state based on the current state and contr...">A</a>;
+<a name="l00090"></a>00090     }
+<a name="l00091"></a>00091     <span class="keywordflow">if</span> (<a class="code" href="classWMG.html#af36d87c015ef4af6ed9eecf635913715">B</a> != NULL)
+<a name="l00092"></a>00092     {
+<a name="l00093"></a>00093         <span class="keyword">delete</span> <a class="code" href="classWMG.html#af36d87c015ef4af6ed9eecf635913715">B</a>;
+<a name="l00094"></a>00094     }
+<a name="l00095"></a>00095 }
 <a name="l00096"></a>00096 
-<a name="l00097"></a>00097     <a class="code" href="classWMG.html#a951aff39ccdf6b194bcdc8ee7b83755f" title="Preview sampling time.">T</a> = <span class="keyword">new</span> <span class="keywordtype">double</span>[<a class="code" href="classWMG.html#abb248bd581bb239890067b5a73b4c4bd" title="Number of iterations in a preview window.">N</a>];
-<a name="l00098"></a>00098     <a class="code" href="classWMG.html#a7df4b6f818bd1bebe6a2994f261bda85" title="h = hCoM/gravity.">h</a> = <span class="keyword">new</span> <span class="keywordtype">double</span>[<a class="code" href="classWMG.html#abb248bd581bb239890067b5a73b4c4bd" title="Number of iterations in a preview window.">N</a>];
-<a name="l00099"></a>00099     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="classWMG.html#abb248bd581bb239890067b5a73b4c4bd" title="Number of iterations in a preview window.">N</a>; i++)
-<a name="l00100"></a>00100     {
-<a name="l00101"></a>00101         <a class="code" href="classWMG.html#a951aff39ccdf6b194bcdc8ee7b83755f" title="Preview sampling time.">T</a>[i] = _T;
-<a name="l00102"></a>00102         <a class="code" href="classWMG.html#a7df4b6f818bd1bebe6a2994f261bda85" title="h = hCoM/gravity.">h</a>[i] = <a class="code" href="classWMG.html#aa84378e22b50ebce4f9f9056e68d2ead" title="Height of the CoM.">hCoM</a>/<a class="code" href="classWMG.html#adebe1dbad97447d7194bc58af9fdf208" title="Norm of the acceleration due to gravity. For the moment gravity is set equal to 9.81.">gravity</a>;
-<a name="l00103"></a>00103     }
-<a name="l00104"></a>00104 
-<a name="l00105"></a>00105     <a class="code" href="classWMG.html#aecb09f9e0fa4b9e5dd1dafe17fad7a44">angle</a> = <span class="keyword">new</span> <span class="keywordtype">double</span>[<a class="code" href="classWMG.html#abb248bd581bb239890067b5a73b4c4bd" title="Number of iterations in a preview window.">N</a>];
-<a name="l00106"></a>00106     <a class="code" href="classWMG.html#a19055d653eec01f23713f8576b17f5d6">zref_x</a> = <span class="keyword">new</span> <span class="keywordtype">double</span>[<a class="code" href="classWMG.html#abb248bd581bb239890067b5a73b4c4bd" title="Number of iterations in a preview window.">N</a>];
-<a name="l00107"></a>00107     <a class="code" href="classWMG.html#a9261037da75150ded329be163ffae710">zref_y</a> = <span class="keyword">new</span> <span class="keywordtype">double</span>[<a class="code" href="classWMG.html#abb248bd581bb239890067b5a73b4c4bd" title="Number of iterations in a preview window.">N</a>];
-<a name="l00108"></a>00108     <a class="code" href="classWMG.html#a0ae585fc064a79f71612a3602a209a7a">lb</a> = <span class="keyword">new</span> <span class="keywordtype">double</span>[2*<a class="code" href="classWMG.html#abb248bd581bb239890067b5a73b4c4bd" title="Number of iterations in a preview window.">N</a>];
-<a name="l00109"></a>00109     <a class="code" href="classWMG.html#a5aff192ac43f6e2abc81d59c67c97b80">ub</a> = <span class="keyword">new</span> <span class="keywordtype">double</span>[2*<a class="code" href="classWMG.html#abb248bd581bb239890067b5a73b4c4bd" title="Number of iterations in a preview window.">N</a>];
+<a name="l00097"></a>00097 
+<a name="l00098"></a>00098 
+<a name="l00103"></a><a class="code" href="classWMG.html#ab37e430acac26568b333363ea836e2ed">00103</a> <span class="keywordtype">void</span> <a class="code" href="classWMG.html#ab37e430acac26568b333363ea836e2ed" title="Initializes a WMG object.">WMG::init</a>(<span class="keyword">const</span> <span class="keywordtype">int</span> _N)
+<a name="l00104"></a>00104 {
+<a name="l00105"></a>00105     <a class="code" href="classWMG.html#a6770fc44d46e4fdda9ad584c02516ce5">current_step_number</a> = 0;
+<a name="l00106"></a>00106     <a class="code" href="classWMG.html#adebe1dbad97447d7194bc58af9fdf208" title="Norm of the acceleration due to gravity. For the moment gravity is set equal to 9.81.">gravity</a> = 9.81; <span class="comment">// hard-coded</span>
+<a name="l00107"></a>00107 
+<a name="l00108"></a>00108     <a class="code" href="classWMG.html#abb248bd581bb239890067b5a73b4c4bd" title="Number of iterations in a preview window.">N</a> = _N;
+<a name="l00109"></a>00109 
 <a name="l00110"></a>00110 
-<a name="l00111"></a>00111 
+<a name="l00111"></a>00111     <a class="code" href="classWMG.html#a801c492c750f587cb1cf873aaec5a96f" title="A chunk of memory allocated for solution.">X</a> = <span class="keyword">new</span> <span class="keywordtype">double</span>[<a class="code" href="group__gAPI.html#ga74b56d50f3995ffd5282a2f2289dfd1a" title="Total number of variables.">SMPC_NUM_VAR</a>*<a class="code" href="classWMG.html#abb248bd581bb239890067b5a73b4c4bd" title="Number of iterations in a preview window.">N</a>];
 <a name="l00112"></a>00112 
-<a name="l00114"></a>00114     <a class="code" href="classWMG.html#af42bcfc0b3d59878fb724803d54e8759">def_constraint</a>[0] = 0.09;
-<a name="l00115"></a>00115     <a class="code" href="classWMG.html#af42bcfc0b3d59878fb724803d54e8759">def_constraint</a>[1] = 0.025;
-<a name="l00116"></a>00116     <a class="code" href="classWMG.html#af42bcfc0b3d59878fb724803d54e8759">def_constraint</a>[2] = 0.03;
-<a name="l00117"></a>00117     <a class="code" href="classWMG.html#af42bcfc0b3d59878fb724803d54e8759">def_constraint</a>[3] = 0.025;
-<a name="l00118"></a>00118     <a class="code" href="classWMG.html#a33601e0435ff7d7d3ac0b1ba10f590e4">def_repeat_times</a> = 4;
-<a name="l00119"></a>00119 
-<a name="l00120"></a>00120     <a class="code" href="classWMG.html#a67647d268f896265b6da8cf33c1e2bf9">def_ds_constraint</a>[0] = 0.07;
-<a name="l00121"></a>00121     <a class="code" href="classWMG.html#a67647d268f896265b6da8cf33c1e2bf9">def_ds_constraint</a>[1] = 0.025;
-<a name="l00122"></a>00122     <a class="code" href="classWMG.html#a67647d268f896265b6da8cf33c1e2bf9">def_ds_constraint</a>[2] = 0.025;
-<a name="l00123"></a>00123     <a class="code" href="classWMG.html#a67647d268f896265b6da8cf33c1e2bf9">def_ds_constraint</a>[3] = 0.025;
-<a name="l00124"></a>00124     <a class="code" href="classWMG.html#abf42731e0f88ba41076a24194771d533">def_ds_num</a> = 0;
-<a name="l00125"></a>00125 }
-<a name="l00126"></a>00126 
-<a name="l00127"></a>00127 
+<a name="l00113"></a>00113     <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i=0; i&lt;<a class="code" href="group__gAPI.html#gab7984838b079762f5087b37a731e0b79" title="Number of state variables.">SMPC_NUM_STATE_VAR</a>; i++)
+<a name="l00114"></a>00114     {
+<a name="l00115"></a>00115         <a class="code" href="classWMG.html#a5ed5d3afbd2cf4c243d203714b5cfe06" title="Initial state.">X_tilde</a>[i] = 0.0;
+<a name="l00116"></a>00116     }
+<a name="l00117"></a>00117 
+<a name="l00118"></a>00118     <a class="code" href="classWMG.html#a951aff39ccdf6b194bcdc8ee7b83755f" title="Preview sampling time.">T</a> = <span class="keyword">new</span> <span class="keywordtype">double</span>[<a class="code" href="classWMG.html#abb248bd581bb239890067b5a73b4c4bd" title="Number of iterations in a preview window.">N</a>];
+<a name="l00119"></a>00119     <a class="code" href="classWMG.html#a7df4b6f818bd1bebe6a2994f261bda85" title="h = hCoM/gravity.">h</a> = <span class="keyword">new</span> <span class="keywordtype">double</span>[<a class="code" href="classWMG.html#abb248bd581bb239890067b5a73b4c4bd" title="Number of iterations in a preview window.">N</a>];
+<a name="l00120"></a>00120 
+<a name="l00121"></a>00121     <a class="code" href="classWMG.html#aecb09f9e0fa4b9e5dd1dafe17fad7a44" title="Array of N absolute angles corresponding to supports in the preview window.">angle</a> = <span class="keyword">new</span> <span class="keywordtype">double</span>[<a class="code" href="classWMG.html#abb248bd581bb239890067b5a73b4c4bd" title="Number of iterations in a preview window.">N</a>];
+<a name="l00122"></a>00122     <a class="code" href="classWMG.html#a19055d653eec01f23713f8576b17f5d6" title="N reference coordinates of ZMP.">zref_x</a> = <span class="keyword">new</span> <span class="keywordtype">double</span>[<a class="code" href="classWMG.html#abb248bd581bb239890067b5a73b4c4bd" title="Number of iterations in a preview window.">N</a>];
+<a name="l00123"></a>00123     <a class="code" href="classWMG.html#a9261037da75150ded329be163ffae710">zref_y</a> = <span class="keyword">new</span> <span class="keywordtype">double</span>[<a class="code" href="classWMG.html#abb248bd581bb239890067b5a73b4c4bd" title="Number of iterations in a preview window.">N</a>];
+<a name="l00124"></a>00124     <a class="code" href="classWMG.html#aef8b7df19ecc03d9bc759d9a340111ac" title="Coordinates of N points satisfying constraints,.">fp_x</a> = <span class="keyword">new</span> <span class="keywordtype">double</span>[<a class="code" href="classWMG.html#abb248bd581bb239890067b5a73b4c4bd" title="Number of iterations in a preview window.">N</a>];
+<a name="l00125"></a>00125     <a class="code" href="classWMG.html#a733113b0c76e60c15ed33075733e07e4">fp_y</a> = <span class="keyword">new</span> <span class="keywordtype">double</span>[<a class="code" href="classWMG.html#abb248bd581bb239890067b5a73b4c4bd" title="Number of iterations in a preview window.">N</a>];
+<a name="l00126"></a>00126     <a class="code" href="classWMG.html#a0ae585fc064a79f71612a3602a209a7a" title="2*N bounds for coordinates of ZMP position.">lb</a> = <span class="keyword">new</span> <span class="keywordtype">double</span>[2*<a class="code" href="classWMG.html#abb248bd581bb239890067b5a73b4c4bd" title="Number of iterations in a preview window.">N</a>];
+<a name="l00127"></a>00127     <a class="code" href="classWMG.html#a5aff192ac43f6e2abc81d59c67c97b80">ub</a> = <span class="keyword">new</span> <span class="keywordtype">double</span>[2*<a class="code" href="classWMG.html#abb248bd581bb239890067b5a73b4c4bd" title="Number of iterations in a preview window.">N</a>];
 <a name="l00128"></a>00128 
-<a name="l00143"></a><a class="code" href="classWMG.html#a22369d281e86ade4b07ab6c9c8aa42ac">00143</a> <span class="keywordtype">void</span> <a class="code" href="classWMG.html#a22369d281e86ade4b07ab6c9c8aa42ac" title="Adds a footstep to FS; sets the default constraints, the total number of iterations and the number of...">WMG::AddFootstep</a>(
-<a name="l00144"></a>00144         <span class="keyword">const</span> <span class="keywordtype">double</span> x_relative, 
-<a name="l00145"></a>00145         <span class="keyword">const</span> <span class="keywordtype">double</span> y_relative, 
-<a name="l00146"></a>00146         <span class="keyword">const</span> <span class="keywordtype">double</span> angle_relative, 
-<a name="l00147"></a>00147         <span class="keyword">const</span> <span class="keywordtype">int</span> n_this, 
-<a name="l00148"></a>00148         <span class="keyword">const</span> <span class="keywordtype">int</span> n, 
-<a name="l00149"></a>00149         <span class="keyword">const</span> <span class="keywordtype">double</span> *d, 
-<a name="l00150"></a>00150         <span class="keyword">const</span> <a class="code" href="group__gWMG__API.html#ga45147e528b9243fa8842d38163498449">fs_type</a> type)
-<a name="l00151"></a>00151 {
-<a name="l00152"></a>00152     <a class="code" href="classWMG.html#af42bcfc0b3d59878fb724803d54e8759">def_constraint</a>[0] = d[0];
-<a name="l00153"></a>00153     <a class="code" href="classWMG.html#af42bcfc0b3d59878fb724803d54e8759">def_constraint</a>[1] = d[1];
-<a name="l00154"></a>00154     <a class="code" href="classWMG.html#af42bcfc0b3d59878fb724803d54e8759">def_constraint</a>[2] = d[2];
-<a name="l00155"></a>00155     <a class="code" href="classWMG.html#af42bcfc0b3d59878fb724803d54e8759">def_constraint</a>[3] = d[3];
-<a name="l00156"></a>00156     <a class="code" href="classWMG.html#a33601e0435ff7d7d3ac0b1ba10f590e4">def_repeat_times</a> = n_this;
-<a name="l00157"></a>00157     <a class="code" href="classWMG.html#abf42731e0f88ba41076a24194771d533">def_ds_num</a> = n - n_this;
-<a name="l00158"></a>00158     <a class="code" href="classWMG.html#a22369d281e86ade4b07ab6c9c8aa42ac" title="Adds a footstep to FS; sets the default constraints, the total number of iterations and the number of...">AddFootstep</a>(x_relative, y_relative, angle_relative, type);
-<a name="l00159"></a>00159 }
-<a name="l00160"></a>00160 
-<a name="l00161"></a>00161 
-<a name="l00162"></a>00162 
-<a name="l00177"></a><a class="code" href="classWMG.html#a943830aca3b40c5e044c42c03945ef28">00177</a> <span class="keywordtype">void</span> <a class="code" href="classWMG.html#a22369d281e86ade4b07ab6c9c8aa42ac" title="Adds a footstep to FS; sets the default constraints, the total number of iterations and the number of...">WMG::AddFootstep</a>(
-<a name="l00178"></a>00178         <span class="keyword">const</span> <span class="keywordtype">double</span> x_relative, 
-<a name="l00179"></a>00179         <span class="keyword">const</span> <span class="keywordtype">double</span> y_relative, 
-<a name="l00180"></a>00180         <span class="keyword">const</span> <span class="keywordtype">double</span> angle_relative, 
-<a name="l00181"></a>00181         <span class="keyword">const</span> <span class="keywordtype">int</span> n_this, 
-<a name="l00182"></a>00182         <span class="keyword">const</span> <span class="keywordtype">int</span> n, 
-<a name="l00183"></a>00183         <span class="keyword">const</span> <a class="code" href="group__gWMG__API.html#ga45147e528b9243fa8842d38163498449">fs_type</a> type)
-<a name="l00184"></a>00184 {
-<a name="l00185"></a>00185     <a class="code" href="classWMG.html#a33601e0435ff7d7d3ac0b1ba10f590e4">def_repeat_times</a> = n_this;
-<a name="l00186"></a>00186     <a class="code" href="classWMG.html#abf42731e0f88ba41076a24194771d533">def_ds_num</a> = n - n_this;
-<a name="l00187"></a>00187     <a class="code" href="classWMG.html#a22369d281e86ade4b07ab6c9c8aa42ac" title="Adds a footstep to FS; sets the default constraints, the total number of iterations and the number of...">AddFootstep</a>(x_relative, y_relative, angle_relative, type);
-<a name="l00188"></a>00188 }
-<a name="l00189"></a>00189 
-<a name="l00190"></a>00190 
-<a name="l00191"></a>00191 
-<a name="l00204"></a><a class="code" href="classWMG.html#a74b1000398532cd3d3162e5b96a27683">00204</a> <span class="keywordtype">void</span> <a class="code" href="classWMG.html#a22369d281e86ade4b07ab6c9c8aa42ac" title="Adds a footstep to FS; sets the default constraints, the total number of iterations and the number of...">WMG::AddFootstep</a>(
-<a name="l00205"></a>00205         <span class="keyword">const</span> <span class="keywordtype">double</span> x_relative, 
-<a name="l00206"></a>00206         <span class="keyword">const</span> <span class="keywordtype">double</span> y_relative, 
-<a name="l00207"></a>00207         <span class="keyword">const</span> <span class="keywordtype">double</span> angle_relative, 
-<a name="l00208"></a>00208         <span class="keyword">const</span> <a class="code" href="group__gWMG__API.html#ga45147e528b9243fa8842d38163498449">fs_type</a> type)
-<a name="l00209"></a>00209 {
-<a name="l00210"></a>00210     <span class="keywordflow">if</span> (<a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>.size() == 0)
-<a name="l00211"></a>00211     {
-<a name="l00212"></a>00212         <span class="comment">// this is the first (&quot;virtual&quot;) step.</span>
-<a name="l00213"></a>00213         <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>.push_back(
-<a name="l00214"></a>00214                 <a class="code" href="classFootStep.html" title="Defines a footstep.">FootStep</a>(
-<a name="l00215"></a>00215                     angle_relative, 
-<a name="l00216"></a>00216                     x_relative,
-<a name="l00217"></a>00217                     y_relative, 
-<a name="l00218"></a>00218                     <a class="code" href="classWMG.html#a33601e0435ff7d7d3ac0b1ba10f590e4">def_repeat_times</a>, 
-<a name="l00219"></a>00219                     type,
-<a name="l00220"></a>00220                     <a class="code" href="classWMG.html#af42bcfc0b3d59878fb724803d54e8759">def_constraint</a>));
-<a name="l00221"></a>00221     }
-<a name="l00222"></a>00222     <span class="keywordflow">else</span>
-<a name="l00223"></a>00223     {
-<a name="l00224"></a>00224         <span class="comment">// Angle and position of the previous step</span>
-<a name="l00225"></a>00225         <span class="keywordtype">double</span> prev_a = <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>.back().angle;
-<a name="l00226"></a>00226         <a class="code" href="classPoint2D.html" title="Defines a 2D point.">Point2D</a> prev_p(<a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>.back());        
-<a name="l00227"></a>00227 
-<a name="l00228"></a>00228 
-<a name="l00229"></a>00229         <span class="comment">// Position of the next step</span>
-<a name="l00230"></a>00230         <a class="code" href="classPoint2D.html" title="Defines a 2D point.">Point2D</a> next_p(prev_p);        
-<a name="l00231"></a>00231         next_p.x += <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>.back().ca*x_relative - <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>.back().sa*y_relative;
-<a name="l00232"></a>00232         next_p.y += <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>.back().sa*x_relative + <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>.back().ca*y_relative;
-<a name="l00233"></a>00233 
-<a name="l00234"></a>00234 
-<a name="l00235"></a>00235         <span class="comment">// Add double support constraints that lie between the</span>
-<a name="l00236"></a>00236         <span class="comment">// newly added step and the previous step</span>
-<a name="l00237"></a>00237         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="classWMG.html#abf42731e0f88ba41076a24194771d533">def_ds_num</a>; i++)
-<a name="l00238"></a>00238         {
-<a name="l00239"></a>00239             <span class="keywordtype">double</span> theta = (double) (i+1)/(def_ds_num + 1);
-<a name="l00240"></a>00240             <span class="keywordtype">double</span> ds_a = prev_a + angle_relative * theta;
-<a name="l00241"></a>00241 
-<a name="l00242"></a>00242             <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>.push_back(
-<a name="l00243"></a>00243                     <a class="code" href="classFootStep.html" title="Defines a footstep.">FootStep</a>(
-<a name="l00244"></a>00244                         ds_a, 
-<a name="l00245"></a>00245                         (1-theta)*prev_p.x + theta*next_p.x,
-<a name="l00246"></a>00246                         (1-theta)*prev_p.y + theta*next_p.y,
-<a name="l00247"></a>00247                         1, 
-<a name="l00248"></a>00248                         <a class="code" href="group__gWMG__API.html#gga45147e528b9243fa8842d38163498449ac92a7214504e35546f6bff550f2d07d0">FS_TYPE_DS</a>,
-<a name="l00249"></a>00249                         <a class="code" href="classWMG.html#a67647d268f896265b6da8cf33c1e2bf9">def_ds_constraint</a>));
-<a name="l00250"></a>00250         }
-<a name="l00251"></a>00251 
-<a name="l00252"></a>00252 
-<a name="l00253"></a>00253         <span class="comment">// add the new step</span>
-<a name="l00254"></a>00254         <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>.push_back(
-<a name="l00255"></a>00255                 <a class="code" href="classFootStep.html" title="Defines a footstep.">FootStep</a>(
-<a name="l00256"></a>00256                     prev_a + angle_relative, 
-<a name="l00257"></a>00257                     next_p.x, 
-<a name="l00258"></a>00258                     next_p.y, 
-<a name="l00259"></a>00259                     <a class="code" href="classWMG.html#a33601e0435ff7d7d3ac0b1ba10f590e4">def_repeat_times</a>, 
-<a name="l00260"></a>00260                     type,
-<a name="l00261"></a>00261                     <a class="code" href="classWMG.html#af42bcfc0b3d59878fb724803d54e8759">def_constraint</a>));
-<a name="l00262"></a>00262     }    
-<a name="l00263"></a>00263 }
-<a name="l00264"></a>00264 
-<a name="l00265"></a>00265 
-<a name="l00266"></a>00266 
-<a name="l00272"></a><a class="code" href="classWMG.html#afa97e1de34aaf70f766aa4965cc34652">00272</a> <a class="code" href="group__gWMG__API.html#ga4bb1652524cdb17807ce1b82df68d50a">WMGret</a> <a class="code" href="classWMG.html#afa97e1de34aaf70f766aa4965cc34652" title="Forms a preview window.">WMG::FormPreviewWindow</a>()
-<a name="l00273"></a>00273 {
-<a name="l00274"></a>00274     <a class="code" href="group__gWMG__API.html#ga4bb1652524cdb17807ce1b82df68d50a">WMGret</a> retval = <a class="code" href="group__gWMG__API.html#gga4bb1652524cdb17807ce1b82df68d50aab15bed358ba0a63210097a1a77920b5b">WMG_OK</a>;
-<a name="l00275"></a>00275     <span class="keywordtype">int</span> win_step_num = <a class="code" href="classWMG.html#a6770fc44d46e4fdda9ad584c02516ce5" title="This is the step in FS that is at the start of the current preview window. I don&amp;#39;t need to pop_fr...">current_step_number</a>;
-<a name="l00276"></a>00276     <span class="keywordtype">int</span> step_repeat_times = <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[win_step_num].repeat_times;
-<a name="l00277"></a>00277 
-<a name="l00278"></a>00278 
-<a name="l00279"></a>00279     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="classWMG.html#abb248bd581bb239890067b5a73b4c4bd" title="Number of iterations in a preview window.">N</a>;)
-<a name="l00280"></a>00280     {
-<a name="l00281"></a>00281         <span class="keywordflow">if</span> (step_repeat_times &gt; 0)
-<a name="l00282"></a>00282         {
-<a name="l00283"></a>00283             <a class="code" href="classWMG.html#aecb09f9e0fa4b9e5dd1dafe17fad7a44">angle</a>[i] = <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[win_step_num].angle;
-<a name="l00284"></a>00284             <a class="code" href="classWMG.html#a19055d653eec01f23713f8576b17f5d6">zref_x</a>[i] = <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[win_step_num].x;
-<a name="l00285"></a>00285             <a class="code" href="classWMG.html#a9261037da75150ded329be163ffae710">zref_y</a>[i] = <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[win_step_num].y;
-<a name="l00286"></a>00286 
-<a name="l00287"></a>00287             <a class="code" href="classWMG.html#a0ae585fc064a79f71612a3602a209a7a">lb</a>[i*2] = -<a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[win_step_num].d[2];
-<a name="l00288"></a>00288             <a class="code" href="classWMG.html#a5aff192ac43f6e2abc81d59c67c97b80">ub</a>[i*2] = <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[win_step_num].d[0];
-<a name="l00289"></a>00289 
-<a name="l00290"></a>00290             <a class="code" href="classWMG.html#a0ae585fc064a79f71612a3602a209a7a">lb</a>[i*2 + 1] = -<a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[win_step_num].d[3];
-<a name="l00291"></a>00291             <a class="code" href="classWMG.html#a5aff192ac43f6e2abc81d59c67c97b80">ub</a>[i*2 + 1] = <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[win_step_num].d[1];
-<a name="l00292"></a>00292 
-<a name="l00293"></a>00293             step_repeat_times--;
-<a name="l00294"></a>00294             i++;
-<a name="l00295"></a>00295         }
-<a name="l00296"></a>00296         <span class="keywordflow">else</span>
-<a name="l00297"></a>00297         {
-<a name="l00298"></a>00298             win_step_num++;
-<a name="l00299"></a>00299             <span class="keywordflow">if</span> (win_step_num == (<span class="keywordtype">int</span>) <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>.size())
-<a name="l00300"></a>00300             {
-<a name="l00301"></a>00301                 retval = <a class="code" href="group__gWMG__API.html#gga4bb1652524cdb17807ce1b82df68d50aa615ab0e4f617068b4d7347f1f05fba31">WMG_HALT</a>;
-<a name="l00302"></a>00302                 printf(<span class="stringliteral">&quot; \n\n====================================\n &quot;</span>);        
-<a name="l00303"></a>00303                 printf(<span class="stringliteral">&quot; WARNING: not enough steps in FS.&quot;</span>);
-<a name="l00304"></a>00304                 printf(<span class="stringliteral">&quot; \n====================================\n\n &quot;</span>);        
-<a name="l00305"></a>00305                 <span class="keywordflow">break</span>;
-<a name="l00306"></a>00306             }
-<a name="l00307"></a>00307             step_repeat_times = <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[win_step_num].repeat_times;
-<a name="l00308"></a>00308         }
-<a name="l00309"></a>00309     }
-<a name="l00310"></a>00310 
-<a name="l00311"></a>00311     <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[<a class="code" href="classWMG.html#a6770fc44d46e4fdda9ad584c02516ce5" title="This is the step in FS that is at the start of the current preview window. I don&amp;#39;t need to pop_fr...">current_step_number</a>].repeat_times--;
-<a name="l00312"></a>00312     <span class="keywordflow">if</span> (<a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[<a class="code" href="classWMG.html#a6770fc44d46e4fdda9ad584c02516ce5" title="This is the step in FS that is at the start of the current preview window. I don&amp;#39;t need to pop_fr...">current_step_number</a>].repeat_times == 0)
-<a name="l00313"></a>00313     {
-<a name="l00314"></a>00314         <a class="code" href="classWMG.html#a6770fc44d46e4fdda9ad584c02516ce5" title="This is the step in FS that is at the start of the current preview window. I don&amp;#39;t need to pop_fr...">current_step_number</a>++;
-<a name="l00315"></a>00315     }
-<a name="l00316"></a>00316 
-<a name="l00317"></a>00317     <span class="keywordflow">return</span> (retval);
-<a name="l00318"></a>00318 }
-<a name="l00319"></a>00319 
-<a name="l00320"></a>00320 
-<a name="l00321"></a>00321 
-<a name="l00328"></a><a class="code" href="classWMG.html#aa61da4f20dfec27fed20561b468919df">00328</a> <span class="keywordtype">void</span> <a class="code" href="classWMG.html#aa61da4f20dfec27fed20561b468919df" title="Outputs the footsteps in FS to a file, that can be executed in Matlab/Octave to get a figure of the s...">WMG::FS2file</a>(<span class="keyword">const</span> std::string filename)
-<a name="l00329"></a>00329 {
-<a name="l00330"></a>00330     
-<a name="l00331"></a>00331     FILE *file_op = fopen(filename.c_str(), <span class="stringliteral">&quot;w&quot;</span>);
-<a name="l00332"></a>00332     
-<a name="l00333"></a>00333     <span class="keywordflow">if</span>(!file_op)
-<a name="l00334"></a>00334     {
-<a name="l00335"></a>00335         std::cerr &lt;&lt; <span class="stringliteral">&quot;Cannot open file (for writing) &quot;</span> &lt;&lt; std::endl;
-<a name="l00336"></a>00336         <span class="keywordflow">return</span>;
-<a name="l00337"></a>00337     }
-<a name="l00338"></a>00338     
-<a name="l00339"></a>00339     fprintf(file_op,<span class="stringliteral">&quot;%%\n%% Footsteps generated using the c++ version of the WMG\n%%\n\n&quot;</span>);
-<a name="l00340"></a>00340     
-<a name="l00341"></a>00341     <span class="keywordtype">int</span> i;
-<a name="l00342"></a>00342     <span class="keywordflow">for</span> (i=0; i&lt; (int) <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>.size(); i++ )
-<a name="l00343"></a>00343     {
-<a name="l00344"></a>00344         fprintf(file_op, <span class="stringliteral">&quot;FS(%i).a = %f;\nFS(%i).p = [%f;%f];\nFS(%i).d = [%f;%f;%f;%f];\n&quot;</span>, 
-<a name="l00345"></a>00345                 i+1, <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].<a class="code" href="classWMG.html#aecb09f9e0fa4b9e5dd1dafe17fad7a44">angle</a>, 
-<a name="l00346"></a>00346                 i+1, <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].x, <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].y, 
-<a name="l00347"></a>00347                 i+1, <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].d[0], <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].d[1], <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].d[2], <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].d[3]);
-<a name="l00348"></a>00348 
-<a name="l00349"></a>00349         fprintf(file_op, <span class="stringliteral">&quot;FS(%i).D = [%f %f;%f %f;%f %f;%f %f];\n&quot;</span>, 
-<a name="l00350"></a>00350                 i+1, <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].D[0], <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].D[4],
-<a name="l00351"></a>00351                      <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].D[1], <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].D[5],
-<a name="l00352"></a>00352                      <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].D[2], <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].D[6],
-<a name="l00353"></a>00353                      <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].D[3], <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].D[7]); 
-<a name="l00354"></a>00354 
-<a name="l00355"></a>00355         fprintf(file_op, <span class="stringliteral">&quot;FS(%i).v = [%f %f; %f %f; %f %f; %f %f; %f %f];\n&quot;</span>, 
-<a name="l00356"></a>00356                 i+1, <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].vert[0].x, <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].vert[0].y, 
-<a name="l00357"></a>00357                      <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].vert[1].x, <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].vert[1].y, 
-<a name="l00358"></a>00358                      <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].vert[2].x, <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].vert[2].y, 
-<a name="l00359"></a>00359                      <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].vert[3].x, <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].vert[3].y, 
-<a name="l00360"></a>00360                      <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].vert[0].x, <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].vert[0].y);
-<a name="l00361"></a>00361 
-<a name="l00362"></a>00362         <span class="keywordflow">if</span> (<a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].type == <a class="code" href="group__gWMG__API.html#gga45147e528b9243fa8842d38163498449ac92a7214504e35546f6bff550f2d07d0">FS_TYPE_DS</a>)
-<a name="l00363"></a>00363         {
-<a name="l00364"></a>00364             fprintf(file_op, <span class="stringliteral">&quot;FS(%i).type = 1;\n\n&quot;</span>, i+1);
-<a name="l00365"></a>00365         }
-<a name="l00366"></a>00366         <span class="keywordflow">if</span> (<a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].type == <a class="code" href="group__gWMG__API.html#gga45147e528b9243fa8842d38163498449ae0445078d4b982791162f185580b7609">FS_TYPE_SS</a>)
-<a name="l00367"></a>00367         {
-<a name="l00368"></a>00368             fprintf(file_op, <span class="stringliteral">&quot;FS(%i).type = 2;\n\n&quot;</span>, i+1);
-<a name="l00369"></a>00369         }
-<a name="l00370"></a>00370     }
-<a name="l00371"></a>00371 
-<a name="l00372"></a>00372     fprintf(file_op,<span class="stringliteral">&quot;hold on\n&quot;</span>);    
-<a name="l00373"></a>00373     fprintf(file_op,<span class="stringliteral">&quot;for i=1:length(FS)\n&quot;</span>);
-<a name="l00374"></a>00374     fprintf(file_op,<span class="stringliteral">&quot;    if FS(i).type == 1;\n&quot;</span>);
-<a name="l00375"></a>00375     fprintf(file_op,<span class="stringliteral">&quot;        plot (FS(i).p(1),FS(i).p(2),&#39;gs&#39;,&#39;MarkerFaceColor&#39;,&#39;r&#39;,&#39;MarkerSize&#39;,2)\n&quot;</span>);
-<a name="l00376"></a>00376     fprintf(file_op,<span class="stringliteral">&quot;        plot (FS(i).v(:,1), FS(i).v(:,2), &#39;c&#39;);\n&quot;</span>);
-<a name="l00377"></a>00377     fprintf(file_op,<span class="stringliteral">&quot;    end\n&quot;</span>);
-<a name="l00378"></a>00378     fprintf(file_op,<span class="stringliteral">&quot;    if FS(i).type == 2;\n&quot;</span>);
-<a name="l00379"></a>00379     fprintf(file_op,<span class="stringliteral">&quot;        plot (FS(i).p(1),FS(i).p(2),&#39;gs&#39;,&#39;MarkerFaceColor&#39;,&#39;g&#39;,&#39;MarkerSize&#39;,4)\n&quot;</span>);
-<a name="l00380"></a>00380     fprintf(file_op,<span class="stringliteral">&quot;        plot (FS(i).v(:,1), FS(i).v(:,2), &#39;r&#39;);\n&quot;</span>);
-<a name="l00381"></a>00381     fprintf(file_op,<span class="stringliteral">&quot;    end\n&quot;</span>);
-<a name="l00382"></a>00382     fprintf(file_op,<span class="stringliteral">&quot;end\n&quot;</span>);
-<a name="l00383"></a>00383     fprintf(file_op,<span class="stringliteral">&quot;grid on; axis equal\n&quot;</span>);
-<a name="l00384"></a>00384     fclose(file_op);  
-<a name="l00385"></a>00385 }
+<a name="l00129"></a>00129 
+<a name="l00130"></a>00130 
+<a name="l00132"></a>00132     <a class="code" href="classWMG.html#af42bcfc0b3d59878fb724803d54e8759">def_constraint</a>[0] = 0.09;
+<a name="l00133"></a>00133     <a class="code" href="classWMG.html#af42bcfc0b3d59878fb724803d54e8759">def_constraint</a>[1] = 0.025;
+<a name="l00134"></a>00134     <a class="code" href="classWMG.html#af42bcfc0b3d59878fb724803d54e8759">def_constraint</a>[2] = 0.03;
+<a name="l00135"></a>00135     <a class="code" href="classWMG.html#af42bcfc0b3d59878fb724803d54e8759">def_constraint</a>[3] = 0.025;
+<a name="l00136"></a>00136     <a class="code" href="classWMG.html#a33601e0435ff7d7d3ac0b1ba10f590e4">def_repeat_times</a> = 4;
+<a name="l00137"></a>00137 
+<a name="l00138"></a>00138     <a class="code" href="classWMG.html#a67647d268f896265b6da8cf33c1e2bf9">def_ds_constraint</a>[0] = 0.07;
+<a name="l00139"></a>00139     <a class="code" href="classWMG.html#a67647d268f896265b6da8cf33c1e2bf9">def_ds_constraint</a>[1] = 0.025;
+<a name="l00140"></a>00140     <a class="code" href="classWMG.html#a67647d268f896265b6da8cf33c1e2bf9">def_ds_constraint</a>[2] = 0.025;
+<a name="l00141"></a>00141     <a class="code" href="classWMG.html#a67647d268f896265b6da8cf33c1e2bf9">def_ds_constraint</a>[3] = 0.025;
+<a name="l00142"></a>00142     <a class="code" href="classWMG.html#abf42731e0f88ba41076a24194771d533">def_ds_num</a> = 0;
+<a name="l00143"></a>00143 }
+<a name="l00144"></a>00144 
+<a name="l00145"></a>00145 
+<a name="l00153"></a><a class="code" href="classWMG.html#a978ed6f6504561926ef38fb66378619e">00153</a> <span class="keywordtype">void</span> <a class="code" href="classWMG.html#a978ed6f6504561926ef38fb66378619e" title="Initializes a WMG object.">WMG::init_param</a>(
+<a name="l00154"></a>00154         <span class="keyword">const</span> <span class="keywordtype">double</span> T_, 
+<a name="l00155"></a>00155         <span class="keyword">const</span> <span class="keywordtype">double</span> hCoM_,
+<a name="l00156"></a>00156         <span class="keyword">const</span> <span class="keywordtype">double</span> step_height_)
+<a name="l00157"></a>00157 {
+<a name="l00158"></a>00158     <a class="code" href="classWMG.html#aa84378e22b50ebce4f9f9056e68d2ead" title="Height of the CoM.">hCoM</a> = hCoM_;      
+<a name="l00159"></a>00159 
+<a name="l00160"></a>00160     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="classWMG.html#abb248bd581bb239890067b5a73b4c4bd" title="Number of iterations in a preview window.">N</a>; i++)
+<a name="l00161"></a>00161     {
+<a name="l00162"></a>00162         <a class="code" href="classWMG.html#a951aff39ccdf6b194bcdc8ee7b83755f" title="Preview sampling time.">T</a>[i] = T_;
+<a name="l00163"></a>00163         <a class="code" href="classWMG.html#a7df4b6f818bd1bebe6a2994f261bda85" title="h = hCoM/gravity.">h</a>[i] = <a class="code" href="classWMG.html#aa84378e22b50ebce4f9f9056e68d2ead" title="Height of the CoM.">hCoM</a>/<a class="code" href="classWMG.html#adebe1dbad97447d7194bc58af9fdf208" title="Norm of the acceleration due to gravity. For the moment gravity is set equal to 9.81.">gravity</a>;
+<a name="l00164"></a>00164     }
+<a name="l00165"></a>00165 
+<a name="l00166"></a>00166     <a class="code" href="classWMG.html#aa73c2b69c254fbae2950889a8d72bca6" title="The maximum height, that can be reached by a swing foot.">step_height</a> = step_height_;
+<a name="l00167"></a>00167 }
+<a name="l00168"></a>00168 
+<a name="l00169"></a>00169 
+<a name="l00184"></a><a class="code" href="classWMG.html#a90cf0c02b8f511db4758faae1498bef6">00184</a> <span class="keywordtype">void</span> <a class="code" href="classWMG.html#a90cf0c02b8f511db4758faae1498bef6" title="Adds a footstep to FS; sets the default constraints, the total number of iterations and the number of...">WMG::AddFootstep</a>(
+<a name="l00185"></a>00185         <span class="keyword">const</span> <span class="keywordtype">double</span> x_relative, 
+<a name="l00186"></a>00186         <span class="keyword">const</span> <span class="keywordtype">double</span> y_relative, 
+<a name="l00187"></a>00187         <span class="keyword">const</span> <span class="keywordtype">double</span> angle_relative, 
+<a name="l00188"></a>00188         <span class="keyword">const</span> <span class="keywordtype">int</span> n_this, 
+<a name="l00189"></a>00189         <span class="keyword">const</span> <span class="keywordtype">int</span> n, 
+<a name="l00190"></a>00190         <span class="keyword">const</span> <span class="keywordtype">double</span> *d, 
+<a name="l00191"></a>00191         <span class="keyword">const</span> <a class="code" href="group__gWMG__API.html#ga45147e528b9243fa8842d38163498449">fs_type</a> type)
+<a name="l00192"></a>00192 {
+<a name="l00193"></a>00193     <a class="code" href="classWMG.html#af42bcfc0b3d59878fb724803d54e8759">def_constraint</a>[0] = d[0];
+<a name="l00194"></a>00194     <a class="code" href="classWMG.html#af42bcfc0b3d59878fb724803d54e8759">def_constraint</a>[1] = d[1];
+<a name="l00195"></a>00195     <a class="code" href="classWMG.html#af42bcfc0b3d59878fb724803d54e8759">def_constraint</a>[2] = d[2];
+<a name="l00196"></a>00196     <a class="code" href="classWMG.html#af42bcfc0b3d59878fb724803d54e8759">def_constraint</a>[3] = d[3];
+<a name="l00197"></a>00197     <a class="code" href="classWMG.html#a33601e0435ff7d7d3ac0b1ba10f590e4">def_repeat_times</a> = n_this;
+<a name="l00198"></a>00198     <a class="code" href="classWMG.html#abf42731e0f88ba41076a24194771d533">def_ds_num</a> = n - n_this;
+<a name="l00199"></a>00199     <a class="code" href="classWMG.html#a90cf0c02b8f511db4758faae1498bef6" title="Adds a footstep to FS; sets the default constraints, the total number of iterations and the number of...">AddFootstep</a>(x_relative, y_relative, angle_relative, type);
+<a name="l00200"></a>00200 }
+<a name="l00201"></a>00201 
+<a name="l00202"></a>00202 
+<a name="l00203"></a>00203 
+<a name="l00218"></a><a class="code" href="classWMG.html#a592f9dd6cc09864d1c698cd65aa4e8ee">00218</a> <span class="keywordtype">void</span> <a class="code" href="classWMG.html#a90cf0c02b8f511db4758faae1498bef6" title="Adds a footstep to FS; sets the default constraints, the total number of iterations and the number of...">WMG::AddFootstep</a>(
+<a name="l00219"></a>00219         <span class="keyword">const</span> <span class="keywordtype">double</span> x_relative, 
+<a name="l00220"></a>00220         <span class="keyword">const</span> <span class="keywordtype">double</span> y_relative, 
+<a name="l00221"></a>00221         <span class="keyword">const</span> <span class="keywordtype">double</span> angle_relative, 
+<a name="l00222"></a>00222         <span class="keyword">const</span> <span class="keywordtype">int</span> n_this, 
+<a name="l00223"></a>00223         <span class="keyword">const</span> <span class="keywordtype">int</span> n, 
+<a name="l00224"></a>00224         <span class="keyword">const</span> <a class="code" href="group__gWMG__API.html#ga45147e528b9243fa8842d38163498449">fs_type</a> type)
+<a name="l00225"></a>00225 {
+<a name="l00226"></a>00226     <a class="code" href="classWMG.html#a33601e0435ff7d7d3ac0b1ba10f590e4">def_repeat_times</a> = n_this;
+<a name="l00227"></a>00227     <a class="code" href="classWMG.html#abf42731e0f88ba41076a24194771d533">def_ds_num</a> = n - n_this;
+<a name="l00228"></a>00228     <a class="code" href="classWMG.html#a90cf0c02b8f511db4758faae1498bef6" title="Adds a footstep to FS; sets the default constraints, the total number of iterations and the number of...">AddFootstep</a>(x_relative, y_relative, angle_relative, type);
+<a name="l00229"></a>00229 }
+<a name="l00230"></a>00230 
+<a name="l00231"></a>00231 
+<a name="l00232"></a>00232 
+<a name="l00245"></a><a class="code" href="classWMG.html#aa6546fc281048a01086e16c054aac8d0">00245</a> <span class="keywordtype">void</span> <a class="code" href="classWMG.html#a90cf0c02b8f511db4758faae1498bef6" title="Adds a footstep to FS; sets the default constraints, the total number of iterations and the number of...">WMG::AddFootstep</a>(
+<a name="l00246"></a>00246         <span class="keyword">const</span> <span class="keywordtype">double</span> x_relative, 
+<a name="l00247"></a>00247         <span class="keyword">const</span> <span class="keywordtype">double</span> y_relative, 
+<a name="l00248"></a>00248         <span class="keyword">const</span> <span class="keywordtype">double</span> angle_relative, 
+<a name="l00249"></a>00249         <a class="code" href="group__gWMG__API.html#ga45147e528b9243fa8842d38163498449">fs_type</a> type)
+<a name="l00250"></a>00250 {
+<a name="l00251"></a>00251     <span class="keywordflow">if</span> (<a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>.size() == 0)
+<a name="l00252"></a>00252     {
+<a name="l00253"></a>00253         <span class="comment">// this is the first (&quot;virtual&quot;) step.</span>
+<a name="l00254"></a>00254         <span class="keywordflow">if</span> (type == <a class="code" href="group__gWMG__API.html#gga45147e528b9243fa8842d38163498449a8fde2d0cdecdd9eb8caf0bede2665815">FS_TYPE_AUTO</a>)
+<a name="l00255"></a>00255         {
+<a name="l00256"></a>00256             type = <a class="code" href="group__gWMG__API.html#gga45147e528b9243fa8842d38163498449ac92a7214504e35546f6bff550f2d07d0">FS_TYPE_DS</a>;
+<a name="l00257"></a>00257         }
+<a name="l00258"></a>00258 
+<a name="l00259"></a>00259         <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>.push_back(
+<a name="l00260"></a>00260                 <a class="code" href="classFootStep.html" title="Defines a footstep.">FootStep</a>(
+<a name="l00261"></a>00261                     angle_relative, 
+<a name="l00262"></a>00262                     x_relative,
+<a name="l00263"></a>00263                     y_relative, 
+<a name="l00264"></a>00264                     <a class="code" href="classWMG.html#a33601e0435ff7d7d3ac0b1ba10f590e4">def_repeat_times</a>, 
+<a name="l00265"></a>00265                     type,
+<a name="l00266"></a>00266                     <a class="code" href="classWMG.html#af42bcfc0b3d59878fb724803d54e8759">def_constraint</a>));
+<a name="l00267"></a>00267     }
+<a name="l00268"></a>00268     <span class="keywordflow">else</span>
+<a name="l00269"></a>00269     {
+<a name="l00270"></a>00270         <span class="comment">// Angle and position of the previous step</span>
+<a name="l00271"></a>00271         <span class="keywordtype">double</span> prev_a = <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>.back().angle;
+<a name="l00272"></a>00272         <a class="code" href="classPoint2D.html" title="Defines a 2D point.">Point2D</a> prev_p(<a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>.back());        
+<a name="l00273"></a>00273 
+<a name="l00274"></a>00274         <span class="comment">// determine type of the step</span>
+<a name="l00275"></a>00275         <span class="keywordflow">if</span> (type == <a class="code" href="group__gWMG__API.html#gga45147e528b9243fa8842d38163498449a8fde2d0cdecdd9eb8caf0bede2665815">FS_TYPE_AUTO</a>)
+<a name="l00276"></a>00276         {
+<a name="l00277"></a>00277             <span class="keywordflow">switch</span> (<a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>.back().type)
+<a name="l00278"></a>00278             {
+<a name="l00279"></a>00279                 <span class="keywordflow">case</span> <a class="code" href="group__gWMG__API.html#gga45147e528b9243fa8842d38163498449a4520b925caf066a47b733e827647cc55">FS_TYPE_SS_L</a>:
+<a name="l00280"></a>00280                     type = <a class="code" href="group__gWMG__API.html#gga45147e528b9243fa8842d38163498449a961ddc0fabfa0f842b7296b9413e644e">FS_TYPE_SS_R</a>;
+<a name="l00281"></a>00281                     <span class="keywordflow">break</span>;
+<a name="l00282"></a>00282                 <span class="keywordflow">case</span> <a class="code" href="group__gWMG__API.html#gga45147e528b9243fa8842d38163498449a961ddc0fabfa0f842b7296b9413e644e">FS_TYPE_SS_R</a>:
+<a name="l00283"></a>00283                     type = <a class="code" href="group__gWMG__API.html#gga45147e528b9243fa8842d38163498449a4520b925caf066a47b733e827647cc55">FS_TYPE_SS_L</a>;
+<a name="l00284"></a>00284                     <span class="keywordflow">break</span>;
+<a name="l00285"></a>00285                 <span class="keywordflow">case</span> <a class="code" href="group__gWMG__API.html#gga45147e528b9243fa8842d38163498449ac92a7214504e35546f6bff550f2d07d0">FS_TYPE_DS</a>:
+<a name="l00286"></a>00286                 <span class="keywordflow">default</span>:
+<a name="l00287"></a>00287                     type = <a class="code" href="group__gWMG__API.html#gga45147e528b9243fa8842d38163498449a961ddc0fabfa0f842b7296b9413e644e">FS_TYPE_SS_R</a>;
+<a name="l00288"></a>00288                     <span class="keywordflow">break</span>;
+<a name="l00289"></a>00289             }
+<a name="l00290"></a>00290         }
+<a name="l00291"></a>00291 
+<a name="l00292"></a>00292         <span class="comment">// Position of the next step</span>
+<a name="l00293"></a>00293         <a class="code" href="classPoint2D.html" title="Defines a 2D point.">Point2D</a> next_p(prev_p);        
+<a name="l00294"></a>00294         next_p.<a class="code" href="classPoint2D.html#a42fcad8b63853b1136e6207ace6d555e" title="x position [meter]">x</a> += <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>.back().ca*x_relative - <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>.back().sa*y_relative;
+<a name="l00295"></a>00295         next_p.<a class="code" href="classPoint2D.html#a55747be726950fdcba27c1ad032bfdf1" title="y position [meter]">y</a> += <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>.back().sa*x_relative + <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>.back().ca*y_relative;
+<a name="l00296"></a>00296 
+<a name="l00297"></a>00297 
+<a name="l00298"></a>00298         <span class="comment">// Add double support constraints that lie between the</span>
+<a name="l00299"></a>00299         <span class="comment">// newly added step and the previous step</span>
+<a name="l00300"></a>00300         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="classWMG.html#abf42731e0f88ba41076a24194771d533">def_ds_num</a>; i++)
+<a name="l00301"></a>00301         {
+<a name="l00302"></a>00302             <span class="keywordtype">double</span> theta = (double) (i+1)/(def_ds_num + 1);
+<a name="l00303"></a>00303             <span class="keywordtype">double</span> ds_a = prev_a + angle_relative * theta;
+<a name="l00304"></a>00304 
+<a name="l00305"></a>00305             <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>.push_back(
+<a name="l00306"></a>00306                     <a class="code" href="classFootStep.html" title="Defines a footstep.">FootStep</a>(
+<a name="l00307"></a>00307                         ds_a, 
+<a name="l00308"></a>00308                         (1-theta)*prev_p.x + theta*next_p.<a class="code" href="classPoint2D.html#a42fcad8b63853b1136e6207ace6d555e" title="x position [meter]">x</a>,
+<a name="l00309"></a>00309                         (1-theta)*prev_p.y + theta*next_p.<a class="code" href="classPoint2D.html#a55747be726950fdcba27c1ad032bfdf1" title="y position [meter]">y</a>,
+<a name="l00310"></a>00310                         1, 
+<a name="l00311"></a>00311                         <a class="code" href="group__gWMG__API.html#gga45147e528b9243fa8842d38163498449ac92a7214504e35546f6bff550f2d07d0">FS_TYPE_DS</a>,
+<a name="l00312"></a>00312                         <a class="code" href="classWMG.html#a67647d268f896265b6da8cf33c1e2bf9">def_ds_constraint</a>));
+<a name="l00313"></a>00313         }
+<a name="l00314"></a>00314 
+<a name="l00315"></a>00315 
+<a name="l00316"></a>00316         <span class="comment">// add the new step</span>
+<a name="l00317"></a>00317         <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>.push_back(
+<a name="l00318"></a>00318                 <a class="code" href="classFootStep.html" title="Defines a footstep.">FootStep</a>(
+<a name="l00319"></a>00319                     prev_a + angle_relative, 
+<a name="l00320"></a>00320                     next_p.<a class="code" href="classPoint2D.html#a42fcad8b63853b1136e6207ace6d555e" title="x position [meter]">x</a>, 
+<a name="l00321"></a>00321                     next_p.<a class="code" href="classPoint2D.html#a55747be726950fdcba27c1ad032bfdf1" title="y position [meter]">y</a>, 
+<a name="l00322"></a>00322                     <a class="code" href="classWMG.html#a33601e0435ff7d7d3ac0b1ba10f590e4">def_repeat_times</a>, 
+<a name="l00323"></a>00323                     type,
+<a name="l00324"></a>00324                     <a class="code" href="classWMG.html#af42bcfc0b3d59878fb724803d54e8759">def_constraint</a>));
+<a name="l00325"></a>00325     }    
+<a name="l00326"></a>00326 }
+<a name="l00327"></a>00327 
+<a name="l00328"></a>00328 
+<a name="l00329"></a>00329 
+<a name="l00340"></a><a class="code" href="classWMG.html#a75acb9eff024d564eed72f552d0f3012">00340</a> <span class="keywordtype">int</span> <a class="code" href="classWMG.html#a75acb9eff024d564eed72f552d0f3012" title="Returns index of the next SS.">WMG::getNextSS</a>(<span class="keyword">const</span> <span class="keywordtype">int</span> start_ind, <span class="keyword">const</span> <a class="code" href="group__gWMG__API.html#ga45147e528b9243fa8842d38163498449">fs_type</a> type)
+<a name="l00341"></a>00341 {
+<a name="l00342"></a>00342     <span class="keywordtype">int</span> index = start_ind + 1;
+<a name="l00343"></a>00343     <span class="keywordflow">for</span> (; index &lt; (int) <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>.size(); index++) 
+<a name="l00344"></a>00344     {
+<a name="l00345"></a>00345         <span class="keywordflow">if</span> (<a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[index].type != <a class="code" href="group__gWMG__API.html#gga45147e528b9243fa8842d38163498449ac92a7214504e35546f6bff550f2d07d0">FS_TYPE_DS</a>)
+<a name="l00346"></a>00346         {
+<a name="l00347"></a>00347             <span class="keywordflow">if</span> (type == <a class="code" href="group__gWMG__API.html#gga45147e528b9243fa8842d38163498449a8fde2d0cdecdd9eb8caf0bede2665815">FS_TYPE_AUTO</a>)
+<a name="l00348"></a>00348             {
+<a name="l00349"></a>00349                 <span class="keywordflow">break</span>;
+<a name="l00350"></a>00350             }
+<a name="l00351"></a>00351             <span class="keywordflow">else</span>
+<a name="l00352"></a>00352             {
+<a name="l00353"></a>00353                 <span class="keywordflow">if</span> (<a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[index].type == type)
+<a name="l00354"></a>00354                 {
+<a name="l00355"></a>00355                     <span class="keywordflow">break</span>;
+<a name="l00356"></a>00356                 }
+<a name="l00357"></a>00357             }
+<a name="l00358"></a>00358         }
+<a name="l00359"></a>00359     }
+<a name="l00360"></a>00360     <span class="keywordflow">return</span> (index);
+<a name="l00361"></a>00361 }
+<a name="l00362"></a>00362 
+<a name="l00363"></a>00363 
+<a name="l00364"></a>00364 
+<a name="l00375"></a><a class="code" href="classWMG.html#a02edb351fa39c4530b6d4c9e8aa29311">00375</a> <span class="keywordtype">int</span> <a class="code" href="classWMG.html#a02edb351fa39c4530b6d4c9e8aa29311" title="Returns index of the previous SS.">WMG::getPrevSS</a>(<span class="keyword">const</span> <span class="keywordtype">int</span> start_ind, <span class="keyword">const</span> <a class="code" href="group__gWMG__API.html#ga45147e528b9243fa8842d38163498449">fs_type</a> type)
+<a name="l00376"></a>00376 {
+<a name="l00377"></a>00377     <span class="keywordtype">int</span> index = start_ind - 1;
+<a name="l00378"></a>00378     <span class="keywordflow">for</span> (; index &gt;= 0; index--)
+<a name="l00379"></a>00379     {
+<a name="l00380"></a>00380         <span class="keywordflow">if</span> (<a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[index].type != <a class="code" href="group__gWMG__API.html#gga45147e528b9243fa8842d38163498449ac92a7214504e35546f6bff550f2d07d0">FS_TYPE_DS</a>)
+<a name="l00381"></a>00381         {
+<a name="l00382"></a>00382             <span class="keywordflow">if</span> (type == <a class="code" href="group__gWMG__API.html#gga45147e528b9243fa8842d38163498449a8fde2d0cdecdd9eb8caf0bede2665815">FS_TYPE_AUTO</a>)
+<a name="l00383"></a>00383             {
+<a name="l00384"></a>00384                 <span class="keywordflow">break</span>;
+<a name="l00385"></a>00385             }
+<a name="l00386"></a>00386             <span class="keywordflow">else</span>
+<a name="l00387"></a>00387             {
+<a name="l00388"></a>00388                 <span class="keywordflow">if</span> (<a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[index].type == type)
+<a name="l00389"></a>00389                 {
+<a name="l00390"></a>00390                     <span class="keywordflow">break</span>;
+<a name="l00391"></a>00391                 }
+<a name="l00392"></a>00392             }
+<a name="l00393"></a>00393         }
+<a name="l00394"></a>00394     }
+<a name="l00395"></a>00395     <span class="keywordflow">return</span> (index);
+<a name="l00396"></a>00396 }
+<a name="l00397"></a>00397 
+<a name="l00398"></a>00398 
+<a name="l00399"></a>00399 
+<a name="l00420"></a><a class="code" href="classWMG.html#a43fa3245769900971868d304ee9bab36">00420</a> <a class="code" href="group__gWMG__API.html#ga45147e528b9243fa8842d38163498449">fs_type</a> <a class="code" href="classWMG.html#a43fa3245769900971868d304ee9bab36" title="Returns current feet configuration.">WMG::getSwingFootNextPrevPos</a> (
+<a name="l00421"></a>00421         <span class="keywordtype">double</span> *prev_swing_pos,
+<a name="l00422"></a>00422         <span class="keywordtype">double</span> *next_swing_pos,
+<a name="l00423"></a>00423         <span class="keywordtype">int</span> *repeat_times,
+<a name="l00424"></a>00424         <span class="keywordtype">int</span> *repeated_times)
+<a name="l00425"></a>00425 {
+<a name="l00426"></a>00426     <a class="code" href="group__gWMG__API.html#ga45147e528b9243fa8842d38163498449">fs_type</a> cur_fs_type = <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[<a class="code" href="classWMG.html#a6770fc44d46e4fdda9ad584c02516ce5">current_step_number</a>].type;
+<a name="l00427"></a>00427     <span class="keywordtype">int</span> next_swing_ind, prev_swing_ind;
+<a name="l00428"></a>00428     <span class="keywordtype">int</span> next_ss_ind, prev_ss_ind;
+<a name="l00429"></a>00429 
+<a name="l00430"></a>00430     <span class="keywordflow">switch</span> (cur_fs_type)
+<a name="l00431"></a>00431     {
+<a name="l00432"></a>00432         <span class="keywordflow">case</span> <a class="code" href="group__gWMG__API.html#gga45147e528b9243fa8842d38163498449a4520b925caf066a47b733e827647cc55">FS_TYPE_SS_L</a>:
+<a name="l00433"></a>00433         <span class="keywordflow">case</span> <a class="code" href="group__gWMG__API.html#gga45147e528b9243fa8842d38163498449a961ddc0fabfa0f842b7296b9413e644e">FS_TYPE_SS_R</a>:
+<a name="l00434"></a>00434             prev_swing_ind = <a class="code" href="classWMG.html#a02edb351fa39c4530b6d4c9e8aa29311" title="Returns index of the previous SS.">getPrevSS</a> (
+<a name="l00435"></a>00435                     <a class="code" href="classWMG.html#a6770fc44d46e4fdda9ad584c02516ce5">current_step_number</a>, 
+<a name="l00436"></a>00436                     (<a class="code" href="classWMG.html#a0addaffea4f4983363f7e531510eb095" title="Reference foot (R/L), even in DS we need to choose a reference foot.">current_reference_foot</a> == <a class="code" href="group__gWMG__API.html#gga45147e528b9243fa8842d38163498449a961ddc0fabfa0f842b7296b9413e644e">FS_TYPE_SS_R</a>) ? <a class="code" href="group__gWMG__API.html#gga45147e528b9243fa8842d38163498449a4520b925caf066a47b733e827647cc55">FS_TYPE_SS_L</a> : <a class="code" href="group__gWMG__API.html#gga45147e528b9243fa8842d38163498449a961ddc0fabfa0f842b7296b9413e644e">FS_TYPE_SS_R</a>);
+<a name="l00437"></a>00437             next_swing_ind = <a class="code" href="classWMG.html#a75acb9eff024d564eed72f552d0f3012" title="Returns index of the next SS.">getNextSS</a> (
+<a name="l00438"></a>00438                     <a class="code" href="classWMG.html#a6770fc44d46e4fdda9ad584c02516ce5">current_step_number</a>, 
+<a name="l00439"></a>00439                     (<a class="code" href="classWMG.html#a0addaffea4f4983363f7e531510eb095" title="Reference foot (R/L), even in DS we need to choose a reference foot.">current_reference_foot</a> == FS_TYPE_SS_R) ? <a class="code" href="group__gWMG__API.html#gga45147e528b9243fa8842d38163498449a4520b925caf066a47b733e827647cc55">FS_TYPE_SS_L</a> : FS_TYPE_SS_R);
+<a name="l00440"></a>00440 
+<a name="l00441"></a>00441             *repeat_times = <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[<a class="code" href="classWMG.html#a6770fc44d46e4fdda9ad584c02516ce5">current_step_number</a>].repeat_times;
+<a name="l00442"></a>00442             *repeated_times = *repeat_times - <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[<a class="code" href="classWMG.html#a6770fc44d46e4fdda9ad584c02516ce5">current_step_number</a>].repeat_counter;
+<a name="l00443"></a>00443             <span class="keywordflow">break</span>;
+<a name="l00444"></a>00444 
+<a name="l00445"></a>00445         <span class="keywordflow">case</span> <a class="code" href="group__gWMG__API.html#gga45147e528b9243fa8842d38163498449ac92a7214504e35546f6bff550f2d07d0">FS_TYPE_DS</a>:
+<a name="l00446"></a>00446             next_ss_ind = <a class="code" href="classWMG.html#a75acb9eff024d564eed72f552d0f3012" title="Returns index of the next SS.">getNextSS</a> (<a class="code" href="classWMG.html#a6770fc44d46e4fdda9ad584c02516ce5">current_step_number</a>);
+<a name="l00447"></a>00447             prev_ss_ind = <a class="code" href="classWMG.html#a02edb351fa39c4530b6d4c9e8aa29311" title="Returns index of the previous SS.">getPrevSS</a> (<a class="code" href="classWMG.html#a6770fc44d46e4fdda9ad584c02516ce5">current_step_number</a>);
+<a name="l00448"></a>00448             <span class="keywordflow">if</span> (<a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[next_ss_ind].type == <a class="code" href="classWMG.html#a0addaffea4f4983363f7e531510eb095" title="Reference foot (R/L), even in DS we need to choose a reference foot.">current_reference_foot</a>)
+<a name="l00449"></a>00449             {
+<a name="l00450"></a>00450                 next_swing_ind = prev_swing_ind = prev_ss_ind;
+<a name="l00451"></a>00451             }
+<a name="l00452"></a>00452             <span class="keywordflow">else</span>
+<a name="l00453"></a>00453             {
+<a name="l00454"></a>00454                 next_swing_ind = prev_swing_ind = next_ss_ind;
+<a name="l00455"></a>00455             }
+<a name="l00456"></a>00456 
+<a name="l00457"></a>00457             *repeat_times = 0;
+<a name="l00458"></a>00458             *repeated_times = 0;
+<a name="l00459"></a>00459             <span class="keywordflow">break</span>;
+<a name="l00460"></a>00460 
+<a name="l00461"></a>00461         <span class="keywordflow">case</span> <a class="code" href="group__gWMG__API.html#gga45147e528b9243fa8842d38163498449a8fde2d0cdecdd9eb8caf0bede2665815">FS_TYPE_AUTO</a>:
+<a name="l00462"></a>00462         <span class="keywordflow">default</span>:
+<a name="l00463"></a>00463             <span class="comment">// should never happen, since type is checked when steps are added.</span>
+<a name="l00464"></a>00464             <span class="keywordflow">return</span> (cur_fs_type);
+<a name="l00465"></a>00465     }
+<a name="l00466"></a>00466 
+<a name="l00467"></a>00467 
+<a name="l00468"></a>00468     prev_swing_pos[0] = <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[prev_swing_ind].x;
+<a name="l00469"></a>00469     prev_swing_pos[1] = <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[prev_swing_ind].y;
+<a name="l00470"></a>00470     prev_swing_pos[2] = <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[prev_swing_ind].angle;
+<a name="l00471"></a>00471 
+<a name="l00472"></a>00472     next_swing_pos[0] = <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[next_swing_ind].x;
+<a name="l00473"></a>00473     next_swing_pos[1] = <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[next_swing_ind].y;
+<a name="l00474"></a>00474     next_swing_pos[2] = <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[next_swing_ind].angle;
+<a name="l00475"></a>00475 
+<a name="l00476"></a>00476     <span class="keywordflow">return</span> (cur_fs_type);
+<a name="l00477"></a>00477 }
+<a name="l00478"></a>00478 
+<a name="l00479"></a>00479 
+<a name="l00480"></a>00480 
+<a name="l00500"></a><a class="code" href="classWMG.html#aab0611e41f63e540071e3f5513113c21">00500</a> <span class="keywordtype">void</span> <a class="code" href="classWMG.html#aab0611e41f63e540071e3f5513113c21" title="Determine position and orientation of the swing foot.">WMG::getSwingFootPosition</a> (
+<a name="l00501"></a>00501         <span class="keyword">const</span> <a class="code" href="group__gWMG__API.html#gab12af782c2450a13fa3b291e4ba12d25">swing_foot_pos_type</a> swing_type,
+<a name="l00502"></a>00502         <span class="keyword">const</span> <span class="keywordtype">int</span> loops_per_preview_iter,
+<a name="l00503"></a>00503         <span class="keyword">const</span> <span class="keywordtype">int</span> loops_in_current_preview,
+<a name="l00504"></a>00504         <span class="keywordtype">double</span> *swing_foot_pos,
+<a name="l00505"></a>00505         <span class="keywordtype">double</span> *angle_xy)
+<a name="l00506"></a>00506 {
+<a name="l00507"></a>00507     <span class="keywordflow">if</span> (swing_type == <a class="code" href="group__gWMG__API.html#ggab12af782c2450a13fa3b291e4ba12d25a111367a2bc025f4a70a73c9c05363de9">WMG_SWING_2D_PARABOLA</a>)
+<a name="l00508"></a>00508     {
+<a name="l00509"></a>00509         <span class="keywordtype">int</span> num_iter_in_ss;
+<a name="l00510"></a>00510         <span class="keywordtype">int</span> num_iter_in_ss_passed;
+<a name="l00511"></a>00511         <span class="keywordtype">double</span> prev_swing_pos[3];
+<a name="l00512"></a>00512         <span class="keywordtype">double</span> next_swing_pos[3];
+<a name="l00513"></a>00513 
+<a name="l00514"></a>00514         <span class="keywordflow">if</span> (<a class="code" href="classWMG.html#a43fa3245769900971868d304ee9bab36" title="Returns current feet configuration.">getSwingFootNextPrevPos</a>(
+<a name="l00515"></a>00515                 prev_swing_pos,
+<a name="l00516"></a>00516                 next_swing_pos,
+<a name="l00517"></a>00517                 &amp;num_iter_in_ss,
+<a name="l00518"></a>00518                 &amp;num_iter_in_ss_passed) != <a class="code" href="group__gWMG__API.html#gga45147e528b9243fa8842d38163498449ac92a7214504e35546f6bff550f2d07d0">FS_TYPE_DS</a>)
+<a name="l00519"></a>00519         {
+<a name="l00520"></a>00520             <span class="keywordtype">double</span> theta =
+<a name="l00521"></a>00521                 (double) (loops_per_preview_iter * num_iter_in_ss_passed + loops_in_current_preview) /
+<a name="l00522"></a>00522                 (loops_per_preview_iter * num_iter_in_ss);
+<a name="l00523"></a>00523 
+<a name="l00524"></a>00524             <span class="keywordtype">double</span> x[3] = {
+<a name="l00525"></a>00525                 prev_swing_pos[0],
+<a name="l00526"></a>00526                 (prev_swing_pos[0] + next_swing_pos[0])/2,
+<a name="l00527"></a>00527                 next_swing_pos[0]};
+<a name="l00528"></a>00528 
+<a name="l00529"></a>00529             <span class="keywordtype">double</span> b_coef = - (x[2]*x[2] - x[0]*x[0])/(x[2] - x[0]);
+<a name="l00530"></a>00530             <span class="keywordtype">double</span> a = <a class="code" href="classWMG.html#aa73c2b69c254fbae2950889a8d72bca6" title="The maximum height, that can be reached by a swing foot.">step_height</a> / (x[1]*x[1] - x[0]*x[0] + b_coef*(x[1] - x[0]));
+<a name="l00531"></a>00531             <span class="keywordtype">double</span> b = a * b_coef;
+<a name="l00532"></a>00532             <span class="keywordtype">double</span> c = - a*x[0]*x[0] - b*x[0];
+<a name="l00533"></a>00533 
+<a name="l00534"></a>00534             swing_foot_pos[0] = (1-theta)*x[0] + theta*x[2]; <span class="comment">// linear equation</span>
+<a name="l00535"></a>00535             swing_foot_pos[1] = next_swing_pos[1];
+<a name="l00536"></a>00536             swing_foot_pos[2] = a * swing_foot_pos[0] * swing_foot_pos[0] + b * swing_foot_pos[0] + c;
+<a name="l00537"></a>00537         }
+<a name="l00538"></a>00538         <span class="keywordflow">else</span>
+<a name="l00539"></a>00539         {
+<a name="l00540"></a>00540             swing_foot_pos[0] = next_swing_pos[0];
+<a name="l00541"></a>00541             swing_foot_pos[1] = next_swing_pos[1];
+<a name="l00542"></a>00542             swing_foot_pos[2] = 0.0;
+<a name="l00543"></a>00543         }
+<a name="l00544"></a>00544 
+<a name="l00545"></a>00545         *angle_xy = next_swing_pos[2];
+<a name="l00546"></a>00546     }
+<a name="l00547"></a>00547 }
+<a name="l00548"></a>00548 
+<a name="l00549"></a>00549 
+<a name="l00550"></a>00550 
+<a name="l00551"></a>00551 
+<a name="l00557"></a><a class="code" href="classWMG.html#afa97e1de34aaf70f766aa4965cc34652">00557</a> <a class="code" href="group__gWMG__API.html#ga4bb1652524cdb17807ce1b82df68d50a">WMGret</a> <a class="code" href="classWMG.html#afa97e1de34aaf70f766aa4965cc34652" title="Forms a preview window.">WMG::FormPreviewWindow</a>()
+<a name="l00558"></a>00558 {
+<a name="l00559"></a>00559     <a class="code" href="group__gWMG__API.html#ga4bb1652524cdb17807ce1b82df68d50a">WMGret</a> retval = <a class="code" href="group__gWMG__API.html#gga4bb1652524cdb17807ce1b82df68d50aab15bed358ba0a63210097a1a77920b5b">WMG_OK</a>;
+<a name="l00560"></a>00560     <span class="keywordtype">int</span> win_step_num = <a class="code" href="classWMG.html#a6770fc44d46e4fdda9ad584c02516ce5">current_step_number</a>;
+<a name="l00561"></a>00561     <span class="keywordtype">int</span> step_repeat_times = <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[win_step_num].repeat_counter;
+<a name="l00562"></a>00562 
+<a name="l00563"></a>00563 
+<a name="l00564"></a>00564     <span class="comment">// If reference foot is unknown, this function is executed</span>
+<a name="l00565"></a>00565     <span class="comment">// for the first time: we need to use the next SS as the</span>
+<a name="l00566"></a>00566     <span class="comment">// reference foot, since the first SS must be fake.</span>
+<a name="l00567"></a>00567     <span class="keywordflow">if</span> (<a class="code" href="classWMG.html#a0addaffea4f4983363f7e531510eb095" title="Reference foot (R/L), even in DS we need to choose a reference foot.">current_reference_foot</a> == <a class="code" href="group__gWMG__API.html#gga45147e528b9243fa8842d38163498449a8fde2d0cdecdd9eb8caf0bede2665815">FS_TYPE_AUTO</a>)
+<a name="l00568"></a>00568     {
+<a name="l00569"></a>00569         <a class="code" href="classWMG.html#a0addaffea4f4983363f7e531510eb095" title="Reference foot (R/L), even in DS we need to choose a reference foot.">current_reference_foot</a> = <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[<a class="code" href="classWMG.html#a75acb9eff024d564eed72f552d0f3012" title="Returns index of the next SS.">getNextSS</a> (win_step_num)].type;
+<a name="l00570"></a>00570     }
+<a name="l00571"></a>00571 
+<a name="l00572"></a>00572     <span class="comment">// Indicate switch of the reference foot</span>
+<a name="l00573"></a>00573     <span class="keywordflow">if</span> (    <span class="comment">// if we are not in the initial support</span>
+<a name="l00574"></a>00574             (win_step_num != 0) &amp;&amp; 
+<a name="l00575"></a>00575             <span class="comment">// we are in DS</span>
+<a name="l00576"></a>00576             (<a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[win_step_num].type == <a class="code" href="group__gWMG__API.html#gga45147e528b9243fa8842d38163498449ac92a7214504e35546f6bff550f2d07d0">FS_TYPE_DS</a>) &amp;&amp;
+<a name="l00577"></a>00577             <span class="comment">// the previous footstep was not DS</span>
+<a name="l00578"></a>00578             (<a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[win_step_num-1].type != <a class="code" href="group__gWMG__API.html#gga45147e528b9243fa8842d38163498449ac92a7214504e35546f6bff550f2d07d0">FS_TYPE_DS</a>) &amp;&amp;
+<a name="l00579"></a>00579             <span class="comment">// this is the first iteration in DS</span>
+<a name="l00580"></a>00580             (<a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[win_step_num].repeat_counter == <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[win_step_num].repeat_times))
+<a name="l00581"></a>00581     {
+<a name="l00582"></a>00582         retval = <a class="code" href="group__gWMG__API.html#gga4bb1652524cdb17807ce1b82df68d50aabad3338ffb071616a01200fff94a1c61">WMG_SWITCH_REFERENCE_FOOT</a>;
+<a name="l00583"></a>00583         <a class="code" href="classWMG.html#a0addaffea4f4983363f7e531510eb095" title="Reference foot (R/L), even in DS we need to choose a reference foot.">current_reference_foot</a> = <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[<a class="code" href="classWMG.html#a75acb9eff024d564eed72f552d0f3012" title="Returns index of the next SS.">getNextSS</a> (win_step_num)].type;
+<a name="l00584"></a>00584     }
+<a name="l00585"></a>00585 
+<a name="l00586"></a>00586 
+<a name="l00587"></a>00587     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="classWMG.html#abb248bd581bb239890067b5a73b4c4bd" title="Number of iterations in a preview window.">N</a>;)
+<a name="l00588"></a>00588     {
+<a name="l00589"></a>00589         <span class="keywordflow">if</span> (step_repeat_times &gt; 0)
+<a name="l00590"></a>00590         {
+<a name="l00591"></a>00591             <a class="code" href="classWMG.html#aecb09f9e0fa4b9e5dd1dafe17fad7a44" title="Array of N absolute angles corresponding to supports in the preview window.">angle</a>[i] = <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[win_step_num].angle;
+<a name="l00592"></a>00592 
+<a name="l00593"></a>00593             <a class="code" href="classWMG.html#aef8b7df19ecc03d9bc759d9a340111ac" title="Coordinates of N points satisfying constraints,.">fp_x</a>[i] = <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[win_step_num].x;
+<a name="l00594"></a>00594             <a class="code" href="classWMG.html#a733113b0c76e60c15ed33075733e07e4">fp_y</a>[i] = <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[win_step_num].y;
+<a name="l00595"></a>00595 
+<a name="l00597"></a>00597             <a class="code" href="classWMG.html#a19055d653eec01f23713f8576b17f5d6" title="N reference coordinates of ZMP.">zref_x</a>[i] = <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[win_step_num].x + 0.02*<a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[win_step_num].ca;
+<a name="l00598"></a>00598             <a class="code" href="classWMG.html#a9261037da75150ded329be163ffae710">zref_y</a>[i] = <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[win_step_num].y + 0.02*<a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[win_step_num].sa;
+<a name="l00599"></a>00599 
+<a name="l00600"></a>00600             <a class="code" href="classWMG.html#a0ae585fc064a79f71612a3602a209a7a" title="2*N bounds for coordinates of ZMP position.">lb</a>[i*2] = -<a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[win_step_num].d[2];
+<a name="l00601"></a>00601             <a class="code" href="classWMG.html#a5aff192ac43f6e2abc81d59c67c97b80">ub</a>[i*2] = <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[win_step_num].d[0];
+<a name="l00602"></a>00602 
+<a name="l00603"></a>00603             <a class="code" href="classWMG.html#a0ae585fc064a79f71612a3602a209a7a" title="2*N bounds for coordinates of ZMP position.">lb</a>[i*2 + 1] = -<a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[win_step_num].d[3];
+<a name="l00604"></a>00604             <a class="code" href="classWMG.html#a5aff192ac43f6e2abc81d59c67c97b80">ub</a>[i*2 + 1] = <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[win_step_num].d[1];
+<a name="l00605"></a>00605 
+<a name="l00606"></a>00606             step_repeat_times--;
+<a name="l00607"></a>00607             i++;
+<a name="l00608"></a>00608         }
+<a name="l00609"></a>00609         <span class="keywordflow">else</span>
+<a name="l00610"></a>00610         {
+<a name="l00611"></a>00611             win_step_num++;
+<a name="l00612"></a>00612             <span class="keywordflow">if</span> (win_step_num == (<span class="keywordtype">int</span>) <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>.size())
+<a name="l00613"></a>00613             {
+<a name="l00614"></a>00614                 retval = <a class="code" href="group__gWMG__API.html#gga4bb1652524cdb17807ce1b82df68d50aa615ab0e4f617068b4d7347f1f05fba31">WMG_HALT</a>;
+<a name="l00615"></a>00615                 <span class="keywordflow">break</span>;
+<a name="l00616"></a>00616             }
+<a name="l00617"></a>00617             step_repeat_times = <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[win_step_num].repeat_counter;
+<a name="l00618"></a>00618         }
+<a name="l00619"></a>00619     }
+<a name="l00620"></a>00620 
+<a name="l00621"></a>00621 
+<a name="l00622"></a>00622     <span class="keywordflow">if</span> (<a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[<a class="code" href="classWMG.html#a6770fc44d46e4fdda9ad584c02516ce5">current_step_number</a>].repeat_counter == 0)
+<a name="l00623"></a>00623     {
+<a name="l00624"></a>00624         <a class="code" href="classWMG.html#a6770fc44d46e4fdda9ad584c02516ce5">current_step_number</a>++;
+<a name="l00625"></a>00625     }
+<a name="l00626"></a>00626 
+<a name="l00627"></a>00627     <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[<a class="code" href="classWMG.html#a6770fc44d46e4fdda9ad584c02516ce5">current_step_number</a>].repeat_counter--;
+<a name="l00628"></a>00628     <span class="keywordflow">if</span> (<a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[<a class="code" href="classWMG.html#a6770fc44d46e4fdda9ad584c02516ce5">current_step_number</a>].repeat_counter == 0)
+<a name="l00629"></a>00629     {
+<a name="l00630"></a>00630         <a class="code" href="classWMG.html#a6770fc44d46e4fdda9ad584c02516ce5">current_step_number</a>++;
+<a name="l00631"></a>00631     }
+<a name="l00632"></a>00632 
+<a name="l00633"></a>00633     <span class="keywordflow">return</span> (retval);
+<a name="l00634"></a>00634 }
+<a name="l00635"></a>00635 
+<a name="l00636"></a>00636 
+<a name="l00637"></a>00637 
+<a name="l00646"></a><a class="code" href="classWMG.html#a78156e135dcc7c88329eb814140d33ab">00646</a> <span class="keywordtype">void</span> <a class="code" href="classWMG.html#a78156e135dcc7c88329eb814140d33ab" title="Initialize state (A) and control #(B) matrices for inverted pendulum model.">WMG::initABMatrices</a> (<span class="keyword">const</span> <span class="keywordtype">double</span> sampling_time)
+<a name="l00647"></a>00647 {
+<a name="l00648"></a>00648     <a class="code" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to estimate a state based on the current state and contr...">A</a> = <span class="keyword">new</span> <span class="keywordtype">double</span>[9];
+<a name="l00649"></a>00649     <a class="code" href="classWMG.html#af36d87c015ef4af6ed9eecf635913715">B</a> = <span class="keyword">new</span> <span class="keywordtype">double</span>[3];
+<a name="l00650"></a>00650 
+<a name="l00651"></a>00651     <a class="code" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to estimate a state based on the current state and contr...">A</a>[0] = <a class="code" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to estimate a state based on the current state and contr...">A</a>[4] = <a class="code" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to estimate a state based on the current state and contr...">A</a>[8] = 1;
+<a name="l00652"></a>00652     <a class="code" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to estimate a state based on the current state and contr...">A</a>[1] = <a class="code" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to estimate a state based on the current state and contr...">A</a>[2] = <a class="code" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to estimate a state based on the current state and contr...">A</a>[5] = 0;
+<a name="l00653"></a>00653     <a class="code" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to estimate a state based on the current state and contr...">A</a>[3] = <a class="code" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to estimate a state based on the current state and contr...">A</a>[7] = sampling_time;
+<a name="l00654"></a>00654     <a class="code" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to estimate a state based on the current state and contr...">A</a>[6] = sampling_time * sampling_time/2 <span class="comment">/*- delta_hCoM = 0*/</span>;
+<a name="l00655"></a>00655 
+<a name="l00656"></a>00656     <a class="code" href="classWMG.html#af36d87c015ef4af6ed9eecf635913715">B</a>[0] = sampling_time * sampling_time * sampling_time / 6 - <a class="code" href="classWMG.html#aa84378e22b50ebce4f9f9056e68d2ead" title="Height of the CoM.">hCoM</a>/<a class="code" href="classWMG.html#adebe1dbad97447d7194bc58af9fdf208" title="Norm of the acceleration due to gravity. For the moment gravity is set equal to 9.81.">gravity</a> * sampling_time;
+<a name="l00657"></a>00657     <a class="code" href="classWMG.html#af36d87c015ef4af6ed9eecf635913715">B</a>[1] = sampling_time * sampling_time/2;
+<a name="l00658"></a>00658     <a class="code" href="classWMG.html#af36d87c015ef4af6ed9eecf635913715">B</a>[2] = sampling_time;
+<a name="l00659"></a>00659 }
+<a name="l00660"></a>00660 
+<a name="l00661"></a>00661 
+<a name="l00662"></a>00662 
+<a name="l00673"></a><a class="code" href="classWMG.html#a5bb495ea5248c895738405c8ca241cc3">00673</a> <span class="keywordtype">void</span> <a class="code" href="classWMG.html#a5bb495ea5248c895738405c8ca241cc3" title="Initialize X_tilde state.">WMG::initState</a> (<span class="keyword">const</span> <span class="keywordtype">double</span> CoM_x, <span class="keyword">const</span> <span class="keywordtype">double</span> CoM_y, <span class="keywordtype">double</span> *state)
+<a name="l00674"></a>00674 {
+<a name="l00675"></a>00675     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 6; i++)
+<a name="l00676"></a>00676     {
+<a name="l00677"></a>00677         state[i] = 0;
+<a name="l00678"></a>00678     }
+<a name="l00679"></a>00679 
+<a name="l00680"></a>00680 
+<a name="l00681"></a>00681     <span class="keywordtype">double</span> h_tmp  = <a class="code" href="classWMG.html#aa84378e22b50ebce4f9f9056e68d2ead" title="Height of the CoM.">hCoM</a>/<a class="code" href="classWMG.html#adebe1dbad97447d7194bc58af9fdf208" title="Norm of the acceleration due to gravity. For the moment gravity is set equal to 9.81.">gravity</a>;
+<a name="l00682"></a>00682     <span class="comment">// Note that state[2] and state[5] are zeros.</span>
+<a name="l00683"></a>00683     state[0] = CoM_x - h_tmp * state[2]; 
+<a name="l00684"></a>00684     state[3] = CoM_y - h_tmp * state[5];
+<a name="l00685"></a>00685 }
+<a name="l00686"></a>00686 
+<a name="l00687"></a>00687 
+<a name="l00688"></a>00688 
+<a name="l00698"></a><a class="code" href="classWMG.html#a71447aaea5df8866474761c2f5aebba3">00698</a> <span class="keywordtype">void</span> <a class="code" href="classWMG.html#a71447aaea5df8866474761c2f5aebba3" title="Calculate next state (X_tilde) using inverted pendulum model (A and B matrices).">WMG::calculateNextState</a> (<span class="keyword">const</span> <span class="keywordtype">double</span> *control, <span class="keywordtype">double</span> *state)
+<a name="l00699"></a>00699 {
+<a name="l00700"></a>00700     <span class="keywordflow">if</span> ((<a class="code" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to estimate a state based on the current state and contr...">A</a> == NULL) || (<a class="code" href="classWMG.html#af36d87c015ef4af6ed9eecf635913715">B</a> == NULL))
+<a name="l00701"></a>00701     {
+<a name="l00702"></a>00702         <span class="keywordflow">return</span>;
+<a name="l00703"></a>00703     }
+<a name="l00704"></a>00704 
+<a name="l00705"></a>00705 
+<a name="l00706"></a>00706     state[0] = state[0] * <a class="code" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to estimate a state based on the current state and contr...">A</a>[0]
+<a name="l00707"></a>00707              + state[1] * <a class="code" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to estimate a state based on the current state and contr...">A</a>[3]
+<a name="l00708"></a>00708              + state[2] * <a class="code" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to estimate a state based on the current state and contr...">A</a>[6]
+<a name="l00709"></a>00709              + control[0] * <a class="code" href="classWMG.html#af36d87c015ef4af6ed9eecf635913715">B</a>[0];
+<a name="l00710"></a>00710 
+<a name="l00711"></a>00711     state[1] = state[1] * <a class="code" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to estimate a state based on the current state and contr...">A</a>[4]
+<a name="l00712"></a>00712              + state[2] * <a class="code" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to estimate a state based on the current state and contr...">A</a>[7]
+<a name="l00713"></a>00713              + control[0] * B[1];
+<a name="l00714"></a>00714 
+<a name="l00715"></a>00715     state[2] = state[2] * <a class="code" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to estimate a state based on the current state and contr...">A</a>[8]
+<a name="l00716"></a>00716              + control[0] * B[2];
+<a name="l00717"></a>00717 
+<a name="l00718"></a>00718     state[3] = state[3] * <a class="code" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to estimate a state based on the current state and contr...">A</a>[0]
+<a name="l00719"></a>00719              + state[4] * <a class="code" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to estimate a state based on the current state and contr...">A</a>[3]
+<a name="l00720"></a>00720              + state[5] * <a class="code" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to estimate a state based on the current state and contr...">A</a>[6]
+<a name="l00721"></a>00721              + control[1] * B[0];
+<a name="l00722"></a>00722 
+<a name="l00723"></a>00723     state[4] = state[4] * <a class="code" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to estimate a state based on the current state and contr...">A</a>[4]
+<a name="l00724"></a>00724              + state[5] * <a class="code" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to estimate a state based on the current state and contr...">A</a>[7]
+<a name="l00725"></a>00725              + control[1] * B[1];
+<a name="l00726"></a>00726 
+<a name="l00727"></a>00727     state[5] = state[5] * <a class="code" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to estimate a state based on the current state and contr...">A</a>[8]
+<a name="l00728"></a>00728              + control[1] * B[2];
+<a name="l00729"></a>00729 }
+<a name="l00730"></a>00730 
+<a name="l00731"></a>00731 
+<a name="l00732"></a>00732 
+<a name="l00739"></a><a class="code" href="classWMG.html#aa61da4f20dfec27fed20561b468919df">00739</a> <span class="keywordtype">void</span> <a class="code" href="classWMG.html#aa61da4f20dfec27fed20561b468919df" title="Outputs the footsteps in FS to a file, that can be executed in Matlab/Octave to get a figure of the s...">WMG::FS2file</a>(<span class="keyword">const</span> std::string filename)
+<a name="l00740"></a>00740 {
+<a name="l00741"></a>00741     
+<a name="l00742"></a>00742     FILE *file_op = fopen(filename.c_str(), <span class="stringliteral">&quot;w&quot;</span>);
+<a name="l00743"></a>00743     
+<a name="l00744"></a>00744     <span class="keywordflow">if</span>(!file_op)
+<a name="l00745"></a>00745     {
+<a name="l00746"></a>00746         fprintf(stderr, <span class="stringliteral">&quot;Cannot open file (for writing)\n&quot;</span>);
+<a name="l00747"></a>00747         <span class="keywordflow">return</span>;
+<a name="l00748"></a>00748     }
+<a name="l00749"></a>00749     
+<a name="l00750"></a>00750     fprintf(file_op,<span class="stringliteral">&quot;%%\n%% Footsteps generated using the c++ version of the WMG\n%%\n\n&quot;</span>);
+<a name="l00751"></a>00751     
+<a name="l00752"></a>00752     <span class="keywordtype">int</span> i;
+<a name="l00753"></a>00753     <span class="keywordflow">for</span> (i=0; i&lt; (int) <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>.size(); i++ )
+<a name="l00754"></a>00754     {
+<a name="l00755"></a>00755         fprintf(file_op, <span class="stringliteral">&quot;FS(%i).a = %f;\nFS(%i).p = [%f;%f];\nFS(%i).d = [%f;%f;%f;%f];\n&quot;</span>, 
+<a name="l00756"></a>00756                 i+1, <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].<a class="code" href="classWMG.html#aecb09f9e0fa4b9e5dd1dafe17fad7a44" title="Array of N absolute angles corresponding to supports in the preview window.">angle</a>, 
+<a name="l00757"></a>00757                 i+1, <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].x, <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].y, 
+<a name="l00758"></a>00758                 i+1, <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].d[0], <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].d[1], <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].d[2], <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].d[3]);
+<a name="l00759"></a>00759 
+<a name="l00760"></a>00760         fprintf(file_op, <span class="stringliteral">&quot;FS(%i).D = [%f %f;%f %f;%f %f;%f %f];\n&quot;</span>, 
+<a name="l00761"></a>00761                 i+1, <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].D[0], <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].D[4],
+<a name="l00762"></a>00762                      <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].D[1], <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].D[5],
+<a name="l00763"></a>00763                      <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].D[2], <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].D[6],
+<a name="l00764"></a>00764                      <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].D[3], <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].D[7]); 
+<a name="l00765"></a>00765 
+<a name="l00766"></a>00766         fprintf(file_op, <span class="stringliteral">&quot;FS(%i).v = [%f %f; %f %f; %f %f; %f %f; %f %f];\n&quot;</span>, 
+<a name="l00767"></a>00767                 i+1, <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].vert[0].x, <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].vert[0].y, 
+<a name="l00768"></a>00768                      <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].vert[1].x, <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].vert[1].y, 
+<a name="l00769"></a>00769                      <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].vert[2].x, <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].vert[2].y, 
+<a name="l00770"></a>00770                      <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].vert[3].x, <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].vert[3].y, 
+<a name="l00771"></a>00771                      <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].vert[0].x, <a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].vert[0].y);
+<a name="l00772"></a>00772 
+<a name="l00773"></a>00773         <span class="keywordflow">if</span> (<a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].type == <a class="code" href="group__gWMG__API.html#gga45147e528b9243fa8842d38163498449ac92a7214504e35546f6bff550f2d07d0">FS_TYPE_DS</a>)
+<a name="l00774"></a>00774         {
+<a name="l00775"></a>00775             fprintf(file_op, <span class="stringliteral">&quot;FS(%i).type = 1;\n\n&quot;</span>, i+1);
+<a name="l00776"></a>00776         }
+<a name="l00777"></a>00777         <span class="keywordflow">if</span> ((<a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].type == <a class="code" href="group__gWMG__API.html#gga45147e528b9243fa8842d38163498449a4520b925caf066a47b733e827647cc55">FS_TYPE_SS_L</a>) || (<a class="code" href="classWMG.html#af7bc717fd497497f20a282a9930185aa" title="A vector of footsteps.">FS</a>[i].type == <a class="code" href="group__gWMG__API.html#gga45147e528b9243fa8842d38163498449a961ddc0fabfa0f842b7296b9413e644e">FS_TYPE_SS_R</a>))
+<a name="l00778"></a>00778         {
+<a name="l00779"></a>00779             fprintf(file_op, <span class="stringliteral">&quot;FS(%i).type = 2;\n\n&quot;</span>, i+1);
+<a name="l00780"></a>00780         }
+<a name="l00781"></a>00781     }
+<a name="l00782"></a>00782 
+<a name="l00783"></a>00783     fprintf(file_op,<span class="stringliteral">&quot;hold on\n&quot;</span>);    
+<a name="l00784"></a>00784     fprintf(file_op,<span class="stringliteral">&quot;for i=1:length(FS)\n&quot;</span>);
+<a name="l00785"></a>00785     fprintf(file_op,<span class="stringliteral">&quot;    if FS(i).type == 1;\n&quot;</span>);
+<a name="l00786"></a>00786     fprintf(file_op,<span class="stringliteral">&quot;        plot (FS(i).p(1),FS(i).p(2),&#39;gs&#39;,&#39;MarkerFaceColor&#39;,&#39;r&#39;,&#39;MarkerSize&#39;,2)\n&quot;</span>);
+<a name="l00787"></a>00787     fprintf(file_op,<span class="stringliteral">&quot;        plot (FS(i).v(:,1), FS(i).v(:,2), &#39;c&#39;);\n&quot;</span>);
+<a name="l00788"></a>00788     fprintf(file_op,<span class="stringliteral">&quot;    end\n&quot;</span>);
+<a name="l00789"></a>00789     fprintf(file_op,<span class="stringliteral">&quot;    if FS(i).type == 2;\n&quot;</span>);
+<a name="l00790"></a>00790     fprintf(file_op,<span class="stringliteral">&quot;        plot (FS(i).p(1),FS(i).p(2),&#39;gs&#39;,&#39;MarkerFaceColor&#39;,&#39;g&#39;,&#39;MarkerSize&#39;,4)\n&quot;</span>);
+<a name="l00791"></a>00791     fprintf(file_op,<span class="stringliteral">&quot;        plot (FS(i).v(:,1), FS(i).v(:,2), &#39;r&#39;);\n&quot;</span>);
+<a name="l00792"></a>00792     fprintf(file_op,<span class="stringliteral">&quot;    end\n&quot;</span>);
+<a name="l00793"></a>00793     fprintf(file_op,<span class="stringliteral">&quot;end\n&quot;</span>);
+<a name="l00794"></a>00794     fprintf(file_op,<span class="stringliteral">&quot;grid on; %%axis equal\n&quot;</span>);
+<a name="l00795"></a>00795     fclose(file_op);  
+<a name="l00796"></a>00796 }
 </pre></div></div>
 </div>
 <hr class="footer"/><address class="footer"><small>Generated by&#160;

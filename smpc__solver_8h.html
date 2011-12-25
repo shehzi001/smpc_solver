@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>A sparse MPC solver for walking motion generation.: solver/smpc_solver.h File Reference</title>
+<title>A sparse MPC solver for walking motion generation.: include/smpc_solver.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -40,9 +40,9 @@
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#enum-members">Enumerations</a>  </div>
+<a href="#define-members">Defines</a>  </div>
   <div class="headertitle">
-<h1>solver/smpc_solver.h File Reference</h1>  </div>
+<h1>include/smpc_solver.h File Reference</h1>  </div>
 </div>
 <div class="contents">
 
@@ -55,11 +55,14 @@
 Classes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc__solver.html">smpc_solver</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">API of the sparse MPC solver.  <a href="classsmpc__solver.html#_details">More...</a><br/></td></tr>
-<tr><td colspan="2"><h2><a name="enum-members"></a>
-Enumerations</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__gAPI.html#ga4775bc060a554f018f85756eadd690d1">solver_type</a> { <a class="el" href="group__gAPI.html#gga4775bc060a554f018f85756eadd690d1a3c32659e7a477e4e4ac2e63375e1523b">SMPC_AS</a>, 
-<a class="el" href="group__gAPI.html#gga4775bc060a554f018f85756eadd690d1a0828b63db39a47400e9e691298161826">SMPC_IP</a>
- }</td></tr>
+<tr><td colspan="2"><h2><a name="define-members"></a>
+Defines</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__gAPI.html#gab7984838b079762f5087b37a731e0b79">SMPC_NUM_STATE_VAR</a>&#160;&#160;&#160;6</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of state variables.  <a href="group__gAPI.html#gab7984838b079762f5087b37a731e0b79"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__gAPI.html#ga7ac5a60c7c00a69bad741e5f1973ab45">SMPC_NUM_CONTROL_VAR</a>&#160;&#160;&#160;2</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of control variables.  <a href="group__gAPI.html#ga7ac5a60c7c00a69bad741e5f1973ab45"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__gAPI.html#ga74b56d50f3995ffd5282a2f2289dfd1a">SMPC_NUM_VAR</a>&#160;&#160;&#160;8</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Total number of variables.  <a href="group__gAPI.html#ga74b56d50f3995ffd5282a2f2289dfd1a"></a><br/></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Interface of the library. </p>

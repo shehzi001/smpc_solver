@@ -34,7 +34,7 @@
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#enum-members">Enumerations</a>  </div>
+<a href="#define-members">Defines</a>  </div>
   <div class="headertitle">
 <h1>API of the solver library</h1>  </div>
 </div>
@@ -44,35 +44,64 @@
 Classes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc__solver.html">smpc_solver</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">API of the sparse MPC solver.  <a href="classsmpc__solver.html#_details">More...</a><br/></td></tr>
-<tr><td colspan="2"><h2><a name="enum-members"></a>
-Enumerations</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__gAPI.html#ga4775bc060a554f018f85756eadd690d1">solver_type</a> { <a class="el" href="group__gAPI.html#gga4775bc060a554f018f85756eadd690d1a3c32659e7a477e4e4ac2e63375e1523b">SMPC_AS</a>, 
-<a class="el" href="group__gAPI.html#gga4775bc060a554f018f85756eadd690d1a0828b63db39a47400e9e691298161826">SMPC_IP</a>
- }</td></tr>
+<tr><td colspan="2"><h2><a name="define-members"></a>
+Defines</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__gAPI.html#gab7984838b079762f5087b37a731e0b79">SMPC_NUM_STATE_VAR</a>&#160;&#160;&#160;6</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of state variables.  <a href="#gab7984838b079762f5087b37a731e0b79"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__gAPI.html#ga7ac5a60c7c00a69bad741e5f1973ab45">SMPC_NUM_CONTROL_VAR</a>&#160;&#160;&#160;2</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of control variables.  <a href="#ga7ac5a60c7c00a69bad741e5f1973ab45"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__gAPI.html#ga74b56d50f3995ffd5282a2f2289dfd1a">SMPC_NUM_VAR</a>&#160;&#160;&#160;8</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Total number of variables.  <a href="#ga74b56d50f3995ffd5282a2f2289dfd1a"></a><br/></td></tr>
 </table>
-<hr/><h2>Enumeration Type Documentation</h2>
-<a class="anchor" id="ga4775bc060a554f018f85756eadd690d1"></a><!-- doxytag: member="smpc_solver.h::solver_type" ref="ga4775bc060a554f018f85756eadd690d1" args="" -->
+<hr/><h2>Define Documentation</h2>
+<a class="anchor" id="ga7ac5a60c7c00a69bad741e5f1973ab45"></a><!-- doxytag: member="smpc_solver.h::SMPC_NUM_CONTROL_VAR" ref="ga7ac5a60c7c00a69bad741e5f1973ab45" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="group__gAPI.html#ga4775bc060a554f018f85756eadd690d1">solver_type</a></td>
+          <td class="memname">#define SMPC_NUM_CONTROL_VAR&#160;&#160;&#160;2</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
-<dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
-<tr><td valign="top"><em><a class="anchor" id="gga4775bc060a554f018f85756eadd690d1a3c32659e7a477e4e4ac2e63375e1523b"></a><!-- doxytag: member="SMPC_AS" ref="gga4775bc060a554f018f85756eadd690d1a3c32659e7a477e4e4ac2e63375e1523b" args="" -->SMPC_AS</em>&nbsp;</td><td>
-<p>Active set method. </p>
-</td></tr>
-<tr><td valign="top"><em><a class="anchor" id="gga4775bc060a554f018f85756eadd690d1a0828b63db39a47400e9e691298161826"></a><!-- doxytag: member="SMPC_IP" ref="gga4775bc060a554f018f85756eadd690d1a0828b63db39a47400e9e691298161826" args="" -->SMPC_IP</em>&nbsp;</td><td>
-<p>Interior-point method. </p>
-</td></tr>
-</table>
-</dd>
-</dl>
 
-<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00019">19</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
+<p>Number of control variables. </p>
+
+<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00022">22</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="gab7984838b079762f5087b37a731e0b79"></a><!-- doxytag: member="smpc_solver.h::SMPC_NUM_STATE_VAR" ref="gab7984838b079762f5087b37a731e0b79" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SMPC_NUM_STATE_VAR&#160;&#160;&#160;6</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Number of state variables. </p>
+
+<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00020">20</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ga74b56d50f3995ffd5282a2f2289dfd1a"></a><!-- doxytag: member="smpc_solver.h::SMPC_NUM_VAR" ref="ga74b56d50f3995ffd5282a2f2289dfd1a" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SMPC_NUM_VAR&#160;&#160;&#160;8</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Total number of variables. </p>
+
+<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00024">24</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
 
 </div>
 </div>

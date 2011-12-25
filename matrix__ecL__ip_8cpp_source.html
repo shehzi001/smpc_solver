@@ -389,7 +389,7 @@
 <a name="l00437"></a>00437     {
 <a name="l00438"></a>00438         <span class="comment">// switch to the next level of L / next 6 elements</span>
 <a name="l00439"></a>00439         xp = xc;
-<a name="l00440"></a>00440         xc = &amp;xc[<a class="code" href="group__gINTERNALS.html#ga37814f52692ffc71ef43e6b06e891440" title="Number of state variables.">NUM_STATE_VAR</a>];
+<a name="l00440"></a>00440         xc = &amp;xc[<a class="code" href="group__gAPI.html#gab7984838b079762f5087b37a731e0b79" title="Number of state variables.">SMPC_NUM_STATE_VAR</a>];
 <a name="l00441"></a>00441 
 <a name="l00442"></a>00442         ecL_prev = &amp;ecL_cur[<a class="code" href="group__gIP.html#ga09af4319b2a3d4fc3cc8a5022188c0d0" title="The number of elements in 6x6 matrix.">MATRIX_SIZE_6x6</a>];
 <a name="l00443"></a>00443         ecL_cur = &amp;ecL_prev[<a class="code" href="group__gIP.html#ga09af4319b2a3d4fc3cc8a5022188c0d0" title="The number of elements in 6x6 matrix.">MATRIX_SIZE_6x6</a>];
@@ -420,7 +420,7 @@
 <a name="l00474"></a><a class="code" href="classmatrix__ecL__ip.html#a389e56b2773a75d86480cb3ee1b100d2">00474</a> <span class="keywordtype">void</span> <a class="code" href="classmatrix__ecL__ip.html#a389e56b2773a75d86480cb3ee1b100d2" title="Solve system ecL&amp;#39; * x = b using backward substitution.">matrix_ecL_ip::solve_backward</a> (<span class="keyword">const</span> <span class="keywordtype">int</span> N, <span class="keywordtype">double</span> *x)
 <a name="l00475"></a>00475 {
 <a name="l00476"></a>00476     <span class="keywordtype">int</span> i,j,k;
-<a name="l00477"></a>00477     <span class="keywordtype">double</span> *xc = &amp; x[(N-1)*<a class="code" href="group__gINTERNALS.html#ga37814f52692ffc71ef43e6b06e891440" title="Number of state variables.">NUM_STATE_VAR</a>]; <span class="comment">// current 6 elements of result</span>
+<a name="l00477"></a>00477     <span class="keywordtype">double</span> *xc = &amp; x[(N-1)*<a class="code" href="group__gAPI.html#gab7984838b079762f5087b37a731e0b79" title="Number of state variables.">SMPC_NUM_STATE_VAR</a>]; <span class="comment">// current 6 elements of result</span>
 <a name="l00478"></a>00478     <span class="keywordtype">double</span> *xp; <span class="comment">// 6 elements computed on the previous iteration</span>
 <a name="l00479"></a>00479     
 <a name="l00480"></a>00480     <span class="comment">// elements of these matrices accessed as if they were transposed</span>
@@ -444,7 +444,7 @@
 <a name="l00498"></a>00498     <span class="keywordflow">for</span> (i = N-2; i &gt;= 0 ; i--)
 <a name="l00499"></a>00499     {
 <a name="l00500"></a>00500         xp = xc;
-<a name="l00501"></a>00501         xc = &amp; x[i*<a class="code" href="group__gINTERNALS.html#ga37814f52692ffc71ef43e6b06e891440" title="Number of state variables.">NUM_STATE_VAR</a>];
+<a name="l00501"></a>00501         xc = &amp; x[i*<a class="code" href="group__gAPI.html#gab7984838b079762f5087b37a731e0b79" title="Number of state variables.">SMPC_NUM_STATE_VAR</a>];
 <a name="l00502"></a>00502 
 <a name="l00503"></a>00503         ecL_cur = &amp;<a class="code" href="classmatrix__ecL__ip.html#ae84f9022a0498b4cc343fec35a8bc794">ecL</a>[2 * i * <a class="code" href="group__gIP.html#ga09af4319b2a3d4fc3cc8a5022188c0d0" title="The number of elements in 6x6 matrix.">MATRIX_SIZE_6x6</a>];
 <a name="l00504"></a>00504         ecL_prev = &amp;ecL_cur[<a class="code" href="group__gIP.html#ga09af4319b2a3d4fc3cc8a5022188c0d0" title="The number of elements in 6x6 matrix.">MATRIX_SIZE_6x6</a>];

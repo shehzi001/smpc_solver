@@ -70,9 +70,9 @@
 <a name="l00042"></a>00042     chol (N_)
 <a name="l00043"></a>00043 {
 <a name="l00044"></a>00044     <a class="code" href="classqp__ip.html#a765df1117c481f8c8cd5ef76d94ea35c" title="2*N non-zero elements of vector g.">g</a> = <span class="keyword">new</span> <span class="keywordtype">double</span>[2*<a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>];
-<a name="l00045"></a>00045     <a class="code" href="classqp__ip.html#af57fb1c8b1c58d4876da6fa7f0ec8a28" title="Inverted hessian: non-repeating diagonal elements 1:3:N*NUM_STATE_VAR, 2*N in total.">i2hess</a> = <span class="keyword">new</span> <span class="keywordtype">double</span>[2*<a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>];
-<a name="l00046"></a>00046     <a class="code" href="classqp__ip.html#a6dd422a6960475a56b8dc751252b5450" title="Inverted hessian * gradient (N*NUM_VAR vector)">i2hess_grad</a> = <span class="keyword">new</span> <span class="keywordtype">double</span>[<a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>*<a class="code" href="group__gINTERNALS.html#gae8780c341d0ab405a8d820726f7e3b5c" title="Total number of variables.">NUM_VAR</a>];
-<a name="l00047"></a>00047     <a class="code" href="classqp__ip.html#a004837ab0a8d2133520e4ee9d6d26f85" title="N*NUM_VAR gradient vector">grad</a> = <span class="keyword">new</span> <span class="keywordtype">double</span>[<a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>*<a class="code" href="group__gINTERNALS.html#gae8780c341d0ab405a8d820726f7e3b5c" title="Total number of variables.">NUM_VAR</a>];
+<a name="l00045"></a>00045     <a class="code" href="classqp__ip.html#af57fb1c8b1c58d4876da6fa7f0ec8a28" title="Inverted hessian: non-repeating diagonal elements 1:3:N*SMPC_NUM_STATE_VAR, 2*N in total...">i2hess</a> = <span class="keyword">new</span> <span class="keywordtype">double</span>[2*<a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>];
+<a name="l00046"></a>00046     <a class="code" href="classqp__ip.html#a6dd422a6960475a56b8dc751252b5450" title="Inverted hessian * gradient (N*SMPC_NUM_VAR vector)">i2hess_grad</a> = <span class="keyword">new</span> <span class="keywordtype">double</span>[<a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>*<a class="code" href="group__gAPI.html#ga74b56d50f3995ffd5282a2f2289dfd1a" title="Total number of variables.">SMPC_NUM_VAR</a>];
+<a name="l00047"></a>00047     <a class="code" href="classqp__ip.html#a004837ab0a8d2133520e4ee9d6d26f85" title="N*SMPC_NUM_VAR gradient vector">grad</a> = <span class="keyword">new</span> <span class="keywordtype">double</span>[<a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>*<a class="code" href="group__gAPI.html#ga74b56d50f3995ffd5282a2f2289dfd1a" title="Total number of variables.">SMPC_NUM_VAR</a>];
 <a name="l00048"></a>00048 
 <a name="l00049"></a>00049     <a class="code" href="classqp__ip.html#ad2a280b2a654a989a890cc4387d90f2a" title="Diagonal elements of H.">Q</a>[0] = Beta/2;
 <a name="l00050"></a>00050     <a class="code" href="classqp__ip.html#ad2a280b2a654a989a890cc4387d90f2a" title="Diagonal elements of H.">Q</a>[1] = Alpha/2;
@@ -85,12 +85,12 @@
 <a name="l00058"></a>00058 {
 <a name="l00059"></a>00059     <span class="keywordflow">if</span> (<a class="code" href="classqp__ip.html#a765df1117c481f8c8cd5ef76d94ea35c" title="2*N non-zero elements of vector g.">g</a> != NULL)
 <a name="l00060"></a>00060         <span class="keyword">delete</span> <a class="code" href="classqp__ip.html#a765df1117c481f8c8cd5ef76d94ea35c" title="2*N non-zero elements of vector g.">g</a>;
-<a name="l00061"></a>00061     <span class="keywordflow">if</span> (<a class="code" href="classqp__ip.html#af57fb1c8b1c58d4876da6fa7f0ec8a28" title="Inverted hessian: non-repeating diagonal elements 1:3:N*NUM_STATE_VAR, 2*N in total.">i2hess</a> != NULL)
-<a name="l00062"></a>00062         <span class="keyword">delete</span> <a class="code" href="classqp__ip.html#af57fb1c8b1c58d4876da6fa7f0ec8a28" title="Inverted hessian: non-repeating diagonal elements 1:3:N*NUM_STATE_VAR, 2*N in total.">i2hess</a>;
-<a name="l00063"></a>00063     <span class="keywordflow">if</span> (<a class="code" href="classqp__ip.html#a6dd422a6960475a56b8dc751252b5450" title="Inverted hessian * gradient (N*NUM_VAR vector)">i2hess_grad</a> != NULL)
-<a name="l00064"></a>00064         <span class="keyword">delete</span> <a class="code" href="classqp__ip.html#a6dd422a6960475a56b8dc751252b5450" title="Inverted hessian * gradient (N*NUM_VAR vector)">i2hess_grad</a>;
-<a name="l00065"></a>00065     <span class="keywordflow">if</span> (<a class="code" href="classqp__ip.html#a004837ab0a8d2133520e4ee9d6d26f85" title="N*NUM_VAR gradient vector">grad</a> != NULL)
-<a name="l00066"></a>00066         <span class="keyword">delete</span> <a class="code" href="classqp__ip.html#a004837ab0a8d2133520e4ee9d6d26f85" title="N*NUM_VAR gradient vector">grad</a>;
+<a name="l00061"></a>00061     <span class="keywordflow">if</span> (<a class="code" href="classqp__ip.html#af57fb1c8b1c58d4876da6fa7f0ec8a28" title="Inverted hessian: non-repeating diagonal elements 1:3:N*SMPC_NUM_STATE_VAR, 2*N in total...">i2hess</a> != NULL)
+<a name="l00062"></a>00062         <span class="keyword">delete</span> <a class="code" href="classqp__ip.html#af57fb1c8b1c58d4876da6fa7f0ec8a28" title="Inverted hessian: non-repeating diagonal elements 1:3:N*SMPC_NUM_STATE_VAR, 2*N in total...">i2hess</a>;
+<a name="l00063"></a>00063     <span class="keywordflow">if</span> (<a class="code" href="classqp__ip.html#a6dd422a6960475a56b8dc751252b5450" title="Inverted hessian * gradient (N*SMPC_NUM_VAR vector)">i2hess_grad</a> != NULL)
+<a name="l00064"></a>00064         <span class="keyword">delete</span> <a class="code" href="classqp__ip.html#a6dd422a6960475a56b8dc751252b5450" title="Inverted hessian * gradient (N*SMPC_NUM_VAR vector)">i2hess_grad</a>;
+<a name="l00065"></a>00065     <span class="keywordflow">if</span> (<a class="code" href="classqp__ip.html#a004837ab0a8d2133520e4ee9d6d26f85" title="N*SMPC_NUM_VAR gradient vector">grad</a> != NULL)
+<a name="l00066"></a>00066         <span class="keyword">delete</span> <a class="code" href="classqp__ip.html#a004837ab0a8d2133520e4ee9d6d26f85" title="N*SMPC_NUM_VAR gradient vector">grad</a>;
 <a name="l00067"></a>00067 }
 <a name="l00068"></a>00068 
 <a name="l00069"></a>00069 
@@ -143,13 +143,13 @@
 <a name="l00138"></a>00138 
 <a name="l00139"></a>00139     <span class="comment">// grad = H*X + g + kappa * b;</span>
 <a name="l00140"></a>00140     <span class="comment">// initialize grad = H*X</span>
-<a name="l00141"></a>00141     <span class="keywordflow">for</span> (i = 0; i &lt; <a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>*<a class="code" href="group__gINTERNALS.html#ga37814f52692ffc71ef43e6b06e891440" title="Number of state variables.">NUM_STATE_VAR</a>; i++)
+<a name="l00141"></a>00141     <span class="keywordflow">for</span> (i = 0; i &lt; <a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>*<a class="code" href="group__gAPI.html#gab7984838b079762f5087b37a731e0b79" title="Number of state variables.">SMPC_NUM_STATE_VAR</a>; i++)
 <a name="l00142"></a>00142     {
-<a name="l00143"></a>00143         <a class="code" href="classqp__ip.html#a004837ab0a8d2133520e4ee9d6d26f85" title="N*NUM_VAR gradient vector">grad</a>[i] = <a class="code" href="classqp__solver.html#a913e4e5a4936b84794bd3a37e7abcaa6">X</a>[i] / <a class="code" href="classproblem__parameters.html#aa1a23930743a84b91d77c77857150a57">i2Q</a>[i%3];
+<a name="l00143"></a>00143         <a class="code" href="classqp__ip.html#a004837ab0a8d2133520e4ee9d6d26f85" title="N*SMPC_NUM_VAR gradient vector">grad</a>[i] = <a class="code" href="classqp__solver.html#a913e4e5a4936b84794bd3a37e7abcaa6">X</a>[i] / <a class="code" href="classproblem__parameters.html#aa1a23930743a84b91d77c77857150a57">i2Q</a>[i%3];
 <a name="l00144"></a>00144     }
-<a name="l00145"></a>00145     <span class="keywordflow">for</span> (; i &lt; <a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>*<a class="code" href="group__gINTERNALS.html#gae8780c341d0ab405a8d820726f7e3b5c" title="Total number of variables.">NUM_VAR</a>; i++)
+<a name="l00145"></a>00145     <span class="keywordflow">for</span> (; i &lt; <a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>*<a class="code" href="group__gAPI.html#ga74b56d50f3995ffd5282a2f2289dfd1a" title="Total number of variables.">SMPC_NUM_VAR</a>; i++)
 <a name="l00146"></a>00146     {
-<a name="l00147"></a>00147         <a class="code" href="classqp__ip.html#a004837ab0a8d2133520e4ee9d6d26f85" title="N*NUM_VAR gradient vector">grad</a>[i] = <a class="code" href="classqp__solver.html#a913e4e5a4936b84794bd3a37e7abcaa6">X</a>[i] / <a class="code" href="classproblem__parameters.html#aa7c28f51f09f182cc82dd57d6175325e">i2P</a>;
+<a name="l00147"></a>00147         <a class="code" href="classqp__ip.html#a004837ab0a8d2133520e4ee9d6d26f85" title="N*SMPC_NUM_VAR gradient vector">grad</a>[i] = <a class="code" href="classqp__solver.html#a913e4e5a4936b84794bd3a37e7abcaa6">X</a>[i] / <a class="code" href="classproblem__parameters.html#aa7c28f51f09f182cc82dd57d6175325e">i2P</a>;
 <a name="l00148"></a>00148     }
 <a name="l00149"></a>00149 
 <a name="l00150"></a>00150     <span class="comment">// finish initalization of grad </span>
@@ -167,12 +167,12 @@
 <a name="l00162"></a>00162         ub_diff = 1/ub_diff;
 <a name="l00163"></a>00163 
 <a name="l00164"></a>00164         <span class="comment">// grad += g + kappa * (ub_diff - lb_diff)</span>
-<a name="l00165"></a>00165         <a class="code" href="classqp__ip.html#a004837ab0a8d2133520e4ee9d6d26f85" title="N*NUM_VAR gradient vector">grad</a>[j] += <a class="code" href="classqp__ip.html#a765df1117c481f8c8cd5ef76d94ea35c" title="2*N non-zero elements of vector g.">g</a>[i] + kappa * (ub_diff - lb_diff);
+<a name="l00165"></a>00165         <a class="code" href="classqp__ip.html#a004837ab0a8d2133520e4ee9d6d26f85" title="N*SMPC_NUM_VAR gradient vector">grad</a>[j] += <a class="code" href="classqp__ip.html#a765df1117c481f8c8cd5ef76d94ea35c" title="2*N non-zero elements of vector g.">g</a>[i] + kappa * (ub_diff - lb_diff);
 <a name="l00166"></a>00166 
-<a name="l00167"></a>00167         <span class="comment">// only elements 1:3:N*NUM_STATE_VAR on the diagonal of hessian </span>
+<a name="l00167"></a>00167         <span class="comment">// only elements 1:3:N*SMPC_NUM_STATE_VAR on the diagonal of hessian </span>
 <a name="l00168"></a>00168         <span class="comment">// can change</span>
 <a name="l00169"></a>00169         <span class="comment">// hess = H + kappa * (ub_diff^2 - lb_diff^2)</span>
-<a name="l00170"></a>00170         <a class="code" href="classqp__ip.html#af57fb1c8b1c58d4876da6fa7f0ec8a28" title="Inverted hessian: non-repeating diagonal elements 1:3:N*NUM_STATE_VAR, 2*N in total.">i2hess</a>[i] = 1/(2*<a class="code" href="classqp__ip.html#ad2a280b2a654a989a890cc4387d90f2a" title="Diagonal elements of H.">Q</a>[0] + kappa * (ub_diff*ub_diff + lb_diff*lb_diff));
+<a name="l00170"></a>00170         <a class="code" href="classqp__ip.html#af57fb1c8b1c58d4876da6fa7f0ec8a28" title="Inverted hessian: non-repeating diagonal elements 1:3:N*SMPC_NUM_STATE_VAR, 2*N in total...">i2hess</a>[i] = 1/(2*<a class="code" href="classqp__ip.html#ad2a280b2a654a989a890cc4387d90f2a" title="Diagonal elements of H.">Q</a>[0] + kappa * (ub_diff*ub_diff + lb_diff*lb_diff));
 <a name="l00171"></a>00171     }
 <a name="l00172"></a>00172     <a class="code" href="classqp__ip.html#accf711f0bfa3f523c2862e47e388494c" title="Value of phi(X), where phi is the cost function + log barrier.">phi_X</a> *= kappa;
 <a name="l00173"></a>00173 }
@@ -184,16 +184,16 @@
 <a name="l00182"></a>00182     <span class="keywordtype">int</span> i,j;
 <a name="l00183"></a>00183     <span class="keywordflow">for</span> (i = 0, j = 0; i &lt; <a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>*2; i++)
 <a name="l00184"></a>00184     {
-<a name="l00185"></a>00185         <a class="code" href="classqp__ip.html#a6dd422a6960475a56b8dc751252b5450" title="Inverted hessian * gradient (N*NUM_VAR vector)">i2hess_grad</a>[j] = - <a class="code" href="classqp__ip.html#a004837ab0a8d2133520e4ee9d6d26f85" title="N*NUM_VAR gradient vector">grad</a>[j] * <a class="code" href="classqp__ip.html#af57fb1c8b1c58d4876da6fa7f0ec8a28" title="Inverted hessian: non-repeating diagonal elements 1:3:N*NUM_STATE_VAR, 2*N in total.">i2hess</a>[i]; 
+<a name="l00185"></a>00185         <a class="code" href="classqp__ip.html#a6dd422a6960475a56b8dc751252b5450" title="Inverted hessian * gradient (N*SMPC_NUM_VAR vector)">i2hess_grad</a>[j] = - <a class="code" href="classqp__ip.html#a004837ab0a8d2133520e4ee9d6d26f85" title="N*SMPC_NUM_VAR gradient vector">grad</a>[j] * <a class="code" href="classqp__ip.html#af57fb1c8b1c58d4876da6fa7f0ec8a28" title="Inverted hessian: non-repeating diagonal elements 1:3:N*SMPC_NUM_STATE_VAR, 2*N in total...">i2hess</a>[i]; 
 <a name="l00186"></a>00186         j++;
-<a name="l00187"></a>00187         <a class="code" href="classqp__ip.html#a6dd422a6960475a56b8dc751252b5450" title="Inverted hessian * gradient (N*NUM_VAR vector)">i2hess_grad</a>[j] = - <a class="code" href="classqp__ip.html#a004837ab0a8d2133520e4ee9d6d26f85" title="N*NUM_VAR gradient vector">grad</a>[j] * <a class="code" href="classproblem__parameters.html#aa1a23930743a84b91d77c77857150a57">i2Q</a>[1]; 
+<a name="l00187"></a>00187         <a class="code" href="classqp__ip.html#a6dd422a6960475a56b8dc751252b5450" title="Inverted hessian * gradient (N*SMPC_NUM_VAR vector)">i2hess_grad</a>[j] = - <a class="code" href="classqp__ip.html#a004837ab0a8d2133520e4ee9d6d26f85" title="N*SMPC_NUM_VAR gradient vector">grad</a>[j] * <a class="code" href="classproblem__parameters.html#aa1a23930743a84b91d77c77857150a57">i2Q</a>[1]; 
 <a name="l00188"></a>00188         j++;
-<a name="l00189"></a>00189         <a class="code" href="classqp__ip.html#a6dd422a6960475a56b8dc751252b5450" title="Inverted hessian * gradient (N*NUM_VAR vector)">i2hess_grad</a>[j] = - <a class="code" href="classqp__ip.html#a004837ab0a8d2133520e4ee9d6d26f85" title="N*NUM_VAR gradient vector">grad</a>[j] * i2Q[2]; 
+<a name="l00189"></a>00189         <a class="code" href="classqp__ip.html#a6dd422a6960475a56b8dc751252b5450" title="Inverted hessian * gradient (N*SMPC_NUM_VAR vector)">i2hess_grad</a>[j] = - <a class="code" href="classqp__ip.html#a004837ab0a8d2133520e4ee9d6d26f85" title="N*SMPC_NUM_VAR gradient vector">grad</a>[j] * i2Q[2]; 
 <a name="l00190"></a>00190         j++;
 <a name="l00191"></a>00191     }
-<a name="l00192"></a>00192     <span class="keywordflow">for</span> (i = N*<a class="code" href="group__gINTERNALS.html#ga37814f52692ffc71ef43e6b06e891440" title="Number of state variables.">NUM_STATE_VAR</a>; i &lt; N*<a class="code" href="group__gINTERNALS.html#gae8780c341d0ab405a8d820726f7e3b5c" title="Total number of variables.">NUM_VAR</a>; i++)
+<a name="l00192"></a>00192     <span class="keywordflow">for</span> (i = N*<a class="code" href="group__gAPI.html#gab7984838b079762f5087b37a731e0b79" title="Number of state variables.">SMPC_NUM_STATE_VAR</a>; i &lt; N*<a class="code" href="group__gAPI.html#ga74b56d50f3995ffd5282a2f2289dfd1a" title="Total number of variables.">SMPC_NUM_VAR</a>; i++)
 <a name="l00193"></a>00193     {
-<a name="l00194"></a>00194         <a class="code" href="classqp__ip.html#a6dd422a6960475a56b8dc751252b5450" title="Inverted hessian * gradient (N*NUM_VAR vector)">i2hess_grad</a>[i] = - <a class="code" href="classqp__ip.html#a004837ab0a8d2133520e4ee9d6d26f85" title="N*NUM_VAR gradient vector">grad</a>[i] * <a class="code" href="classproblem__parameters.html#aa7c28f51f09f182cc82dd57d6175325e">i2P</a>;
+<a name="l00194"></a>00194         <a class="code" href="classqp__ip.html#a6dd422a6960475a56b8dc751252b5450" title="Inverted hessian * gradient (N*SMPC_NUM_VAR vector)">i2hess_grad</a>[i] = - <a class="code" href="classqp__ip.html#a004837ab0a8d2133520e4ee9d6d26f85" title="N*SMPC_NUM_VAR gradient vector">grad</a>[i] * <a class="code" href="classproblem__parameters.html#aa7c28f51f09f182cc82dd57d6175325e">i2P</a>;
 <a name="l00195"></a>00195     }
 <a name="l00196"></a>00196 }
 <a name="l00197"></a>00197 
@@ -204,11 +204,11 @@
 <a name="l00206"></a>00206     <span class="keywordtype">int</span> i;
 <a name="l00207"></a>00207 
 <a name="l00208"></a>00208     <span class="comment">// phi_X += X&#39;*H*X</span>
-<a name="l00209"></a>00209     <span class="keywordflow">for</span> (i = 0; i &lt; <a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>*<a class="code" href="group__gINTERNALS.html#ga37814f52692ffc71ef43e6b06e891440" title="Number of state variables.">NUM_STATE_VAR</a>; i++)
+<a name="l00209"></a>00209     <span class="keywordflow">for</span> (i = 0; i &lt; <a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>*<a class="code" href="group__gAPI.html#gab7984838b079762f5087b37a731e0b79" title="Number of state variables.">SMPC_NUM_STATE_VAR</a>; i++)
 <a name="l00210"></a>00210     {
 <a name="l00211"></a>00211         <a class="code" href="classqp__ip.html#accf711f0bfa3f523c2862e47e388494c" title="Value of phi(X), where phi is the cost function + log barrier.">phi_X</a> += <a class="code" href="classqp__ip.html#ad2a280b2a654a989a890cc4387d90f2a" title="Diagonal elements of H.">Q</a>[i%3] * <a class="code" href="classqp__solver.html#a913e4e5a4936b84794bd3a37e7abcaa6">X</a>[i] * <a class="code" href="classqp__solver.html#a913e4e5a4936b84794bd3a37e7abcaa6">X</a>[i];
 <a name="l00212"></a>00212     }
-<a name="l00213"></a>00213     <span class="keywordflow">for</span> (; i &lt; <a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>*<a class="code" href="group__gINTERNALS.html#gae8780c341d0ab405a8d820726f7e3b5c" title="Total number of variables.">NUM_VAR</a>; i++)
+<a name="l00213"></a>00213     <span class="keywordflow">for</span> (; i &lt; <a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>*<a class="code" href="group__gAPI.html#ga74b56d50f3995ffd5282a2f2289dfd1a" title="Total number of variables.">SMPC_NUM_VAR</a>; i++)
 <a name="l00214"></a>00214     {
 <a name="l00215"></a>00215         <a class="code" href="classqp__ip.html#accf711f0bfa3f523c2862e47e388494c" title="Value of phi(X), where phi is the cost function + log barrier.">phi_X</a> += <a class="code" href="classqp__ip.html#ae85665b860bc2ad22f7bca7023d0c8fc">P</a> * <a class="code" href="classqp__solver.html#a913e4e5a4936b84794bd3a37e7abcaa6">X</a>[i] * <a class="code" href="classqp__solver.html#a913e4e5a4936b84794bd3a37e7abcaa6">X</a>[i];
 <a name="l00216"></a>00216     }
@@ -267,9 +267,9 @@
 <a name="l00279"></a>00279 {
 <a name="l00280"></a>00280     <span class="keywordtype">double</span> res = 0;
 <a name="l00281"></a>00281     
-<a name="l00282"></a>00282     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>*<a class="code" href="group__gINTERNALS.html#gae8780c341d0ab405a8d820726f7e3b5c" title="Total number of variables.">NUM_VAR</a>; i++)
+<a name="l00282"></a>00282     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>*<a class="code" href="group__gAPI.html#ga74b56d50f3995ffd5282a2f2289dfd1a" title="Total number of variables.">SMPC_NUM_VAR</a>; i++)
 <a name="l00283"></a>00283     {
-<a name="l00284"></a>00284         res += <a class="code" href="classqp__ip.html#a004837ab0a8d2133520e4ee9d6d26f85" title="N*NUM_VAR gradient vector">grad</a>[i]*<a class="code" href="classqp__solver.html#a36916afec3fbe6e3cf60fc36b31a79a9">dX</a>[i];
+<a name="l00284"></a>00284         res += <a class="code" href="classqp__ip.html#a004837ab0a8d2133520e4ee9d6d26f85" title="N*SMPC_NUM_VAR gradient vector">grad</a>[i]*<a class="code" href="classqp__solver.html#a36916afec3fbe6e3cf60fc36b31a79a9">dX</a>[i];
 <a name="l00285"></a>00285     }
 <a name="l00286"></a>00286 
 <a name="l00287"></a>00287     <span class="keywordflow">return</span> (res*<a class="code" href="classqp__ip.html#ab5a3153e2958742d01f8afb6e865974d" title="multiplier of t, &amp;gt;1.">bs_alpha</a>);
@@ -308,7 +308,7 @@
 <a name="l00327"></a>00327         res += <a class="code" href="classqp__ip.html#ad2a280b2a654a989a890cc4387d90f2a" title="Diagonal elements of H.">Q</a>[2] * X_tmp*X_tmp;
 <a name="l00328"></a>00328     }
 <a name="l00329"></a>00329     <span class="comment">// phi_X += X&#39;*H*X // controls</span>
-<a name="l00330"></a>00330     <span class="keywordflow">for</span> (i = N*<a class="code" href="group__gINTERNALS.html#ga37814f52692ffc71ef43e6b06e891440" title="Number of state variables.">NUM_STATE_VAR</a>; i &lt; N*<a class="code" href="group__gINTERNALS.html#gae8780c341d0ab405a8d820726f7e3b5c" title="Total number of variables.">NUM_VAR</a>; i++)
+<a name="l00330"></a>00330     <span class="keywordflow">for</span> (i = N*<a class="code" href="group__gAPI.html#gab7984838b079762f5087b37a731e0b79" title="Number of state variables.">SMPC_NUM_STATE_VAR</a>; i &lt; N*<a class="code" href="group__gAPI.html#ga74b56d50f3995ffd5282a2f2289dfd1a" title="Total number of variables.">SMPC_NUM_VAR</a>; i++)
 <a name="l00331"></a>00331     {
 <a name="l00332"></a>00332         X_tmp = <a class="code" href="classqp__solver.html#a913e4e5a4936b84794bd3a37e7abcaa6">X</a>[i] + <a class="code" href="classqp__solver.html#a5a5567d24c04b40ed5630ad0991c881f">alpha</a> * <a class="code" href="classqp__solver.html#a36916afec3fbe6e3cf60fc36b31a79a9">dX</a>[i];
 <a name="l00333"></a>00333         res += <a class="code" href="classqp__ip.html#ae85665b860bc2ad22f7bca7023d0c8fc">P</a> * X_tmp * X_tmp;
@@ -368,21 +368,21 @@
 <a name="l00409"></a>00409     <a class="code" href="classqp__ip.html#a3c222fe5e2dfe989828faf6bb75dd66b" title="Compute phi_X for initial point, phi_X must already store logarithmic barrier term.">form_phi_X</a> ();
 <a name="l00410"></a>00410     <a class="code" href="classqp__ip.html#a914248ed08f018c52c4dd7e24aa6889d" title="Finish initialization of i2hess_grad = -i2hess*grad.">form_i2hess_grad</a> ();
 <a name="l00411"></a>00411 
-<a name="l00412"></a>00412     <a class="code" href="classqp__ip.html#a8f174c0d96edd496ca0cea9e315a71c4" title="An instance of chol_solve_ip class.">chol</a>.<a class="code" href="classchol__solve__ip.html#a9dcfbd168aeb103efecfdb02e76f5119" title="Determines feasible descent direction.">solve</a> (<span class="keyword">this</span>, <a class="code" href="classqp__ip.html#a6dd422a6960475a56b8dc751252b5450" title="Inverted hessian * gradient (N*NUM_VAR vector)">i2hess_grad</a>, <a class="code" href="classqp__ip.html#af57fb1c8b1c58d4876da6fa7f0ec8a28" title="Inverted hessian: non-repeating diagonal elements 1:3:N*NUM_STATE_VAR, 2*N in total.">i2hess</a>, <a class="code" href="classqp__solver.html#a913e4e5a4936b84794bd3a37e7abcaa6">X</a>, <a class="code" href="classqp__solver.html#a36916afec3fbe6e3cf60fc36b31a79a9">dX</a>);
+<a name="l00412"></a>00412     <a class="code" href="classqp__ip.html#a8f174c0d96edd496ca0cea9e315a71c4" title="An instance of chol_solve_ip class.">chol</a>.<a class="code" href="classchol__solve__ip.html#a9dcfbd168aeb103efecfdb02e76f5119" title="Determines feasible descent direction.">solve</a> (<span class="keyword">this</span>, <a class="code" href="classqp__ip.html#a6dd422a6960475a56b8dc751252b5450" title="Inverted hessian * gradient (N*SMPC_NUM_VAR vector)">i2hess_grad</a>, <a class="code" href="classqp__ip.html#af57fb1c8b1c58d4876da6fa7f0ec8a28" title="Inverted hessian: non-repeating diagonal elements 1:3:N*SMPC_NUM_STATE_VAR, 2*N in total...">i2hess</a>, <a class="code" href="classqp__solver.html#a913e4e5a4936b84794bd3a37e7abcaa6">X</a>, <a class="code" href="classqp__solver.html#a36916afec3fbe6e3cf60fc36b31a79a9">dX</a>);
 <a name="l00413"></a>00413 
 <a name="l00414"></a>00414 
 <a name="l00415"></a>00415     <span class="comment">// stopping criterion (decrement)</span>
 <a name="l00416"></a>00416     <span class="keywordtype">double</span> decrement = 0;
 <a name="l00417"></a>00417     <span class="keywordflow">for</span> (i = 0, j = 0; i &lt; <a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>*2; i++)
 <a name="l00418"></a>00418     {
-<a name="l00419"></a>00419         decrement += <a class="code" href="classqp__solver.html#a36916afec3fbe6e3cf60fc36b31a79a9">dX</a>[j] * <a class="code" href="classqp__solver.html#a36916afec3fbe6e3cf60fc36b31a79a9">dX</a>[j] / <a class="code" href="classqp__ip.html#af57fb1c8b1c58d4876da6fa7f0ec8a28" title="Inverted hessian: non-repeating diagonal elements 1:3:N*NUM_STATE_VAR, 2*N in total.">i2hess</a>[i];
+<a name="l00419"></a>00419         decrement += <a class="code" href="classqp__solver.html#a36916afec3fbe6e3cf60fc36b31a79a9">dX</a>[j] * <a class="code" href="classqp__solver.html#a36916afec3fbe6e3cf60fc36b31a79a9">dX</a>[j] / <a class="code" href="classqp__ip.html#af57fb1c8b1c58d4876da6fa7f0ec8a28" title="Inverted hessian: non-repeating diagonal elements 1:3:N*SMPC_NUM_STATE_VAR, 2*N in total...">i2hess</a>[i];
 <a name="l00420"></a>00420         j++;
 <a name="l00421"></a>00421         decrement += <a class="code" href="classqp__solver.html#a36916afec3fbe6e3cf60fc36b31a79a9">dX</a>[j] * <a class="code" href="classqp__solver.html#a36916afec3fbe6e3cf60fc36b31a79a9">dX</a>[j] / <a class="code" href="classproblem__parameters.html#aa1a23930743a84b91d77c77857150a57">i2Q</a>[1];
 <a name="l00422"></a>00422         j++;
 <a name="l00423"></a>00423         decrement += <a class="code" href="classqp__solver.html#a36916afec3fbe6e3cf60fc36b31a79a9">dX</a>[j] * <a class="code" href="classqp__solver.html#a36916afec3fbe6e3cf60fc36b31a79a9">dX</a>[j] / <a class="code" href="classproblem__parameters.html#aa1a23930743a84b91d77c77857150a57">i2Q</a>[2];
 <a name="l00424"></a>00424         j++;
 <a name="l00425"></a>00425     }
-<a name="l00426"></a>00426     <span class="keywordflow">for</span> (i = N*<a class="code" href="group__gINTERNALS.html#ga37814f52692ffc71ef43e6b06e891440" title="Number of state variables.">NUM_STATE_VAR</a>; i &lt; N*<a class="code" href="group__gINTERNALS.html#gae8780c341d0ab405a8d820726f7e3b5c" title="Total number of variables.">NUM_VAR</a>; i++)
+<a name="l00426"></a>00426     <span class="keywordflow">for</span> (i = N*<a class="code" href="group__gAPI.html#gab7984838b079762f5087b37a731e0b79" title="Number of state variables.">SMPC_NUM_STATE_VAR</a>; i &lt; N*<a class="code" href="group__gAPI.html#ga74b56d50f3995ffd5282a2f2289dfd1a" title="Total number of variables.">SMPC_NUM_VAR</a>; i++)
 <a name="l00427"></a>00427     {
 <a name="l00428"></a>00428         decrement += <a class="code" href="classqp__solver.html#a36916afec3fbe6e3cf60fc36b31a79a9">dX</a>[i] * <a class="code" href="classqp__solver.html#a36916afec3fbe6e3cf60fc36b31a79a9">dX</a>[i] / <a class="code" href="classproblem__parameters.html#aa7c28f51f09f182cc82dd57d6175325e">i2P</a>;
 <a name="l00429"></a>00429     }
@@ -420,7 +420,7 @@
 <a name="l00461"></a>00461 
 <a name="l00462"></a>00462 
 <a name="l00463"></a>00463     <span class="comment">// Move in the feasible descent direction</span>
-<a name="l00464"></a>00464     <span class="keywordflow">for</span> (j = 0; j &lt; N*<a class="code" href="group__gINTERNALS.html#gae8780c341d0ab405a8d820726f7e3b5c" title="Total number of variables.">NUM_VAR</a> ; j++)
+<a name="l00464"></a>00464     <span class="keywordflow">for</span> (j = 0; j &lt; N*<a class="code" href="group__gAPI.html#ga74b56d50f3995ffd5282a2f2289dfd1a" title="Total number of variables.">SMPC_NUM_VAR</a> ; j++)
 <a name="l00465"></a>00465     {
 <a name="l00466"></a>00466         <a class="code" href="classqp__solver.html#a913e4e5a4936b84794bd3a37e7abcaa6">X</a>[j] += <a class="code" href="classqp__solver.html#a5a5567d24c04b40ed5630ad0991c881f">alpha</a> * <a class="code" href="classqp__solver.html#a36916afec3fbe6e3cf60fc36b31a79a9">dX</a>[j];
 <a name="l00467"></a>00467     }

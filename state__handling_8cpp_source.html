@@ -77,24 +77,37 @@
 <a name="l00061"></a>00061         state[3] = state[3] + h * state[5];
 <a name="l00062"></a>00062     }
 <a name="l00063"></a>00063 
-<a name="l00064"></a>00064 
-<a name="l00072"></a><a class="code" href="namespacestate__handling.html#a2299e0c13ecb98d00bea34bb17d78e2f">00072</a>     <span class="keywordtype">void</span> <a class="code" href="namespacestate__handling.html#a2299e0c13ecb98d00bea34bb17d78e2f" title="Returns the next state as X_tilde.">get_next_state_tilde</a> (<span class="keyword">const</span> <a class="code" href="classproblem__parameters.html" title="A set of problem parameters.">problem_parameters</a>* sp, <span class="keyword">const</span> <span class="keywordtype">double</span> *X, <span class="keywordtype">double</span> *state)
-<a name="l00073"></a>00073     {
-<a name="l00074"></a>00074         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="group__gINTERNALS.html#ga37814f52692ffc71ef43e6b06e891440" title="Number of state variables.">NUM_STATE_VAR</a>; i++)
-<a name="l00075"></a>00075         {
-<a name="l00076"></a>00076             state[i] = X[i];
-<a name="l00077"></a>00077         }
-<a name="l00078"></a>00078 
-<a name="l00079"></a>00079         <a class="code" href="namespacestate__handling.html#a69960d3947b12aa4f525b82508c91868" title="Converts state from X_tilde to X_bar.">state_handling::bar_to_tilde</a> (sp-&gt;<a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[0].<a class="code" href="classstate__parameters.html#a2ed5b2103152d2e52633198560fe7df7">sin</a>, sp-&gt;<a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[0].<a class="code" href="classstate__parameters.html#a30c26512d64a186f13660c690e27756a">cos</a>, state);
-<a name="l00080"></a>00080     }
-<a name="l00081"></a>00081 
-<a name="l00082"></a>00082 
-<a name="l00090"></a><a class="code" href="namespacestate__handling.html#a601dbcc09f8d69f1b9b5f9f8fdc7e264">00090</a>     <span class="keywordtype">void</span> <a class="code" href="namespacestate__handling.html#a601dbcc09f8d69f1b9b5f9f8fdc7e264" title="Returns the next state represented by original variables.">get_next_state</a> (<span class="keyword">const</span> <a class="code" href="classproblem__parameters.html" title="A set of problem parameters.">problem_parameters</a>* sp, <span class="keyword">const</span> <span class="keywordtype">double</span> *X, <span class="keywordtype">double</span> *state)
-<a name="l00091"></a>00091     {
-<a name="l00092"></a>00092         <a class="code" href="namespacestate__handling.html#a2299e0c13ecb98d00bea34bb17d78e2f" title="Returns the next state as X_tilde.">get_next_state_tilde</a> (sp, X, state);
-<a name="l00093"></a>00093         <a class="code" href="namespacestate__handling.html#a44e8698f1054f74680b6668038142d0a" title="Converts state from X_tilde to original variables.">state_handling::tilde_to_orig</a> (sp-&gt;<a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[0].<a class="code" href="classstate__parameters.html#aafeef4cdec6934cd18e62da0a2391d7a">h</a>, state);
-<a name="l00094"></a>00094     }
-<a name="l00095"></a>00095 }
+<a name="l00070"></a><a class="code" href="namespacestate__handling.html#a03d1a6dcc577f1264b8f5cd46bb2ef1d">00070</a>     <span class="keywordtype">void</span> <a class="code" href="namespacestate__handling.html#a03d1a6dcc577f1264b8f5cd46bb2ef1d" title="Converts state from original variables to X_tilde.">orig_to_tilde</a> (<span class="keyword">const</span> <span class="keywordtype">double</span> h, <span class="keywordtype">double</span> *state)
+<a name="l00071"></a>00071     {
+<a name="l00072"></a>00072         state[0] = state[0] - h * state[2];
+<a name="l00073"></a>00073         state[3] = state[3] - h * state[5];
+<a name="l00074"></a>00074     }
+<a name="l00075"></a>00075 
+<a name="l00076"></a>00076 
+<a name="l00084"></a><a class="code" href="namespacestate__handling.html#a2299e0c13ecb98d00bea34bb17d78e2f">00084</a>     <span class="keywordtype">void</span> <a class="code" href="namespacestate__handling.html#a2299e0c13ecb98d00bea34bb17d78e2f" title="Returns the next state as X_tilde.">get_next_state_tilde</a> (<span class="keyword">const</span> <a class="code" href="classproblem__parameters.html" title="A set of problem parameters.">problem_parameters</a>* sp, <span class="keyword">const</span> <span class="keywordtype">double</span> *X, <span class="keywordtype">double</span> *state)
+<a name="l00085"></a>00085     {
+<a name="l00086"></a>00086         <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="group__gAPI.html#gab7984838b079762f5087b37a731e0b79" title="Number of state variables.">SMPC_NUM_STATE_VAR</a>; i++)
+<a name="l00087"></a>00087         {
+<a name="l00088"></a>00088             state[i] = X[i];
+<a name="l00089"></a>00089         }
+<a name="l00090"></a>00090 
+<a name="l00091"></a>00091         <a class="code" href="namespacestate__handling.html#a69960d3947b12aa4f525b82508c91868" title="Converts state from X_tilde to X_bar.">state_handling::bar_to_tilde</a> (sp-&gt;<a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[0].<a class="code" href="classstate__parameters.html#a2ed5b2103152d2e52633198560fe7df7">sin</a>, sp-&gt;<a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[0].<a class="code" href="classstate__parameters.html#a30c26512d64a186f13660c690e27756a">cos</a>, state);
+<a name="l00092"></a>00092     }
+<a name="l00093"></a>00093 
+<a name="l00094"></a>00094 
+<a name="l00102"></a><a class="code" href="namespacestate__handling.html#a601dbcc09f8d69f1b9b5f9f8fdc7e264">00102</a>     <span class="keywordtype">void</span> <a class="code" href="namespacestate__handling.html#a601dbcc09f8d69f1b9b5f9f8fdc7e264" title="Returns the next state represented by original variables.">get_next_state</a> (<span class="keyword">const</span> <a class="code" href="classproblem__parameters.html" title="A set of problem parameters.">problem_parameters</a>* sp, <span class="keyword">const</span> <span class="keywordtype">double</span> *X, <span class="keywordtype">double</span> *state)
+<a name="l00103"></a>00103     {
+<a name="l00104"></a>00104         <a class="code" href="namespacestate__handling.html#a2299e0c13ecb98d00bea34bb17d78e2f" title="Returns the next state as X_tilde.">get_next_state_tilde</a> (sp, X, state);
+<a name="l00105"></a>00105         <a class="code" href="namespacestate__handling.html#a44e8698f1054f74680b6668038142d0a" title="Converts state from X_tilde to original variables.">state_handling::tilde_to_orig</a> (sp-&gt;<a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[0].<a class="code" href="classstate__parameters.html#aafeef4cdec6934cd18e62da0a2391d7a">h</a>, state);
+<a name="l00106"></a>00106     }
+<a name="l00107"></a>00107 
+<a name="l00108"></a>00108 
+<a name="l00116"></a><a class="code" href="namespacestate__handling.html#ad46b166443fc9375a2c4c7143177f680">00116</a>     <span class="keywordtype">void</span> <a class="code" href="namespacestate__handling.html#ad46b166443fc9375a2c4c7143177f680" title="Returns the controls,that must be applied to reach the next state.">get_first_controls</a> (<span class="keyword">const</span> <span class="keywordtype">int</span> preview_window_size, <span class="keyword">const</span> <span class="keywordtype">double</span> *X, <span class="keywordtype">double</span> *controls)
+<a name="l00117"></a>00117     {
+<a name="l00118"></a>00118         controls[0] = X[preview_window_size*<a class="code" href="group__gAPI.html#gab7984838b079762f5087b37a731e0b79" title="Number of state variables.">SMPC_NUM_STATE_VAR</a> + 0];
+<a name="l00119"></a>00119         controls[1] = X[preview_window_size*<a class="code" href="group__gAPI.html#gab7984838b079762f5087b37a731e0b79" title="Number of state variables.">SMPC_NUM_STATE_VAR</a> + 1];
+<a name="l00120"></a>00120     }
+<a name="l00121"></a>00121 }
 </pre></div></div>
 </div>
 <hr class="footer"/><address class="footer"><small>Generated by&#160;

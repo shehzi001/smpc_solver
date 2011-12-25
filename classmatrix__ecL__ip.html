@@ -396,7 +396,7 @@ Private Attributes</h2></td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">sinA</td><td>sin of rotation angle. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">cosA</td><td>cos of rotation angle. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">i2Q</td><td>a vector of three repeating diagonal elements of inv(Q) </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">i2hess</td><td>a 2*N vector of diagonal elements of hess_phi (indicies of these elements are 1:3:N*NUM_STATE_VAR)</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">i2hess</td><td>a 2*N vector of diagonal elements of hess_phi (indicies of these elements are 1:3:N*SMPC_NUM_STATE_VAR)</td></tr>
   </table>
   </dd>
 </dl>
@@ -557,7 +557,7 @@ Private Attributes</h2></td></tr>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">N</td><td>number of states in the preview window </td></tr>
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">x</td><td>vector "b" as input, vector "x" as output (N * <a class="el" href="group__gINTERNALS.html#ga37814f52692ffc71ef43e6b06e891440" title="Number of state variables.">NUM_STATE_VAR</a>) </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">x</td><td>vector "b" as input, vector "x" as output (N * <a class="el" href="group__gAPI.html#gab7984838b079762f5087b37a731e0b79" title="Number of state variables.">SMPC_NUM_STATE_VAR</a>) </td></tr>
   </table>
   </dd>
 </dl>

@@ -42,6 +42,7 @@
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a>  </div>
   <div class="headertitle">
 <h1>WMG Class Reference<div class="ingroups"><a class="el" href="group__gWMG__API.html">API of the simulation support library</a></div></h1>  </div>
@@ -61,18 +62,28 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#ac80c33f9aa501f95e373a1866e990d74"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a9c401ba3687308b65cffbff340142b3f">~WMG</a> ()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Default destructor.  <a href="#a9c401ba3687308b65cffbff340142b3f"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a0758ae4958f2d9ca521141ca9331517d">init</a> (const int, const double, const double)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a <a class="el" href="classWMG.html" title="Defines the parameters of the Walking Pattern Generator.">WMG</a> object.  <a href="#a0758ae4958f2d9ca521141ca9331517d"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a22369d281e86ade4b07ab6c9c8aa42ac">AddFootstep</a> (const double, const double, const double, const int, const int, const double *, const <a class="el" href="group__gWMG__API.html#ga45147e528b9243fa8842d38163498449">fs_type</a> type=FS_TYPE_SS)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a footstep to FS; sets the default constraints, the total number of iterations and the number of iterations in single support.  <a href="#a22369d281e86ade4b07ab6c9c8aa42ac"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a943830aca3b40c5e044c42c03945ef28">AddFootstep</a> (const double, const double, const double, const int, const int, const <a class="el" href="group__gWMG__API.html#ga45147e528b9243fa8842d38163498449">fs_type</a> type=FS_TYPE_SS)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a footstep to FS; sets the default total number of iterations and the number of iterations in single support.  <a href="#a943830aca3b40c5e044c42c03945ef28"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a74b1000398532cd3d3162e5b96a27683">AddFootstep</a> (const double, const double, const double, const <a class="el" href="group__gWMG__API.html#ga45147e528b9243fa8842d38163498449">fs_type</a> type=FS_TYPE_SS)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a footstep to FS.  <a href="#a74b1000398532cd3d3162e5b96a27683"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#ab37e430acac26568b333363ea836e2ed">init</a> (const int)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a <a class="el" href="classWMG.html" title="Defines the parameters of the Walking Pattern Generator.">WMG</a> object.  <a href="#ab37e430acac26568b333363ea836e2ed"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a978ed6f6504561926ef38fb66378619e">init_param</a> (const double, const double, const double step_height_=0.0135)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a <a class="el" href="classWMG.html" title="Defines the parameters of the Walking Pattern Generator.">WMG</a> object.  <a href="#a978ed6f6504561926ef38fb66378619e"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a90cf0c02b8f511db4758faae1498bef6">AddFootstep</a> (const double, const double, const double, const int, const int, const double *, const <a class="el" href="group__gWMG__API.html#ga45147e528b9243fa8842d38163498449">fs_type</a> type=FS_TYPE_AUTO)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a footstep to FS; sets the default constraints, the total number of iterations and the number of iterations in single support.  <a href="#a90cf0c02b8f511db4758faae1498bef6"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a592f9dd6cc09864d1c698cd65aa4e8ee">AddFootstep</a> (const double, const double, const double, const int, const int, const <a class="el" href="group__gWMG__API.html#ga45147e528b9243fa8842d38163498449">fs_type</a> type=FS_TYPE_AUTO)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a footstep to FS; sets the default total number of iterations and the number of iterations in single support.  <a href="#a592f9dd6cc09864d1c698cd65aa4e8ee"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#aa6546fc281048a01086e16c054aac8d0">AddFootstep</a> (const double, const double, const double, <a class="el" href="group__gWMG__API.html#ga45147e528b9243fa8842d38163498449">fs_type</a> type=FS_TYPE_AUTO)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a footstep to FS.  <a href="#aa6546fc281048a01086e16c054aac8d0"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__gWMG__API.html#ga4bb1652524cdb17807ce1b82df68d50a">WMGret</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#afa97e1de34aaf70f766aa4965cc34652">FormPreviewWindow</a> ()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Forms a preview window.  <a href="#afa97e1de34aaf70f766aa4965cc34652"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#aa61da4f20dfec27fed20561b468919df">FS2file</a> (const std::string)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Outputs the footsteps in FS to a file, that can be executed in Matlab/Octave to get a figure of the steps.  <a href="#aa61da4f20dfec27fed20561b468919df"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#aab0611e41f63e540071e3f5513113c21">getSwingFootPosition</a> (const <a class="el" href="group__gWMG__API.html#gab12af782c2450a13fa3b291e4ba12d25">swing_foot_pos_type</a>, const int, const int, double *, double *)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine position and orientation of the swing foot.  <a href="#aab0611e41f63e540071e3f5513113c21"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a78156e135dcc7c88329eb814140d33ab">initABMatrices</a> (const double)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize state (<a class="el" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to estimate a state based on the current state and contr...">A</a>) and control #(B) matrices for inverted pendulum model.  <a href="#a78156e135dcc7c88329eb814140d33ab"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a71447aaea5df8866474761c2f5aebba3">calculateNextState</a> (const double *, double *)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate next state (<a class="el" href="pProblemDef.html#pX_tilde">X_tilde</a>) using inverted pendulum model (<a class="el" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to estimate a state based on the current state and contr...">A</a> and <a class="el" href="classWMG.html#af36d87c015ef4af6ed9eecf635913715">B</a> matrices).  <a href="#a71447aaea5df8866474761c2f5aebba3"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a5bb495ea5248c895738405c8ca241cc3">initState</a> (const double, const double, double *)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize <a class="el" href="classWMG.html#a5ed5d3afbd2cf4c243d203714b5cfe06" title="Initial state.">X_tilde</a> state.  <a href="#a5bb495ea5248c895738405c8ca241cc3"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classFootStep.html">FootStep</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#af7bc717fd497497f20a282a9930185aa">FS</a></td></tr>
@@ -89,26 +100,50 @@ Public Attributes</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">h = <a class="el" href="classWMG.html#aa84378e22b50ebce4f9f9056e68d2ead" title="Height of the CoM.">hCoM</a>/<a class="el" href="classWMG.html#adebe1dbad97447d7194bc58af9fdf208" title="Norm of the acceleration due to gravity. For the moment gravity is set equal to 9.81.">gravity</a>.  <a href="#a7df4b6f818bd1bebe6a2994f261bda85"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a801c492c750f587cb1cf873aaec5a96f">X</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">A chunk of memory allocated for solution.  <a href="#a801c492c750f587cb1cf873aaec5a96f"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a831e486340b6774dfe0b1b2d7f52d286">X_tilde</a> [NUM_STATE_VAR]</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Initial state.  <a href="#a831e486340b6774dfe0b1b2d7f52d286"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a5ed5d3afbd2cf4c243d203714b5cfe06">X_tilde</a> [SMPC_NUM_STATE_VAR]</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Initial state.  <a href="#a5ed5d3afbd2cf4c243d203714b5cfe06"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#aecb09f9e0fa4b9e5dd1dafe17fad7a44">angle</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a19055d653eec01f23713f8576b17f5d6">zref_x</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a9261037da75150ded329be163ffae710">zref_y</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Array of N absolute angles corresponding to supports in the preview window.  <a href="#aecb09f9e0fa4b9e5dd1dafe17fad7a44"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a6770fc44d46e4fdda9ad584c02516ce5">current_step_number</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__gWMG__API.html#ga45147e528b9243fa8842d38163498449">fs_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a0addaffea4f4983363f7e531510eb095">current_reference_foot</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference foot (R/L), even in DS we need to choose a reference foot.  <a href="#a0addaffea4f4983363f7e531510eb095"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#aa73c2b69c254fbae2950889a8d72bca6">step_height</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum height, that can be reached by a swing foot.  <a href="#aa73c2b69c254fbae2950889a8d72bca6"></a><br/></td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#aef8b7df19ecc03d9bc759d9a340111ac">fp_x</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Coordinates of N points satisfying constraints,.  <a href="#aef8b7df19ecc03d9bc759d9a340111ac"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a733113b0c76e60c15ed33075733e07e4">fp_y</a></td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a0ae585fc064a79f71612a3602a209a7a">lb</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">2*N bounds for coordinates of ZMP position.  <a href="#a0ae585fc064a79f71612a3602a209a7a"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a5aff192ac43f6e2abc81d59c67c97b80">ub</a></td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a19055d653eec01f23713f8576b17f5d6">zref_x</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">N reference coordinates of ZMP.  <a href="#a19055d653eec01f23713f8576b17f5d6"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a9261037da75150ded329be163ffae710">zref_y</a></td></tr>
+<tr><td colspan="2"><h2><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__gWMG__API.html#ga45147e528b9243fa8842d38163498449">fs_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a43fa3245769900971868d304ee9bab36">getSwingFootNextPrevPos</a> (double *, double *, int *, int *)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns current feet configuration.  <a href="#a43fa3245769900971868d304ee9bab36"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a75acb9eff024d564eed72f552d0f3012">getNextSS</a> (const int, const <a class="el" href="group__gWMG__API.html#ga45147e528b9243fa8842d38163498449">fs_type</a> type=FS_TYPE_AUTO)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns index of the next SS.  <a href="#a75acb9eff024d564eed72f552d0f3012"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a02edb351fa39c4530b6d4c9e8aa29311">getPrevSS</a> (const int, const <a class="el" href="group__gWMG__API.html#ga45147e528b9243fa8842d38163498449">fs_type</a> type=FS_TYPE_AUTO)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns index of the previous SS.  <a href="#a02edb351fa39c4530b6d4c9e8aa29311"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#af42bcfc0b3d59878fb724803d54e8759">def_constraint</a> [4]</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a33601e0435ff7d7d3ac0b1ba10f590e4">def_repeat_times</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a67647d268f896265b6da8cf33c1e2bf9">def_ds_constraint</a> [4]</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#abf42731e0f88ba41076a24194771d533">def_ds_num</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a6770fc44d46e4fdda9ad584c02516ce5">current_step_number</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the step in FS that is at the start of the current preview window. I don't need to pop_front steps from FS and that is why I use stl vector and not stl deque).  <a href="#a6770fc44d46e4fdda9ad584c02516ce5"></a><br/></td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#af56745c0eb4561167b80e71437d10a51">A</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">State and control matrices, that can be used to estimate a <a class="el" href="pProblemDef.html#pX_tilde">state</a> based on the current state and controls.  <a href="#af56745c0eb4561167b80e71437d10a51"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#af36d87c015ef4af6ed9eecf635913715">B</a></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Defines the parameters of the Walking Pattern Generator. </p>
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00044">44</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00058">58</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="ac80c33f9aa501f95e373a1866e990d74"></a><!-- doxytag: member="WMG::WMG" ref="ac80c33f9aa501f95e373a1866e990d74" args="()" -->
 <div class="memitem">
@@ -146,12 +181,12 @@ Private Attributes</h2></td></tr>
 
 <p>Default destructor. </p>
 
-<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00033">33</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00040">40</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
 
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="a22369d281e86ade4b07ab6c9c8aa42ac"></a><!-- doxytag: member="WMG::AddFootstep" ref="a22369d281e86ade4b07ab6c9c8aa42ac" args="(const double, const double, const double, const int, const int, const double *, const fs_type type=FS_TYPE_SS)" -->
+<a class="anchor" id="a90cf0c02b8f511db4758faae1498bef6"></a><!-- doxytag: member="WMG::AddFootstep" ref="a90cf0c02b8f511db4758faae1498bef6" args="(const double, const double, const double, const int, const int, const double *, const fs_type type=FS_TYPE_AUTO)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -195,7 +230,7 @@ Private Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="group__gWMG__API.html#ga45147e528b9243fa8842d38163498449">fs_type</a>&#160;</td>
-          <td class="paramname"><em>type</em> = <code>FS_TYPE_SS</code>&#160;</td>
+          <td class="paramname"><em>type</em> = <code>FS_TYPE_AUTO</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -221,66 +256,11 @@ Private Attributes</h2></td></tr>
 </dl>
 <dl class="note"><dt><b>Note:</b></dt><dd>Coordinates and angle are treated as absolute for the first step in the preview window. </dd></dl>
 
-<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00143">143</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00184">184</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a74b1000398532cd3d3162e5b96a27683"></a><!-- doxytag: member="WMG::AddFootstep" ref="a74b1000398532cd3d3162e5b96a27683" args="(const double, const double, const double, const fs_type type=FS_TYPE_SS)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void WMG::AddFootstep </td>
-          <td>(</td>
-          <td class="paramtype">const double&#160;</td>
-          <td class="paramname"><em>x_relative</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const double&#160;</td>
-          <td class="paramname"><em>y_relative</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const double&#160;</td>
-          <td class="paramname"><em>angle_relative</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="group__gWMG__API.html#ga45147e528b9243fa8842d38163498449">fs_type</a>&#160;</td>
-          <td class="paramname"><em>type</em> = <code>FS_TYPE_SS</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Adds a footstep to FS. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">x_relative</td><td>x_relative X position [meter] relative to the previous footstep. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">y_relative</td><td>y_relative Y position [meter] relative to the previous footstep. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">angle_relative</td><td>angle_relative Angle [rad.] relative to the previous footstep. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">type</td><td>(optional) type of the footstep.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="note"><dt><b>Note:</b></dt><dd>Coordinates and angle are treated as absolute for the first step in the preview window. </dd>
-<dd>
-Default vector of the PoS constraintsi, number of iterations in single support and total number of iterations are used. </dd></dl>
-
-<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00204">204</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a943830aca3b40c5e044c42c03945ef28"></a><!-- doxytag: member="WMG::AddFootstep" ref="a943830aca3b40c5e044c42c03945ef28" args="(const double, const double, const double, const int, const int, const fs_type type=FS_TYPE_SS)" -->
+<a class="anchor" id="a592f9dd6cc09864d1c698cd65aa4e8ee"></a><!-- doxytag: member="WMG::AddFootstep" ref="a592f9dd6cc09864d1c698cd65aa4e8ee" args="(const double, const double, const double, const int, const int, const fs_type type=FS_TYPE_AUTO)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -318,7 +298,7 @@ Default vector of the PoS constraintsi, number of iterations in single support a
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="group__gWMG__API.html#ga45147e528b9243fa8842d38163498449">fs_type</a>&#160;</td>
-          <td class="paramname"><em>type</em> = <code>FS_TYPE_SS</code>&#160;</td>
+          <td class="paramname"><em>type</em> = <code>FS_TYPE_AUTO</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -345,7 +325,101 @@ Default vector of the PoS constraintsi, number of iterations in single support a
 <dd>
 Default vector of the PoS constraints is used. </dd></dl>
 
-<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00177">177</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00218">218</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa6546fc281048a01086e16c054aac8d0"></a><!-- doxytag: member="WMG::AddFootstep" ref="aa6546fc281048a01086e16c054aac8d0" args="(const double, const double, const double, fs_type type=FS_TYPE_AUTO)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void WMG::AddFootstep </td>
+          <td>(</td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>x_relative</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>y_relative</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>angle_relative</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__gWMG__API.html#ga45147e528b9243fa8842d38163498449">fs_type</a>&#160;</td>
+          <td class="paramname"><em>type</em> = <code>FS_TYPE_AUTO</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Adds a footstep to FS. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">x_relative</td><td>x_relative X position [meter] relative to the previous footstep. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">y_relative</td><td>y_relative Y position [meter] relative to the previous footstep. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">angle_relative</td><td>angle_relative Angle [rad.] relative to the previous footstep. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">type</td><td>(optional) type of the footstep.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="note"><dt><b>Note:</b></dt><dd>Coordinates and angle are treated as absolute for the first step in the preview window. </dd>
+<dd>
+Default vector of the PoS constraintsi, number of iterations in single support and total number of iterations are used. </dd></dl>
+
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00245">245</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a71447aaea5df8866474761c2f5aebba3"></a><!-- doxytag: member="WMG::calculateNextState" ref="a71447aaea5df8866474761c2f5aebba3" args="(const double *, double *)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void WMG::calculateNextState </td>
+          <td>(</td>
+          <td class="paramtype">const double *&#160;</td>
+          <td class="paramname"><em>control</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>state</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Calculate next state (<a class="el" href="pProblemDef.html#pX_tilde">X_tilde</a>) using inverted pendulum model (<a class="el" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to estimate a state based on the current state and contr...">A</a> and <a class="el" href="classWMG.html#af36d87c015ef4af6ed9eecf635913715">B</a> matrices). </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">control</td><td>1x2 vector of controls </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">state</td><td>1x6 state vector (<a class="el" href="pProblemDef.html#pX_tilde">X_tilde</a>)</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="attention"><dt><b>Attention:</b></dt><dd>If <a class="el" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to estimate a state based on the current state and contr...">A</a> or <a class="el" href="classWMG.html#af36d87c015ef4af6ed9eecf635913715">B</a> are not initialized, the function does nothing. </dd></dl>
+
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00698">698</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
 
 </div>
 </div>
@@ -366,7 +440,10 @@ Default vector of the PoS constraints is used. </dd></dl>
 <p>Forms a preview window. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>WMG_OK or WMG_HALT (simulation must be stopped) </dd></dl>
 
-<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00272">272</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
+<p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>A more sophisticated method is needed. </dd></dl>
+</p>
+
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00557">557</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
 
 </div>
 </div>
@@ -393,11 +470,209 @@ Default vector of the PoS constraints is used. </dd></dl>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00328">328</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00739">739</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a0758ae4958f2d9ca521141ca9331517d"></a><!-- doxytag: member="WMG::init" ref="a0758ae4958f2d9ca521141ca9331517d" args="(const int, const double, const double)" -->
+<a class="anchor" id="a75acb9eff024d564eed72f552d0f3012"></a><!-- doxytag: member="WMG::getNextSS" ref="a75acb9eff024d564eed72f552d0f3012" args="(const int, const fs_type type=FS_TYPE_AUTO)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int WMG::getNextSS </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>start_ind</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="group__gWMG__API.html#ga45147e528b9243fa8842d38163498449">fs_type</a>&#160;</td>
+          <td class="paramname"><em>type</em> = <code>FS_TYPE_AUTO</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Returns index of the next SS. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">start_ind</td><td>start search from this index. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">type</td><td>search for a footstep of certain type, by default (FS_TYPE_AUTO) both left and right are searched.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>index of the next SS. </dd></dl>
+
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00340">340</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a02edb351fa39c4530b6d4c9e8aa29311"></a><!-- doxytag: member="WMG::getPrevSS" ref="a02edb351fa39c4530b6d4c9e8aa29311" args="(const int, const fs_type type=FS_TYPE_AUTO)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int WMG::getPrevSS </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>start_ind</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="group__gWMG__API.html#ga45147e528b9243fa8842d38163498449">fs_type</a>&#160;</td>
+          <td class="paramname"><em>type</em> = <code>FS_TYPE_AUTO</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Returns index of the previous SS. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">start_ind</td><td>start search from this index. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">type</td><td>search for a footstep of certain type, by default (FS_TYPE_AUTO) both left and right are searched.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>index of the previous SS. </dd></dl>
+
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00375">375</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a43fa3245769900971868d304ee9bab36"></a><!-- doxytag: member="WMG::getSwingFootNextPrevPos" ref="a43fa3245769900971868d304ee9bab36" args="(double *, double *, int *, int *)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__gWMG__API.html#ga45147e528b9243fa8842d38163498449">fs_type</a> WMG::getSwingFootNextPrevPos </td>
+          <td>(</td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>prev_swing_pos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>next_swing_pos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>repeat_times</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>repeated_times</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Returns current feet configuration. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">prev_swing_pos</td><td>the previous position of the swing foot. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">next_swing_pos</td><td>the next position of the swing foot. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">repeat_times</td><td>number of SS iterations in the current support. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">repeated_times</td><td>the number of iterations, which were already spent in the current support.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>type of the current support feet: left or right.</dd></dl>
+<dl class="attention"><dt><b>Attention:</b></dt><dd>This function requires the walking pattern to be started and finished by single support.</dd>
+<dd>
+Cannot be called on the first or last SS =&gt; must be called after <a class="el" href="classWMG.html#afa97e1de34aaf70f766aa4965cc34652" title="Forms a preview window.">FormPreviewWindow()</a>.</dd></dl>
+<dl class="note"><dt><b>Note:</b></dt><dd>If we are in the double support then prev_swing_pos = next_swing_pos, and repeat_times = repeated_times = 0. </dd></dl>
+
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00420">420</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aab0611e41f63e540071e3f5513113c21"></a><!-- doxytag: member="WMG::getSwingFootPosition" ref="aab0611e41f63e540071e3f5513113c21" args="(const swing_foot_pos_type, const int, const int, double *, double *)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void WMG::getSwingFootPosition </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="group__gWMG__API.html#gab12af782c2450a13fa3b291e4ba12d25">swing_foot_pos_type</a>&#160;</td>
+          <td class="paramname"><em>swing_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>loops_per_preview_iter</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>loops_in_current_preview</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>swing_foot_pos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>angle_xy</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Determine position and orientation of the swing foot. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">swing_type</td><td>which method to use. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">loops_per_preview_iter</td><td>number of control loops per preview iteration </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">loops_in_current_preview</td><td>number of control loops passed in the current preview iteration </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">swing_foot_pos</td><td>3x1 vector of coordinates [x y z] </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">angle_xy</td><td>orientation of the foot in x,y plane</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="attention"><dt><b>Attention:</b></dt><dd>This function requires the walking pattern to be started and finished by single support.</dd>
+<dd>
+Cannot be called on the first or last SS =&gt; must be called after <a class="el" href="classWMG.html#afa97e1de34aaf70f766aa4965cc34652" title="Forms a preview window.">FormPreviewWindow()</a>.</dd></dl>
+<dl class="note"><dt><b>Note:</b></dt><dd>If loops_per_preview_iter is set to 1, then the function returns a position at the end of preview window with number loops_in_current_preview. </dd></dl>
+
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00500">500</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab37e430acac26568b333363ea836e2ed"></a><!-- doxytag: member="WMG::init" ref="ab37e430acac26568b333363ea836e2ed" args="(const int)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -405,19 +680,49 @@ Default vector of the PoS constraints is used. </dd></dl>
           <td class="memname">void WMG::init </td>
           <td>(</td>
           <td class="paramtype">const int&#160;</td>
-          <td class="paramname"><em>_N</em>, </td>
+          <td class="paramname"><em>_N</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Initializes a <a class="el" href="classWMG.html" title="Defines the parameters of the Walking Pattern Generator.">WMG</a> object. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">_N</td><td>Number of sampling times in a preview window </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p><p>NAO constraint with safety margin. </p>
+</p>
+
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00103">103</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a978ed6f6504561926ef38fb66378619e"></a><!-- doxytag: member="WMG::init_param" ref="a978ed6f6504561926ef38fb66378619e" args="(const double, const double, const double step_height_=0.0135)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void WMG::init_param </td>
+          <td>(</td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>T_</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const double&#160;</td>
-          <td class="paramname"><em>_T</em>, </td>
+          <td class="paramname"><em>hCoM_</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const double&#160;</td>
-          <td class="paramname"><em>_hCoM</em>&#160;</td>
+          <td class="paramname"><em>step_height_</em> = <code>0.0135</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -431,21 +736,111 @@ Default vector of the PoS constraints is used. </dd></dl>
 <p>Initializes a <a class="el" href="classWMG.html" title="Defines the parameters of the Walking Pattern Generator.">WMG</a> object. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">_N</td><td>Number of sampling times in a preview window </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">_T</td><td>Sampling time (for the moment it is assumed to be constant) [sec.] </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">_hCoM</td><td>Height of the Center of Mass [meter] </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">T_</td><td>Sampling time (for the moment it is assumed to be constant) [sec.] </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">hCoM_</td><td>Height of the Center of Mass [meter] </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">step_height_</td><td>step hight (for interpolation of feet movements) </td></tr>
   </table>
   </dd>
 </dl>
 
-<p><p>NAO constraint with safety margin. </p>
-</p>
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00153">153</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
 
-<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00080">80</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
+</div>
+</div>
+<a class="anchor" id="a78156e135dcc7c88329eb814140d33ab"></a><!-- doxytag: member="WMG::initABMatrices" ref="a78156e135dcc7c88329eb814140d33ab" args="(const double)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void WMG::initABMatrices </td>
+          <td>(</td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>sampling_time</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Initialize state (<a class="el" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to estimate a state based on the current state and contr...">A</a>) and control #(B) matrices for inverted pendulum model. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">sampling_time</td><td>period of time T.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="attention"><dt><b>Attention:</b></dt><dd>h is assumed to be constant. </dd></dl>
+
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00646">646</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a5bb495ea5248c895738405c8ca241cc3"></a><!-- doxytag: member="WMG::initState" ref="a5bb495ea5248c895738405c8ca241cc3" args="(const double, const double, double *)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void WMG::initState </td>
+          <td>(</td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>CoM_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>CoM_y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>state</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Initialize <a class="el" href="classWMG.html#a5ed5d3afbd2cf4c243d203714b5cfe06" title="Initial state.">X_tilde</a> state. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">CoM_x</td><td>x coorrdinate of center of mass </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">CoM_y</td><td>y coorrdinate of center of mass </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">state</td><td>1x6 state vector (<a class="el" href="pProblemDef.html#pX_tilde">X_tilde</a>)</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="attention"><dt><b>Attention:</b></dt><dd>h is assumed to be constant. </dd>
+<dd>
+velocities and accelerations are assumed to be 0. </dd></dl>
+
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00673">673</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
 
 </div>
 </div>
 <hr/><h2>Member Data Documentation</h2>
+<a class="anchor" id="af56745c0eb4561167b80e71437d10a51"></a><!-- doxytag: member="WMG::A" ref="af56745c0eb4561167b80e71437d10a51" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double* <a class="el" href="classWMG.html#af56745c0eb4561167b80e71437d10a51">WMG::A</a><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>State and control matrices, that can be used to estimate a <a class="el" href="pProblemDef.html#pX_tilde">state</a> based on the current state and controls. </p>
+
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00178">178</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="aecb09f9e0fa4b9e5dd1dafe17fad7a44"></a><!-- doxytag: member="WMG::angle" ref="aecb09f9e0fa4b9e5dd1dafe17fad7a44" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -457,7 +852,41 @@ Default vector of the PoS constraints is used. </dd></dl>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00101">101</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Array of N absolute angles corresponding to supports in the preview window. </p>
+
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00133">133</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af36d87c015ef4af6ed9eecf635913715"></a><!-- doxytag: member="WMG::B" ref="af36d87c015ef4af6ed9eecf635913715" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double* <a class="el" href="classWMG.html#af36d87c015ef4af6ed9eecf635913715">WMG::B</a><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00179">179</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a0addaffea4f4983363f7e531510eb095"></a><!-- doxytag: member="WMG::current_reference_foot" ref="a0addaffea4f4983363f7e531510eb095" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__gWMG__API.html#ga45147e528b9243fa8842d38163498449">fs_type</a> <a class="el" href="classWMG.html#a0addaffea4f4983363f7e531510eb095">WMG::current_reference_foot</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Reference foot (R/L), even in DS we need to choose a reference foot. </p>
+
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00158">158</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -466,15 +895,14 @@ Default vector of the PoS constraints is used. </dd></dl>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int <a class="el" href="classWMG.html#a6770fc44d46e4fdda9ad584c02516ce5">WMG::current_step_number</a><code> [private]</code></td>
+          <td class="memname">int <a class="el" href="classWMG.html#a6770fc44d46e4fdda9ad584c02516ce5">WMG::current_step_number</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
+<p>This is the step in FS that is at the start of the current preview window. </p>
 
-<p>This is the step in FS that is at the start of the current preview window. I don't need to pop_front steps from FS and that is why I use stl vector and not stl deque). </p>
-
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00116">116</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00155">155</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -489,7 +917,7 @@ Default vector of the PoS constraints is used. </dd></dl>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00108">108</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00168">168</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -504,7 +932,7 @@ Default vector of the PoS constraints is used. </dd></dl>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00111">111</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00171">171</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -519,7 +947,7 @@ Default vector of the PoS constraints is used. </dd></dl>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00112">112</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00172">172</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -534,7 +962,39 @@ Default vector of the PoS constraints is used. </dd></dl>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00109">109</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00169">169</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aef8b7df19ecc03d9bc759d9a340111ac"></a><!-- doxytag: member="WMG::fp_x" ref="aef8b7df19ecc03d9bc759d9a340111ac" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double* <a class="el" href="classWMG.html#aef8b7df19ecc03d9bc759d9a340111ac">WMG::fp_x</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Coordinates of N points satisfying constraints,. </p>
+
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00137">137</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a733113b0c76e60c15ed33075733e07e4"></a><!-- doxytag: member="WMG::fp_y" ref="a733113b0c76e60c15ed33075733e07e4" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double* <a class="el" href="classWMG.html#a733113b0c76e60c15ed33075733e07e4">WMG::fp_y</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00138">138</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -551,7 +1011,7 @@ Default vector of the PoS constraints is used. </dd></dl>
 
 <p>A vector of footsteps. </p>
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00076">76</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00107">107</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -568,7 +1028,7 @@ Default vector of the PoS constraints is used. </dd></dl>
 
 <p>Norm of the acceleration due to gravity. For the moment gravity is set equal to 9.81. </p>
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00090">90</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00121">121</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -585,7 +1045,7 @@ Default vector of the PoS constraints is used. </dd></dl>
 
 <p>h = <a class="el" href="classWMG.html#aa84378e22b50ebce4f9f9056e68d2ead" title="Height of the CoM.">hCoM</a>/<a class="el" href="classWMG.html#adebe1dbad97447d7194bc58af9fdf208" title="Norm of the acceleration due to gravity. For the moment gravity is set equal to 9.81.">gravity</a>. </p>
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00093">93</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00124">124</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -602,7 +1062,7 @@ Default vector of the PoS constraints is used. </dd></dl>
 
 <p>Height of the CoM. </p>
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00087">87</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00118">118</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -617,7 +1077,9 @@ Default vector of the PoS constraints is used. </dd></dl>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00104">104</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>2*N bounds for coordinates of ZMP position. </p>
+
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00143">143</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -634,7 +1096,24 @@ Default vector of the PoS constraints is used. </dd></dl>
 
 <p>Number of iterations in a preview window. </p>
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00080">80</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00111">111</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa73c2b69c254fbae2950889a8d72bca6"></a><!-- doxytag: member="WMG::step_height" ref="aa73c2b69c254fbae2950889a8d72bca6" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double <a class="el" href="classWMG.html#aa73c2b69c254fbae2950889a8d72bca6">WMG::step_height</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>The maximum height, that can be reached by a swing foot. </p>
+
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00161">161</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -651,7 +1130,7 @@ Default vector of the PoS constraints is used. </dd></dl>
 
 <p>Preview sampling time. </p>
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00083">83</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00114">114</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -666,7 +1145,7 @@ Default vector of the PoS constraints is used. </dd></dl>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00105">105</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00144">144</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -683,16 +1162,16 @@ Default vector of the PoS constraints is used. </dd></dl>
 
 <p>A chunk of memory allocated for solution. </p>
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00096">96</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00127">127</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a831e486340b6774dfe0b1b2d7f52d286"></a><!-- doxytag: member="WMG::X_tilde" ref="a831e486340b6774dfe0b1b2d7f52d286" args="[NUM_STATE_VAR]" -->
+<a class="anchor" id="a5ed5d3afbd2cf4c243d203714b5cfe06"></a><!-- doxytag: member="WMG::X_tilde" ref="a5ed5d3afbd2cf4c243d203714b5cfe06" args="[SMPC_NUM_STATE_VAR]" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">double <a class="el" href="classWMG.html#a831e486340b6774dfe0b1b2d7f52d286">WMG::X_tilde</a>[NUM_STATE_VAR]</td>
+          <td class="memname">double <a class="el" href="classWMG.html#a5ed5d3afbd2cf4c243d203714b5cfe06">WMG::X_tilde</a>[SMPC_NUM_STATE_VAR]</td>
         </tr>
       </table>
 </div>
@@ -700,7 +1179,7 @@ Default vector of the PoS constraints is used. </dd></dl>
 
 <p>Initial state. </p>
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00099">99</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00130">130</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -715,7 +1194,9 @@ Default vector of the PoS constraints is used. </dd></dl>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00102">102</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>N reference coordinates of ZMP. </p>
+
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00149">149</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -730,12 +1211,12 @@ Default vector of the PoS constraints is used. </dd></dl>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00103">103</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00150">150</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>WMG/<a class="el" href="WMG_8h_source.html">WMG.h</a></li>
+<li>include/<a class="el" href="WMG_8h_source.html">WMG.h</a></li>
 <li>WMG/<a class="el" href="WMG_8cpp_source.html">WMG.cpp</a></li>
 </ul>
 </div>

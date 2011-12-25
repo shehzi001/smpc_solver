@@ -58,7 +58,7 @@
 <a name="l00022"></a>00022 
 <a name="l00028"></a><a class="code" href="classchol__solve__ip.html#a1d2062b9720c5b0cf8501693dea04f94">00028</a> <a class="code" href="classchol__solve__ip.html#a1d2062b9720c5b0cf8501693dea04f94" title="Constructor.">chol_solve_ip::chol_solve_ip</a> (<span class="keyword">const</span> <span class="keywordtype">int</span> N) : ecL(N)
 <a name="l00029"></a>00029 {
-<a name="l00030"></a>00030     <a class="code" href="classchol__solve__ip.html#a11a95a35bd226c851f27689ea1a0ad80" title="Lagrange multipliers.">w</a> = <span class="keyword">new</span> <span class="keywordtype">double</span>[N*<a class="code" href="group__gINTERNALS.html#ga37814f52692ffc71ef43e6b06e891440" title="Number of state variables.">NUM_STATE_VAR</a>];
+<a name="l00030"></a>00030     <a class="code" href="classchol__solve__ip.html#a11a95a35bd226c851f27689ea1a0ad80" title="Lagrange multipliers.">w</a> = <span class="keyword">new</span> <span class="keywordtype">double</span>[N*<a class="code" href="group__gAPI.html#gab7984838b079762f5087b37a731e0b79" title="Number of state variables.">SMPC_NUM_STATE_VAR</a>];
 <a name="l00031"></a>00031 }
 <a name="l00032"></a>00032 
 <a name="l00033"></a>00033 
@@ -109,7 +109,7 @@
 <a name="l00087"></a>00087         dx[j] = i2hess_grad[j] - i2Q[1] * dx[j]; 
 <a name="l00088"></a>00088         j++;
 <a name="l00089"></a>00089     }
-<a name="l00090"></a>00090     <span class="keywordflow">for</span> (i = ppar-&gt;<a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>*<a class="code" href="group__gINTERNALS.html#ga37814f52692ffc71ef43e6b06e891440" title="Number of state variables.">NUM_STATE_VAR</a>; i &lt; ppar-&gt;N*<a class="code" href="group__gINTERNALS.html#gae8780c341d0ab405a8d820726f7e3b5c" title="Total number of variables.">NUM_VAR</a>; i++)
+<a name="l00090"></a>00090     <span class="keywordflow">for</span> (i = ppar-&gt;<a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>*<a class="code" href="group__gAPI.html#gab7984838b079762f5087b37a731e0b79" title="Number of state variables.">SMPC_NUM_STATE_VAR</a>; i &lt; ppar-&gt;N*<a class="code" href="group__gAPI.html#ga74b56d50f3995ffd5282a2f2289dfd1a" title="Total number of variables.">SMPC_NUM_VAR</a>; i++)
 <a name="l00091"></a>00091     {
 <a name="l00092"></a>00092         <span class="comment">// dx for control variables</span>
 <a name="l00093"></a>00093         dx[i] = i2hess_grad[i] - ppar-&gt;<a class="code" href="classproblem__parameters.html#aa7c28f51f09f182cc82dd57d6175325e">i2P</a> * dx[i];
