@@ -483,6 +483,8 @@ fs_type WMG::getSwingFootNextPrevPos (
  *
  * @param[in] swing_type which method to use.
  * @param[in] loops_per_preview_iter number of control loops per preview iteration
+ * @param[in] loops_in_current_preview number of control loops passed in the current 
+ *                                     preview iteration
  * @param[out] swing_foot_position 3x1 vector of coordinates [x y z]
  * @param[out] angle orientation of the foot in x axis
  *
@@ -499,7 +501,7 @@ void WMG::getSwingFootPosition (
         double *swing_foot_pos,
         double *angle_x)
 {
-    if (swing_type == WMG_SWING_PARABOLA)
+    if (swing_type == WMG_SWING_2D_PARABOLA)
     {
         int num_iter_in_ss;
         int num_iter_in_ss_passed;

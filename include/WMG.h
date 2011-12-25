@@ -50,7 +50,7 @@ enum fs_type
 
 enum swing_foot_pos_type
 {
-    WMG_SWING_PARABOLA
+    WMG_SWING_2D_PARABOLA
 };
 
 
