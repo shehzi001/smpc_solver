@@ -593,9 +593,38 @@ WMGret WMG::FormPreviewWindow()
             fp_x[i] = FS[win_step_num].x;
             fp_y[i] = FS[win_step_num].y;
 
-            /// @todo A more sophisticated method is needed.
-            zref_x[i] = FS[win_step_num].x + 0.02*FS[win_step_num].ca;
-            zref_y[i] = FS[win_step_num].y + 0.02*FS[win_step_num].sa;
+
+            // ZMP reference coordinates with respect to the support
+            // reference point
+            double zref[2];
+            zref[0] = (FS[win_step_num].d_orig[0] - FS[win_step_num].d_orig[2])/2;
+            switch (FS[win_step_num].type)
+            {
+                case FS_TYPE_DS:
+                    // the middle of support
+                    zref[1] = 0;
+                    break;
+                    
+                case FS_TYPE_SS_L:
+                    // the middle of the left edge of the foot
+                    zref[1] = FS[win_step_num].d_orig[1];
+                    break;
+
+                case FS_TYPE_SS_R:
+                    // the middle of the right edge of the foot
+                    zref[1] = -FS[win_step_num].d_orig[3];
+                    break;
+
+                default:
+                    // should never happen
+                    zref[1] = 0;
+                    break;
+            }
+
+            // true coordinates of ZMP reference point
+            zref_x[i] = FS[win_step_num].x + zref[0]*FS[win_step_num].ca + zref[1]*FS[win_step_num].sa;
+            zref_y[i] = FS[win_step_num].y - zref[0]*FS[win_step_num].sa + zref[1]*FS[win_step_num].ca;
+
 
             lb[i*2] = -FS[win_step_num].d[2];
             ub[i*2] = FS[win_step_num].d[0];

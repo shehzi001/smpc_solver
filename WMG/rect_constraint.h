@@ -54,10 +54,13 @@ class RectangularConstraint_ZMP
          */
         double D[4*2];
 
-        /** \brief Size of the support polygon for a single support.
+        /** Size of the support polygon for a single support.
             Vector d of the constraints D*z <= d (where z is a 2D point).
          */
         double d[4];
+
+        /// Size of the support polygon for a single support (no rotation / translation).
+        double d_orig[4];
 
         /// Absolute coordinates of vertices.
         std::vector<Point2D> vert;

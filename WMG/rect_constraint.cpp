@@ -50,6 +50,11 @@ RectangularConstraint_ZMP::RectangularConstraint_ZMP(const double *d_)
     d[2] = d_[2]; 
     d[3] = d_[3];
 
+    d_orig[0] = d[0];
+    d_orig[1] = d[1];
+    d_orig[2] = d[2];
+    d_orig[3] = d[3];
+
     Constraints2Vert(); // determine coordinates of vertices
 }
 
