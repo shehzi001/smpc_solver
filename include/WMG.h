@@ -101,6 +101,12 @@ class WMG
         void calculateNextState (const double *, double *);
         void initState (const double, const double, double *);
 
+        void getFootsteps(
+                std::vector<double> &,
+                std::vector<double> &,
+                std::vector<double> &);
+
+
 
 // variables
         /** \brief A vector of footsteps. */

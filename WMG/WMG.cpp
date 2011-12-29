@@ -823,3 +823,28 @@ void WMG::FS2file(const std::string filename)
     fprintf(file_op,"grid on; %%axis equal\n");
     fclose(file_op);  
 }
+
+
+/**
+ * @brief Return coordinates of footstep reference points and rotation 
+ * angles of footsteps (only for SS).
+ *
+ * @param[out] x_coord x coordinates
+ * @param[out] y_coord y coordinates
+ * @param[out] angle_rot angles
+ */
+void WMG::getFootsteps(
+        std::vector<double> & x_coord,
+        std::vector<double> & y_coord,
+        std::vector<double> & angle_rot)
+{
+    for (unsigned int i = 0; i < FS.size(); i++)
+    {
+        if ((FS[i].type == FS_TYPE_SS_L) || (FS[i].type == FS_TYPE_SS_R))
+        {
+            x_coord.push_back(FS[i].x);
+            y_coord.push_back(FS[i].y);
+            angle_rot.push_back(FS[i].angle);
+        }
+    }
+}
