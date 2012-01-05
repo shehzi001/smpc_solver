@@ -105,7 +105,7 @@ void smpc_solver::get_next_state_tilde (double *state)
 {
     if (qp_sol != NULL)
     {
-        state_handling::get_next_state_tilde (qp_sol, qp_sol->X, state);
+        state_handling::get_state_tilde (qp_sol, qp_sol->X, 0, state);
     }
 }
 
@@ -115,14 +115,25 @@ void smpc_solver::get_next_state (double *state)
 {
     if (qp_sol != NULL)
     {
-        state_handling::get_next_state (qp_sol, qp_sol->X, state);
+        state_handling::get_state (qp_sol, qp_sol->X, 0, state);
     }
 }
+
+
+void smpc_solver::get_state (const int ind, double *state)
+{
+    if (qp_sol != NULL)
+    {
+        state_handling::get_state (qp_sol, qp_sol->X, ind, state);
+    }
+}
+
 
 void smpc_solver::convert_to_tilde (double h, double *state)
 {
     state_handling::orig_to_tilde (h, state);
 }
+
 
 void smpc_solver::get_first_controls (double *controls)
 {

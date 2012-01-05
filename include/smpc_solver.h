@@ -205,6 +205,15 @@ class smpc_solver
 
 
         /**
+         * @brief The same as #get_next_state, but takes additional parameter - 
+         * index of the desired state in the state vector.
+         *  
+         * @param[in] ind index of a state [0, N-1].
+         * @param[in,out] state the state (#SMPC_NUM_STATE_VAR elements).
+         */
+        void get_state (const int ind, double *state);
+
+        /**
          * @brief Returns the controls that must be applied to reach the 
          *  next state.
          *

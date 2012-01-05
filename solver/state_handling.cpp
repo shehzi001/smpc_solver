@@ -79,13 +79,25 @@ namespace state_handling
      *
      * @param[in] sp parameters. 
      * @param[in] X a solution.
+     * @param[in] ind index of the state.
      * @param[in,out] state the state (#SMPC_NUM_STATE_VAR elements).
      */
-    void get_next_state_tilde (const problem_parameters* sp, const double *X, double *state)
+    void get_state_tilde (const problem_parameters* sp, const double *X, const int ind, double *state)
     {
+        int index;
+
+        if (ind >= sp->N)
+        {
+            index = sp->N - 1;
+        }
+        else
+        {
+            index = ind;
+        }
+
         for (int i = 0; i < SMPC_NUM_STATE_VAR; i++)
         {
-            state[i] = X[i];
+            state[i] = X[index*SMPC_NUM_STATE_VAR + i];
         }
 
         state_handling::bar_to_tilde (sp->spar[0].sin, sp->spar[0].cos, state);
@@ -97,11 +109,12 @@ namespace state_handling
      *
      * @param[in] sp parameters. 
      * @param[in] X a solution.
+     * @param[in] ind index of the state.
      * @param[in,out] state the state (#SMPC_NUM_STATE_VAR elements).
      */
-    void get_next_state (const problem_parameters* sp, const double *X, double *state)
+    void get_state (const problem_parameters* sp, const double *X, const int ind, double *state)
     {
-        get_next_state_tilde (sp, X, state);
+        get_state_tilde (sp, X, ind, state);
         state_handling::tilde_to_orig (sp->spar[0].h, state);
     }
 
