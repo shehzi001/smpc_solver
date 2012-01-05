@@ -6,6 +6,7 @@
 
 
 #include <stdio.h>
+#include <math.h> // cos, sin
 
 
 #include "WMG.h"
@@ -256,11 +257,16 @@ void WMG::AddFootstep(
             type = FS_TYPE_DS;
         }
 
+        Point2D zref_rel ((def_constraint[0] - def_constraint[2])/2, 0);
+        Point2D zref_abs (
+                x_relative + zref_rel.x*cos(angle_relative) + zref_rel.y*sin(angle_relative),
+                y_relative - zref_rel.x*sin(angle_relative) + zref_rel.y*cos(angle_relative));
+
         FS.push_back(
                 FootStep(
                     angle_relative, 
-                    x_relative,
-                    y_relative, 
+                    Point2D(x_relative, y_relative),
+                    zref_abs,
                     def_repeat_times, 
                     type,
                     def_constraint));
@@ -294,6 +300,12 @@ void WMG::AddFootstep(
         next_p.x += FS.back().ca*x_relative - FS.back().sa*y_relative;
         next_p.y += FS.back().sa*x_relative + FS.back().ca*y_relative;
 
+        double next_angle = prev_a + angle_relative;
+
+        Point2D zref_rel ((def_constraint[0] - def_constraint[2])/2, 0);
+        Point2D next_zref (
+                next_p.x + zref_rel.x*cos(next_angle) + zref_rel.y*sin(next_angle),
+                next_p.y - zref_rel.x*sin(next_angle) + zref_rel.y*cos(next_angle));
 
         // Add double support constraints that lie between the
         // newly added step and the previous step
@@ -302,23 +314,38 @@ void WMG::AddFootstep(
             double theta = (double) (i+1)/(def_ds_num + 1);
             double ds_a = prev_a + angle_relative * theta;
 
-            FS.push_back(
-                    FootStep(
-                        ds_a, 
-                        (1-theta)*prev_p.x + theta*next_p.x,
-                        (1-theta)*prev_p.y + theta*next_p.y,
-                        1, 
-                        FS_TYPE_DS,
-                        def_ds_constraint));
+            Point2D position ((1-theta)*prev_p.x + theta*next_p.x, (1-theta)*prev_p.y + theta*next_p.y);
+            if (i < def_ds_num/2)
+            {
+                FS.push_back(
+                        FootStep(
+                            ds_a, 
+                            position,
+                            FS.back().ZMPref,
+                            1, 
+                            FS_TYPE_DS,
+                            def_ds_constraint));
+            }
+            else
+            {
+                FS.push_back(
+                        FootStep(
+                            ds_a, 
+                            position,
+                            next_zref,
+                            1, 
+                            FS_TYPE_DS,
+                            def_ds_constraint));
+            }
         }
 
 
         // add the new step
         FS.push_back(
                 FootStep(
-                    prev_a + angle_relative, 
-                    next_p.x, 
-                    next_p.y, 
+                    next_angle, 
+                    next_p, 
+                    next_zref,
                     def_repeat_times, 
                     type,
                     def_constraint));
@@ -594,15 +621,9 @@ WMGret WMG::FormPreviewWindow()
             fp_y[i] = FS[win_step_num].y;
 
 
-            // ZMP reference coordinates with respect to the support
-            // reference point
-            double zref[2];
-            zref[0] = (FS[win_step_num].d_orig[0] - FS[win_step_num].d_orig[2])/2;
-            zref[1] = 0;
-
-            // true coordinates of ZMP reference point
-            zref_x[i] = FS[win_step_num].x + zref[0]*FS[win_step_num].ca + zref[1]*FS[win_step_num].sa;
-            zref_y[i] = FS[win_step_num].y - zref[0]*FS[win_step_num].sa + zref[1]*FS[win_step_num].ca;
+            // ZMP reference coordinates
+            zref_x[i] = FS[win_step_num].ZMPref.x;
+            zref_y[i] = FS[win_step_num].ZMPref.y;
 
 
             lb[i*2] = -FS[win_step_num].d[2];

@@ -23,20 +23,22 @@
  * @brief Defines a footstep at a given position with a given orientation.
  *
  * @param[in] angle_ absolute rotation angle.
- * @param[in] x_ absolute x coordinate of the reference point.
- * @param[in] y_ absolute y coordinate of the reference point.
+ * @param[in] Position absolute position of the foot.
+ * @param[in] ZMPref_ absolute reference ZMP position for the foot.
  * @param[in] repeat_times_ number of times this step appears in the preview window.
  * @param[in] type_ type of the step.
  * @param[in] d_ ZMP constraints as defined in RectangularConstraint_ZMP#RectangularConstraint_ZMP.
  */
 FootStep::FootStep(
         const double angle_, 
-        const double x_, 
-        const double y_, 
+        const Point2D Position,
+        const Point2D ZMPref_,
         const int repeat_times_, 
         const fs_type type_, 
         const double *d_) : 
-    Point2D(x_, y_), RectangularConstraint_ZMP(d_)
+    Point2D(Position), 
+    RectangularConstraint_ZMP(d_),
+    ZMPref(ZMPref_)
 {
     type = type_;
     angle = angle_; 

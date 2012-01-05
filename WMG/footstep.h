@@ -29,7 +29,13 @@
 class FootStep : public Point2D, public RectangularConstraint_ZMP
 {
     public:
-        FootStep(const double, const double, const double, const int, const fs_type, const double *);
+        FootStep(
+                const double, 
+                const Point2D,
+                const Point2D,
+                const int, 
+                const fs_type, 
+                const double *);
 
 
         /// Angle (relative to the world frame) of a footstep [rad.].
@@ -49,7 +55,9 @@ class FootStep : public Point2D, public RectangularConstraint_ZMP
 
         /// type of the step.
         fs_type type;
-};
 
+        /// Reference ZMP point
+        Point2D ZMPref;
+};
 ///@}
 #endif /*FOOTSTEP_H*/
