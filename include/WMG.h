@@ -87,7 +87,7 @@ class WMG
                 const double, 
                 fs_type type = FS_TYPE_AUTO);
         WMGret FormPreviewWindow();
-        void FS2file(const std::string);
+        void FS2file(const std::string, const bool plot_ds = true);
 
         void getSwingFootPosition (
                 const swing_foot_pos_type,

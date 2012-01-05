@@ -598,28 +598,7 @@ WMGret WMG::FormPreviewWindow()
             // reference point
             double zref[2];
             zref[0] = (FS[win_step_num].d_orig[0] - FS[win_step_num].d_orig[2])/2;
-            switch (FS[win_step_num].type)
-            {
-                case FS_TYPE_DS:
-                    // the middle of support
-                    zref[1] = 0;
-                    break;
-                    
-                case FS_TYPE_SS_L:
-                    // the middle of the left edge of the foot
-                    zref[1] = FS[win_step_num].d_orig[1];
-                    break;
-
-                case FS_TYPE_SS_R:
-                    // the middle of the right edge of the foot
-                    zref[1] = -FS[win_step_num].d_orig[3];
-                    break;
-
-                default:
-                    // should never happen
-                    zref[1] = 0;
-                    break;
-            }
+            zref[1] = 0;
 
             // true coordinates of ZMP reference point
             zref_x[i] = FS[win_step_num].x + zref[0]*FS[win_step_num].ca + zref[1]*FS[win_step_num].sa;
@@ -764,8 +743,9 @@ void WMG::calculateNextState (const double *control, double *state)
  * Matlab/Octave to get a figure of the steps.
  *
  * @param[in] filename output file name.
+ * @param[in] plot_ds enable/disable plotting of double supports
  */
-void WMG::FS2file(const std::string filename)
+void WMG::FS2file(const std::string filename, const bool plot_ds)
 {
     
     FILE *file_op = fopen(filename.c_str(), "w");
@@ -781,31 +761,34 @@ void WMG::FS2file(const std::string filename)
     int i;
     for (i=0; i< (int) FS.size(); i++ )
     {
-        fprintf(file_op, "FS(%i).a = %f;\nFS(%i).p = [%f;%f];\nFS(%i).d = [%f;%f;%f;%f];\n", 
-                i+1, FS[i].angle, 
-                i+1, FS[i].x, FS[i].y, 
-                i+1, FS[i].d[0], FS[i].d[1], FS[i].d[2], FS[i].d[3]);
-
-        fprintf(file_op, "FS(%i).D = [%f %f;%f %f;%f %f;%f %f];\n", 
-                i+1, FS[i].D[0], FS[i].D[4],
-                     FS[i].D[1], FS[i].D[5],
-                     FS[i].D[2], FS[i].D[6],
-                     FS[i].D[3], FS[i].D[7]); 
-
-        fprintf(file_op, "FS(%i).v = [%f %f; %f %f; %f %f; %f %f; %f %f];\n", 
-                i+1, FS[i].vert[0].x, FS[i].vert[0].y, 
-                     FS[i].vert[1].x, FS[i].vert[1].y, 
-                     FS[i].vert[2].x, FS[i].vert[2].y, 
-                     FS[i].vert[3].x, FS[i].vert[3].y, 
-                     FS[i].vert[0].x, FS[i].vert[0].y);
-
-        if (FS[i].type == FS_TYPE_DS)
+        if ((plot_ds) || (FS[i].type != FS_TYPE_DS))
         {
-            fprintf(file_op, "FS(%i).type = 1;\n\n", i+1);
-        }
-        if ((FS[i].type == FS_TYPE_SS_L) || (FS[i].type == FS_TYPE_SS_R))
-        {
-            fprintf(file_op, "FS(%i).type = 2;\n\n", i+1);
+            fprintf(file_op, "FS(%i).a = %f;\nFS(%i).p = [%f;%f];\nFS(%i).d = [%f;%f;%f;%f];\n", 
+                    i+1, FS[i].angle, 
+                    i+1, FS[i].x, FS[i].y, 
+                    i+1, FS[i].d[0], FS[i].d[1], FS[i].d[2], FS[i].d[3]);
+
+            fprintf(file_op, "FS(%i).D = [%f %f;%f %f;%f %f;%f %f];\n", 
+                    i+1, FS[i].D[0], FS[i].D[4],
+                         FS[i].D[1], FS[i].D[5],
+                         FS[i].D[2], FS[i].D[6],
+                         FS[i].D[3], FS[i].D[7]); 
+
+            fprintf(file_op, "FS(%i).v = [%f %f; %f %f; %f %f; %f %f; %f %f];\n", 
+                    i+1, FS[i].vert[0].x, FS[i].vert[0].y, 
+                         FS[i].vert[1].x, FS[i].vert[1].y, 
+                         FS[i].vert[2].x, FS[i].vert[2].y, 
+                         FS[i].vert[3].x, FS[i].vert[3].y, 
+                         FS[i].vert[0].x, FS[i].vert[0].y);
+
+            if (FS[i].type == FS_TYPE_DS)
+            {
+                fprintf(file_op, "FS(%i).type = 1;\n\n", i+1);
+            }
+            if ((FS[i].type == FS_TYPE_SS_L) || (FS[i].type == FS_TYPE_SS_R))
+            {
+                fprintf(file_op, "FS(%i).type = 2;\n\n", i+1);
+            }
         }
     }
 
