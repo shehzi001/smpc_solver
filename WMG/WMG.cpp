@@ -778,6 +778,8 @@ void WMG::FS2file(const std::string filename, const bool plot_ds)
     }
     
     fprintf(file_op,"%%\n%% Footsteps generated using the c++ version of the WMG\n%%\n\n");
+    fprintf(file_op,"cla;\n");
+    fprintf(file_op,"clear FS;\n\n");
     
     int i;
     for (i=0; i< (int) FS.size(); i++ )
