@@ -222,6 +222,7 @@ class smpc_solver
          */
         void get_state (const int ind, double *state);
 
+
         /**
          * @brief Returns the controls that must be applied to reach the 
          *  next state.
@@ -233,6 +234,17 @@ class smpc_solver
            @endverbatim
          */
         void get_first_controls (double *controls);
+
+
+        /**
+         * @brief The same as #get_first_controls, but takes an additional 
+         * parameter - the index of the control inputs. Control[ind] is 
+         * applied to State[ind-1] to reach State[ind].
+         *
+         * @param[in] ind index of control inputs [0, N-1].
+         * @param[in,out] controls the controls (#SMPC_NUM_CONTROL_VAR).
+         */
+        void get_controls (const int ind, double *controls);
 
         // -------------------------------
 

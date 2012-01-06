@@ -85,7 +85,6 @@ namespace state_handling
     void get_state_tilde (const problem_parameters* sp, const double *X, const int ind, double *state)
     {
         int index;
-
         if (ind >= sp->N)
         {
             index = sp->N - 1;
@@ -124,11 +123,21 @@ namespace state_handling
      *
      * @param[in] preview_window_size size of the preview window
      * @param[in] X a solution
+     * @param[in] ind index of the state.
      * @param[in,out] controls the controls (2 double values)
      */
-    void get_first_controls (const int preview_window_size, const double *X, double *controls)
+    void get_controls (const int preview_window_size, const double *X, const int ind, double *controls)
     {
-        controls[0] = X[preview_window_size*SMPC_NUM_STATE_VAR + 0];
-        controls[1] = X[preview_window_size*SMPC_NUM_STATE_VAR + 1];
+        int index;
+        if (ind >= preview_window_size)
+        {
+            index = preview_window_size;
+        }
+        else
+        {
+            index = ind;
+        }
+        controls[0] = X[preview_window_size*SMPC_NUM_STATE_VAR + index*SMPC_NUM_CONTROL_VAR + 0];
+        controls[1] = X[preview_window_size*SMPC_NUM_STATE_VAR + index*SMPC_NUM_CONTROL_VAR + 1];
     }
 }

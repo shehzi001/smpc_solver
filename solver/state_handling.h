@@ -34,7 +34,7 @@ namespace state_handling
     void get_state_tilde (const problem_parameters*, const double *, const int, double *);
     void get_state (const problem_parameters*, const double *, const int, double *);
 
-    void get_first_controls (const int, const double *, double *);
+    void get_controls (const int, const double *, const int ind, double *);
 }
 /// @}
 #endif /*STATE_HANDLING_H*/

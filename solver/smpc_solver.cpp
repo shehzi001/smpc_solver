@@ -147,6 +147,15 @@ void smpc_solver::get_first_controls (double *controls)
 {
     if (qp_sol != NULL)
     {
-        state_handling::get_first_controls (qp_sol->N, qp_sol->X, controls);
+        state_handling::get_controls (qp_sol->N, qp_sol->X, 0, controls);
+    }
+}
+
+
+void smpc_solver::get_controls (const int ind, double *controls)
+{
+    if (qp_sol != NULL)
+    {
+        state_handling::get_controls (qp_sol->N, qp_sol->X, ind, controls);
     }
 }
