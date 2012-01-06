@@ -72,7 +72,7 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__solver.html#a78e6d2b14a8c76f863be2552aa443559">~qp_solver</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__solver.html#ad1a27784aa9e75e401c343a04f09e2d8">form_init_fp</a> (const double *, const double *, const double *, double *)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates an initial feasible point. First we perform a change of variable to <a class="el" href="pProblemDef.html#pX_tilde">X_tilde</a> generate a feasible point, and then we go back to <a class="el" href="pProblemDef.html#pX_bar">X_bar</a>.  <a href="#ad1a27784aa9e75e401c343a04f09e2d8"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__solver.html#a36e61ae0762a1178390faa83cf599b67">set_parameters</a> (const double *, const double *, const double *, const double *, const double *, const double *, const double *)=0</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__solver.html#a50c064ba4846350d9f1dcfd6abbfd946">set_parameters</a> (const double *, const double *, const double, const double *, const double *, const double *, const double *, const double *)=0</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__solver.html#a860bee98c0cb2e2ecaad8c5e617971d7">solve</a> ()=0</td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -81,6 +81,8 @@ Public Attributes</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">tolerance  <a href="#a760bde009995222d59a3880ef18b0545"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__solver.html#a36916afec3fbe6e3cf60fc36b31a79a9">dX</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__solver.html#a5a5567d24c04b40ed5630ad0991c881f">alpha</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__solver.html#aae3d4ff18b2fd433f76909c396010bf2">h_initial</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Height of the CoM at initial state divided by the gravity, this initial state precede the first state in the preview window.  <a href="#aae3d4ff18b2fd433f76909c396010bf2"></a><br/></td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__solver.html#aec61b38adbbf2c791f633610e2133590">gain_alpha</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Gains used in <a class="el" href="pProblemDef.html#pPDObj">objective function</a>.  <a href="#aec61b38adbbf2c791f633610e2133590"></a><br/></td></tr>
@@ -197,7 +199,7 @@ Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const double *&#160;</td>
-          <td class="paramname"><em>X_tilde</em>, </td>
+          <td class="paramname"><em>init_state</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -219,7 +221,7 @@ Public Attributes</h2></td></tr>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">x_coord</td><td>x coordinates of points satisfying constraints </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">y_coord</td><td>y coordinates of points satisfying constraints </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">X_tilde</td><td>current state </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">init_state</td><td>current state </td></tr>
     <tr><td class="paramdir">[in,out]</td><td class="paramname">X_</td><td>initial guess / solution of optimization problem </td></tr>
   </table>
   </dd>
@@ -229,7 +231,7 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a36e61ae0762a1178390faa83cf599b67"></a><!-- doxytag: member="qp_solver::set_parameters" ref="a36e61ae0762a1178390faa83cf599b67" args="(const double *, const double *, const double *, const double *, const double *, const double *, const double *)=0" -->
+<a class="anchor" id="a50c064ba4846350d9f1dcfd6abbfd946"></a><!-- doxytag: member="qp_solver::set_parameters" ref="a50c064ba4846350d9f1dcfd6abbfd946" args="(const double *, const double *, const double, const double *, const double *, const double *, const double *, const double *)=0" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -243,6 +245,12 @@ Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const double *&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
           <td class="paramname">, </td>
         </tr>
         <tr>
@@ -284,7 +292,7 @@ Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Implemented in <a class="el" href="classqp__as.html#a5a93848b83ab8de1964ebcddca16c83c">qp_as</a>, and <a class="el" href="classqp__ip.html#ab3d653e209c577e719b93c66f4068ecc">qp_ip</a>.</p>
+<p>Implemented in <a class="el" href="classqp__as.html#a4bd0c46eda2dc4ba4d5a31ca628f0ada">qp_as</a>, and <a class="el" href="classqp__ip.html#ac7f3c37bef1e4c0a372e5016a9f2c275">qp_ip</a>.</p>
 
 </div>
 </div>
@@ -319,7 +327,7 @@ Public Attributes</h2></td></tr>
 <div class="memdoc">
 <p>A number from 0 to 1, which controls depth of descent <a class="el" href="classqp__solver.html#a913e4e5a4936b84794bd3a37e7abcaa6">X</a> = <a class="el" href="classqp__solver.html#a913e4e5a4936b84794bd3a37e7abcaa6">X</a> + <a class="el" href="classqp__solver.html#a5a5567d24c04b40ed5630ad0991c881f">alpha</a>*<a class="el" href="classqp__solver.html#a36916afec3fbe6e3cf60fc36b31a79a9">dX</a>. </p>
 
-<p>Definition at line <a class="el" href="qp__solver_8h_source.html#l00089">89</a> of file <a class="el" href="qp__solver_8h_source.html">qp_solver.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__solver_8h_source.html#l00090">90</a> of file <a class="el" href="qp__solver_8h_source.html">qp_solver.h</a>.</p>
 
 </div>
 </div>
@@ -335,7 +343,7 @@ Public Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Feasible descent direction (to be used for updating <a class="el" href="classqp__solver.html#a913e4e5a4936b84794bd3a37e7abcaa6">X</a>). </p>
 
-<p>Definition at line <a class="el" href="qp__solver_8h_source.html#l00086">86</a> of file <a class="el" href="qp__solver_8h_source.html">qp_solver.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__solver_8h_source.html#l00087">87</a> of file <a class="el" href="qp__solver_8h_source.html">qp_solver.h</a>.</p>
 
 </div>
 </div>
@@ -352,7 +360,7 @@ Public Attributes</h2></td></tr>
 
 <p>Gains used in <a class="el" href="pProblemDef.html#pPDObj">objective function</a>. </p>
 
-<p>Definition at line <a class="el" href="qp__solver_8h_source.html#l00075">75</a> of file <a class="el" href="qp__solver_8h_source.html">qp_solver.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__solver_8h_source.html#l00076">76</a> of file <a class="el" href="qp__solver_8h_source.html">qp_solver.h</a>.</p>
 
 </div>
 </div>
@@ -367,7 +375,7 @@ Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="qp__solver_8h_source.html#l00076">76</a> of file <a class="el" href="qp__solver_8h_source.html">qp_solver.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__solver_8h_source.html#l00077">77</a> of file <a class="el" href="qp__solver_8h_source.html">qp_solver.h</a>.</p>
 
 </div>
 </div>
@@ -382,7 +390,24 @@ Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="qp__solver_8h_source.html#l00077">77</a> of file <a class="el" href="qp__solver_8h_source.html">qp_solver.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__solver_8h_source.html#l00078">78</a> of file <a class="el" href="qp__solver_8h_source.html">qp_solver.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aae3d4ff18b2fd433f76909c396010bf2"></a><!-- doxytag: member="qp_solver::h_initial" ref="aae3d4ff18b2fd433f76909c396010bf2" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double <a class="el" href="classqp__solver.html#aae3d4ff18b2fd433f76909c396010bf2">qp_solver::h_initial</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Height of the CoM at initial state divided by the gravity, this initial state precede the first state in the preview window. </p>
+
+<p>Definition at line <a class="el" href="qp__solver_8h_source.html#l00094">94</a> of file <a class="el" href="qp__solver_8h_source.html">qp_solver.h</a>.</p>
 
 </div>
 </div>
@@ -399,7 +424,7 @@ Public Attributes</h2></td></tr>
 
 <p>tolerance </p>
 
-<p>Definition at line <a class="el" href="qp__solver_8h_source.html#l00081">81</a> of file <a class="el" href="qp__solver_8h_source.html">qp_solver.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__solver_8h_source.html#l00082">82</a> of file <a class="el" href="qp__solver_8h_source.html">qp_solver.h</a>.</p>
 
 </div>
 </div>
@@ -415,7 +440,7 @@ Public Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Variables for the QP (contain the states + control variables). Initial feasible point with respect to the equality and inequality constraints. </p>
 
-<p>Definition at line <a class="el" href="qp__solver_8h_source.html#l00070">70</a> of file <a class="el" href="qp__solver_8h_source.html">qp_solver.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__solver_8h_source.html#l00071">71</a> of file <a class="el" href="qp__solver_8h_source.html">qp_solver.h</a>.</p>
 
 </div>
 </div>

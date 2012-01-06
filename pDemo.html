@@ -117,7 +117,7 @@ Start simulation:</h2>
   
     <span class="keywordflow">for</span>(;;)
     {
-        <span class="keywordflow">if</span> (wmg.<a class="code" href="classWMG.html#afa97e1de34aaf70f766aa4965cc34652" title="Forms a preview window.">FormPreviewWindow</a>() == <a class="code" href="group__gWMG__API.html#gga4bb1652524cdb17807ce1b82df68d50aa615ab0e4f617068b4d7347f1f05fba31">WMG_HALT</a>) <span class="comment">// initialize input for QP</span>
+        <span class="keywordflow">if</span> (wmg.<a class="code" href="classWMG.html#ac004229f4f48677e107b9079386d244f" title="Forms a preview window.">FormPreviewWindow</a>() == <a class="code" href="group__gWMG__API.html#gga4bb1652524cdb17807ce1b82df68d50aa615ab0e4f617068b4d7347f1f05fba31">WMG_HALT</a>) <span class="comment">// initialize input for QP</span>
         {
             <span class="comment">// not enough time steps left (&lt;15)</span>
             <span class="keywordflow">break</span>;
@@ -136,6 +136,8 @@ Initialize QP</h3>
                 wmg.<a class="code" href="classWMG.html#a951aff39ccdf6b194bcdc8ee7b83755f" title="Preview sampling time.">T</a>,
                 <span class="comment">// height of the center of mass divided by gravity for each time step</span>
                 wmg.<a class="code" href="classWMG.html#a7df4b6f818bd1bebe6a2994f261bda85" title="h = hCoM/gravity.">h</a>, 
+                <span class="comment">// current height of the center of mass divided by gravity</span>
+                wmg.<a class="code" href="classWMG.html#a7df4b6f818bd1bebe6a2994f261bda85" title="h = hCoM/gravity.">h</a>[0], 
                 <span class="comment">// rotation angle for each state relative to the world frame</span>
                 wmg.<a class="code" href="classWMG.html#aecb09f9e0fa4b9e5dd1dafe17fad7a44" title="Array of N absolute angles corresponding to supports in the preview window.">angle</a>, 
                 <span class="comment">// reference values of x coordinate of ZMP</span>
@@ -152,8 +154,8 @@ Initialize QP</h3>
                 <span class="comment">// an initial feasible point</span>
                 wmg.<a class="code" href="classWMG.html#aef8b7df19ecc03d9bc759d9a340111ac" title="Coordinates of N points satisfying constraints,.">fp_x</a>, 
                 wmg.<a class="code" href="classWMG.html#a733113b0c76e60c15ed33075733e07e4">fp_y</a>, 
-                <span class="comment">// current state</span>
-                wmg.<a class="code" href="classWMG.html#a5ed5d3afbd2cf4c243d203714b5cfe06" title="Initial state.">X_tilde</a>, 
+                <span class="comment">// initial state</span>
+                wmg.<a class="code" href="classWMG.html#a78c2c24ecb9ac05cb2091bfe1de78733">init_state</a>, 
                 <span class="comment">// solution of the optimization problem</span>
                 wmg.<a class="code" href="classWMG.html#a801c492c750f587cb1cf873aaec5a96f" title="A chunk of memory allocated for solution.">X</a>);
 
@@ -169,8 +171,8 @@ Solve QP</h3>
 <h3><a class="anchor" id="pDemo53"></a>
 Obtain the next state</h3>
 <p><div class="fragment"><pre class="fragment">
-        <span class="comment">// obtain the next state as X_tilde</span>
-        solver.get_next_state_tilde (wmg.<a class="code" href="classWMG.html#a5ed5d3afbd2cf4c243d203714b5cfe06" title="Initial state.">X_tilde</a>);
+        <span class="comment">// obtain the next state</span>
+        solver.get_next_state (wmg.<a class="code" href="classWMG.html#a78c2c24ecb9ac05cb2091bfe1de78733">init_state</a>);
     }
 
     <span class="keywordflow">return</span> 0;

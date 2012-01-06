@@ -88,32 +88,35 @@
 <a name="l00055"></a>00055         <span class="keyword">virtual</span> <span class="keywordtype">void</span> set_parameters(
 <a name="l00056"></a>00056                 <span class="keyword">const</span> <span class="keywordtype">double</span>*,
 <a name="l00057"></a>00057                 <span class="keyword">const</span> <span class="keywordtype">double</span>*,
-<a name="l00058"></a>00058                 <span class="keyword">const</span> <span class="keywordtype">double</span>*,
+<a name="l00058"></a>00058                 <span class="keyword">const</span> <span class="keywordtype">double</span>,
 <a name="l00059"></a>00059                 <span class="keyword">const</span> <span class="keywordtype">double</span>*,
 <a name="l00060"></a>00060                 <span class="keyword">const</span> <span class="keywordtype">double</span>*,
 <a name="l00061"></a>00061                 <span class="keyword">const</span> <span class="keywordtype">double</span>*,
-<a name="l00062"></a>00062                 <span class="keyword">const</span> <span class="keywordtype">double</span>*) = 0;
-<a name="l00063"></a>00063         <span class="keyword">virtual</span> <span class="keywordtype">int</span> solve () = 0;
-<a name="l00064"></a>00064    
-<a name="l00065"></a>00065 
-<a name="l00066"></a>00066 <span class="comment">// variables</span>
-<a name="l00070"></a><a class="code" href="classqp__solver.html#a913e4e5a4936b84794bd3a37e7abcaa6">00070</a> <span class="comment"></span>        <span class="keywordtype">double</span> *<a class="code" href="classqp__solver.html#a913e4e5a4936b84794bd3a37e7abcaa6">X</a>;
-<a name="l00071"></a>00071 
+<a name="l00062"></a>00062                 <span class="keyword">const</span> <span class="keywordtype">double</span>*,
+<a name="l00063"></a>00063                 <span class="keyword">const</span> <span class="keywordtype">double</span>*) = 0;
+<a name="l00064"></a>00064         <span class="keyword">virtual</span> <span class="keywordtype">int</span> solve () = 0;
+<a name="l00065"></a>00065    
+<a name="l00066"></a>00066 
+<a name="l00067"></a>00067 <span class="comment">// variables</span>
+<a name="l00071"></a><a class="code" href="classqp__solver.html#a913e4e5a4936b84794bd3a37e7abcaa6">00071</a> <span class="comment"></span>        <span class="keywordtype">double</span> *<a class="code" href="classqp__solver.html#a913e4e5a4936b84794bd3a37e7abcaa6">X</a>;
 <a name="l00072"></a>00072 
-<a name="l00075"></a><a class="code" href="classqp__solver.html#aec61b38adbbf2c791f633610e2133590">00075</a>         <span class="keywordtype">double</span> <a class="code" href="classqp__solver.html#aec61b38adbbf2c791f633610e2133590" title="Gains used in objective function.">gain_alpha</a>;
-<a name="l00076"></a><a class="code" href="classqp__solver.html#a7946eedcefac79c2acccba87ee927f79">00076</a>         <span class="keywordtype">double</span> <a class="code" href="classqp__solver.html#a7946eedcefac79c2acccba87ee927f79">gain_beta</a>;
-<a name="l00077"></a><a class="code" href="classqp__solver.html#a8b5d4e9ad392d2f5e7b7d38db9000370">00077</a>         <span class="keywordtype">double</span> <a class="code" href="classqp__solver.html#a8b5d4e9ad392d2f5e7b7d38db9000370">gain_gamma</a>;
-<a name="l00079"></a>00079 
-<a name="l00081"></a><a class="code" href="classqp__solver.html#a760bde009995222d59a3880ef18b0545">00081</a>         <span class="keywordtype">double</span> <a class="code" href="classqp__solver.html#a760bde009995222d59a3880ef18b0545" title="tolerance">tol</a>;
-<a name="l00082"></a>00082 
-<a name="l00083"></a>00083     <span class="comment">// variables and descent direction</span>
-<a name="l00084"></a>00084      
-<a name="l00086"></a><a class="code" href="classqp__solver.html#a36916afec3fbe6e3cf60fc36b31a79a9">00086</a>         <span class="keywordtype">double</span> *<a class="code" href="classqp__solver.html#a36916afec3fbe6e3cf60fc36b31a79a9">dX</a>;
-<a name="l00087"></a>00087 
-<a name="l00089"></a><a class="code" href="classqp__solver.html#a5a5567d24c04b40ed5630ad0991c881f">00089</a>         <span class="keywordtype">double</span> <a class="code" href="classqp__solver.html#a5a5567d24c04b40ed5630ad0991c881f">alpha</a>;
-<a name="l00090"></a>00090 };
+<a name="l00073"></a>00073 
+<a name="l00076"></a><a class="code" href="classqp__solver.html#aec61b38adbbf2c791f633610e2133590">00076</a>         <span class="keywordtype">double</span> <a class="code" href="classqp__solver.html#aec61b38adbbf2c791f633610e2133590" title="Gains used in objective function.">gain_alpha</a>;
+<a name="l00077"></a><a class="code" href="classqp__solver.html#a7946eedcefac79c2acccba87ee927f79">00077</a>         <span class="keywordtype">double</span> <a class="code" href="classqp__solver.html#a7946eedcefac79c2acccba87ee927f79">gain_beta</a>;
+<a name="l00078"></a><a class="code" href="classqp__solver.html#a8b5d4e9ad392d2f5e7b7d38db9000370">00078</a>         <span class="keywordtype">double</span> <a class="code" href="classqp__solver.html#a8b5d4e9ad392d2f5e7b7d38db9000370">gain_gamma</a>;
+<a name="l00080"></a>00080 
+<a name="l00082"></a><a class="code" href="classqp__solver.html#a760bde009995222d59a3880ef18b0545">00082</a>         <span class="keywordtype">double</span> <a class="code" href="classqp__solver.html#a760bde009995222d59a3880ef18b0545" title="tolerance">tol</a>;
+<a name="l00083"></a>00083 
+<a name="l00084"></a>00084     <span class="comment">// variables and descent direction</span>
+<a name="l00085"></a>00085      
+<a name="l00087"></a><a class="code" href="classqp__solver.html#a36916afec3fbe6e3cf60fc36b31a79a9">00087</a>         <span class="keywordtype">double</span> *<a class="code" href="classqp__solver.html#a36916afec3fbe6e3cf60fc36b31a79a9">dX</a>;
+<a name="l00088"></a>00088 
+<a name="l00090"></a><a class="code" href="classqp__solver.html#a5a5567d24c04b40ed5630ad0991c881f">00090</a>         <span class="keywordtype">double</span> <a class="code" href="classqp__solver.html#a5a5567d24c04b40ed5630ad0991c881f">alpha</a>;
 <a name="l00091"></a>00091 
-<a name="l00093"></a>00093 <span class="preprocessor">#endif </span><span class="comment">/*QP_SOLVER_H*/</span>
+<a name="l00094"></a><a class="code" href="classqp__solver.html#aae3d4ff18b2fd433f76909c396010bf2">00094</a>         <span class="keywordtype">double</span> <a class="code" href="classqp__solver.html#aae3d4ff18b2fd433f76909c396010bf2" title="Height of the CoM at initial state divided by the gravity, this initial state precede the first state...">h_initial</a>;
+<a name="l00095"></a>00095 };
+<a name="l00096"></a>00096 
+<a name="l00098"></a>00098 <span class="preprocessor">#endif </span><span class="comment">/*QP_SOLVER_H*/</span>
 </pre></div></div>
 </div>
 <hr class="footer"/><address class="footer"><small>Generated by&#160;

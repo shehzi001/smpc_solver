@@ -76,7 +76,8 @@ Public Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRectangularConstraint__ZMP.html#a86746b80cfeb5e232af38c6bd59cbdc7">D</a> [4 *2]</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Matrix of the constraints D*z &lt;= d (where z is a 2D point).  <a href="#a86746b80cfeb5e232af38c6bd59cbdc7"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRectangularConstraint__ZMP.html#aa43c6bcf0b0a119c2bf1db3436991ba2">d</a> [4]</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Size of the support polygon for a single support. Vector d of the constraints D*z &lt;= d (where z is a 2D point).  <a href="#aa43c6bcf0b0a119c2bf1db3436991ba2"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRectangularConstraint__ZMP.html#a72d188c8bc4171bf74585d8ffde302e6">d_orig</a> [4]</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Size of the support polygon for a single support (no rotation / translation).  <a href="#a72d188c8bc4171bf74585d8ffde302e6"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classPoint2D.html">Point2D</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRectangularConstraint__ZMP.html#abdc0ab38449799ad9a2f2e18c940160f">vert</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Absolute coordinates of vertices.  <a href="#abdc0ab38449799ad9a2f2e18c940160f"></a><br/></td></tr>
 </table>
@@ -149,7 +150,7 @@ Public Attributes</h2></td></tr>
     |         |
     4---------1
     </pre></div> 
-<p>Definition at line <a class="el" href="rect__constraint_8cpp_source.html#l00097">97</a> of file <a class="el" href="rect__constraint_8cpp_source.html">rect_constraint.cpp</a>.</p>
+<p>Definition at line <a class="el" href="rect__constraint_8cpp_source.html#l00102">102</a> of file <a class="el" href="rect__constraint_8cpp_source.html">rect_constraint.cpp</a>.</p>
 
 </div>
 </div>
@@ -195,7 +196,7 @@ Public Attributes</h2></td></tr>
 </dl>
 <dl class="note"><dt><b>Note:</b></dt><dd>This is used when the constraints are initialized (only then the orientation can be set). </dd></dl>
 
-<p>Definition at line <a class="el" href="rect__constraint_8cpp_source.html#l00068">68</a> of file <a class="el" href="rect__constraint_8cpp_source.html">rect_constraint.cpp</a>.</p>
+<p>Definition at line <a class="el" href="rect__constraint_8cpp_source.html#l00073">73</a> of file <a class="el" href="rect__constraint_8cpp_source.html">rect_constraint.cpp</a>.</p>
 
 </div>
 </div>
@@ -239,10 +240,26 @@ Public Attributes</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-
 <p>Size of the support polygon for a single support. Vector d of the constraints D*z &lt;= d (where z is a 2D point). </p>
 
 <p>Definition at line <a class="el" href="rect__constraint_8h_source.html#l00060">60</a> of file <a class="el" href="rect__constraint_8h_source.html">rect_constraint.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a72d188c8bc4171bf74585d8ffde302e6"></a><!-- doxytag: member="RectangularConstraint_ZMP::d_orig" ref="a72d188c8bc4171bf74585d8ffde302e6" args="[4]" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double <a class="el" href="classRectangularConstraint__ZMP.html#a72d188c8bc4171bf74585d8ffde302e6">RectangularConstraint_ZMP::d_orig</a>[4]</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Size of the support polygon for a single support (no rotation / translation). </p>
+
+<p>Definition at line <a class="el" href="rect__constraint_8h_source.html#l00063">63</a> of file <a class="el" href="rect__constraint_8h_source.html">rect_constraint.h</a>.</p>
 
 </div>
 </div>
@@ -259,7 +276,7 @@ Public Attributes</h2></td></tr>
 
 <p>Absolute coordinates of vertices. </p>
 
-<p>Definition at line <a class="el" href="rect__constraint_8h_source.html#l00063">63</a> of file <a class="el" href="rect__constraint_8h_source.html">rect_constraint.h</a>.</p>
+<p>Definition at line <a class="el" href="rect__constraint_8h_source.html#l00066">66</a> of file <a class="el" href="rect__constraint_8h_source.html">rect_constraint.h</a>.</p>
 
 </div>
 </div>

@@ -63,23 +63,30 @@
 <a name="l00029"></a><a class="code" href="classFootStep.html">00029</a> <span class="keyword">class </span><a class="code" href="classFootStep.html" title="Defines a footstep.">FootStep</a> : <span class="keyword">public</span> <a class="code" href="classPoint2D.html" title="Defines a 2D point.">Point2D</a>, <span class="keyword">public</span> <a class="code" href="classRectangularConstraint__ZMP.html" title="Defines rectangular constraints (of the form D*z &amp;lt;= d) for the ZMP.">RectangularConstraint_ZMP</a>
 <a name="l00030"></a>00030 {
 <a name="l00031"></a>00031     <span class="keyword">public</span>:
-<a name="l00032"></a>00032         <a class="code" href="classFootStep.html#a6a04cf837ff92ecd3a2107241ab6972b" title="Defines a footstep at a given position with a given orientation.">FootStep</a>(<span class="keyword">const</span> <span class="keywordtype">double</span>, <span class="keyword">const</span> <span class="keywordtype">double</span>, <span class="keyword">const</span> <span class="keywordtype">double</span>, <span class="keyword">const</span> <span class="keywordtype">int</span>, <span class="keyword">const</span> <a class="code" href="group__gWMG__API.html#ga45147e528b9243fa8842d38163498449">fs_type</a>, <span class="keyword">const</span> <span class="keywordtype">double</span> *);
-<a name="l00033"></a>00033 
-<a name="l00034"></a>00034 
-<a name="l00036"></a><a class="code" href="classFootStep.html#a1acb6f981aa58cfec41a2a2e9f6cd6a6">00036</a>         <span class="keywordtype">double</span> <a class="code" href="classFootStep.html#a1acb6f981aa58cfec41a2a2e9f6cd6a6" title="Angle (relative to the world frame) of a footstep [rad.].">angle</a>;
-<a name="l00037"></a>00037 
-<a name="l00039"></a><a class="code" href="classFootStep.html#a81faab6c5e8ce565077b519defa66859">00039</a>         <span class="keywordtype">double</span> <a class="code" href="classFootStep.html#a81faab6c5e8ce565077b519defa66859" title="cos(angle).">ca</a>;
+<a name="l00032"></a>00032         <a class="code" href="classFootStep.html#afa2ee86eac57b8c1ef55de4a3839392f" title="Defines a footstep at a given position with a given orientation.">FootStep</a>(
+<a name="l00033"></a>00033                 <span class="keyword">const</span> <span class="keywordtype">double</span>, 
+<a name="l00034"></a>00034                 <span class="keyword">const</span> <a class="code" href="classPoint2D.html" title="Defines a 2D point.">Point2D</a>,
+<a name="l00035"></a>00035                 <span class="keyword">const</span> <a class="code" href="classPoint2D.html" title="Defines a 2D point.">Point2D</a>,
+<a name="l00036"></a>00036                 <span class="keyword">const</span> <span class="keywordtype">int</span>, 
+<a name="l00037"></a>00037                 <span class="keyword">const</span> <a class="code" href="group__gWMG__API.html#ga45147e528b9243fa8842d38163498449">fs_type</a>, 
+<a name="l00038"></a>00038                 <span class="keyword">const</span> <span class="keywordtype">double</span> *);
+<a name="l00039"></a>00039 
 <a name="l00040"></a>00040 
-<a name="l00042"></a><a class="code" href="classFootStep.html#a8692f8a0017ece845ab40e0aabc9837d">00042</a>         <span class="keywordtype">double</span> <a class="code" href="classFootStep.html#a8692f8a0017ece845ab40e0aabc9837d" title="sin(angle).">sa</a>;
+<a name="l00042"></a><a class="code" href="classFootStep.html#a1acb6f981aa58cfec41a2a2e9f6cd6a6">00042</a>         <span class="keywordtype">double</span> <a class="code" href="classFootStep.html#a1acb6f981aa58cfec41a2a2e9f6cd6a6" title="Angle (relative to the world frame) of a footstep [rad.].">angle</a>;
 <a name="l00043"></a>00043 
-<a name="l00045"></a><a class="code" href="classFootStep.html#a68d814856ea507ac7d3a946cadd978d2">00045</a>         <span class="keywordtype">int</span> <a class="code" href="classFootStep.html#a68d814856ea507ac7d3a946cadd978d2" title="number of times this step appears in the preview window.">repeat_times</a>;
+<a name="l00045"></a><a class="code" href="classFootStep.html#a81faab6c5e8ce565077b519defa66859">00045</a>         <span class="keywordtype">double</span> <a class="code" href="classFootStep.html#a81faab6c5e8ce565077b519defa66859" title="cos(angle).">ca</a>;
 <a name="l00046"></a>00046 
-<a name="l00048"></a><a class="code" href="classFootStep.html#aa313a2a209ba8b05438cffeaccd9bfa9">00048</a>         <span class="keywordtype">int</span> <a class="code" href="classFootStep.html#aa313a2a209ba8b05438cffeaccd9bfa9" title="a counter of repeats,on initialization = repeat_times.">repeat_counter</a>;
+<a name="l00048"></a><a class="code" href="classFootStep.html#a8692f8a0017ece845ab40e0aabc9837d">00048</a>         <span class="keywordtype">double</span> <a class="code" href="classFootStep.html#a8692f8a0017ece845ab40e0aabc9837d" title="sin(angle).">sa</a>;
 <a name="l00049"></a>00049 
-<a name="l00051"></a><a class="code" href="classFootStep.html#a5c0b7a7841b2b53d4bd6a28eda2fb977">00051</a>         <a class="code" href="group__gWMG__API.html#ga45147e528b9243fa8842d38163498449">fs_type</a> <a class="code" href="classFootStep.html#a5c0b7a7841b2b53d4bd6a28eda2fb977" title="type of the step.">type</a>;
-<a name="l00052"></a>00052 };
-<a name="l00053"></a>00053 
-<a name="l00055"></a>00055 <span class="preprocessor">#endif </span><span class="comment">/*FOOTSTEP_H*/</span>
+<a name="l00051"></a><a class="code" href="classFootStep.html#a68d814856ea507ac7d3a946cadd978d2">00051</a>         <span class="keywordtype">int</span> <a class="code" href="classFootStep.html#a68d814856ea507ac7d3a946cadd978d2" title="number of times this step appears in the preview window.">repeat_times</a>;
+<a name="l00052"></a>00052 
+<a name="l00054"></a><a class="code" href="classFootStep.html#aa313a2a209ba8b05438cffeaccd9bfa9">00054</a>         <span class="keywordtype">int</span> <a class="code" href="classFootStep.html#aa313a2a209ba8b05438cffeaccd9bfa9" title="a counter of repeats,on initialization = repeat_times.">repeat_counter</a>;
+<a name="l00055"></a>00055 
+<a name="l00057"></a><a class="code" href="classFootStep.html#a5c0b7a7841b2b53d4bd6a28eda2fb977">00057</a>         <a class="code" href="group__gWMG__API.html#ga45147e528b9243fa8842d38163498449">fs_type</a> <a class="code" href="classFootStep.html#a5c0b7a7841b2b53d4bd6a28eda2fb977" title="type of the step.">type</a>;
+<a name="l00058"></a>00058 
+<a name="l00060"></a><a class="code" href="classFootStep.html#a9d1b4249ce36c23624c8cdf86b3500e8">00060</a>         <a class="code" href="classPoint2D.html" title="Defines a 2D point.">Point2D</a> <a class="code" href="classFootStep.html#a9d1b4249ce36c23624c8cdf86b3500e8" title="Reference ZMP point.">ZMPref</a>;
+<a name="l00061"></a>00061 };
+<a name="l00063"></a>00063 <span class="preprocessor">#endif </span><span class="comment">/*FOOTSTEP_H*/</span>
 </pre></div></div>
 </div>
 <hr class="footer"/><address class="footer"><small>Generated by&#160;

@@ -70,8 +70,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__ip.html#a5546754674f7ab9776156a814dcc14d3">qp_ip</a> (const int N_, const double, const double, const double, const double, const double)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor: initialization of the constant parameters.  <a href="#a5546754674f7ab9776156a814dcc14d3"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__ip.html#aa9fa40f10f741b535b6782621c2a6ff5">~qp_ip</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__ip.html#ab3d653e209c577e719b93c66f4068ecc">set_parameters</a> (const double *, const double *, const double *, const double *, const double *, const double *, const double *)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes quadratic problem.  <a href="#ab3d653e209c577e719b93c66f4068ecc"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__ip.html#ac7f3c37bef1e4c0a372e5016a9f2c275">set_parameters</a> (const double *, const double *, const double, const double *, const double *, const double *, const double *, const double *)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes quadratic problem.  <a href="#ac7f3c37bef1e4c0a372e5016a9f2c275"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__ip.html#aa02b806f1eec74f6e73c356d7230ecb1">set_ip_parameters</a> (const double, const double, const double, const double, const int, const double)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Set parameters of interior-point method.  <a href="#aa02b806f1eec74f6e73c356d7230ecb1"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__ip.html#ad547a6372dc4e53dd0727a04649d8791">solve</a> ()</td></tr>
@@ -236,7 +236,7 @@ Private Attributes</h2></td></tr>
 <p>Forms bs_alpha * grad' * dX. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>result of multiplication. </dd></dl>
 
-<p>Definition at line <a class="el" href="qp__ip_8cpp_source.html#l00278">278</a> of file <a class="el" href="qp__ip_8cpp_source.html">qp_ip.cpp</a>.</p>
+<p>Definition at line <a class="el" href="qp__ip_8cpp_source.html#l00281">281</a> of file <a class="el" href="qp__ip_8cpp_source.html">qp_ip.cpp</a>.</p>
 
 </div>
 </div>
@@ -274,7 +274,7 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="qp__ip_8cpp_source.html#l00105">105</a> of file <a class="el" href="qp__ip_8cpp_source.html">qp_ip.cpp</a>.</p>
+<p>Definition at line <a class="el" href="qp__ip_8cpp_source.html#l00108">108</a> of file <a class="el" href="qp__ip_8cpp_source.html">qp_ip.cpp</a>.</p>
 
 </div>
 </div>
@@ -301,7 +301,7 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="qp__ip_8cpp_source.html#l00133">133</a> of file <a class="el" href="qp__ip_8cpp_source.html">qp_ip.cpp</a>.</p>
+<p>Definition at line <a class="el" href="qp__ip_8cpp_source.html#l00136">136</a> of file <a class="el" href="qp__ip_8cpp_source.html">qp_ip.cpp</a>.</p>
 
 </div>
 </div>
@@ -321,7 +321,7 @@ Private Attributes</h2></td></tr>
 
 <p>Finish initialization of i2hess_grad = -i2hess*grad. </p>
 
-<p>Definition at line <a class="el" href="qp__ip_8cpp_source.html#l00180">180</a> of file <a class="el" href="qp__ip_8cpp_source.html">qp_ip.cpp</a>.</p>
+<p>Definition at line <a class="el" href="qp__ip_8cpp_source.html#l00183">183</a> of file <a class="el" href="qp__ip_8cpp_source.html">qp_ip.cpp</a>.</p>
 
 </div>
 </div>
@@ -341,7 +341,7 @@ Private Attributes</h2></td></tr>
 
 <p>Compute phi_X for initial point, phi_X must already store logarithmic barrier term. </p>
 
-<p>Definition at line <a class="el" href="qp__ip_8cpp_source.html#l00204">204</a> of file <a class="el" href="qp__ip_8cpp_source.html">qp_ip.cpp</a>.</p>
+<p>Definition at line <a class="el" href="qp__ip_8cpp_source.html#l00207">207</a> of file <a class="el" href="qp__ip_8cpp_source.html">qp_ip.cpp</a>.</p>
 
 </div>
 </div>
@@ -369,7 +369,7 @@ Private Attributes</h2></td></tr>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>a value of phi. </dd></dl>
 
-<p>Definition at line <a class="el" href="qp__ip_8cpp_source.html#l00298">298</a> of file <a class="el" href="qp__ip_8cpp_source.html">qp_ip.cpp</a>.</p>
+<p>Definition at line <a class="el" href="qp__ip_8cpp_source.html#l00301">301</a> of file <a class="el" href="qp__ip_8cpp_source.html">qp_ip.cpp</a>.</p>
 
 </div>
 </div>
@@ -391,7 +391,7 @@ Private Attributes</h2></td></tr>
 <p>Find initial value of alpha.</p>
 <dl class="note"><dt><b>Note:</b></dt><dd>sets alpha to 0, if it is too small. </dd></dl>
 
-<p>Definition at line <a class="el" href="qp__ip_8cpp_source.html#l00231">231</a> of file <a class="el" href="qp__ip_8cpp_source.html">qp_ip.cpp</a>.</p>
+<p>Definition at line <a class="el" href="qp__ip_8cpp_source.html#l00234">234</a> of file <a class="el" href="qp__ip_8cpp_source.html">qp_ip.cpp</a>.</p>
 
 </div>
 </div>
@@ -457,11 +457,11 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="qp__ip_8cpp_source.html#l00351">351</a> of file <a class="el" href="qp__ip_8cpp_source.html">qp_ip.cpp</a>.</p>
+<p>Definition at line <a class="el" href="qp__ip_8cpp_source.html#l00354">354</a> of file <a class="el" href="qp__ip_8cpp_source.html">qp_ip.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ab3d653e209c577e719b93c66f4068ecc"></a><!-- doxytag: member="qp_ip::set_parameters" ref="ab3d653e209c577e719b93c66f4068ecc" args="(const double *, const double *, const double *, const double *, const double *, const double *, const double *)" -->
+<a class="anchor" id="ac7f3c37bef1e4c0a372e5016a9f2c275"></a><!-- doxytag: member="qp_ip::set_parameters" ref="ac7f3c37bef1e4c0a372e5016a9f2c275" args="(const double *, const double *, const double, const double *, const double *, const double *, const double *, const double *)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -476,6 +476,12 @@ Private Attributes</h2></td></tr>
           <td></td>
           <td class="paramtype">const double *&#160;</td>
           <td class="paramname"><em>h</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>h_initial_</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -521,6 +527,7 @@ Private Attributes</h2></td></tr>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">T</td><td>Sampling time (for the moment it is assumed to be constant) [sec.] </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">h</td><td>Height of the Center of Mass divided by gravity </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">h_initial_</td><td>current h </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">angle</td><td>Rotation angle for each state in the preview window </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">zref_x</td><td>reference values of z_x </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">zref_y</td><td>reference values of z_y </td></tr>
@@ -530,9 +537,9 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="classqp__solver.html#a36e61ae0762a1178390faa83cf599b67">qp_solver</a>.</p>
+<p>Implements <a class="el" href="classqp__solver.html#a50c064ba4846350d9f1dcfd6abbfd946">qp_solver</a>.</p>
 
-<p>Definition at line <a class="el" href="qp__ip_8cpp_source.html#l00080">80</a> of file <a class="el" href="qp__ip_8cpp_source.html">qp_ip.cpp</a>.</p>
+<p>Definition at line <a class="el" href="qp__ip_8cpp_source.html#l00081">81</a> of file <a class="el" href="qp__ip_8cpp_source.html">qp_ip.cpp</a>.</p>
 
 </div>
 </div>
@@ -555,7 +562,7 @@ Private Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classqp__solver.html#a860bee98c0cb2e2ecaad8c5e617971d7">qp_solver</a>.</p>
 
-<p>Definition at line <a class="el" href="qp__ip_8cpp_source.html#l00374">374</a> of file <a class="el" href="qp__ip_8cpp_source.html">qp_ip.cpp</a>.</p>
+<p>Definition at line <a class="el" href="qp__ip_8cpp_source.html#l00377">377</a> of file <a class="el" href="qp__ip_8cpp_source.html">qp_ip.cpp</a>.</p>
 
 </div>
 </div>
@@ -583,7 +590,7 @@ Private Attributes</h2></td></tr>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>true if a step was made, false if alpha or dX are too small. </dd></dl>
 
-<p>Definition at line <a class="el" href="qp__ip_8cpp_source.html#l00403">403</a> of file <a class="el" href="qp__ip_8cpp_source.html">qp_ip.cpp</a>.</p>
+<p>Definition at line <a class="el" href="qp__ip_8cpp_source.html#l00406">406</a> of file <a class="el" href="qp__ip_8cpp_source.html">qp_ip.cpp</a>.</p>
 
 </div>
 </div>
@@ -601,7 +608,7 @@ Private Attributes</h2></td></tr>
 
 <p>multiplier of t, &gt;1. </p>
 
-<p>Definition at line <a class="el" href="qp__ip_8h_source.html#l00107">107</a> of file <a class="el" href="qp__ip_8h_source.html">qp_ip.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__ip_8h_source.html#l00108">108</a> of file <a class="el" href="qp__ip_8h_source.html">qp_ip.h</a>.</p>
 
 </div>
 </div>
@@ -618,7 +625,7 @@ Private Attributes</h2></td></tr>
 
 <p>backtracking search parameter alpha </p>
 
-<p>Definition at line <a class="el" href="qp__ip_8h_source.html#l00108">108</a> of file <a class="el" href="qp__ip_8h_source.html">qp_ip.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__ip_8h_source.html#l00109">109</a> of file <a class="el" href="qp__ip_8h_source.html">qp_ip.h</a>.</p>
 
 </div>
 </div>
@@ -635,7 +642,7 @@ Private Attributes</h2></td></tr>
 
 <p>An instance of <a class="el" href="classchol__solve__ip.html" title="Solves KKT system using Cholesky decomposition.">chol_solve_ip</a> class. </p>
 
-<p>Definition at line <a class="el" href="qp__ip_8h_source.html#l00095">95</a> of file <a class="el" href="qp__ip_8h_source.html">qp_ip.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__ip_8h_source.html#l00096">96</a> of file <a class="el" href="qp__ip_8h_source.html">qp_ip.h</a>.</p>
 
 </div>
 </div>
@@ -652,7 +659,7 @@ Private Attributes</h2></td></tr>
 
 <p>2*<a class="el" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a> non-zero elements of vector <a class="el" href="pProblemDef.html#pg">g</a>. </p>
 
-<p>Definition at line <a class="el" href="qp__ip_8h_source.html#l00071">71</a> of file <a class="el" href="qp__ip_8h_source.html">qp_ip.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__ip_8h_source.html#l00072">72</a> of file <a class="el" href="qp__ip_8h_source.html">qp_ip.h</a>.</p>
 
 </div>
 </div>
@@ -669,7 +676,7 @@ Private Attributes</h2></td></tr>
 
 <p><a class="el" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>*<a class="el" href="group__gAPI.html#ga74b56d50f3995ffd5282a2f2289dfd1a" title="Total number of variables.">SMPC_NUM_VAR</a> gradient vector </p>
 
-<p>Definition at line <a class="el" href="qp__ip_8h_source.html#l00081">81</a> of file <a class="el" href="qp__ip_8h_source.html">qp_ip.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__ip_8h_source.html#l00082">82</a> of file <a class="el" href="qp__ip_8h_source.html">qp_ip.h</a>.</p>
 
 </div>
 </div>
@@ -686,7 +693,7 @@ Private Attributes</h2></td></tr>
 
 <p>Inverted hessian: non-repeating diagonal elements 1:3:<a class="el" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>*<a class="el" href="group__gAPI.html#gab7984838b079762f5087b37a731e0b79" title="Number of state variables.">SMPC_NUM_STATE_VAR</a>, 2*<a class="el" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a> in total. </p>
 
-<p>Definition at line <a class="el" href="qp__ip_8h_source.html#l00075">75</a> of file <a class="el" href="qp__ip_8h_source.html">qp_ip.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__ip_8h_source.html#l00076">76</a> of file <a class="el" href="qp__ip_8h_source.html">qp_ip.h</a>.</p>
 
 </div>
 </div>
@@ -703,7 +710,7 @@ Private Attributes</h2></td></tr>
 
 <p>Inverted hessian * gradient (<a class="el" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>*<a class="el" href="group__gAPI.html#ga74b56d50f3995ffd5282a2f2289dfd1a" title="Total number of variables.">SMPC_NUM_VAR</a> vector) </p>
 
-<p>Definition at line <a class="el" href="qp__ip_8h_source.html#l00078">78</a> of file <a class="el" href="qp__ip_8h_source.html">qp_ip.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__ip_8h_source.html#l00079">79</a> of file <a class="el" href="qp__ip_8h_source.html">qp_ip.h</a>.</p>
 
 </div>
 </div>
@@ -720,7 +727,7 @@ Private Attributes</h2></td></tr>
 
 <p>lower and upper bounds </p>
 
-<p>Definition at line <a class="el" href="qp__ip_8h_source.html#l00100">100</a> of file <a class="el" href="qp__ip_8h_source.html">qp_ip.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__ip_8h_source.html#l00101">101</a> of file <a class="el" href="qp__ip_8h_source.html">qp_ip.h</a>.</p>
 
 </div>
 </div>
@@ -737,7 +744,7 @@ Private Attributes</h2></td></tr>
 
 <p>backtracking search parameter beta </p>
 
-<p>Definition at line <a class="el" href="qp__ip_8h_source.html#l00109">109</a> of file <a class="el" href="qp__ip_8h_source.html">qp_ip.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__ip_8h_source.html#l00110">110</a> of file <a class="el" href="qp__ip_8h_source.html">qp_ip.h</a>.</p>
 
 </div>
 </div>
@@ -754,7 +761,7 @@ Private Attributes</h2></td></tr>
 
 <p>logarithmic barrier parameter </p>
 
-<p>Definition at line <a class="el" href="qp__ip_8h_source.html#l00106">106</a> of file <a class="el" href="qp__ip_8h_source.html">qp_ip.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__ip_8h_source.html#l00107">107</a> of file <a class="el" href="qp__ip_8h_source.html">qp_ip.h</a>.</p>
 
 </div>
 </div>
@@ -769,7 +776,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="qp__ip_8h_source.html#l00090">90</a> of file <a class="el" href="qp__ip_8h_source.html">qp_ip.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__ip_8h_source.html#l00091">91</a> of file <a class="el" href="qp__ip_8h_source.html">qp_ip.h</a>.</p>
 
 </div>
 </div>
@@ -786,7 +793,7 @@ Private Attributes</h2></td></tr>
 
 <p>Value of phi(X), where phi is the cost function + log barrier. </p>
 
-<p>Definition at line <a class="el" href="qp__ip_8h_source.html#l00084">84</a> of file <a class="el" href="qp__ip_8h_source.html">qp_ip.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__ip_8h_source.html#l00085">85</a> of file <a class="el" href="qp__ip_8h_source.html">qp_ip.h</a>.</p>
 
 </div>
 </div>
@@ -803,7 +810,7 @@ Private Attributes</h2></td></tr>
 
 <p>Diagonal elements of H. </p>
 
-<p>Definition at line <a class="el" href="qp__ip_8h_source.html#l00089">89</a> of file <a class="el" href="qp__ip_8h_source.html">qp_ip.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__ip_8h_source.html#l00090">90</a> of file <a class="el" href="qp__ip_8h_source.html">qp_ip.h</a>.</p>
 
 </div>
 </div>
@@ -818,7 +825,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="qp__ip_8h_source.html#l00105">105</a> of file <a class="el" href="qp__ip_8h_source.html">qp_ip.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__ip_8h_source.html#l00106">106</a> of file <a class="el" href="qp__ip_8h_source.html">qp_ip.h</a>.</p>
 
 </div>
 </div>
@@ -835,7 +842,7 @@ Private Attributes</h2></td></tr>
 
 <p>maximum number of internal loop iterations </p>
 
-<p>Definition at line <a class="el" href="qp__ip_8h_source.html#l00110">110</a> of file <a class="el" href="qp__ip_8h_source.html">qp_ip.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__ip_8h_source.html#l00111">111</a> of file <a class="el" href="qp__ip_8h_source.html">qp_ip.h</a>.</p>
 
 </div>
 </div>
@@ -850,7 +857,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="qp__ip_8h_source.html#l00101">101</a> of file <a class="el" href="qp__ip_8h_source.html">qp_ip.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__ip_8h_source.html#l00102">102</a> of file <a class="el" href="qp__ip_8h_source.html">qp_ip.h</a>.</p>
 
 </div>
 </div>

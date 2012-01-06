@@ -69,8 +69,8 @@ Inheritance diagram for problem_parameters:</div>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classproblem__parameters.html#abd2daa974042474d51865ea7b8fe640c">problem_parameters</a> (const int, const double, const double, const double, const double)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classproblem__parameters.html#a59139d98c44271f0ca5ea746b30151bf">~problem_parameters</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classproblem__parameters.html#a5f86a93f70be6ff2f487be2e98dd509a">set_state_parameters</a> (const double *, const double *, const double *)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes quadratic problem.  <a href="#a5f86a93f70be6ff2f487be2e98dd509a"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classproblem__parameters.html#a756b24a4ed81ed61b5e7fe7cfdfcdd9e">set_state_parameters</a> (const double *, const double *, const double, const double *)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes quadratic problem.  <a href="#a756b24a4ed81ed61b5e7fe7cfdfcdd9e"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a></td></tr>
@@ -152,7 +152,7 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="a5f86a93f70be6ff2f487be2e98dd509a"></a><!-- doxytag: member="problem_parameters::set_state_parameters" ref="a5f86a93f70be6ff2f487be2e98dd509a" args="(const double *, const double *, const double *)" -->
+<a class="anchor" id="a756b24a4ed81ed61b5e7fe7cfdfcdd9e"></a><!-- doxytag: member="problem_parameters::set_state_parameters" ref="a756b24a4ed81ed61b5e7fe7cfdfcdd9e" args="(const double *, const double *, const double, const double *)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -167,6 +167,12 @@ Public Attributes</h2></td></tr>
           <td></td>
           <td class="paramtype">const double *&#160;</td>
           <td class="paramname"><em>h_</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>h_initial</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -188,15 +194,13 @@ Public Attributes</h2></td></tr>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">T_</td><td>Sampling time (for the moment it is assumed to be constant) [sec.] </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">h_</td><td>Height of the Center of Mass divided by gravity </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">h_initial</td><td>current h </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">angle</td><td>Rotation angle for each state in the preview window </td></tr>
   </table>
   </dd>
 </dl>
 
-<p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>We need delta_h here. </dd></dl>
-</p>
-
-<p>Definition at line <a class="el" href="problem__param_8cpp_source.html#l00054">54</a> of file <a class="el" href="problem__param_8cpp_source.html">problem_param.cpp</a>.</p>
+<p>Definition at line <a class="el" href="problem__param_8cpp_source.html#l00055">55</a> of file <a class="el" href="problem__param_8cpp_source.html">problem_param.cpp</a>.</p>
 
 </div>
 </div>

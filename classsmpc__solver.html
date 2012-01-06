@@ -61,20 +61,26 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc__solver.html#a02fcca80e3aa5eff26350c5d9af09ef5">smpc_solver</a> (const int N, const int max_iter, const double Alpha=150.0, const double Beta=2000.0, const double Gamma=1.0, const double regularization=0.01, const double tol=1e-3, const double tol_out=1e-2, const double t=100, const double mu=15, const double bs_alpha=0.01, const double bs_beta=0.5)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor: initialize an interior-point method solver.  <a href="#a02fcca80e3aa5eff26350c5d9af09ef5"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc__solver.html#a05e4dab88f8d24401f6f93def87b3b25">~smpc_solver</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc__solver.html#a13e1f3370abb59ed7c266542903daf1a">set_parameters</a> (const double *T, const double *h, const double *angle, const double *zref_x, const double *zref_y, const double *lb, const double *ub)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes quadratic problem.  <a href="#a13e1f3370abb59ed7c266542903daf1a"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc__solver.html#a6d6927ce35ace029762eee1853fafd05">form_init_fp</a> (const double *x_coord, const double *y_coord, const double *X_tilde, double *X)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates an initial feasible point.  <a href="#a6d6927ce35ace029762eee1853fafd05"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc__solver.html#ae42034af13dee6d183f55b2e4a8c97f4">set_parameters</a> (const double *T, const double *h, const double h_initial, const double *angle, const double *zref_x, const double *zref_y, const double *lb, const double *ub)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes quadratic problem.  <a href="#ae42034af13dee6d183f55b2e4a8c97f4"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc__solver.html#a5b3c2684faaf8eb062a9415a5cf6c957">form_init_fp</a> (const double *x_coord, const double *y_coord, const double *init_state, double *X)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates an initial feasible point.  <a href="#a5b3c2684faaf8eb062a9415a5cf6c957"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc__solver.html#a180099519887349235c2a90a3839ef71">solve</a> ()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Solve QP problem.  <a href="#a180099519887349235c2a90a3839ef71"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc__solver.html#a80a01e0024c61b37a7f3f18136808a1f">get_next_state_tilde</a> (double *state)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the next state as <a class="el" href="pProblemDef.html#pX_tilde">X_tilde</a>.  <a href="#a80a01e0024c61b37a7f3f18136808a1f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc__solver.html#a3f24cc8b66dc01c0124fae4833f580cd">get_state_tilde</a> (const int ind, double *state)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The same as <a class="el" href="classsmpc__solver.html#a80a01e0024c61b37a7f3f18136808a1f" title="Returns the next state as X_tilde.">get_next_state_tilde</a>, but takes additional parameter - index of the desired state in the state vector.  <a href="#a3f24cc8b66dc01c0124fae4833f580cd"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc__solver.html#a327e426d734aebbabe9d92a237253886">convert_to_tilde</a> (double h, double *state)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts state from original variables to <a class="el" href="pProblemDef.html#pX_tilde">X_tilde</a>.  <a href="#a327e426d734aebbabe9d92a237253886"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc__solver.html#a6b2b9892becce07b98aaab20f492e84b">get_next_state</a> (double *state)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the next state represented by original variables.  <a href="#a6b2b9892becce07b98aaab20f492e84b"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc__solver.html#ac3fab90b38a1fd97eb8e3e6f3e926c09">get_state</a> (const int ind, double *state)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The same as <a class="el" href="classsmpc__solver.html#a6b2b9892becce07b98aaab20f492e84b" title="Returns the next state represented by original variables.">get_next_state</a>, but takes additional parameter - index of the desired state in the state vector.  <a href="#ac3fab90b38a1fd97eb8e3e6f3e926c09"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc__solver.html#a519b7139cc5c015e929e499b2ce195a2">get_first_controls</a> (double *controls)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the controls that must be applied to reach the next state.  <a href="#a519b7139cc5c015e929e499b2ce195a2"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc__solver.html#a46e22730b8c467fd3bab6a9fe4ea36f3">get_controls</a> (const int ind, double *controls)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The same as <a class="el" href="classsmpc__solver.html#a519b7139cc5c015e929e499b2ce195a2" title="Returns the controls that must be applied to reach the next state.">get_first_controls</a>, but takes an additional parameter - the index of the control inputs. Control[ind] is applied to State[ind-1] to reach State[ind].  <a href="#a46e22730b8c467fd3bab6a9fe4ea36f3"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classqp__solver.html">qp_solver</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc__solver.html#a7e8f293f8ca9d2b39fcb8dff8e86e5a8">qp_sol</a></td></tr>
@@ -328,11 +334,11 @@ Private Attributes</h2></td></tr>
             state[4] - y CoM velocity [meter/s]
             state[5] - y CoM acceleration [meter/s^2]
             </pre></div> 
-<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00122">122</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
+<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00137">137</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a6d6927ce35ace029762eee1853fafd05"></a><!-- doxytag: member="smpc_solver::form_init_fp" ref="a6d6927ce35ace029762eee1853fafd05" args="(const double *x_coord, const double *y_coord, const double *X_tilde, double *X)" -->
+<a class="anchor" id="a5b3c2684faaf8eb062a9415a5cf6c957"></a><!-- doxytag: member="smpc_solver::form_init_fp" ref="a5b3c2684faaf8eb062a9415a5cf6c957" args="(const double *x_coord, const double *y_coord, const double *init_state, double *X)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -352,7 +358,7 @@ Private Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const double *&#160;</td>
-          <td class="paramname"><em>X_tilde</em>, </td>
+          <td class="paramname"><em>init_state</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -370,18 +376,63 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 
 <p>Generates an initial feasible point. </p>
-<p>First we perform a change of variable to <a class="el" href="pProblemDef.html#pX_tilde">X_tilde</a> generate a feasible point, and then we go back to <a class="el" href="pProblemDef.html#pX_bar">X_bar</a>.</p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">x_coord</td><td>x coordinates of points satisfying constraints </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">y_coord</td><td>y coordinates of points satisfying constraints </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">X_tilde</td><td>current state (<a class="el" href="pProblemDef.html#pX_tilde">X_tilde</a>) </td></tr>
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">X</td><td>solution of optimization problem </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">init_state</td><td>current state </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">X</td><td>solution of optimization problem</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>init_state: </p>
+<div class="fragment"><pre class="fragment">
+            state[0] - x CoM position [meter]
+            state[1] - x CoM velocity [meter/s]
+            state[2] - x CoM acceleration [meter/s^2]
+            state[3] - y CoM position [meter]
+            state[4] - y CoM velocity [meter/s]
+            state[5] - y CoM acceleration [meter/s^2]
+            </pre></div> 
+<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00077">77</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a46e22730b8c467fd3bab6a9fe4ea36f3"></a><!-- doxytag: member="smpc_solver::get_controls" ref="a46e22730b8c467fd3bab6a9fe4ea36f3" args="(const int ind, double *controls)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void smpc_solver::get_controls </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>ind</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>controls</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>The same as <a class="el" href="classsmpc__solver.html#a519b7139cc5c015e929e499b2ce195a2" title="Returns the controls that must be applied to reach the next state.">get_first_controls</a>, but takes an additional parameter - the index of the control inputs. Control[ind] is applied to State[ind-1] to reach State[ind]. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">ind</td><td>index of control inputs [0, N-1]. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">controls</td><td>the controls (<a class="el" href="group__gAPI.html#ga7ac5a60c7c00a69bad741e5f1973ab45" title="Number of control variables.">SMPC_NUM_CONTROL_VAR</a>). </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00080">80</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
+<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00152">152</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
 
 </div>
 </div>
@@ -412,7 +463,7 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00127">127</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
+<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00143">143</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
 
 </div>
 </div>
@@ -446,7 +497,7 @@ Private Attributes</h2></td></tr>
             state[4] - y CoM velocity [meter/s]
             state[5] - y CoM acceleration [meter/s^2]
             </pre></div> 
-<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00114">114</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
+<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00119">119</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
 
 </div>
 </div>
@@ -480,11 +531,87 @@ Private Attributes</h2></td></tr>
             state[4] - y CoM velocity [meter/s]
             state[5] - y CoM acceleration [meter/s^2]
             </pre></div> 
-<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00104">104</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
+<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00101">101</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a13e1f3370abb59ed7c266542903daf1a"></a><!-- doxytag: member="smpc_solver::set_parameters" ref="a13e1f3370abb59ed7c266542903daf1a" args="(const double *T, const double *h, const double *angle, const double *zref_x, const double *zref_y, const double *lb, const double *ub)" -->
+<a class="anchor" id="ac3fab90b38a1fd97eb8e3e6f3e926c09"></a><!-- doxytag: member="smpc_solver::get_state" ref="ac3fab90b38a1fd97eb8e3e6f3e926c09" args="(const int ind, double *state)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void smpc_solver::get_state </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>ind</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>state</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>The same as <a class="el" href="classsmpc__solver.html#a6b2b9892becce07b98aaab20f492e84b" title="Returns the next state represented by original variables.">get_next_state</a>, but takes additional parameter - index of the desired state in the state vector. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">ind</td><td>index of a state [0, N-1]. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">state</td><td>the state (<a class="el" href="group__gAPI.html#gab7984838b079762f5087b37a731e0b79" title="Number of state variables.">SMPC_NUM_STATE_VAR</a> elements). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00128">128</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a3f24cc8b66dc01c0124fae4833f580cd"></a><!-- doxytag: member="smpc_solver::get_state_tilde" ref="a3f24cc8b66dc01c0124fae4833f580cd" args="(const int ind, double *state)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void smpc_solver::get_state_tilde </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>ind</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>state</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>The same as <a class="el" href="classsmpc__solver.html#a80a01e0024c61b37a7f3f18136808a1f" title="Returns the next state as X_tilde.">get_next_state_tilde</a>, but takes additional parameter - index of the desired state in the state vector. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">ind</td><td>index of a state [0, N-1]. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">state</td><td>the state (<a class="el" href="group__gAPI.html#gab7984838b079762f5087b37a731e0b79" title="Number of state variables.">SMPC_NUM_STATE_VAR</a> elements). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00110">110</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ae42034af13dee6d183f55b2e4a8c97f4"></a><!-- doxytag: member="smpc_solver::set_parameters" ref="ae42034af13dee6d183f55b2e4a8c97f4" args="(const double *T, const double *h, const double h_initial, const double *angle, const double *zref_x, const double *zref_y, const double *lb, const double *ub)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -499,6 +626,12 @@ Private Attributes</h2></td></tr>
           <td></td>
           <td class="paramtype">const double *&#160;</td>
           <td class="paramname"><em>h</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>h_initial</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -544,6 +677,7 @@ Private Attributes</h2></td></tr>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">T</td><td>sampling time for each time step [sec.] </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">h</td><td>height of the center of mass divided by gravity for each time step </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">h_initial</td><td>initial value of height of the center of mass divided by gravity </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">angle</td><td>rotation angle for each state relative to the world frame </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">zref_x</td><td>reference values of x coordinate of ZMP </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">zref_y</td><td>reference values of y coordinate of ZMP </td></tr>
@@ -553,7 +687,7 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00066">66</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
+<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00063">63</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
 
 </div>
 </div>
@@ -574,7 +708,7 @@ Private Attributes</h2></td></tr>
 <p>Solve QP problem. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>A negative number on error. Number of activated constraints for active set method and 0 for interior-point method on success. </dd></dl>
 
-<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00094">94</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
+<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00091">91</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
 
 </div>
 </div>
@@ -590,7 +724,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00223">223</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
+<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00263">263</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
 
 </div>
 </div>

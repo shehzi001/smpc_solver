@@ -55,23 +55,25 @@
 <a name="l00019"></a>00019 <span class="comment"> * FUNCTIONS </span>
 <a name="l00020"></a>00020 <span class="comment"> ****************************************/</span>
 <a name="l00021"></a>00021 
-<a name="l00032"></a><a class="code" href="classFootStep.html#a6a04cf837ff92ecd3a2107241ab6972b">00032</a> <a class="code" href="classFootStep.html#a6a04cf837ff92ecd3a2107241ab6972b" title="Defines a footstep at a given position with a given orientation.">FootStep::FootStep</a>(
+<a name="l00032"></a><a class="code" href="classFootStep.html#afa2ee86eac57b8c1ef55de4a3839392f">00032</a> <a class="code" href="classFootStep.html#afa2ee86eac57b8c1ef55de4a3839392f" title="Defines a footstep at a given position with a given orientation.">FootStep::FootStep</a>(
 <a name="l00033"></a>00033         <span class="keyword">const</span> <span class="keywordtype">double</span> angle_, 
-<a name="l00034"></a>00034         <span class="keyword">const</span> <span class="keywordtype">double</span> x_, 
-<a name="l00035"></a>00035         <span class="keyword">const</span> <span class="keywordtype">double</span> y_, 
+<a name="l00034"></a>00034         <span class="keyword">const</span> <a class="code" href="classPoint2D.html" title="Defines a 2D point.">Point2D</a> Position,
+<a name="l00035"></a>00035         <span class="keyword">const</span> <a class="code" href="classPoint2D.html" title="Defines a 2D point.">Point2D</a> ZMPref_,
 <a name="l00036"></a>00036         <span class="keyword">const</span> <span class="keywordtype">int</span> repeat_times_, 
 <a name="l00037"></a>00037         <span class="keyword">const</span> <a class="code" href="group__gWMG__API.html#ga45147e528b9243fa8842d38163498449">fs_type</a> type_, 
 <a name="l00038"></a>00038         <span class="keyword">const</span> <span class="keywordtype">double</span> *d_) : 
-<a name="l00039"></a>00039     <a class="code" href="classPoint2D.html" title="Defines a 2D point.">Point2D</a>(x_, y_), <a class="code" href="classRectangularConstraint__ZMP.html" title="Defines rectangular constraints (of the form D*z &amp;lt;= d) for the ZMP.">RectangularConstraint_ZMP</a>(d_)
-<a name="l00040"></a>00040 {
-<a name="l00041"></a>00041     <a class="code" href="classFootStep.html#a5c0b7a7841b2b53d4bd6a28eda2fb977" title="type of the step.">type</a> = type_;
-<a name="l00042"></a>00042     <a class="code" href="classFootStep.html#a1acb6f981aa58cfec41a2a2e9f6cd6a6" title="Angle (relative to the world frame) of a footstep [rad.].">angle</a> = angle_; 
-<a name="l00043"></a>00043     <a class="code" href="classFootStep.html#a81faab6c5e8ce565077b519defa66859" title="cos(angle).">ca</a> = cos(<a class="code" href="classFootStep.html#a1acb6f981aa58cfec41a2a2e9f6cd6a6" title="Angle (relative to the world frame) of a footstep [rad.].">angle</a>); 
-<a name="l00044"></a>00044     <a class="code" href="classFootStep.html#a8692f8a0017ece845ab40e0aabc9837d" title="sin(angle).">sa</a> = sin(<a class="code" href="classFootStep.html#a1acb6f981aa58cfec41a2a2e9f6cd6a6" title="Angle (relative to the world frame) of a footstep [rad.].">angle</a>);
-<a name="l00045"></a>00045     <a class="code" href="classRectangularConstraint__ZMP.html#a1f6446a733c7868e172764db231a6595" title="translates from [0;0] to &amp;quot;p&amp;quot; and rotates from 0 to &amp;quot;angle&amp;quot;. The 0 initial angle i...">rotate_translate</a>(<a class="code" href="classFootStep.html#a81faab6c5e8ce565077b519defa66859" title="cos(angle).">ca</a>, <a class="code" href="classFootStep.html#a8692f8a0017ece845ab40e0aabc9837d" title="sin(angle).">sa</a>, *<span class="keyword">this</span>);
-<a name="l00046"></a>00046     <a class="code" href="classFootStep.html#a68d814856ea507ac7d3a946cadd978d2" title="number of times this step appears in the preview window.">repeat_times</a> = repeat_times_;
-<a name="l00047"></a>00047     <a class="code" href="classFootStep.html#aa313a2a209ba8b05438cffeaccd9bfa9" title="a counter of repeats,on initialization = repeat_times.">repeat_counter</a> = <a class="code" href="classFootStep.html#a68d814856ea507ac7d3a946cadd978d2" title="number of times this step appears in the preview window.">repeat_times</a>;
-<a name="l00048"></a>00048 }
+<a name="l00039"></a>00039     <a class="code" href="classPoint2D.html" title="Defines a 2D point.">Point2D</a>(Position), 
+<a name="l00040"></a>00040     <a class="code" href="classRectangularConstraint__ZMP.html" title="Defines rectangular constraints (of the form D*z &amp;lt;= d) for the ZMP.">RectangularConstraint_ZMP</a>(d_),
+<a name="l00041"></a>00041     ZMPref(ZMPref_)
+<a name="l00042"></a>00042 {
+<a name="l00043"></a>00043     <a class="code" href="classFootStep.html#a5c0b7a7841b2b53d4bd6a28eda2fb977" title="type of the step.">type</a> = type_;
+<a name="l00044"></a>00044     <a class="code" href="classFootStep.html#a1acb6f981aa58cfec41a2a2e9f6cd6a6" title="Angle (relative to the world frame) of a footstep [rad.].">angle</a> = angle_; 
+<a name="l00045"></a>00045     <a class="code" href="classFootStep.html#a81faab6c5e8ce565077b519defa66859" title="cos(angle).">ca</a> = cos(<a class="code" href="classFootStep.html#a1acb6f981aa58cfec41a2a2e9f6cd6a6" title="Angle (relative to the world frame) of a footstep [rad.].">angle</a>); 
+<a name="l00046"></a>00046     <a class="code" href="classFootStep.html#a8692f8a0017ece845ab40e0aabc9837d" title="sin(angle).">sa</a> = sin(<a class="code" href="classFootStep.html#a1acb6f981aa58cfec41a2a2e9f6cd6a6" title="Angle (relative to the world frame) of a footstep [rad.].">angle</a>);
+<a name="l00047"></a>00047     <a class="code" href="classRectangularConstraint__ZMP.html#a1f6446a733c7868e172764db231a6595" title="translates from [0;0] to &amp;quot;p&amp;quot; and rotates from 0 to &amp;quot;angle&amp;quot;. The 0 initial angle i...">rotate_translate</a>(<a class="code" href="classFootStep.html#a81faab6c5e8ce565077b519defa66859" title="cos(angle).">ca</a>, <a class="code" href="classFootStep.html#a8692f8a0017ece845ab40e0aabc9837d" title="sin(angle).">sa</a>, *<span class="keyword">this</span>);
+<a name="l00048"></a>00048     <a class="code" href="classFootStep.html#a68d814856ea507ac7d3a946cadd978d2" title="number of times this step appears in the preview window.">repeat_times</a> = repeat_times_;
+<a name="l00049"></a>00049     <a class="code" href="classFootStep.html#aa313a2a209ba8b05438cffeaccd9bfa9" title="a counter of repeats,on initialization = repeat_times.">repeat_counter</a> = <a class="code" href="classFootStep.html#a68d814856ea507ac7d3a946cadd978d2" title="number of times this step appears in the preview window.">repeat_times</a>;
+<a name="l00050"></a>00050 }
 </pre></div></div>
 </div>
 <hr class="footer"/><address class="footer"><small>Generated by&#160;

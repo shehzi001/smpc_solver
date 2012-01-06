@@ -70,8 +70,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#acef0afc62e99e171f957c911ca34f475">qp_as</a> (const int N_, const double, const double, const double, const double, const double)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor: initialization of the constant parameters.  <a href="#acef0afc62e99e171f957c911ca34f475"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#ad45c27014c328627ca3dc662fb45743a">~qp_as</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#a5a93848b83ab8de1964ebcddca16c83c">set_parameters</a> (const double *, const double *, const double *, const double *, const double *, const double *, const double *)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes quadratic problem.  <a href="#a5a93848b83ab8de1964ebcddca16c83c"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#a4bd0c46eda2dc4ba4d5a31ca628f0ada">set_parameters</a> (const double *, const double *, const double, const double *, const double *, const double *, const double *, const double *)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes quadratic problem.  <a href="#a4bd0c46eda2dc4ba4d5a31ca628f0ada"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#af0386f027f77a8ee54f13df9ee2c9f84">solve</a> ()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Solve QP problem.  <a href="#af0386f027f77a8ee54f13df9ee2c9f84"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pri-methods"></a>
@@ -204,7 +204,7 @@ Private Attributes</h2></td></tr>
 <p>Checks for blocking bounds. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>sequential number of constraint to be added, -1 if no constraints. </dd></dl>
 
-<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00162">162</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00165">165</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
 
 </div>
 </div>
@@ -233,7 +233,7 @@ Private Attributes</h2></td></tr>
 <dl class="return"><dt><b>Returns:</b></dt><dd>index of constraint in the active set, -1 if no constraint can be removed.</dd></dl>
 <dl class="attention"><dt><b>Attention:</b></dt><dd>If a constraint for removal is selected, then it is removed from the active set (<a class="el" href="classqp__as.html#adb95e9cb39b791fad69e41b27497b951">W</a>) and the number of constraints in active set (<a class="el" href="classqp__as.html#a0b6f465d0de92c4aa47fcd4676795238">nW</a>) is decremented. </dd></dl>
 
-<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00223">223</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00226">226</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
 
 </div>
 </div>
@@ -271,7 +271,7 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00146">146</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00149">149</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
 
 </div>
 </div>
@@ -309,11 +309,11 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00118">118</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00121">121</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a5a93848b83ab8de1964ebcddca16c83c"></a><!-- doxytag: member="qp_as::set_parameters" ref="a5a93848b83ab8de1964ebcddca16c83c" args="(const double *, const double *, const double *, const double *, const double *, const double *, const double *)" -->
+<a class="anchor" id="a4bd0c46eda2dc4ba4d5a31ca628f0ada"></a><!-- doxytag: member="qp_as::set_parameters" ref="a4bd0c46eda2dc4ba4d5a31ca628f0ada" args="(const double *, const double *, const double, const double *, const double *, const double *, const double *, const double *)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -328,6 +328,12 @@ Private Attributes</h2></td></tr>
           <td></td>
           <td class="paramtype">const double *&#160;</td>
           <td class="paramname"><em>h_</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>h_initial_</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -373,6 +379,7 @@ Private Attributes</h2></td></tr>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">T_</td><td>Sampling time (for the moment it is assumed to be constant) [sec.] </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">h_</td><td>Height of the Center of Mass divided by gravity </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">h_initial_</td><td>current h </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">angle</td><td>Rotation angle for each state in the preview window </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">zref_x</td><td>reference values of z_x </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">zref_y</td><td>reference values of z_y </td></tr>
@@ -382,9 +389,9 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="classqp__solver.html#a36e61ae0762a1178390faa83cf599b67">qp_solver</a>.</p>
+<p>Implements <a class="el" href="classqp__solver.html#a50c064ba4846350d9f1dcfd6abbfd946">qp_solver</a>.</p>
 
-<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00094">94</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00095">95</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
 
 </div>
 </div>
@@ -407,7 +414,7 @@ Private Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classqp__solver.html#a860bee98c0cb2e2ecaad8c5e617971d7">qp_solver</a>.</p>
 
-<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00258">258</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00261">261</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
 
 </div>
 </div>
@@ -425,7 +432,7 @@ Private Attributes</h2></td></tr>
 
 <p>Vector of bounds. </p>
 
-<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00122">122</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00123">123</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
 
 </div>
 </div>
@@ -442,7 +449,7 @@ Private Attributes</h2></td></tr>
 
 <p>An instance of <a class="el" href="classchol__solve__as.html" title="Solves KKT system using Cholesky decomposition.">chol_solve_as</a> class. </p>
 
-<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00098">98</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00099">99</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
 
 </div>
 </div>
@@ -459,7 +466,7 @@ Private Attributes</h2></td></tr>
 
 <p><a class="el" href="pKKT.html#piHg">inv(H) * g</a> </p>
 
-<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00102">102</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00103">103</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
 
 </div>
 </div>
@@ -475,7 +482,7 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Number of inequality constraints already included in <a class="el" href="classqp__as.html#adb95e9cb39b791fad69e41b27497b951">W</a>. <a class="el" href="classqp__as.html#adb95e9cb39b791fad69e41b27497b951">W</a>(<a class="el" href="classqp__as.html#a0b6f465d0de92c4aa47fcd4676795238">nW</a>-1) is the index of the last inequality constraint added to <a class="el" href="classqp__as.html#adb95e9cb39b791fad69e41b27497b951">W</a>. </p>
 
-<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00119">119</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00120">120</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
 
 </div>
 </div>
@@ -491,7 +498,7 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Working set (contains the indexes of only inequality constraints). It is assumed that the only inequality constraints are simple bounds. See also '<a class="el" href="pDetails.html#pBounds">Implementing bounds</a>'. </p>
 
-<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00108">108</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00109">109</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
 
 </div>
 </div>
@@ -507,7 +514,7 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Since we do not distinguish lower/upper bounds of active constraints (&lt;= and =&gt; inequlities are treated in the same way), we have to adjust signs of lagrange multipliers before downdate. See also '<a class="el" href="pDetails.html#pBounds">Implementing bounds</a>'. </p>
 
-<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00115">115</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00116">116</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
 
 </div>
 </div>

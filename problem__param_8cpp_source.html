@@ -82,35 +82,36 @@
 <a name="l00046"></a>00046 
 <a name="l00047"></a>00047 
 <a name="l00048"></a>00048 
-<a name="l00054"></a><a class="code" href="classproblem__parameters.html#a5f86a93f70be6ff2f487be2e98dd509a">00054</a> <span class="keywordtype">void</span> <a class="code" href="classproblem__parameters.html#a5f86a93f70be6ff2f487be2e98dd509a" title="Initializes quadratic problem.">problem_parameters::set_state_parameters</a> (
-<a name="l00055"></a>00055     <span class="keyword">const</span> <span class="keywordtype">double</span>* T_,
-<a name="l00056"></a>00056     <span class="keyword">const</span> <span class="keywordtype">double</span>* h_,
-<a name="l00057"></a>00057     <span class="keyword">const</span> <span class="keywordtype">double</span>* angle)
-<a name="l00058"></a>00058 {
-<a name="l00059"></a>00059     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>; i++)
-<a name="l00060"></a>00060     {
-<a name="l00061"></a>00061         <a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[i].<a class="code" href="classstate__parameters.html#a30c26512d64a186f13660c690e27756a">cos</a> = cos(angle[i]);
-<a name="l00062"></a>00062         <a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[i].<a class="code" href="classstate__parameters.html#a2ed5b2103152d2e52633198560fe7df7">sin</a> = sin(angle[i]);
-<a name="l00063"></a>00063 
-<a name="l00064"></a>00064         <span class="keywordflow">if</span> (i == 0)
-<a name="l00065"></a>00065         {
-<a name="l00067"></a>00067             <a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[i].<a class="code" href="classstate__parameters.html#ab213715801526935c2386b75babf3e1b">A6</a> = T_[i]*T_[i]/2;
-<a name="l00068"></a>00068         }
-<a name="l00069"></a>00069         <span class="keywordflow">else</span>
-<a name="l00070"></a>00070         {
-<a name="l00071"></a>00071             <a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[i].<a class="code" href="classstate__parameters.html#ab213715801526935c2386b75babf3e1b">A6</a> = T_[i]*T_[i]/2 - (h_[i] - h_[i-1]);
-<a name="l00072"></a>00072         }
-<a name="l00073"></a>00073 
-<a name="l00074"></a>00074         <a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[i].<a class="code" href="classstate__parameters.html#ad7ac513899b0e75d806873298b3c8dd2">T</a> = T_[i];
-<a name="l00075"></a>00075         <a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[i].<a class="code" href="classstate__parameters.html#aafeef4cdec6934cd18e62da0a2391d7a">h</a> = h_[i];
-<a name="l00076"></a>00076 
-<a name="l00077"></a>00077         <a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[i].<a class="code" href="classstate__parameters.html#a9efe714920bce07f19778766596ea5ca">B</a>[2] = T_[i];
-<a name="l00078"></a>00078         <a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[i].<a class="code" href="classstate__parameters.html#a9efe714920bce07f19778766596ea5ca">B</a>[1] = T_[i]*T_[i]/2;
-<a name="l00079"></a>00079         <a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[i].<a class="code" href="classstate__parameters.html#a9efe714920bce07f19778766596ea5ca">B</a>[0] = <a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[i].<a class="code" href="classstate__parameters.html#a9efe714920bce07f19778766596ea5ca">B</a>[1]*T_[i]/3 - h_[i]*T_[i];
-<a name="l00080"></a>00080 
-<a name="l00081"></a>00081         <a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[i].<a class="code" href="classstate__parameters.html#a6898a8094f6f21bbe400bf8dfb41d133">A3</a> = T_[i];
-<a name="l00082"></a>00082     }
-<a name="l00083"></a>00083 }
+<a name="l00055"></a><a class="code" href="classproblem__parameters.html#a756b24a4ed81ed61b5e7fe7cfdfcdd9e">00055</a> <span class="keywordtype">void</span> <a class="code" href="classproblem__parameters.html#a756b24a4ed81ed61b5e7fe7cfdfcdd9e" title="Initializes quadratic problem.">problem_parameters::set_state_parameters</a> (
+<a name="l00056"></a>00056     <span class="keyword">const</span> <span class="keywordtype">double</span>* T_,
+<a name="l00057"></a>00057     <span class="keyword">const</span> <span class="keywordtype">double</span>* h_,
+<a name="l00058"></a>00058     <span class="keyword">const</span> <span class="keywordtype">double</span> h_initial,
+<a name="l00059"></a>00059     <span class="keyword">const</span> <span class="keywordtype">double</span>* angle)
+<a name="l00060"></a>00060 {
+<a name="l00061"></a>00061     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>; i++)
+<a name="l00062"></a>00062     {
+<a name="l00063"></a>00063         <a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[i].<a class="code" href="classstate__parameters.html#a30c26512d64a186f13660c690e27756a">cos</a> = cos(angle[i]);
+<a name="l00064"></a>00064         <a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[i].<a class="code" href="classstate__parameters.html#a2ed5b2103152d2e52633198560fe7df7">sin</a> = sin(angle[i]);
+<a name="l00065"></a>00065 
+<a name="l00066"></a>00066         <span class="keywordflow">if</span> (i == 0)
+<a name="l00067"></a>00067         {
+<a name="l00068"></a>00068             <a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[i].<a class="code" href="classstate__parameters.html#ab213715801526935c2386b75babf3e1b">A6</a> = T_[i]*T_[i]/2 - (h_[0] - h_initial);
+<a name="l00069"></a>00069         }
+<a name="l00070"></a>00070         <span class="keywordflow">else</span>
+<a name="l00071"></a>00071         {
+<a name="l00072"></a>00072             <a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[i].<a class="code" href="classstate__parameters.html#ab213715801526935c2386b75babf3e1b">A6</a> = T_[i]*T_[i]/2 - (h_[i] - h_[i-1]);
+<a name="l00073"></a>00073         }
+<a name="l00074"></a>00074 
+<a name="l00075"></a>00075         <a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[i].<a class="code" href="classstate__parameters.html#ad7ac513899b0e75d806873298b3c8dd2">T</a> = T_[i];
+<a name="l00076"></a>00076         <a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[i].<a class="code" href="classstate__parameters.html#aafeef4cdec6934cd18e62da0a2391d7a">h</a> = h_[i];
+<a name="l00077"></a>00077 
+<a name="l00078"></a>00078         <a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[i].<a class="code" href="classstate__parameters.html#a9efe714920bce07f19778766596ea5ca">B</a>[2] = T_[i];
+<a name="l00079"></a>00079         <a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[i].<a class="code" href="classstate__parameters.html#a9efe714920bce07f19778766596ea5ca">B</a>[1] = T_[i]*T_[i]/2;
+<a name="l00080"></a>00080         <a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[i].<a class="code" href="classstate__parameters.html#a9efe714920bce07f19778766596ea5ca">B</a>[0] = <a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[i].<a class="code" href="classstate__parameters.html#a9efe714920bce07f19778766596ea5ca">B</a>[1]*T_[i]/3 - h_[i]*T_[i];
+<a name="l00081"></a>00081 
+<a name="l00082"></a>00082         <a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[i].<a class="code" href="classstate__parameters.html#a6898a8094f6f21bbe400bf8dfb41d133">A3</a> = T_[i];
+<a name="l00083"></a>00083     }
+<a name="l00084"></a>00084 }
 </pre></div></div>
 </div>
 <hr class="footer"/><address class="footer"><small>Generated by&#160;
