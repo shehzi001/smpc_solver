@@ -579,9 +579,11 @@ void WMG::getSwingFootPosition (
 /**
  * @brief Forms a preview window.
  *
+ * @param[out] switch_foot true if the support foot must be switched.
+ *
  * @return WMG_OK or WMG_HALT (simulation must be stopped)
  */
-WMGret WMG::FormPreviewWindow()
+WMGret WMG::FormPreviewWindow(bool *switch_foot)
 {
     WMGret retval = WMG_OK;
     int win_step_num = current_step_number;
@@ -606,8 +608,18 @@ WMGret WMG::FormPreviewWindow()
             // this is the first iteration in DS
             (FS[win_step_num].repeat_counter == FS[win_step_num].repeat_times))
     {
-        retval = WMG_SWITCH_REFERENCE_FOOT;
+        if (switch_foot != NULL)
+        {
+            *switch_foot = true;
+        }
         current_reference_foot = FS[getNextSS (win_step_num)].type;
+    }
+    else
+    {
+        if (switch_foot != NULL)
+        {
+            *switch_foot = false;
+        }
     }
 
 

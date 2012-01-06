@@ -36,8 +36,7 @@ class FootStep;
 enum WMGret
 {
     WMG_OK,
-    WMG_HALT,
-    WMG_SWITCH_REFERENCE_FOOT
+    WMG_HALT
 };
 
 enum fs_type
@@ -86,7 +85,7 @@ class WMG
                 const double, 
                 const double, 
                 fs_type type = FS_TYPE_AUTO);
-        WMGret FormPreviewWindow();
+        WMGret FormPreviewWindow(bool *switch_foot = NULL);
         void FS2file(const std::string, const bool plot_ds = true);
 
         void getSwingFootPosition (
