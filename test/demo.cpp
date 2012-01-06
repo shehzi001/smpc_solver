@@ -102,8 +102,8 @@ int main(int argc, char **argv)
                 // an initial feasible point
                 wmg.fp_x, 
                 wmg.fp_y, 
-                // current state
-                wmg.X_tilde, 
+                // initial state
+                wmg.init_state, 
                 // solution of the optimization problem
                 wmg.X);
 
@@ -113,8 +113,8 @@ int main(int argc, char **argv)
         solver.solve();
         //------------------------------------------------------
 
-        // obtain the next state as X_tilde
-        solver.get_next_state_tilde (wmg.X_tilde);
+        // obtain the next state
+        solver.get_next_state (wmg.init_state);
     }
 
     return 0;

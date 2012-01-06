@@ -63,9 +63,9 @@ int main(int argc, char **argv)
 
         //------------------------------------------------------
         solver.set_parameters (wmg.T, wmg.h, wmg.h[0], wmg.angle, wmg.fp_x, wmg.fp_y, wmg.lb, wmg.ub);
-        solver.form_init_fp (wmg.fp_x, wmg.fp_y, wmg.X_tilde, wmg.X);
+        solver.form_init_fp (wmg.fp_x, wmg.fp_y, wmg.init_state, wmg.X);
         nW = solver.solve();
-        solver.get_next_state_tilde (wmg.X_tilde);
+        solver.get_next_state (wmg.init_state);
         //------------------------------------------------------
 
 

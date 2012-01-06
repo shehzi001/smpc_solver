@@ -131,8 +131,11 @@ class WMG
         /// A chunk of memory allocated for solution.
         double *X;
 
-        /** \brief Initial state. */
+        /** Initial state (tilde). */
         double X_tilde[SMPC_NUM_STATE_VAR];
+        
+        /** Initial state (original). */
+        double init_state[SMPC_NUM_STATE_VAR];
 
         /// Array of N absolute angles corresponding to supports in the preview window.
         double *angle;

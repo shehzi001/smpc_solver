@@ -85,7 +85,7 @@ qp_as::~qp_as()
 
     @param[in] T_ Sampling time (for the moment it is assumed to be constant) [sec.]
     @param[in] h_ Height of the Center of Mass divided by gravity
-    @param[in] h_current current h
+    @param[in] h_initial_ current h
     @param[in] angle Rotation angle for each state in the preview window
     @param[in] zref_x reference values of z_x
     @param[in] zref_y reference values of z_y
@@ -95,7 +95,7 @@ qp_as::~qp_as()
 void qp_as::set_parameters(
         const double* T_, 
         const double* h_, 
-        const double h_current,
+        const double h_initial_,
         const double* angle,
         const double* zref_x,
         const double* zref_y,
@@ -104,7 +104,8 @@ void qp_as::set_parameters(
 {
     nW = 0;
 
-    set_state_parameters (T_, h_, h_current, angle);
+    h_initial = h_initial_;
+    set_state_parameters (T_, h_, h_initial_, angle);
     form_iHg (zref_x, zref_y);
     form_bounds(lb, ub);
 }

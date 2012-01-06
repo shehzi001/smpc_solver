@@ -88,6 +88,10 @@ class qp_solver : public problem_parameters
 
         /** A number from 0 to 1, which controls depth of descent #X = #X + #alpha*#dX. */
         double alpha;
+
+        /// Height of the CoM at initial state divided by the gravity, this initial state
+        /// precede the first state in the preview window.
+        double h_initial;
 };
 
 ///@}

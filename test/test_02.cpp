@@ -45,10 +45,10 @@ int main(int argc, char **argv)
         for(int kk=0; kk<NN ;kk++)
         {
             solver.set_parameters (wmg.T, wmg.h, wmg.h[0], wmg.angle, wmg.fp_x, wmg.fp_y, wmg.lb, wmg.ub);
-            solver.form_init_fp (wmg.fp_x, wmg.fp_y, wmg.X_tilde, wmg.X);
+            solver.form_init_fp (wmg.fp_x, wmg.fp_y, wmg.init_state, wmg.X);
             nW = solver.solve();
         }
-        solver.get_next_state_tilde (wmg.X_tilde);
+        solver.get_next_state (wmg.init_state);
         gettimeofday(&end,0);             
         CurrentCPUTime = end.tv_sec - start.tv_sec + 0.000001 * (end.tv_usec - start.tv_usec);
         double TT = CurrentCPUTime/NN;

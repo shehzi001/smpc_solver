@@ -61,14 +61,14 @@ smpc_solver::~smpc_solver()
 
 
 void smpc_solver::set_parameters(
-        const double* T, const double* h, const double h_current,
+        const double* T, const double* h, const double h_initial,
         const double* angle,
         const double* zref_x, const double* zref_y,
         const double* lb, const double* ub)
 {
     if (qp_sol != NULL)
     {
-        qp_sol->set_parameters(T, h, h_current, angle, zref_x, zref_y, lb, ub);
+        qp_sol->set_parameters(T, h, h_initial, angle, zref_x, zref_y, lb, ub);
     }
 }
 
@@ -77,12 +77,12 @@ void smpc_solver::set_parameters(
 void smpc_solver::form_init_fp (
         const double *x_coord,
         const double *y_coord,
-        const double *X_tilde,
+        const double *init_state,
         double* X)
 {
     if (qp_sol != NULL)
     {
-        qp_sol->form_init_fp (x_coord, y_coord, X_tilde, X);
+        qp_sol->form_init_fp (x_coord, y_coord, init_state, X);
     }
 }
 

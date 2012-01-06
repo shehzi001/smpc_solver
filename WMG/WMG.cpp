@@ -113,6 +113,7 @@ void WMG::init(const int _N)
 
     for(int i=0; i<SMPC_NUM_STATE_VAR; i++)
     {
+        init_state[i] = 0.0;
         X_tilde[i] = 0.0;
     }
 

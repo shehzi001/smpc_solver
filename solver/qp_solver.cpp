@@ -52,19 +52,27 @@ qp_solver::qp_solver(
  *
  * @param[in] x_coord x coordinates of points satisfying constraints
  * @param[in] y_coord y coordinates of points satisfying constraints
- * @param[in] X_tilde current state
+ * @param[in] init_state current state
  * @param[in,out] X_ initial guess / solution of optimization problem
  */
 void qp_solver::form_init_fp (
         const double *x_coord, 
         const double *y_coord, 
-        const double *X_tilde,
+        const double *init_state,
         double* X_)
 {
     X = X_;
 
     double *control = &X[SMPC_NUM_STATE_VAR*N];
     double *cur_state = X;
+    double X_tilde[6];
+    X_tilde[0] = init_state[0];
+    X_tilde[1] = init_state[1];
+    X_tilde[2] = init_state[2];
+    X_tilde[3] = init_state[3];
+    X_tilde[4] = init_state[4];
+    X_tilde[5] = init_state[5];
+    state_handling::orig_to_tilde (h_initial, X_tilde);
     const double *prev_state = X_tilde;
 
     

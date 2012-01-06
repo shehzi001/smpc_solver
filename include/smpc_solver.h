@@ -97,7 +97,7 @@ class smpc_solver
 
             @param[in] T sampling time for each time step [sec.]
             @param[in] h height of the center of mass divided by gravity for each time step
-            @param[in] h_current current value of #h.
+            @param[in] h_initial initial value of #h.
             @param[in] angle rotation angle for each state relative to the world frame
             @param[in] zref_x reference values of x coordinate of ZMP
             @param[in] zref_y reference values of y coordinate of ZMP
@@ -117,18 +117,26 @@ class smpc_solver
 
         /** @brief Generates an initial feasible point. 
 
-            First we perform a change of variable to @ref pX_tilde "X_tilde"
-            generate a feasible point, and then we go back to @ref pX_bar "X_bar".
-         
             @param[in] x_coord x coordinates of points satisfying constraints
             @param[in] y_coord y coordinates of points satisfying constraints
-            @param[in] X_tilde current state (@ref pX_tilde "X_tilde")
+            @param[in] init_state current state
             @param[in,out] X solution of optimization problem
+
+         * init_state:
+         *  \verbatim
+            state[0] - x CoM position [meter]
+            state[1] - x CoM velocity [meter/s]
+            state[2] - x CoM acceleration [meter/s^2]
+            state[3] - y CoM position [meter]
+            state[4] - y CoM velocity [meter/s]
+            state[5] - y CoM acceleration [meter/s^2]
+            \endverbatim
+         *   
          */
         void form_init_fp (
                 const double *x_coord,
                 const double *y_coord,
-                const double *X_tilde,
+                const double *init_state,
                 double* X);
 
 
