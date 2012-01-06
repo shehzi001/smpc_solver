@@ -116,6 +116,8 @@ void WMG::init(const int _N)
         init_state[i] = 0.0;
         X_tilde[i] = 0.0;
     }
+    next_control[0] = 0.0;
+    next_control[1] = 0.0;
 
     T = new double[N];
     h = new double[N];

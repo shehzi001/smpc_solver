@@ -136,6 +136,9 @@ class WMG
         /** Initial state (original). */
         double init_state[SMPC_NUM_STATE_VAR];
 
+        /// A storage for the controls, that must be applied to reach the next state.
+        double next_control[SMPC_NUM_CONTROL_VAR];
+
         /// Array of N absolute angles corresponding to supports in the preview window.
         double *angle;
 
