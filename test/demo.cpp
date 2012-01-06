@@ -84,6 +84,8 @@ int main(int argc, char **argv)
                 wmg.T,
                 // height of the center of mass divided by gravity for each time step
                 wmg.h, 
+                // current height of the center of mass divided by gravity
+                wmg.h[0], 
                 // rotation angle for each state relative to the world frame
                 wmg.angle, 
                 // reference values of x coordinate of ZMP

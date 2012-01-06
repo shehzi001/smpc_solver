@@ -60,18 +60,15 @@ smpc_solver::~smpc_solver()
 
 
 
-
-
-
 void smpc_solver::set_parameters(
-        const double* T, const double* h,
+        const double* T, const double* h, const double h_current,
         const double* angle,
         const double* zref_x, const double* zref_y,
         const double* lb, const double* ub)
 {
     if (qp_sol != NULL)
     {
-        qp_sol->set_parameters(T, h, angle, zref_x, zref_y, lb, ub);
+        qp_sol->set_parameters(T, h, h_current, angle, zref_x, zref_y, lb, ub);
     }
 }
 

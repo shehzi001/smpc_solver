@@ -50,7 +50,7 @@ class problem_parameters
         problem_parameters (const int, const double, const double, const double, const double);
         ~problem_parameters();
 
-        void set_state_parameters (const double*, const double*, const double*);
+        void set_state_parameters (const double*, const double*, const double, const double*);
 
 
         /** Number of iterations in a preview window. */

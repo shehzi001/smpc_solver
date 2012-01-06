@@ -49,6 +49,7 @@ class qp_ip : public qp_solver
         void set_parameters(
                 const double*, 
                 const double*, 
+                const double, 
                 const double*, 
                 const double*, 
                 const double*, 

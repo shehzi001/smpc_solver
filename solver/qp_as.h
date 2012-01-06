@@ -75,6 +75,7 @@ class qp_as : public qp_solver
         void set_parameters(
                 const double*, 
                 const double*, 
+                const double, 
                 const double*, 
                 const double*, 
                 const double*, 

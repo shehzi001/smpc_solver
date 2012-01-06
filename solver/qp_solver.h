@@ -55,6 +55,7 @@ class qp_solver : public problem_parameters
         virtual void set_parameters(
                 const double*,
                 const double*,
+                const double,
                 const double*,
                 const double*,
                 const double*,

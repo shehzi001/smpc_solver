@@ -71,6 +71,7 @@ qp_ip::~qp_ip()
 
     @param[in] T Sampling time (for the moment it is assumed to be constant) [sec.]
     @param[in] h Height of the Center of Mass divided by gravity
+    @param[in] h_current current h
     @param[in] angle Rotation angle for each state in the preview window
     @param[in] zref_x reference values of z_x
     @param[in] zref_y reference values of z_y
@@ -80,13 +81,14 @@ qp_ip::~qp_ip()
 void qp_ip::set_parameters(
         const double* T, 
         const double* h, 
+        const double h_current, 
         const double* angle,
         const double* zref_x,
         const double* zref_y,
         const double* lb_,
         const double* ub_)
 {
-    set_state_parameters (T, h, angle);
+    set_state_parameters (T, h, h_current, angle);
 
     lb = lb_;
     ub = ub_;
