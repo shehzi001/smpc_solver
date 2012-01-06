@@ -110,6 +110,14 @@ void smpc_solver::get_next_state_tilde (double *state)
 }
 
 
+void smpc_solver::get_state_tilde (const int ind, double *state)
+{
+    if (qp_sol != NULL)
+    {
+        state_handling::get_state_tilde (qp_sol, qp_sol->X, ind, state);
+    }
+}
+
 
 void smpc_solver::get_next_state (double *state)
 {

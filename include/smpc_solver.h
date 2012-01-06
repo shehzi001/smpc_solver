@@ -157,6 +157,15 @@ class smpc_solver
          */
         void get_next_state_tilde (double *state);
 
+        /**
+         * @brief The same as #get_next_state_tilde, but takes additional 
+         * parameter - index of the desired state in the state vector.
+         *  
+         * @param[in] ind index of a state [0, N-1].
+         * @param[in,out] state the state (#SMPC_NUM_STATE_VAR elements).
+         */
+        void get_state_tilde (const int ind, double *state);
+
 
         /**
          * @brief Converts state from original variables to @ref pX_tilde "X_tilde".
