@@ -97,7 +97,7 @@ class smpc_solver
 
             @param[in] T sampling time for each time step [sec.]
             @param[in] h height of the center of mass divided by gravity for each time step
-            @param[in] h_initial initial value of #h.
+            @param[in] h_initial initial value of height of the center of mass divided by gravity
             @param[in] angle rotation angle for each state relative to the world frame
             @param[in] zref_x reference values of x coordinate of ZMP
             @param[in] zref_y reference values of y coordinate of ZMP
@@ -107,7 +107,7 @@ class smpc_solver
         void set_parameters (
                 const double* T,
                 const double* h,
-                const double h_current,
+                const double h_initial,
                 const double* angle,
                 const double* zref_x,
                 const double* zref_y,
