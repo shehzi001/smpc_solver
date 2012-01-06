@@ -100,13 +100,16 @@ int main(int argc, char **argv)
         //-----------------------------------------------------------
 
 
-        solver.get_next_state_tilde (wmg.X_tilde);
-        ZMP_x.push_back(wmg.X_tilde[0]);
-        ZMP_y.push_back(wmg.X_tilde[3]);
-        double X[SMPC_NUM_STATE_VAR];
-        solver.get_next_state (X);
-        CoM_x.push_back(X[0]);
-        CoM_y.push_back(X[3]);
+        if (next_preview_len_ms == preview_sampling_time_ms)
+        {
+            // if the values are saved on each iteration the plot becomes sawlike.
+            // better solution - more frequent sampling.
+            solver.get_next_state_tilde (wmg.X_tilde);
+            ZMP_x.push_back(wmg.X_tilde[0]);
+            ZMP_y.push_back(wmg.X_tilde[3]);
+        }
+        CoM_x.push_back(wmg.init_state[0]);
+        CoM_y.push_back(wmg.init_state[3]);
     
 
         // support foot and swing foot position/orientation
