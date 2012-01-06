@@ -43,7 +43,12 @@ int main(int argc, char **argv)
 
     //-----------------------------------------------------------
     wmg.initABMatrices ((double) control_sampling_time_ms / 1000);
-    wmg.initState (0.019978839010709938, -6.490507362468014e-05, wmg.X_tilde);
+    wmg.init_state[0] = 0.019978839010709938;
+    wmg.init_state[1] = 0;
+    wmg.init_state[2] = 0;
+    wmg.init_state[3] = -6.490507362468014e-05;
+    wmg.init_state[4] = 0;
+    wmg.init_state[5] = 0;
     double cur_control[2];
     cur_control[0] = cur_control[1] = 0;
     //-----------------------------------------------------------
@@ -52,7 +57,6 @@ int main(int argc, char **argv)
     FILE *file_op = fopen(fs_out_filename.c_str(), "a");
     fprintf(file_op,"hold on\n");
 
-    double X[SMPC_NUM_STATE_VAR];
     vector<double> ZMP_ref_x;
     vector<double> ZMP_ref_y;
     vector<double> ZMP_x;
@@ -83,27 +87,24 @@ int main(int argc, char **argv)
             next_preview_len_ms = preview_sampling_time_ms;
         }   
 
-       
-        /// @attention wmg.X_tilde does not always satisfy the lower and upper bounds!
-        /// (but wmg.X does)
         
+        //------------------------------------------------------
         wmg.T[0] = (double) next_preview_len_ms / 1000; // get seconds
-        //------------------------------------------------------
         solver.set_parameters (wmg.T, wmg.h, wmg.h[0], wmg.angle, wmg.zref_x, wmg.zref_y, wmg.lb, wmg.ub);
-        solver.form_init_fp (wmg.fp_x, wmg.fp_y, wmg.X_tilde, wmg.X);
+        solver.form_init_fp (wmg.fp_x, wmg.fp_y, wmg.init_state, wmg.X);
         solver.solve();
-        solver.get_next_state (X);
-        solver.get_first_controls (cur_control);
         //------------------------------------------------------
-        
-        //-----------------------------------------------------------
         // update state
-        wmg.calculateNextState(cur_control, wmg.X_tilde);
+        solver.get_first_controls (cur_control);
+        wmg.calculateNextState(cur_control, wmg.init_state);
         //-----------------------------------------------------------
 
 
+        solver.get_next_state_tilde (wmg.X_tilde);
         ZMP_x.push_back(wmg.X_tilde[0]);
         ZMP_y.push_back(wmg.X_tilde[3]);
+        double X[SMPC_NUM_STATE_VAR];
+        solver.get_next_state (X);
         CoM_x.push_back(X[0]);
         CoM_y.push_back(X[3]);
     

@@ -682,8 +682,6 @@ WMGret WMG::FormPreviewWindow(bool *switch_foot)
  * pendulum model.
  *
  * @param[in] sampling_time period of time T.
- *
- * @attention h is assumed to be constant.
  */
 void WMG::initABMatrices (const double sampling_time)
 {
@@ -693,9 +691,9 @@ void WMG::initABMatrices (const double sampling_time)
     A[0] = A[4] = A[8] = 1;
     A[1] = A[2] = A[5] = 0;
     A[3] = A[7] = sampling_time;
-    A[6] = sampling_time * sampling_time/2 /*- delta_hCoM = 0*/;
+    A[6] = sampling_time * sampling_time/2;
 
-    B[0] = sampling_time * sampling_time * sampling_time / 6 - hCoM/gravity * sampling_time;
+    B[0] = sampling_time * sampling_time * sampling_time / 6;
     B[1] = sampling_time * sampling_time/2;
     B[2] = sampling_time;
 }
@@ -703,37 +701,10 @@ void WMG::initABMatrices (const double sampling_time)
 
 
 /**
- * @brief Initialize #X_tilde state.
- *
- * @param[in] CoM_x x coorrdinate of center of mass
- * @param[in] CoM_y y coorrdinate of center of mass
- * @param[out] state 1x6 state vector (@ref pX_tilde "X_tilde")
- *
- * @attention h is assumed to be constant.
- * @attention velocities and accelerations are assumed to be 0.
- */
-void WMG::initState (const double CoM_x, const double CoM_y, double *state)
-{
-    for (int i = 0; i < 6; i++)
-    {
-        state[i] = 0;
-    }
-
-
-    double h_tmp  = hCoM/gravity;
-    // Note that state[2] and state[5] are zeros.
-    state[0] = CoM_x - h_tmp * state[2]; 
-    state[3] = CoM_y - h_tmp * state[5];
-}
-
-
-
-/**
- * @brief Calculate next state (@ref pX_tilde "X_tilde") using inverted
- * pendulum model (#A and #B matrices).
+ * @brief Calculate next state using inverted pendulum model (#A and #B matrices).
  *
  * @param[in] control 1x2 vector of controls
- * @param[in,out] state 1x6 state vector (@ref pX_tilde "X_tilde")
+ * @param[in,out] state 1x6 state vector
  *
  * @attention If #A or #B are not initialized, the function does nothing.
  */
