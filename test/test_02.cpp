@@ -26,7 +26,7 @@ int main(int argc, char **argv)
 
     test_start(argv[0]);
 
-    smpc_solver solver(wmg.N);
+    smpc::solver solver(wmg.N);
     for(int counter = 0 ;; counter++)
     {
         //------------------------------------------------------
@@ -48,7 +48,7 @@ int main(int argc, char **argv)
             solver.form_init_fp (wmg.fp_x, wmg.fp_y, wmg.init_state, wmg.X);
             nW = solver.solve();
         }
-        solver.get_next_state (wmg.init_state);
+        wmg.init_state.get_next_state (solver);
         gettimeofday(&end,0);             
         CurrentCPUTime = end.tv_sec - start.tv_sec + 0.000001 * (end.tv_usec - start.tv_usec);
         double TT = CurrentCPUTime/NN;

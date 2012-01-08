@@ -30,7 +30,7 @@ int main(int argc, char **argv)
 
     test_start(argv[0]);
     //-----------------------------------------------------------
-    smpc_solver solver(
+    smpc::solver solver(
             wmg.N, // size of the preview window
             300.0,  // Alpha
             800.0,  // Beta
@@ -43,11 +43,7 @@ int main(int argc, char **argv)
 
     //-----------------------------------------------------------
     wmg.initABMatrices ((double) control_sampling_time_ms / 1000);
-    wmg.init_state[0] = 0.019978839010709938;
-    wmg.init_state[1] = wmg.init_state[2] = 0;
-    wmg.init_state[3] = -6.490507362468014e-05;
-    wmg.init_state[4] = wmg.init_state[5] = 0;
-    wmg.next_control[0] = wmg.next_control[1] = 0;
+    wmg.init_state.set (0.019978839010709938, -6.490507362468014e-05);
     //-----------------------------------------------------------
 
 
@@ -92,7 +88,7 @@ int main(int argc, char **argv)
         solver.solve();
         //------------------------------------------------------
         // update state
-        solver.get_first_controls (wmg.next_control);
+        wmg.next_control.get_first_controls (solver);
         wmg.calculateNextState(wmg.next_control, wmg.init_state);
         //-----------------------------------------------------------
 
@@ -101,12 +97,12 @@ int main(int argc, char **argv)
         {
             // if the values are saved on each iteration the plot becomes sawlike.
             // better solution - more frequent sampling.
-            solver.get_next_state_tilde (wmg.X_tilde);
-            ZMP_x.push_back(wmg.X_tilde[0]);
-            ZMP_y.push_back(wmg.X_tilde[3]);
+            wmg.X_tilde.get_next_state (solver);
+            ZMP_x.push_back(wmg.X_tilde.x());
+            ZMP_y.push_back(wmg.X_tilde.y());
         }
-        CoM_x.push_back(wmg.init_state[0]);
-        CoM_y.push_back(wmg.init_state[3]);
+        CoM_x.push_back(wmg.init_state.x());
+        CoM_y.push_back(wmg.init_state.y());
     
 
         // support foot and swing foot position/orientation

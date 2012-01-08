@@ -62,7 +62,7 @@ int main(int argc, char **argv)
     //-----------------------------------------------------------
 
 
-    smpc_solver solver(
+    smpc::solver solver(
             wmg.N); // size of the preview window
                     // other parameters are optional
     //-----------------------------------------------------------
@@ -114,7 +114,7 @@ int main(int argc, char **argv)
         //------------------------------------------------------
 
         // obtain the next state
-        solver.get_next_state (wmg.init_state);
+        wmg.init_state.get_next_state (solver);
     }
 
     return 0;

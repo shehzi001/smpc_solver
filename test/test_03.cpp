@@ -22,7 +22,7 @@ int main(int argc, char **argv)
 
     test_start (argv[0]);
 
-    smpc_solver solver(wmg.N);
+    smpc::solver solver(wmg.N);
     int nW;
 
     int j=0;
@@ -65,7 +65,7 @@ int main(int argc, char **argv)
         solver.set_parameters (wmg.T, wmg.h, wmg.h[0], wmg.angle, wmg.fp_x, wmg.fp_y, wmg.lb, wmg.ub);
         solver.form_init_fp (wmg.fp_x, wmg.fp_y, wmg.init_state, wmg.X);
         nW = solver.solve();
-        solver.get_next_state (wmg.init_state);
+        wmg.init_state.get_next_state (solver);
         //------------------------------------------------------
 
 

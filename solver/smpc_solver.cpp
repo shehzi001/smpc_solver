@@ -25,7 +25,7 @@
 
 
 
-smpc_solver::smpc_solver (
+smpc::solver::solver (
                 const int N,
                 const double Alpha, const double Beta, const double Gamma,
                 const double regularization, const double tol)
@@ -34,7 +34,7 @@ smpc_solver::smpc_solver (
 }
 
 
-smpc_solver::smpc_solver (
+smpc::solver::solver (
                 const int N,
                 const int max_iter,
                 const double Alpha, const double Beta, const double Gamma,
@@ -50,7 +50,7 @@ smpc_solver::smpc_solver (
 }
 
 
-smpc_solver::~smpc_solver()
+smpc::solver::~solver()
 {
     if (qp_sol != NULL)
     {
@@ -60,7 +60,7 @@ smpc_solver::~smpc_solver()
 
 
 
-void smpc_solver::set_parameters(
+void smpc::solver::set_parameters(
         const double* T, const double* h, const double h_initial,
         const double* angle,
         const double* zref_x, const double* zref_y,
@@ -74,21 +74,21 @@ void smpc_solver::set_parameters(
 
 
 
-void smpc_solver::form_init_fp (
+void smpc::solver::form_init_fp (
         const double *x_coord,
         const double *y_coord,
-        const double *init_state,
+        const state_orig &init_state,
         double* X)
 {
     if (qp_sol != NULL)
     {
-        qp_sol->form_init_fp (x_coord, y_coord, init_state, X);
+        qp_sol->form_init_fp (x_coord, y_coord, init_state.state_vector, X);
     }
 }
 
 
 
-int smpc_solver::solve()
+int smpc::solver::solve()
 {
     if (qp_sol != NULL)
     {
@@ -98,61 +98,106 @@ int smpc_solver::solve()
 }
 
 
-void smpc_solver::get_next_state_tilde (double *state)
+//************************************************************
+
+
+smpc::state::state()
 {
-    if (qp_sol != NULL)
+    state_vector[0] = 0.0;
+    state_vector[1] = 0.0;
+    state_vector[2] = 0.0;
+    state_vector[3] = 0.0;
+    state_vector[4] = 0.0;
+    state_vector[5] = 0.0;
+}
+
+
+//************************************************************
+
+
+void smpc::state_tilde::get_next_state (const smpc::solver &smpc_solver)
+{
+    get_state (smpc_solver, 0);
+}
+
+
+void smpc::state_tilde::get_state (const smpc::solver &smpc_solver, const int ind)
+{
+    if (smpc_solver.qp_sol != NULL)
     {
-        state_handling::get_state_tilde (qp_sol, qp_sol->X, 0, state);
+        state_handling::get_state_tilde (
+                smpc_solver.qp_sol, 
+                smpc_solver.qp_sol->X, 
+                ind, 
+                state_vector);
     }
 }
 
 
-void smpc_solver::get_state_tilde (const int ind, double *state)
+//************************************************************
+
+void smpc::state_orig::set (double x_, double y_)
 {
-    if (qp_sol != NULL)
+    set (x_, 0.0, 0.0, y_, 0.0, 0.0);
+}
+
+
+void smpc::state_orig::set (
+        double x_, double vx_, double ax_,
+        double y_, double vy_, double ay_)
+{
+    state_vector[0] = x_;
+    state_vector[1] = vx_;
+    state_vector[2] = ax_;
+    state_vector[3] = y_;
+    state_vector[4] = vy_;
+    state_vector[5] = ay_;
+}
+
+
+
+void smpc::state_orig::get_next_state (const smpc::solver &smpc_solver)
+{
+    get_state (smpc_solver, 0);
+}
+
+
+void smpc::state_orig::get_state (const smpc::solver &smpc_solver, const int ind)
+{
+    if (smpc_solver.qp_sol != NULL)
     {
-        state_handling::get_state_tilde (qp_sol, qp_sol->X, ind, state);
+        state_handling::get_state (
+                smpc_solver.qp_sol, 
+                smpc_solver.qp_sol->X, 
+                ind, 
+                state_vector);
     }
 }
 
 
-void smpc_solver::get_next_state (double *state)
+//************************************************************
+
+smpc::control::control()
 {
-    if (qp_sol != NULL)
-    {
-        state_handling::get_state (qp_sol, qp_sol->X, 0, state);
-    }
+    control_vector[0] = 0.0;
+    control_vector[1] = 0.0;
 }
 
 
-void smpc_solver::get_state (const int ind, double *state)
+void smpc::control::get_first_controls (const smpc::solver &smpc_solver)
 {
-    if (qp_sol != NULL)
-    {
-        state_handling::get_state (qp_sol, qp_sol->X, ind, state);
-    }
+    get_controls (smpc_solver, 0);
 }
 
 
-void smpc_solver::convert_to_tilde (double h, double *state)
+void smpc::control::get_controls (const smpc::solver &smpc_solver, const int ind)
 {
-    state_handling::orig_to_tilde (h, state);
-}
-
-
-void smpc_solver::get_first_controls (double *controls)
-{
-    if (qp_sol != NULL)
+    if (smpc_solver.qp_sol != NULL)
     {
-        state_handling::get_controls (qp_sol->N, qp_sol->X, 0, controls);
-    }
-}
-
-
-void smpc_solver::get_controls (const int ind, double *controls)
-{
-    if (qp_sol != NULL)
-    {
-        state_handling::get_controls (qp_sol->N, qp_sol->X, ind, controls);
+        state_handling::get_controls (
+                smpc_solver.qp_sol->N, 
+                smpc_solver.qp_sol->X, 
+                ind, 
+                control_vector);
     }
 }

@@ -111,14 +111,6 @@ void WMG::init(const int _N)
 
     X = new double[SMPC_NUM_VAR*N];
 
-    for(int i=0; i<SMPC_NUM_STATE_VAR; i++)
-    {
-        init_state[i] = 0.0;
-        X_tilde[i] = 0.0;
-    }
-    next_control[0] = 0.0;
-    next_control[1] = 0.0;
-
     T = new double[N];
     h = new double[N];
 
@@ -680,7 +672,7 @@ WMGret WMG::FormPreviewWindow(bool *switch_foot)
 
 
 /**
- * @brief Initialize state (#A) and control #(B) matrices for inverted 
+ * @brief Initialize state (#A) and control (#B) matrices for inverted 
  * pendulum model.
  *
  * @param[in] sampling_time period of time T.
@@ -710,7 +702,7 @@ void WMG::initABMatrices (const double sampling_time)
  *
  * @attention If #A or #B are not initialized, the function does nothing.
  */
-void WMG::calculateNextState (const double *control, double *state)
+void WMG::calculateNextState (smpc::control &control, smpc::state_orig &state)
 {
     if ((A == NULL) || (B == NULL))
     {
@@ -718,29 +710,30 @@ void WMG::calculateNextState (const double *control, double *state)
     }
 
 
-    state[0] = state[0] * A[0]
-             + state[1] * A[3]
-             + state[2] * A[6]
-             + control[0] * B[0];
+    state.x()  = state.x()  * A[0]
+               + state.vx() * A[3]
+               + state.ax() * A[6]
+               + control.jx() * B[0];
 
-    state[1] = state[1] * A[4]
-             + state[2] * A[7]
-             + control[0] * B[1];
+    state.vx() = state.vx() * A[4]
+               + state.ax() * A[7]
+               + control.jx() * B[1];
 
-    state[2] = state[2] * A[8]
-             + control[0] * B[2];
+    state.ax() = state.ax() * A[8]
+               + control.jx() * B[2];
 
-    state[3] = state[3] * A[0]
-             + state[4] * A[3]
-             + state[5] * A[6]
-             + control[1] * B[0];
 
-    state[4] = state[4] * A[4]
-             + state[5] * A[7]
-             + control[1] * B[1];
+    state.y()  = state.y()  * A[0]
+               + state.vy() * A[3]
+               + state.ay() * A[6]
+               + control.jy() * B[0];
 
-    state[5] = state[5] * A[8]
-             + control[1] * B[2];
+    state.vy() = state.vy() * A[4]
+               + state.ay() * A[7]
+               + control.jy() * B[1];
+
+    state.ay() = state.ay() * A[8]
+               + control.jy() * B[2];
 }
 
 

@@ -97,7 +97,7 @@ class WMG
 
 
         void initABMatrices (const double);
-        void calculateNextState (const double *, double *);
+        void calculateNextState (smpc::control&, smpc::state_orig&);
 
         void getFootsteps(
                 std::vector<double> &,
@@ -130,14 +130,14 @@ class WMG
         /// A chunk of memory allocated for solution.
         double *X;
 
-        /** Initial state (tilde). */
-        double X_tilde[SMPC_NUM_STATE_VAR];
+        /** Initial state. */
+        smpc::state_tilde X_tilde;
         
-        /** Initial state (original). */
-        double init_state[SMPC_NUM_STATE_VAR];
+        /** Initial state. */
+        smpc::state_orig init_state;
 
         /// A storage for the controls, that must be applied to reach the next state.
-        double next_control[SMPC_NUM_CONTROL_VAR];
+        smpc::control next_control;
 
         /// Array of N absolute angles corresponding to supports in the preview window.
         double *angle;
@@ -183,8 +183,8 @@ class WMG
 
         
         ///@{
-        /// State and control matrices, that can be used to estimate a
-        /// @ref pX_tilde "state" based on the current state and controls.
+        /// State and control matrices, that can be used to determine the next
+        /// state based on the current state and the controls.
         double *A;
         double *B;
         ///@}

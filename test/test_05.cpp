@@ -46,7 +46,7 @@ int main(int argc, char **argv)
         test_start(argv[0]);
 
 
-    smpc_solver solver(
+    smpc::solver solver(
             wmg.N, 
             100,
             150, 
@@ -86,11 +86,11 @@ int main(int argc, char **argv)
         solver.set_parameters (wmg.T, wmg.h, wmg.h[0], wmg.angle, wmg.fp_x, wmg.fp_y, wmg.lb, wmg.ub);
         solver.form_init_fp (wmg.fp_x, wmg.fp_y, wmg.init_state, wmg.X);
         solver.solve();
-        solver.get_next_state (wmg.init_state);
+        wmg.init_state.get_next_state (solver);
         //------------------------------------------------------
 
-        solver.get_next_state_tilde (wmg.X_tilde);
-        fs_out << endl << wmg.init_state[0] << " " << wmg.init_state[3] << " " << wmg.X_tilde[0] << " " << wmg.X_tilde[3] << ";";
+        wmg.X_tilde.get_next_state (solver);
+        fs_out << endl << wmg.init_state.x() << " " << wmg.init_state.y() << " " << wmg.X_tilde.x() << " " << wmg.X_tilde.y() << ";";
 
 
         if (dump_to_stdout)
