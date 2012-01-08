@@ -102,6 +102,33 @@ namespace smpc
              * @param[in] ind index of a state [0 : N-1].
              */
             virtual void get_state (const solver &smpc_solver, const int ind) = 0;
+
+
+            // -------------------------------
+
+
+            /**
+             * @brief Set coordinates, velocities and accelerations 
+             * are assumed to be zero.
+             *
+             * @param[in] x_ x CoM/ZMP position [meter]
+             * @param[in] y_ y CoM/ZMP position [meter]
+             */
+            void set (double x_, double y_);
+
+
+            /**
+             * @brief Set state to given values.
+             *
+             * @param[in] x_  x CoM/ZMP position [meter]
+             * @param[in] vx_ x CoM velocity [meter/s]
+             * @param[in] ax_ x CoM acceleration [meter/s^2]
+             * @param[in] y_  y CoM/ZMP position [meter]
+             * @param[in] vy_ y CoM velocity [meter/s]
+             * @param[in] ay_ y CoM acceleration [meter/s^2]
+             */
+            void set (double x_, double vx_, double ax_,
+                     double y_, double vy_, double ay_);
     };
 
 
@@ -121,30 +148,6 @@ namespace smpc
         public:
             state_orig () : state () {};
 
-            /**
-             * @brief Set coordinates, velocities and accelerations 
-             * are assumed to be zero.
-             *
-             * @param[in] x_ x CoM position [meter]
-             * @param[in] y_ y CoM position [meter]
-             */
-            void set (double x_, double y_);
-
-
-            /**
-             * @brief Set state to given values.
-             *
-             * @param[in] x_  x CoM position [meter]
-             * @param[in] vx_ x CoM velocity [meter/s]
-             * @param[in] ax_ x CoM acceleration [meter/s^2]
-             * @param[in] y_  y CoM or ZMP position [meter]
-             * @param[in] vy_ y CoM velocity [meter/s]
-             * @param[in] ay_ y CoM acceleration [meter/s^2]
-             */
-            void set (double x_, double vx_, double ax_,
-                     double y_, double vy_, double ay_);
-
-            
             /// @{
             /// Refer to the base class state for description.
             void get_next_state (const solver &smpc_solver);

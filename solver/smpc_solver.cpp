@@ -112,6 +112,25 @@ smpc::state::state()
 }
 
 
+void smpc::state::set (double x_, double y_)
+{
+    set (x_, 0.0, 0.0, y_, 0.0, 0.0);
+}
+
+
+void smpc::state::set (
+        double x_, double vx_, double ax_,
+        double y_, double vy_, double ay_)
+{
+    state_vector[0] = x_;
+    state_vector[1] = vx_;
+    state_vector[2] = ax_;
+    state_vector[3] = y_;
+    state_vector[4] = vy_;
+    state_vector[5] = ay_;
+}
+
+
 //************************************************************
 
 
@@ -135,25 +154,6 @@ void smpc::state_tilde::get_state (const smpc::solver &smpc_solver, const int in
 
 
 //************************************************************
-
-void smpc::state_orig::set (double x_, double y_)
-{
-    set (x_, 0.0, 0.0, y_, 0.0, 0.0);
-}
-
-
-void smpc::state_orig::set (
-        double x_, double vx_, double ax_,
-        double y_, double vy_, double ay_)
-{
-    state_vector[0] = x_;
-    state_vector[1] = vx_;
-    state_vector[2] = ax_;
-    state_vector[3] = y_;
-    state_vector[4] = vy_;
-    state_vector[5] = ay_;
-}
-
 
 
 void smpc::state_orig::get_next_state (const smpc::solver &smpc_solver)

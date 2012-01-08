@@ -44,6 +44,8 @@ int main(int argc, char **argv)
     //-----------------------------------------------------------
     wmg.initABMatrices ((double) control_sampling_time_ms / 1000);
     wmg.init_state.set (0.019978839010709938, -6.490507362468014e-05);
+    // state_tilde = state_orig, when velocity = acceleration = 0
+    wmg.X_tilde.set (0.019978839010709938, -6.490507362468014e-05);
     //-----------------------------------------------------------
 
 
@@ -97,9 +99,9 @@ int main(int argc, char **argv)
         {
             // if the values are saved on each iteration the plot becomes sawlike.
             // better solution - more frequent sampling.
-            wmg.X_tilde.get_next_state (solver);
             ZMP_x.push_back(wmg.X_tilde.x());
             ZMP_y.push_back(wmg.X_tilde.y());
+            wmg.X_tilde.get_next_state (solver);
         }
         CoM_x.push_back(wmg.init_state.x());
         CoM_y.push_back(wmg.init_state.y());
