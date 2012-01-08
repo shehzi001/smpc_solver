@@ -50,7 +50,7 @@ This is the complete list of members for <a class="el" href="classWMG.html">WMG<
   <tr class="memlist"><td><a class="el" href="classWMG.html#aa6546fc281048a01086e16c054aac8d0">AddFootstep</a>(const double, const double, const double, fs_type type=FS_TYPE_AUTO)</td><td><a class="el" href="classWMG.html">WMG</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classWMG.html#aecb09f9e0fa4b9e5dd1dafe17fad7a44">angle</a></td><td><a class="el" href="classWMG.html">WMG</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classWMG.html#af36d87c015ef4af6ed9eecf635913715">B</a></td><td><a class="el" href="classWMG.html">WMG</a></td><td><code> [private]</code></td></tr>
-  <tr class="memlist"><td><a class="el" href="classWMG.html#a71447aaea5df8866474761c2f5aebba3">calculateNextState</a>(const double *, double *)</td><td><a class="el" href="classWMG.html">WMG</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="classWMG.html#ac272a9497cdaa7c02e91bb4744e3578f">calculateNextState</a>(smpc::control &amp;, smpc::state_orig &amp;)</td><td><a class="el" href="classWMG.html">WMG</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classWMG.html#a0addaffea4f4983363f7e531510eb095">current_reference_foot</a></td><td><a class="el" href="classWMG.html">WMG</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classWMG.html#a6770fc44d46e4fdda9ad584c02516ce5">current_step_number</a></td><td><a class="el" href="classWMG.html">WMG</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classWMG.html#af42bcfc0b3d59878fb724803d54e8759">def_constraint</a></td><td><a class="el" href="classWMG.html">WMG</a></td><td><code> [private]</code></td></tr>
@@ -72,16 +72,17 @@ This is the complete list of members for <a class="el" href="classWMG.html">WMG<
   <tr class="memlist"><td><a class="el" href="classWMG.html#aa84378e22b50ebce4f9f9056e68d2ead">hCoM</a></td><td><a class="el" href="classWMG.html">WMG</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classWMG.html#ab37e430acac26568b333363ea836e2ed">init</a>(const int)</td><td><a class="el" href="classWMG.html">WMG</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classWMG.html#a978ed6f6504561926ef38fb66378619e">init_param</a>(const double, const double, const double step_height_=0.0135)</td><td><a class="el" href="classWMG.html">WMG</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="classWMG.html#a78c2c24ecb9ac05cb2091bfe1de78733">init_state</a></td><td><a class="el" href="classWMG.html">WMG</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="classWMG.html#aca10bc81810528a22f2743aab7068193">init_state</a></td><td><a class="el" href="classWMG.html">WMG</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classWMG.html#a78156e135dcc7c88329eb814140d33ab">initABMatrices</a>(const double)</td><td><a class="el" href="classWMG.html">WMG</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classWMG.html#a0ae585fc064a79f71612a3602a209a7a">lb</a></td><td><a class="el" href="classWMG.html">WMG</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classWMG.html#abb248bd581bb239890067b5a73b4c4bd">N</a></td><td><a class="el" href="classWMG.html">WMG</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="classWMG.html#a3019a7b46605be5fc39e0c1a13648afa">next_control</a></td><td><a class="el" href="classWMG.html">WMG</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classWMG.html#aa73c2b69c254fbae2950889a8d72bca6">step_height</a></td><td><a class="el" href="classWMG.html">WMG</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classWMG.html#a951aff39ccdf6b194bcdc8ee7b83755f">T</a></td><td><a class="el" href="classWMG.html">WMG</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classWMG.html#a5aff192ac43f6e2abc81d59c67c97b80">ub</a></td><td><a class="el" href="classWMG.html">WMG</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classWMG.html#ac80c33f9aa501f95e373a1866e990d74">WMG</a>()</td><td><a class="el" href="classWMG.html">WMG</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classWMG.html#a801c492c750f587cb1cf873aaec5a96f">X</a></td><td><a class="el" href="classWMG.html">WMG</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="classWMG.html#a5ed5d3afbd2cf4c243d203714b5cfe06">X_tilde</a></td><td><a class="el" href="classWMG.html">WMG</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="classWMG.html#ad5869dd8ac3d5c021815bdf4a4fb2a4c">X_tilde</a></td><td><a class="el" href="classWMG.html">WMG</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classWMG.html#a19055d653eec01f23713f8576b17f5d6">zref_x</a></td><td><a class="el" href="classWMG.html">WMG</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classWMG.html#a9261037da75150ded329be163ffae710">zref_y</a></td><td><a class="el" href="classWMG.html">WMG</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classWMG.html#a9c401ba3687308b65cffbff340142b3f">~WMG</a>()</td><td><a class="el" href="classWMG.html">WMG</a></td><td></td></tr>

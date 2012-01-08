@@ -121,7 +121,7 @@ Purpose of the library</h2>
 <li>(2) determine desired positions of the end-effectors (feet);</li>
 <li>(3) using the model of the robot compute necessary changes of joint positions.</li>
 </ul>
-<p>The <a class="el" href="classsmpc__solver.html" title="API of the sparse MPC solver.">smpc_solver</a> library addresses the first step. The position of the CoM is determined using MPC scheme, where it is modeled using inverted pendulum in 3 dimensions. MPC implies, that we have to solve an optimization problem. The objective function is quadratic, additional constraints are imposed by position of the support foot/feet: we need to satisfy certain requrements to prevent robot from falling.</p>
+<p>The smpc_solver library addresses the first step. The position of the CoM is determined using MPC scheme, where it is modeled using inverted pendulum in 3 dimensions. MPC implies, that we have to solve an optimization problem. The objective function is quadratic, additional constraints are imposed by position of the support foot/feet: we need to satisfy certain requrements to prevent robot from falling.</p>
 <p>The <a class="el" href="classWMG.html" title="Defines the parameters of the Walking Pattern Generator.">WMG</a> library contains functions, which are necessary to define footsteps, prepare parameters for the solver library, determine positions of the feet.</p>
 <p>Terms and abbreviations:</p>
 <ul>

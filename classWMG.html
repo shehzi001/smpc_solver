@@ -79,9 +79,9 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#aab0611e41f63e540071e3f5513113c21">getSwingFootPosition</a> (const <a class="el" href="group__gWMG__API.html#gab12af782c2450a13fa3b291e4ba12d25">swing_foot_pos_type</a>, const int, const int, double *, double *)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine position and orientation of the swing foot.  <a href="#aab0611e41f63e540071e3f5513113c21"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a78156e135dcc7c88329eb814140d33ab">initABMatrices</a> (const double)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize state (<a class="el" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to estimate a state based on the current state and contr...">A</a>) and control #(B) matrices for inverted pendulum model.  <a href="#a78156e135dcc7c88329eb814140d33ab"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a71447aaea5df8866474761c2f5aebba3">calculateNextState</a> (const double *, double *)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate next state using inverted pendulum model (<a class="el" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to estimate a state based on the current state and contr...">A</a> and <a class="el" href="classWMG.html#af36d87c015ef4af6ed9eecf635913715">B</a> matrices).  <a href="#a71447aaea5df8866474761c2f5aebba3"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize state (<a class="el" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to determine the next state based on the current state a...">A</a>) and control (<a class="el" href="classWMG.html#af36d87c015ef4af6ed9eecf635913715">B</a>) matrices for inverted pendulum model.  <a href="#a78156e135dcc7c88329eb814140d33ab"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#ac272a9497cdaa7c02e91bb4744e3578f">calculateNextState</a> (<a class="el" href="classsmpc_1_1control.html">smpc::control</a> &amp;, <a class="el" href="classsmpc_1_1state__orig.html">smpc::state_orig</a> &amp;)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate next state using inverted pendulum model (<a class="el" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to determine the next state based on the current state a...">A</a> and <a class="el" href="classWMG.html#af36d87c015ef4af6ed9eecf635913715">B</a> matrices).  <a href="#ac272a9497cdaa7c02e91bb4744e3578f"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a804fa71ec0d14ffa344cda92fc626bc3">getFootsteps</a> (std::vector&lt; double &gt; &amp;, std::vector&lt; double &gt; &amp;, std::vector&lt; double &gt; &amp;)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Return coordinates of footstep reference points and rotation angles of footsteps (only for SS).  <a href="#a804fa71ec0d14ffa344cda92fc626bc3"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
@@ -100,8 +100,10 @@ Public Attributes</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">h = <a class="el" href="classWMG.html#aa84378e22b50ebce4f9f9056e68d2ead" title="Height of the CoM.">hCoM</a>/<a class="el" href="classWMG.html#adebe1dbad97447d7194bc58af9fdf208" title="Norm of the acceleration due to gravity. For the moment gravity is set equal to 9.81.">gravity</a>.  <a href="#a7df4b6f818bd1bebe6a2994f261bda85"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a801c492c750f587cb1cf873aaec5a96f">X</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">A chunk of memory allocated for solution.  <a href="#a801c492c750f587cb1cf873aaec5a96f"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a5ed5d3afbd2cf4c243d203714b5cfe06">X_tilde</a> [SMPC_NUM_STATE_VAR]</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a78c2c24ecb9ac05cb2091bfe1de78733">init_state</a> [SMPC_NUM_STATE_VAR]</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classsmpc_1_1state__tilde.html">smpc::state_tilde</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#ad5869dd8ac3d5c021815bdf4a4fb2a4c">X_tilde</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classsmpc_1_1state__orig.html">smpc::state_orig</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#aca10bc81810528a22f2743aab7068193">init_state</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classsmpc_1_1control.html">smpc::control</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a3019a7b46605be5fc39e0c1a13648afa">next_control</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">A storage for the controls, that must be applied to reach the next state.  <a href="#a3019a7b46605be5fc39e0c1a13648afa"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#aecb09f9e0fa4b9e5dd1dafe17fad7a44">angle</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Array of N absolute angles corresponding to supports in the preview window.  <a href="#aecb09f9e0fa4b9e5dd1dafe17fad7a44"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a6770fc44d46e4fdda9ad584c02516ce5">current_step_number</a></td></tr>
@@ -137,7 +139,7 @@ Private Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#abf42731e0f88ba41076a24194771d533">def_ds_num</a></td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#af56745c0eb4561167b80e71437d10a51">A</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">State and control matrices, that can be used to estimate a <a class="el" href="pProblemDef.html#pX_tilde">state</a> based on the current state and controls.  <a href="#af56745c0eb4561167b80e71437d10a51"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">State and control matrices, that can be used to determine the next state based on the current state and the controls.  <a href="#af56745c0eb4561167b80e71437d10a51"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#af36d87c015ef4af6ed9eecf635913715">B</a></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
@@ -256,7 +258,7 @@ Private Attributes</h2></td></tr>
 </dl>
 <dl class="note"><dt><b>Note:</b></dt><dd>Coordinates and angle are treated as absolute for the first step in the preview window. </dd></dl>
 
-<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00186">186</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00180">180</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
 
 </div>
 </div>
@@ -325,7 +327,7 @@ Private Attributes</h2></td></tr>
 <dd>
 Default vector of the PoS constraints is used. </dd></dl>
 
-<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00220">220</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00214">214</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
 
 </div>
 </div>
@@ -380,24 +382,24 @@ Default vector of the PoS constraints is used. </dd></dl>
 <dd>
 Default vector of the PoS constraintsi, number of iterations in single support and total number of iterations are used. </dd></dl>
 
-<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00247">247</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00241">241</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a71447aaea5df8866474761c2f5aebba3"></a><!-- doxytag: member="WMG::calculateNextState" ref="a71447aaea5df8866474761c2f5aebba3" args="(const double *, double *)" -->
+<a class="anchor" id="ac272a9497cdaa7c02e91bb4744e3578f"></a><!-- doxytag: member="WMG::calculateNextState" ref="ac272a9497cdaa7c02e91bb4744e3578f" args="(smpc::control &amp;, smpc::state_orig &amp;)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void WMG::calculateNextState </td>
           <td>(</td>
-          <td class="paramtype">const double *&#160;</td>
+          <td class="paramtype"><a class="el" href="classsmpc_1_1control.html">smpc::control</a> &amp;&#160;</td>
           <td class="paramname"><em>control</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double *&#160;</td>
+          <td class="paramtype"><a class="el" href="classsmpc_1_1state__orig.html">smpc::state_orig</a> &amp;&#160;</td>
           <td class="paramname"><em>state</em>&#160;</td>
         </tr>
         <tr>
@@ -409,7 +411,7 @@ Default vector of the PoS constraintsi, number of iterations in single support a
 </div>
 <div class="memdoc">
 
-<p>Calculate next state using inverted pendulum model (<a class="el" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to estimate a state based on the current state and contr...">A</a> and <a class="el" href="classWMG.html#af36d87c015ef4af6ed9eecf635913715">B</a> matrices). </p>
+<p>Calculate next state using inverted pendulum model (<a class="el" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to determine the next state based on the current state a...">A</a> and <a class="el" href="classWMG.html#af36d87c015ef4af6ed9eecf635913715">B</a> matrices). </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">control</td><td>1x2 vector of controls </td></tr>
@@ -417,9 +419,9 @@ Default vector of the PoS constraintsi, number of iterations in single support a
   </table>
   </dd>
 </dl>
-<dl class="attention"><dt><b>Attention:</b></dt><dd>If <a class="el" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to estimate a state based on the current state and contr...">A</a> or <a class="el" href="classWMG.html#af36d87c015ef4af6ed9eecf635913715">B</a> are not initialized, the function does nothing. </dd></dl>
+<dl class="attention"><dt><b>Attention:</b></dt><dd>If <a class="el" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to determine the next state based on the current state a...">A</a> or <a class="el" href="classWMG.html#af36d87c015ef4af6ed9eecf635913715">B</a> are not initialized, the function does nothing. </dd></dl>
 
-<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00711">711</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00705">705</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
 
 </div>
 </div>
@@ -447,7 +449,7 @@ Default vector of the PoS constraintsi, number of iterations in single support a
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>WMG_OK or WMG_HALT (simulation must be stopped) </dd></dl>
 
-<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00587">587</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00581">581</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
 
 </div>
 </div>
@@ -485,7 +487,7 @@ Default vector of the PoS constraintsi, number of iterations in single support a
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00753">753</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00748">748</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
 
 </div>
 </div>
@@ -530,7 +532,7 @@ Default vector of the PoS constraintsi, number of iterations in single support a
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00826">826</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00821">821</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
 
 </div>
 </div>
@@ -569,7 +571,7 @@ Default vector of the PoS constraintsi, number of iterations in single support a
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>index of the next SS. </dd></dl>
 
-<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00368">368</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00362">362</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
 
 </div>
 </div>
@@ -608,7 +610,7 @@ Default vector of the PoS constraintsi, number of iterations in single support a
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>index of the previous SS. </dd></dl>
 
-<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00403">403</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00397">397</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
 
 </div>
 </div>
@@ -665,7 +667,7 @@ Default vector of the PoS constraintsi, number of iterations in single support a
 Cannot be called on the first or last SS =&gt; must be called after <a class="el" href="classWMG.html#ac004229f4f48677e107b9079386d244f" title="Forms a preview window.">FormPreviewWindow()</a>.</dd></dl>
 <dl class="note"><dt><b>Note:</b></dt><dd>If we are in the double support then prev_swing_pos = next_swing_pos, and repeat_times = repeated_times = 0. </dd></dl>
 
-<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00448">448</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00442">442</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
 
 </div>
 </div>
@@ -728,7 +730,7 @@ Cannot be called on the first or last SS =&gt; must be called after <a class="el
 Cannot be called on the first or last SS =&gt; must be called after <a class="el" href="classWMG.html#ac004229f4f48677e107b9079386d244f" title="Forms a preview window.">FormPreviewWindow()</a>.</dd></dl>
 <dl class="note"><dt><b>Note:</b></dt><dd>If loops_per_preview_iter is set to 1, then the function returns a position at the end of preview window with number loops_in_current_preview. </dd></dl>
 
-<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00528">528</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00522">522</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
 
 </div>
 </div>
@@ -803,7 +805,7 @@ Cannot be called on the first or last SS =&gt; must be called after <a class="el
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00155">155</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00149">149</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
 
 </div>
 </div>
@@ -822,7 +824,7 @@ Cannot be called on the first or last SS =&gt; must be called after <a class="el
 </div>
 <div class="memdoc">
 
-<p>Initialize state (<a class="el" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to estimate a state based on the current state and contr...">A</a>) and control #(B) matrices for inverted pendulum model. </p>
+<p>Initialize state (<a class="el" href="classWMG.html#af56745c0eb4561167b80e71437d10a51" title="State and control matrices, that can be used to determine the next state based on the current state a...">A</a>) and control (<a class="el" href="classWMG.html#af36d87c015ef4af6ed9eecf635913715">B</a>) matrices for inverted pendulum model. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">sampling_time</td><td>period of time T. </td></tr>
@@ -830,7 +832,7 @@ Cannot be called on the first or last SS =&gt; must be called after <a class="el
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00686">686</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00680">680</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
 
 </div>
 </div>
@@ -846,9 +848,9 @@ Cannot be called on the first or last SS =&gt; must be called after <a class="el
 </div>
 <div class="memdoc">
 
-<p>State and control matrices, that can be used to estimate a <a class="el" href="pProblemDef.html#pX_tilde">state</a> based on the current state and controls. </p>
+<p>State and control matrices, that can be used to determine the next state based on the current state and the controls. </p>
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00185">185</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00188">188</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -865,7 +867,7 @@ Cannot be called on the first or last SS =&gt; must be called after <a class="el
 
 <p>Array of N absolute angles corresponding to supports in the preview window. </p>
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00140">140</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00143">143</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -880,7 +882,7 @@ Cannot be called on the first or last SS =&gt; must be called after <a class="el
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00186">186</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00189">189</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -897,7 +899,7 @@ Cannot be called on the first or last SS =&gt; must be called after <a class="el
 
 <p>Reference foot (R/L), even in DS we need to choose a reference foot. </p>
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00165">165</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00168">168</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -913,7 +915,7 @@ Cannot be called on the first or last SS =&gt; must be called after <a class="el
 <div class="memdoc">
 <p>This is the step in FS that is at the start of the current preview window. </p>
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00162">162</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00165">165</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -928,7 +930,7 @@ Cannot be called on the first or last SS =&gt; must be called after <a class="el
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00175">175</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00178">178</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -943,7 +945,7 @@ Cannot be called on the first or last SS =&gt; must be called after <a class="el
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00178">178</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00181">181</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -958,7 +960,7 @@ Cannot be called on the first or last SS =&gt; must be called after <a class="el
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00179">179</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00182">182</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -973,7 +975,7 @@ Cannot be called on the first or last SS =&gt; must be called after <a class="el
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00176">176</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00179">179</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -990,7 +992,7 @@ Cannot be called on the first or last SS =&gt; must be called after <a class="el
 
 <p>Coordinates of N points satisfying constraints,. </p>
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00144">144</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00147">147</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -1005,7 +1007,7 @@ Cannot be called on the first or last SS =&gt; must be called after <a class="el
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00145">145</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00148">148</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -1077,17 +1079,17 @@ Cannot be called on the first or last SS =&gt; must be called after <a class="el
 
 </div>
 </div>
-<a class="anchor" id="a78c2c24ecb9ac05cb2091bfe1de78733"></a><!-- doxytag: member="WMG::init_state" ref="a78c2c24ecb9ac05cb2091bfe1de78733" args="[SMPC_NUM_STATE_VAR]" -->
+<a class="anchor" id="aca10bc81810528a22f2743aab7068193"></a><!-- doxytag: member="WMG::init_state" ref="aca10bc81810528a22f2743aab7068193" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">double <a class="el" href="classWMG.html#a78c2c24ecb9ac05cb2091bfe1de78733">WMG::init_state</a>[SMPC_NUM_STATE_VAR]</td>
+          <td class="memname"><a class="el" href="classsmpc_1_1state__orig.html">smpc::state_orig</a> <a class="el" href="classWMG.html#aca10bc81810528a22f2743aab7068193">WMG::init_state</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
-<p>Initial state (original). </p>
+<p>Initial state. </p>
 
 <p>Definition at line <a class="el" href="WMG_8h_source.html#l00137">137</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
@@ -1106,7 +1108,7 @@ Cannot be called on the first or last SS =&gt; must be called after <a class="el
 
 <p>2*N bounds for coordinates of ZMP position. </p>
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00150">150</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00153">153</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -1127,6 +1129,23 @@ Cannot be called on the first or last SS =&gt; must be called after <a class="el
 
 </div>
 </div>
+<a class="anchor" id="a3019a7b46605be5fc39e0c1a13648afa"></a><!-- doxytag: member="WMG::next_control" ref="a3019a7b46605be5fc39e0c1a13648afa" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classsmpc_1_1control.html">smpc::control</a> <a class="el" href="classWMG.html#a3019a7b46605be5fc39e0c1a13648afa">WMG::next_control</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>A storage for the controls, that must be applied to reach the next state. </p>
+
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00140">140</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="aa73c2b69c254fbae2950889a8d72bca6"></a><!-- doxytag: member="WMG::step_height" ref="aa73c2b69c254fbae2950889a8d72bca6" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -1140,7 +1159,7 @@ Cannot be called on the first or last SS =&gt; must be called after <a class="el
 
 <p>The maximum height, that can be reached by a swing foot. </p>
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00168">168</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00171">171</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -1172,7 +1191,7 @@ Cannot be called on the first or last SS =&gt; must be called after <a class="el
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00151">151</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00154">154</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -1193,17 +1212,17 @@ Cannot be called on the first or last SS =&gt; must be called after <a class="el
 
 </div>
 </div>
-<a class="anchor" id="a5ed5d3afbd2cf4c243d203714b5cfe06"></a><!-- doxytag: member="WMG::X_tilde" ref="a5ed5d3afbd2cf4c243d203714b5cfe06" args="[SMPC_NUM_STATE_VAR]" -->
+<a class="anchor" id="ad5869dd8ac3d5c021815bdf4a4fb2a4c"></a><!-- doxytag: member="WMG::X_tilde" ref="ad5869dd8ac3d5c021815bdf4a4fb2a4c" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">double <a class="el" href="classWMG.html#a5ed5d3afbd2cf4c243d203714b5cfe06">WMG::X_tilde</a>[SMPC_NUM_STATE_VAR]</td>
+          <td class="memname"><a class="el" href="classsmpc_1_1state__tilde.html">smpc::state_tilde</a> <a class="el" href="classWMG.html#ad5869dd8ac3d5c021815bdf4a4fb2a4c">WMG::X_tilde</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
-<p>Initial state (tilde). </p>
+<p>Initial state. </p>
 
 <p>Definition at line <a class="el" href="WMG_8h_source.html#l00134">134</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
@@ -1222,7 +1241,7 @@ Cannot be called on the first or last SS =&gt; must be called after <a class="el
 
 <p>N reference coordinates of ZMP. </p>
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00156">156</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00159">159</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -1237,7 +1256,7 @@ Cannot be called on the first or last SS =&gt; must be called after <a class="el
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00157">157</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00160">160</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
