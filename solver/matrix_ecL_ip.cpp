@@ -362,24 +362,24 @@ void matrix_ecL_ip::form_L_diag (const double *ecLp, double *ecLc)
  * @param[in] ppar      parameters.
  * @param[in] i2hess    2*N diagonal elements of inverted hessian.
  */
-void matrix_ecL_ip::form (const problem_parameters* ppar, const double *i2hess)
+void matrix_ecL_ip::form (const problem_parameters& ppar, const double *i2hess)
 {
     int i;
     state_parameters stp;
 
-    stp = ppar->spar[0];
+    stp = ppar.spar[0];
 
     // the first matrix on diagonal
-    form_M (stp.sin, stp.cos, ppar->i2Q, i2hess);
-    form_MBiPB (stp.B, ppar->i2P, ecL);
+    form_M (stp.sin, stp.cos, ppar.i2Q, i2hess);
+    form_MBiPB (stp.B, ppar.i2P, ecL);
     form_L_diag (ecL);
 
     // offsets
     double *ecL_cur = &ecL[MATRIX_SIZE_6x6];
     double *ecL_prev = &ecL[0];
-    for (i = 1; i < ppar->N; i++)
+    for (i = 1; i < ppar.N; i++)
     {
-        stp = ppar->spar[i];
+        stp = ppar.spar[i];
 
         // form all matrices
         form_MAT (stp.A3, stp.A6);
@@ -391,8 +391,8 @@ void matrix_ecL_ip::form (const problem_parameters* ppar, const double *i2hess)
 
 
         i2hess = &i2hess[2];
-        form_M (stp.sin, stp.cos, ppar->i2Q, i2hess);
-        form_MBiPB (stp.B, ppar->i2P, ecL_cur);
+        form_M (stp.sin, stp.cos, ppar.i2Q, i2hess);
+        form_MBiPB (stp.B, ppar.i2P, ecL_cur);
         form_AMATMBiPB(stp.A3, stp.A6, ecL_cur);
         form_L_diag(ecL_prev, ecL_cur);
 

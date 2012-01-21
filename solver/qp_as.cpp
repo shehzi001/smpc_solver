@@ -261,7 +261,7 @@ int qp_as::choose_excl_constr (const double *lambda)
 int qp_as::solve ()
 {
     // obtain dX
-    chol.solve(this, iHg, X, dX);
+    chol.solve(*this, iHg, X, dX);
 
     for (;;)
     {
@@ -276,10 +276,10 @@ int qp_as::solve ()
         // no new inequality constraints
         if (activated_var_num == -1)
         {
-            int ind_exclude = choose_excl_constr (chol.get_lambda(this));
+            int ind_exclude = choose_excl_constr (chol.get_lambda(*this));
             if (ind_exclude != -1)
             {
-                chol.down_resolve (this, iHg, nW, W, ind_exclude, X, dX);
+                chol.down_resolve (*this, iHg, nW, W, ind_exclude, X, dX);
             }
             else
             {
@@ -289,7 +289,7 @@ int qp_as::solve ()
         else
         {
             // add row to the L matrix and find new dX
-            chol.up_resolve (this, iHg, nW, W, X, dX);
+            chol.up_resolve (*this, iHg, nW, W, X, dX);
         }
     }
 

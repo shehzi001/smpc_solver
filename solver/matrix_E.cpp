@@ -25,19 +25,19 @@
  * @param[in] x vector x (#SMPC_NUM_VAR * N).
  * @param[out] result vector E*x (#SMPC_NUM_STATE_VAR * N)
  */
-void matrix_E::form_Ex (const problem_parameters* ppar, const double *x, double *result)
+void matrix_E::form_Ex (const problem_parameters& ppar, const double *x, double *result)
 {
     int i;
     state_parameters stp;
 
 
-    const double *control = &x[ppar->N*SMPC_NUM_STATE_VAR];
+    const double *control = &x[ppar.N*SMPC_NUM_STATE_VAR];
     // a pointer to 6 current elements of result
     double *res = result;
 
-    for (i = 0; i < ppar->N; i++)
+    for (i = 0; i < ppar.N; i++)
     {
-        stp = ppar->spar[i];
+        stp = ppar.spar[i];
 
         // a pointer to 6 current state variables
         const double *xc = &x[i*SMPC_NUM_STATE_VAR];
@@ -54,8 +54,8 @@ void matrix_E::form_Ex (const problem_parameters* ppar, const double *x, double 
 
         if (i != 0) // no multiplication by A on the first iteration
         {
-            double cosA = ppar->spar[i-1].cos;
-            double sinA = ppar->spar[i-1].sin;
+            double cosA = ppar.spar[i-1].cos;
+            double sinA = ppar.spar[i-1].sin;
 
             xc = &x[(i-1)*SMPC_NUM_STATE_VAR];
 
@@ -83,7 +83,7 @@ void matrix_E::form_Ex (const problem_parameters* ppar, const double *x, double 
  * @param[in] x vector x (#SMPC_NUM_STATE_VAR * N).
  * @param[out] result vector E' * nu (#SMPC_NUM_VAR * N)
  */
-void matrix_E::form_ETx (const problem_parameters* ppar, const double *x, double *result)
+void matrix_E::form_ETx (const problem_parameters& ppar, const double *x, double *result)
 {
     int i;
     state_parameters stp;
@@ -91,11 +91,11 @@ void matrix_E::form_ETx (const problem_parameters* ppar, const double *x, double
 
 
     double *res = result;
-    double *control_res = &result[ppar->N*SMPC_NUM_STATE_VAR];
+    double *control_res = &result[ppar.N*SMPC_NUM_STATE_VAR];
 
-    for (i = 0; i < ppar->N; i++)
+    for (i = 0; i < ppar.N; i++)
     {
-        stp = ppar->spar[i];
+        stp = ppar.spar[i];
 
 
         // a pointer to 6 current elements of result
@@ -112,10 +112,10 @@ void matrix_E::form_ETx (const problem_parameters* ppar, const double *x, double
         res[5] = -xc[5];
 
 
-        if (i != ppar->N-1) // no multiplication by A on the last iteration
+        if (i != ppar.N-1) // no multiplication by A on the last iteration
         {
-            double A3 = ppar->spar[i+1].A3;
-            double A6 = ppar->spar[i+1].A6;
+            double A3 = ppar.spar[i+1].A3;
+            double A6 = ppar.spar[i+1].A6;
 
             xc = &x[i*SMPC_NUM_STATE_VAR + SMPC_NUM_STATE_VAR];
 

@@ -37,7 +37,7 @@ class chol_solve_ip
         chol_solve_ip (const int);
         ~chol_solve_ip();
 
-        void solve(const problem_parameters*, const double *, const double *, const double *, double *);
+        void solve(const problem_parameters&, const double *, const double *, const double *, double *);
 
     private:
         /// matrix of equality constraints

@@ -34,8 +34,8 @@ class matrix_E
         matrix_E (){};
         ~matrix_E (){};
 
-        void form_Ex (const problem_parameters*, const double *, double *);
-        void form_ETx (const problem_parameters*, const double *, double *);
+        void form_Ex (const problem_parameters&, const double *, double *);
+        void form_ETx (const problem_parameters&, const double *, double *);
 };
 /// @}
 #endif /*MATRIX_E_H*/

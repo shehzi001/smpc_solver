@@ -124,9 +124,9 @@ void matrix_ecL_as::form_iQAT (const double A3, const double A6, const double *i
  *
  * @attention Only the elements below the main diagonal are initialized.
  */
-void matrix_ecL_as::form_AiQATiQBiPB (const problem_parameters *ppar, const state_parameters stp, double *result)
+void matrix_ecL_as::form_AiQATiQBiPB (const problem_parameters &ppar, const state_parameters& stp, double *result)
 {
-    form_iQBiPB (stp.B, ppar->i2Q, ppar->i2P, result);
+    form_iQBiPB (stp.B, ppar.i2Q, ppar.i2P, result);
 
     // 1st column
     result[0] += iQAT[0] + stp.A3*iQAT[1] + stp.A6*iQAT[2];
@@ -213,7 +213,7 @@ void matrix_ecL_as::form_L_diag(const double *ecLp, double *ecLc)
  *
  * @param[in] ppar parameters.
  */
-void matrix_ecL_as::form (const problem_parameters* ppar)
+void matrix_ecL_as::form (const problem_parameters& ppar)
 {
     int i;
     state_parameters stp;
@@ -221,18 +221,18 @@ void matrix_ecL_as::form (const problem_parameters* ppar)
 
 
     // the first matrix on diagonal
-    stp = ppar->spar[0];
-    form_iQBiPB (stp.B, ppar->i2Q, ppar->i2P, ecL);
+    stp = ppar.spar[0];
+    form_iQBiPB (stp.B, ppar.i2Q, ppar.i2P, ecL);
     chol_dec (ecL);
 
 
     // offsets
     double *ecL_cur = &ecL[MATRIX_SIZE_3x3];
     double *ecL_prev = ecL;
-    for (i = 1; i < ppar->N; i++)
+    for (i = 1; i < ppar.N; i++)
     {
-        stp = ppar->spar[i];
-        form_iQAT (stp.A3, stp.A6, ppar->i2Q);
+        stp = ppar.spar[i];
+        form_iQAT (stp.A3, stp.A6, ppar.i2Q);
 
         // form (b), (d), (f) ... 
         form_L_non_diag(ecL_prev, ecL_cur);

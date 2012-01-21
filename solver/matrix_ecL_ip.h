@@ -46,7 +46,7 @@ class matrix_ecL_ip
         matrix_ecL_ip(const int);
         ~matrix_ecL_ip();
 
-        void form (const problem_parameters*, const double *);
+        void form (const problem_parameters&, const double *);
 
         void solve_backward (const int, double *);
         void solve_forward (const int, double *);

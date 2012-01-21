@@ -412,7 +412,7 @@ bool qp_ip::solve_onestep (const double kappa)
     form_phi_X ();
     form_i2hess_grad ();
 
-    chol.solve (this, i2hess_grad, i2hess, X, dX);
+    chol.solve (*this, i2hess_grad, i2hess, X, dX);
 
 
     // stopping criterion (decrement)

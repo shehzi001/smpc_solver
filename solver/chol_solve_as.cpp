@@ -69,12 +69,12 @@ chol_solve_as::~chol_solve_as()
  * @param[out] row 's_a' row
  */
 void chol_solve_as::form_sa_row(
-        const problem_parameters* ppar, 
+        const problem_parameters& ppar, 
         const int ic_num, 
         const int var_num, 
         double *row)
 {
-    double aiH = ppar->i2Q[0]; // a'*inv(H) = a'*inv(H)*a
+    double aiH = ppar.i2Q[0]; // a'*inv(H) = a'*inv(H)*a
     int state_num = var_num / 2; // number of state in the preview window
     int first_num = state_num * SMPC_NUM_STATE_VAR; // first !=0 element
     double aiHcosA;
@@ -82,10 +82,10 @@ void chol_solve_as::form_sa_row(
 
 
     // reset memory
-    memset(row, 0, (SMPC_NUM_STATE_VAR * ppar->N + ic_num) * sizeof(double));
+    memset(row, 0, (SMPC_NUM_STATE_VAR * ppar.N + ic_num) * sizeof(double));
 
-    aiHcosA = aiH * ppar->spar[state_num].cos;
-    aiHsinA = aiH * ppar->spar[state_num].sin;
+    aiHcosA = aiH * ppar.spar[state_num].cos;
+    aiHsinA = aiH * ppar.spar[state_num].sin;
 
     // compute elements of 'a'
     if (var_num%2 == 0)   // constraint on z_x
@@ -95,7 +95,7 @@ void chol_solve_as::form_sa_row(
         row[first_num + 3] = -aiHsinA;
 
         // a * A'*R'
-        if (state_num != ppar->N-1)
+        if (state_num != ppar.N-1)
         {
             row[first_num + 6] = aiHcosA;
             row[first_num + 9] = aiHsinA;
@@ -108,7 +108,7 @@ void chol_solve_as::form_sa_row(
         row[first_num + 3] = -aiHcosA;
 
         // a * A'*R'
-        if (state_num != ppar->N-1)
+        if (state_num != ppar.N-1)
         {
             row[first_num + 6] = -aiHsinA;
             row[first_num + 9] = aiHcosA;
@@ -116,7 +116,7 @@ void chol_solve_as::form_sa_row(
     }
 
     // initialize the last element in the row
-    row[ic_num + ppar->N*SMPC_NUM_STATE_VAR] = aiH;
+    row[ic_num + ppar.N*SMPC_NUM_STATE_VAR] = aiH;
 }
 
 
@@ -130,14 +130,14 @@ void chol_solve_as::form_sa_row(
  * @param[out] dx   feasible descent direction, must be allocated.
  */
 void chol_solve_as::solve(
-        const problem_parameters* ppar, 
+        const problem_parameters& ppar, 
         const double *iHg,
         const double *x, 
         double *dx)
 {
     double *s_nu = nu;
     int i;
-    double i2Q[3] = {ppar->i2Q[0], ppar->i2Q[1], ppar->i2Q[2]};
+    double i2Q[3] = {ppar.i2Q[0], ppar.i2Q[1], ppar.i2Q[2]};
 
 
     // generate L
@@ -145,11 +145,11 @@ void chol_solve_as::solve(
 
     // -(x + inv(H) * g)
     //  x - initial feasible point
-    for (i = 0; i < SMPC_NUM_VAR * ppar->N; i++)
+    for (i = 0; i < SMPC_NUM_VAR * ppar.N; i++)
     {
         XiHg[i] = -x[i];
     }
-    for (i = 0; i < 2*ppar->N; i++)
+    for (i = 0; i < 2*ppar.N; i++)
     {
         XiHg[i*3] -= iHg[i];
     }
@@ -158,13 +158,13 @@ void chol_solve_as::solve(
     E.form_Ex (ppar, XiHg, s_nu);
 
     // obtain nu
-    ecL.solve_forward(ppar->N, s_nu);
+    ecL.solve_forward(ppar.N, s_nu);
     // make copy of z - it is constant
-    for (i = 0; i < SMPC_NUM_STATE_VAR * ppar->N; i++)
+    for (i = 0; i < SMPC_NUM_STATE_VAR * ppar.N; i++)
     {
         z[i] = s_nu[i];
     }
-    ecL.solve_backward(ppar->N, s_nu);
+    ecL.solve_backward(ppar.N, s_nu);
 
     // E' * nu
     E.form_ETx (ppar, s_nu, dx);
@@ -175,15 +175,15 @@ void chol_solve_as::solve(
     // dx = -(x + inv(H) * g + inv(H) * E' * nu)
     //        ~~~~~~~~~~~~~~            ~~~~~~~
     // dx   -(   -XiHg       + inv(H) *   dx   ) 
-    for (i = 0; i < ppar->N*SMPC_NUM_STATE_VAR; i++)
+    for (i = 0; i < ppar.N*SMPC_NUM_STATE_VAR; i++)
     {
         // dx for state variables
         dx[i] = XiHg[i] - i2Q[i%3] * dx[i];
     }
-    for (; i < ppar->N*SMPC_NUM_VAR; i++)
+    for (; i < ppar.N*SMPC_NUM_VAR; i++)
     {
         // dx for control variables
-        dx[i] = XiHg[i] - ppar->i2P * dx[i];
+        dx[i] = XiHg[i] - ppar.i2P * dx[i];
     }
 }
 
@@ -200,7 +200,7 @@ void chol_solve_as::solve(
  * @param[out] dx   feasible descent direction, must be allocated.
  */
 void chol_solve_as::up_resolve(
-        const problem_parameters* ppar, 
+        const problem_parameters& ppar, 
         const double *iHg,
         const int nW, 
         const int *W, 
@@ -221,7 +221,7 @@ void chol_solve_as::up_resolve(
  * @param[in] nW number of added inequality constraints + 1.
  * @param[in] W indexes of added inequality constraints + one index to be added.
  */
-void chol_solve_as::update (const problem_parameters* ppar, const int nW, const int *W)
+void chol_solve_as::update (const problem_parameters& ppar, const int nW, const int *W)
 {
     int i, j, k;
 
@@ -229,7 +229,7 @@ void chol_solve_as::update (const problem_parameters* ppar, const int nW, const 
     int state_num = W[ic_num] / 2; // number of state in the preview window
     double *new_row = icL[ic_num]; // current row in icL
 
-    int last_num = ic_num + ppar->N*SMPC_NUM_STATE_VAR; // the last !=0 element
+    int last_num = ic_num + ppar.N*SMPC_NUM_STATE_VAR; // the last !=0 element
 
     // a matrix on diagonal of ecL
     double* ecL_diag = &ecL.ecL[state_num * MATRIX_SIZE_3x3 * 2];
@@ -248,7 +248,7 @@ void chol_solve_as::update (const problem_parameters* ppar, const int nW, const 
     // it, they can be 1,2,6; 1,5,6; 4,5,6
     k = state_num*SMPC_NUM_STATE_VAR;
     double* cur_pos = &new_row[k];
-    for(i = state_num*2; i < ppar->N*2; i++) // variables corresponding to x and 
+    for(i = state_num*2; i < ppar.N*2; i++) // variables corresponding to x and 
     {                                  // y are computed using the same matrices
         double tmp_copy_el[3];
 
@@ -264,7 +264,7 @@ void chol_solve_as::update (const problem_parameters* ppar, const int nW, const 
         // ----------------------------------------------------------------
         cur_pos[2] /= ecL_diag[8];
         tmp_copy_el[2] = cur_pos[2];
-        if (i < 2*(ppar->N - 1))  // non-diagonal matrix of ecL cannot be
+        if (i < 2*(ppar.N - 1))  // non-diagonal matrix of ecL cannot be
         {                   // used when the last state is processed
 
             // these elements can be updated here, since they are not 
@@ -293,7 +293,7 @@ void chol_solve_as::update (const problem_parameters* ppar, const int nW, const 
         // in icL
         for (j = 0; j < ic_num; j++)
         {
-            new_row[ppar->N*SMPC_NUM_STATE_VAR + j] -= tmp_copy_el[0] * icL[j][k]
+            new_row[ppar.N*SMPC_NUM_STATE_VAR + j] -= tmp_copy_el[0] * icL[j][k]
                                           + tmp_copy_el[1] * icL[j][k+1]
                                           + tmp_copy_el[2] * icL[j][k+2];
         }
@@ -302,9 +302,9 @@ void chol_solve_as::update (const problem_parameters* ppar, const int nW, const 
     }
 
     // update elements in the end of icL
-    for(i = SMPC_NUM_STATE_VAR * ppar->N; i < last_num; i++)
+    for(i = SMPC_NUM_STATE_VAR * ppar.N; i < last_num; i++)
     {
-        new_row[i] /= icL[i - ppar->N*SMPC_NUM_STATE_VAR][i];
+        new_row[i] /= icL[i - ppar.N*SMPC_NUM_STATE_VAR][i];
         double tmp_copy_el = new_row[i];
 
         // determine number in the row of L
@@ -312,9 +312,9 @@ void chol_solve_as::update (const problem_parameters* ppar, const int nW, const 
         // update the last (diagonal) number in the row
         new_row[last_num] -= tmp_copy_el * tmp_copy_el;
 
-        for (j = (i - ppar->N*SMPC_NUM_STATE_VAR) + 1; j < ic_num; j++)
+        for (j = (i - ppar.N*SMPC_NUM_STATE_VAR) + 1; j < ic_num; j++)
         {
-            new_row[ppar->N*SMPC_NUM_STATE_VAR + j] -= tmp_copy_el * icL[j][i];
+            new_row[ppar.N*SMPC_NUM_STATE_VAR + j] -= tmp_copy_el * icL[j][i];
         }
     }
 
@@ -334,7 +334,7 @@ void chol_solve_as::update (const problem_parameters* ppar, const int nW, const 
  * @param[in] x     initial guess.
  */
 void chol_solve_as::update_z (
-        const problem_parameters* ppar, 
+        const problem_parameters& ppar, 
         const double *iHg,
         const int nW, 
         const int *W, 
@@ -342,7 +342,7 @@ void chol_solve_as::update_z (
 {
     int ic_num = nW-1; // index of added constraint in W
     // update lagrange multipliers
-    int zind = ppar->N*SMPC_NUM_STATE_VAR + ic_num;
+    int zind = ppar.N*SMPC_NUM_STATE_VAR + ic_num;
     // sn
     double zn = -iHg[W[ic_num]] - x[W[ic_num]*3];
 
@@ -370,7 +370,7 @@ void chol_solve_as::update_z (
  * @param[out] dx   feasible descent direction, must be allocated.
  */
 void chol_solve_as::resolve (
-        const problem_parameters* ppar, 
+        const problem_parameters& ppar, 
         const double *iHg,
         const int nW, 
         const int *W, 
@@ -379,14 +379,14 @@ void chol_solve_as::resolve (
 {
     int i,j;
 
-    double i2Q[3] = {ppar->i2Q[0], ppar->i2Q[1], ppar->i2Q[2]};
+    double i2Q[3] = {ppar.i2Q[0], ppar.i2Q[1], ppar.i2Q[2]};
 
 
     // backward substituition for icL
-    for (i = SMPC_NUM_STATE_VAR*ppar->N + nW-1; i >= SMPC_NUM_STATE_VAR*ppar->N; i--)
+    for (i = SMPC_NUM_STATE_VAR*ppar.N + nW-1; i >= SMPC_NUM_STATE_VAR*ppar.N; i--)
     {
         double nui = nu[i];
-        double *icL_row = icL[i-ppar->N*SMPC_NUM_STATE_VAR];
+        double *icL_row = icL[i-ppar.N*SMPC_NUM_STATE_VAR];
 
         nui = nui / icL_row[i];
         for (j = i - 1; j >= 0; j--)
@@ -396,7 +396,7 @@ void chol_solve_as::resolve (
         nu[i] = nui;
     }
     // backward substituition for ecL
-    ecL.solve_backward(ppar->N, nu);
+    ecL.solve_backward(ppar.N, nu);
 
 
     // E' * nu
@@ -407,24 +407,24 @@ void chol_solve_as::resolve (
     // dx = -(x + inv(H) * g + inv(H) * E' * nu)
     //            ~~~~~~~~~~            ~~~~~~~
     // dx   -(x +  iHg       + inv(H) *   dx   ) 
-    for (i = 0; i < ppar->N*SMPC_NUM_STATE_VAR; i++)
+    for (i = 0; i < ppar.N*SMPC_NUM_STATE_VAR; i++)
     {
         // dx for state variables
         dx[i] = -x[i] - i2Q[i%3] * dx[i];
     }
-    for (; i < ppar->N*SMPC_NUM_VAR; i++)
+    for (; i < ppar.N*SMPC_NUM_VAR; i++)
     {
         // dx for control variables
-        dx[i] = -x[i] - ppar->i2P * dx[i];
+        dx[i] = -x[i] - ppar.i2P * dx[i];
     }
-    for (i = 0; i < 2*ppar->N; i++)
+    for (i = 0; i < 2*ppar.N; i++)
     {
         // dx for state variables
         dx[i*3] -= iHg[i];
     }
 
     // -iH * A(W,:)' * lambda
-    double *lambda = &nu[ppar->N*SMPC_NUM_STATE_VAR];
+    double *lambda = &nu[ppar.N*SMPC_NUM_STATE_VAR];
     for (i = 0; i < nW; i++)
     {
         dx[W[i]*3] -= i2Q[0] * lambda[i];
@@ -448,7 +448,7 @@ void chol_solve_as::resolve (
  * @note Downdate of vector @ref pz 'z' is described on the page '@ref pRemoveICz'.
  */
 void chol_solve_as::down_resolve(
-        const problem_parameters* ppar, 
+        const problem_parameters& ppar, 
         const double *iHg,
         const int nW, 
         const int *W, 
@@ -461,17 +461,17 @@ void chol_solve_as::down_resolve(
     double z_tmp = 0;
     for (int i = nW; i > ind_exclude; i--)
     {
-        int zind = ppar->N*SMPC_NUM_STATE_VAR + i;
+        int zind = ppar.N*SMPC_NUM_STATE_VAR + i;
         double zn = z[zind] * icL[i][zind];
         z[zind] = z_tmp;
 
-        for (int j = ppar->N*SMPC_NUM_STATE_VAR + ind_exclude; j < zind; j++)
+        for (int j = ppar.N*SMPC_NUM_STATE_VAR + ind_exclude; j < zind; j++)
         {
             zn += z[j] * icL[i][j];
         }
         z_tmp = zn;
     }
-    z[ppar->N*SMPC_NUM_STATE_VAR + ind_exclude] = z_tmp;
+    z[ppar.N*SMPC_NUM_STATE_VAR + ind_exclude] = z_tmp;
 
 
     // downdate L
@@ -481,12 +481,12 @@ void chol_solve_as::down_resolve(
     // recompute elements of z
     for (int i = ind_exclude; i < nW; i++)
     {
-        int zind = ppar->N*SMPC_NUM_STATE_VAR + i;
+        int zind = ppar.N*SMPC_NUM_STATE_VAR + i;
         double zn = z[zind];
 
         // zn
         // start from the first !=0 element
-        for (int j = ppar->N*SMPC_NUM_STATE_VAR+ind_exclude; j < zind; j++)
+        for (int j = ppar.N*SMPC_NUM_STATE_VAR+ind_exclude; j < zind; j++)
         {
             zn -= z[j] * icL[i][j];
         }
@@ -494,7 +494,7 @@ void chol_solve_as::down_resolve(
     }
 
     // copy z to nu
-    for (int i = 0; i < ppar->N*SMPC_NUM_STATE_VAR + nW; i++)
+    for (int i = 0; i < ppar.N*SMPC_NUM_STATE_VAR + nW; i++)
     {
         nu[i] = z[i];
     }
@@ -509,9 +509,9 @@ void chol_solve_as::down_resolve(
  * @return a pointer to the memory where current lambdas are stored.
  * @param[in] ppar parameters
  */
-double * chol_solve_as::get_lambda(const problem_parameters* ppar)
+double * chol_solve_as::get_lambda(const problem_parameters& ppar)
 {
-    return(&nu[SMPC_NUM_STATE_VAR*ppar->N]);
+    return(&nu[SMPC_NUM_STATE_VAR*ppar.N]);
 }
 
 
@@ -526,7 +526,7 @@ double * chol_solve_as::get_lambda(const problem_parameters* ppar)
  * @param[in] x     initial guess.
  */
 void chol_solve_as::downdate(
-        const problem_parameters* ppar, 
+        const problem_parameters& ppar, 
         const int nW, 
         const int ind_exclude, 
         const double *x)
@@ -542,7 +542,7 @@ void chol_solve_as::downdate(
 
     for (int i = ind_exclude; i < nW; i++)
     {
-        int el_index = SMPC_NUM_STATE_VAR*ppar->N + i;
+        int el_index = SMPC_NUM_STATE_VAR*ppar.N + i;
         double *cur_el = &icL[i][el_index];
         double x1 = cur_el[0];
         double x2 = cur_el[1];

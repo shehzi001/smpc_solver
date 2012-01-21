@@ -49,7 +49,7 @@ chol_solve_ip::~chol_solve_ip()
  * @param[out] dx           feasible descent direction, must be allocated.
  */
 void chol_solve_ip::solve(
-        const problem_parameters* ppar, 
+        const problem_parameters& ppar, 
         const double *i2hess_grad,
         const double *i2hess,
         const double *x, 
@@ -57,7 +57,7 @@ void chol_solve_ip::solve(
 {
     double *s_w = w;
     int i,j;
-    double i2Q[2] = {ppar->i2Q[1], ppar->i2Q[2]};
+    double i2Q[2] = {ppar.i2Q[1], ppar.i2Q[2]};
 
 
     // generate L
@@ -67,8 +67,8 @@ void chol_solve_ip::solve(
     E.form_Ex (ppar, i2hess_grad, s_w);
 
     // obtain w
-    ecL.solve_forward(ppar->N, s_w);
-    ecL.solve_backward(ppar->N, s_w);
+    ecL.solve_forward(ppar.N, s_w);
+    ecL.solve_backward(ppar.N, s_w);
 
     // E' * w
     E.form_ETx (ppar, s_w, dx);
@@ -77,7 +77,7 @@ void chol_solve_ip::solve(
     // dx = -iH*(grad + E'*w)
     //
     // dx   -( -i2hess_grad  + inv(H) *   dx   ) 
-    for (i = 0,j = 0; i < ppar->N*2; i++)
+    for (i = 0,j = 0; i < ppar.N*2; i++)
     {
         // dx for state variables
         dx[j] = i2hess_grad[j] - i2hess[i] * dx[j]; 
@@ -87,9 +87,9 @@ void chol_solve_ip::solve(
         dx[j] = i2hess_grad[j] - i2Q[1] * dx[j]; 
         j++;
     }
-    for (i = ppar->N*SMPC_NUM_STATE_VAR; i < ppar->N*SMPC_NUM_VAR; i++)
+    for (i = ppar.N*SMPC_NUM_STATE_VAR; i < ppar.N*SMPC_NUM_VAR; i++)
     {
         // dx for control variables
-        dx[i] = i2hess_grad[i] - ppar->i2P * dx[i];
+        dx[i] = i2hess_grad[i] - ppar.i2P * dx[i];
     }
 }

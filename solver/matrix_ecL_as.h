@@ -45,7 +45,7 @@ class matrix_ecL_as
         matrix_ecL_as(const int);
         ~matrix_ecL_as();
 
-        void form (const problem_parameters*);
+        void form (const problem_parameters&);
 
         void solve_backward (const int, double *);
         void solve_forward (const int, double *);
@@ -57,7 +57,7 @@ class matrix_ecL_as
 
         void form_iQBiPB (const double *, const double *, const double, double*);
         void form_iQAT (const double, const double, const double *);
-        void form_AiQATiQBiPB (const problem_parameters*, const state_parameters, double *);
+        void form_AiQATiQBiPB (const problem_parameters&, const state_parameters&, double *);
 
         void form_L_non_diag(const double *, double *);
         void form_L_diag(const double *, double *);

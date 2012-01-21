@@ -145,7 +145,7 @@ void smpc::state_tilde::get_state (const smpc::solver &smpc_solver, const int in
     if (smpc_solver.qp_sol != NULL)
     {
         state_handling::get_state_tilde (
-                smpc_solver.qp_sol, 
+                *smpc_solver.qp_sol, 
                 smpc_solver.qp_sol->X, 
                 ind, 
                 state_vector);
@@ -167,7 +167,7 @@ void smpc::state_orig::get_state (const smpc::solver &smpc_solver, const int ind
     if (smpc_solver.qp_sol != NULL)
     {
         state_handling::get_state (
-                smpc_solver.qp_sol, 
+                *smpc_solver.qp_sol, 
                 smpc_solver.qp_sol->X, 
                 ind, 
                 state_vector);
