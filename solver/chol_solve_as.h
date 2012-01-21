@@ -34,7 +34,7 @@ class chol_solve_as
 {
     public:
         /*********** Constructors / Destructors ************/
-        chol_solve_as (int);
+        chol_solve_as (const int);
         ~chol_solve_as();
 
         void solve(const problem_parameters&, const double *, const double *, double *);
@@ -49,7 +49,6 @@ class chol_solve_as
         void update (const problem_parameters&, const int, const int *);
         void update_z (const problem_parameters&, const double *, const int, const int *, const double *);
         void downdate(const problem_parameters&, const int, const int, const double *);
-        void downdate_z (const problem_parameters&, const int, const int *, const int, const double *);
 
         void resolve (const problem_parameters&, const double *, const int, const int *, const double *, double *);
 
