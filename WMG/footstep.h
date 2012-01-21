@@ -31,8 +31,8 @@ class FootStep : public Point2D, public RectangularConstraint_ZMP
     public:
         FootStep(
                 const double, 
-                const Point2D,
-                const Point2D,
+                const Point2D&,
+                const Point2D&,
                 const int, 
                 const fs_type, 
                 const double *);

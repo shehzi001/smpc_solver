@@ -31,8 +31,8 @@
  */
 FootStep::FootStep(
         const double angle_, 
-        const Point2D Position,
-        const Point2D ZMPref_,
+        const Point2D& Position,
+        const Point2D& ZMPref_,
         const int repeat_times_, 
         const fs_type type_, 
         const double *d_) : 
