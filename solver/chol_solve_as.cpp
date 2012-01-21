@@ -228,6 +228,8 @@ void chol_solve_as::update (const problem_parameters& ppar, const int nW, const 
     int ic_num = nW-1; // index of added constraint in W
     int state_num = W[ic_num] / 2; // number of state in the preview window
     double *new_row = icL[ic_num]; // current row in icL
+    // trailing elements of new_row corresponding to active constraints
+    double *new_row_end = &new_row[ppar.N*SMPC_NUM_STATE_VAR]; 
 
     int last_num = ic_num + ppar.N*SMPC_NUM_STATE_VAR; // the last !=0 element
 
@@ -248,9 +250,11 @@ void chol_solve_as::update (const problem_parameters& ppar, const int nW, const 
     // it, they can be 1,2,6; 1,5,6; 4,5,6
     k = state_num*SMPC_NUM_STATE_VAR;
     double* cur_pos = &new_row[k];
-    for(i = state_num*2; i < ppar.N*2; i++) // variables corresponding to x and 
-    {                                  // y are computed using the same matrices
-        double tmp_copy_el[3];
+
+    // variables corresponding to x and y are computed using the same matrices
+    for(i = state_num*2; i < ppar.N*2; i++, cur_pos = &cur_pos[3], k += 3)
+    {                                  
+        double tmp_copy_el[3]; // make a copy for faster computations
 
         // ----------------------------------------------------------------
         cur_pos[0] /= ecL_diag[0];
@@ -259,11 +263,10 @@ void chol_solve_as::update (const problem_parameters& ppar, const int nW, const 
         cur_pos[1] /= ecL_diag[4];
         tmp_copy_el[1] = cur_pos[1];
         cur_pos[2] -= tmp_copy_el[0] * ecL_diag[2] + tmp_copy_el[1] * ecL_diag[5];
-        
-
-        // ----------------------------------------------------------------
         cur_pos[2] /= ecL_diag[8];
         tmp_copy_el[2] = cur_pos[2];
+
+        // ----------------------------------------------------------------
         if (i < 2*(ppar.N - 1))  // non-diagonal matrix of ecL cannot be
         {                   // used when the last state is processed
 
@@ -293,18 +296,16 @@ void chol_solve_as::update (const problem_parameters& ppar, const int nW, const 
         // in icL
         for (j = 0; j < ic_num; j++)
         {
-            new_row[ppar.N*SMPC_NUM_STATE_VAR + j] -= tmp_copy_el[0] * icL[j][k]
-                                          + tmp_copy_el[1] * icL[j][k+1]
-                                          + tmp_copy_el[2] * icL[j][k+2];
+            new_row_end[j] -= tmp_copy_el[0] * icL[j][k]
+                            + tmp_copy_el[1] * icL[j][k+1]
+                            + tmp_copy_el[2] * icL[j][k+2];
         }
-        cur_pos = &cur_pos[3];
-        k += 3;
     }
 
     // update elements in the end of icL
-    for(i = SMPC_NUM_STATE_VAR * ppar.N; i < last_num; i++)
+    for(i = SMPC_NUM_STATE_VAR * ppar.N, k = 0; i < last_num; i++, k++)
     {
-        new_row[i] /= icL[i - ppar.N*SMPC_NUM_STATE_VAR][i];
+        new_row[i] /= icL[k][i];
         double tmp_copy_el = new_row[i];
 
         // determine number in the row of L
@@ -312,9 +313,9 @@ void chol_solve_as::update (const problem_parameters& ppar, const int nW, const 
         // update the last (diagonal) number in the row
         new_row[last_num] -= tmp_copy_el * tmp_copy_el;
 
-        for (j = (i - ppar.N*SMPC_NUM_STATE_VAR) + 1; j < ic_num; j++)
+        for (j = k+1; j < ic_num; j++)
         {
-            new_row[ppar.N*SMPC_NUM_STATE_VAR + j] -= tmp_copy_el * icL[j][i];
+            new_row_end[j] -= tmp_copy_el * icL[j][i];
         }
     }
 

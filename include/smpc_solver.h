@@ -281,8 +281,6 @@ namespace smpc
              * @param[in] mu multiplier of t, >1.
              * @param[in] bs_alpha backtracking search parameter 0 < alpha < 0.5
              * @param[in] bs_beta  backtracking search parameter 0 < beta < 1
-             *
-             * @todo Which defaults are good?
              */
             solver (
                     const int N, 
