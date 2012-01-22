@@ -47,11 +47,6 @@ enum fs_type
     FS_TYPE_DS      // double support
 };
 
-enum swing_foot_pos_type
-{
-    WMG_SWING_2D_PARABOLA
-};
-
 
 /** \brief Defines the parameters of the Walking Pattern Generator. */
 class WMG
@@ -88,12 +83,7 @@ class WMG
         WMGret FormPreviewWindow(bool *switch_foot = NULL);
         void FS2file(const std::string, const bool plot_ds = true);
 
-        void getSwingFootPosition (
-                const swing_foot_pos_type,
-                const int,
-                const int,
-                double *,
-                double *);
+        void getSwingFootPosition (const int, const int, double *);
 
 
         void initABMatrices (const double);

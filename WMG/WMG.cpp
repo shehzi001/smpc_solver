@@ -419,96 +419,14 @@ int WMG::getPrevSS(const int start_ind, const fs_type type)
 
 
 
-/**
- * @brief Returns current feet configuration.
- *
- * @param[in,out] prev_swing_pos the previous position of the swing foot.
- * @param[in,out] next_swing_pos the next position of the swing foot.
- * @param[out] repeat_times number of SS iterations in the current support.
- * @param[out] repeated_times the number of iterations, which were already
- *      spent in the current support.
- *
- * @return type of the current support feet: left or right.
- *
- * @attention This function requires the walking pattern to be started and finished
- * by single support.
- *
- * @attention Cannot be called on the first or last SS  =>  must be called after 
- * FormPreviewWindow().
- *
- * @note If we are in the double support then prev_swing_pos = next_swing_pos, and
- * repeat_times = repeated_times = 0.
- */
-fs_type WMG::getSwingFootNextPrevPos (
-        double *prev_swing_pos,
-        double *next_swing_pos,
-        int *repeat_times,
-        int *repeated_times)
-{
-    fs_type cur_fs_type = FS[current_step_number].type;
-    int next_swing_ind, prev_swing_ind;
-    int next_ss_ind, prev_ss_ind;
-
-    switch (cur_fs_type)
-    {
-        case FS_TYPE_SS_L:
-        case FS_TYPE_SS_R:
-            prev_swing_ind = getPrevSS (
-                    current_step_number, 
-                    (current_reference_foot == FS_TYPE_SS_R) ? FS_TYPE_SS_L : FS_TYPE_SS_R);
-            next_swing_ind = getNextSS (
-                    current_step_number, 
-                    (current_reference_foot == FS_TYPE_SS_R) ? FS_TYPE_SS_L : FS_TYPE_SS_R);
-
-            *repeat_times = FS[current_step_number].repeat_times;
-            *repeated_times = *repeat_times - FS[current_step_number].repeat_counter;
-            break;
-
-        case FS_TYPE_DS:
-            next_ss_ind = getNextSS (current_step_number);
-            prev_ss_ind = getPrevSS (current_step_number);
-            if (FS[next_ss_ind].type == current_reference_foot)
-            {
-                next_swing_ind = prev_swing_ind = prev_ss_ind;
-            }
-            else
-            {
-                next_swing_ind = prev_swing_ind = next_ss_ind;
-            }
-
-            *repeat_times = 0;
-            *repeated_times = 0;
-            break;
-
-        case FS_TYPE_AUTO:
-        default:
-            // should never happen, since type is checked when steps are added.
-            return (cur_fs_type);
-    }
-
-
-    prev_swing_pos[0] = FS[prev_swing_ind].x;
-    prev_swing_pos[1] = FS[prev_swing_ind].y;
-    prev_swing_pos[2] = FS[prev_swing_ind].angle;
-
-    next_swing_pos[0] = FS[next_swing_ind].x;
-    next_swing_pos[1] = FS[next_swing_ind].y;
-    next_swing_pos[2] = FS[next_swing_ind].angle;
-
-    return (cur_fs_type);
-}
-
-
 
 /**
  * @brief Determine position and orientation of the swing foot
  *
- * @param[in] swing_type which method to use.
  * @param[in] loops_per_preview_iter number of control loops per preview iteration
  * @param[in] loops_in_current_preview number of control loops passed in the current 
  *                                     preview iteration
- * @param[out] swing_foot_pos 3x1 vector of coordinates [x y z]
- * @param[out] angle_xy orientation of the foot in x,y plane
+ * @param[out] swing_foot_pos 3x1 vector of coordinates [x y z] + angle (orientation in x,y plane)
  *
  * @attention This function requires the walking pattern to be started and finished
  * by single support.
@@ -520,51 +438,62 @@ fs_type WMG::getSwingFootNextPrevPos (
  * at the end of preview window with number loops_in_current_preview.
  */
 void WMG::getSwingFootPosition (
-        const swing_foot_pos_type swing_type,
         const int loops_per_preview_iter,
         const int loops_in_current_preview,
-        double *swing_foot_pos,
-        double *angle_xy)
+        double *swing_foot_pos)
 {
-    if (swing_type == WMG_SWING_2D_PARABOLA)
+    if (FS[current_step_number].type == FS_TYPE_DS)
     {
-        int num_iter_in_ss;
-        int num_iter_in_ss_passed;
-        double prev_swing_pos[3];
-        double next_swing_pos[3];
+        int fs_ind;
 
-        if (getSwingFootNextPrevPos(
-                prev_swing_pos,
-                next_swing_pos,
-                &num_iter_in_ss,
-                &num_iter_in_ss_passed) != FS_TYPE_DS)
+        fs_ind = getNextSS (current_step_number);
+        if (FS[fs_ind].type == current_reference_foot)
         {
-            double theta =
-                (double) (loops_per_preview_iter * num_iter_in_ss_passed + loops_in_current_preview) /
-                (loops_per_preview_iter * num_iter_in_ss);
+            fs_ind = getPrevSS (current_step_number);
+        }
 
-            double x[3] = {
-                prev_swing_pos[0],
-                (prev_swing_pos[0] + next_swing_pos[0])/2,
-                next_swing_pos[0]};
-
-            double b_coef = - (x[2]*x[2] - x[0]*x[0])/(x[2] - x[0]);
-            double a = step_height / (x[1]*x[1] - x[0]*x[0] + b_coef*(x[1] - x[0]));
-            double b = a * b_coef;
-            double c = - a*x[0]*x[0] - b*x[0];
-
-            swing_foot_pos[0] = (1-theta)*x[0] + theta*x[2]; // linear equation
-            swing_foot_pos[1] = next_swing_pos[1];
-            swing_foot_pos[2] = a * swing_foot_pos[0] * swing_foot_pos[0] + b * swing_foot_pos[0] + c;
+        swing_foot_pos[0] = FS[fs_ind].x;
+        swing_foot_pos[1] = FS[fs_ind].y;
+        swing_foot_pos[2] = 0.0;
+        swing_foot_pos[3] = FS[fs_ind].angle;
+    }
+    else
+    {
+        int next_swing_ind, prev_swing_ind;
+        if (current_reference_foot == FS_TYPE_SS_L)
+        {
+            prev_swing_ind = getPrevSS (current_step_number, FS_TYPE_SS_R);
+            next_swing_ind = getNextSS (current_step_number, FS_TYPE_SS_R);
         }
         else
         {
-            swing_foot_pos[0] = next_swing_pos[0];
-            swing_foot_pos[1] = next_swing_pos[1];
-            swing_foot_pos[2] = 0.0;
+            prev_swing_ind = getPrevSS (current_step_number, FS_TYPE_SS_L);
+            next_swing_ind = getNextSS (current_step_number, FS_TYPE_SS_L);
         }
 
-        *angle_xy = next_swing_pos[2];
+
+        int num_iter_in_ss = FS[current_step_number].repeat_times;
+        int num_iter_in_ss_passed = num_iter_in_ss - FS[current_step_number].repeat_counter;
+        double theta =
+            (double) (loops_per_preview_iter * num_iter_in_ss_passed + loops_in_current_preview) /
+            (loops_per_preview_iter * num_iter_in_ss);
+
+
+        double x[3] = {
+            FS[prev_swing_ind].x,
+            (FS[prev_swing_ind].x + FS[next_swing_ind].x)/2,
+            FS[next_swing_ind].x};
+
+        double b_coef = - (x[2]*x[2] - x[0]*x[0])/(x[2] - x[0]);
+        double a = step_height / (x[1]*x[1] - x[0]*x[0] + b_coef*(x[1] - x[0]));
+        double b = a * b_coef;
+        double c = - a*x[0]*x[0] - b*x[0];
+
+
+        swing_foot_pos[0] = (1-theta)*x[0] + theta*x[2]; // linear equation
+        swing_foot_pos[1] = FS[next_swing_ind].y;
+        swing_foot_pos[2] = a * swing_foot_pos[0] * swing_foot_pos[0] + b * swing_foot_pos[0] + c;
+        swing_foot_pos[3] = FS[next_swing_ind].angle;
     }
 }
 
