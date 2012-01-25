@@ -419,7 +419,7 @@ int WMG::getPrevSS(const int start_ind, const fs_type type)
 
 
 /**
- * @brief Determine position and orientation of the swing foot
+ * @brief Determine position and orientation of feet
  *
  * @param[in] loops_per_preview_iter number of control loops per preview iteration
  * @param[in] loops_in_current_preview number of control loops passed in the current 
@@ -539,23 +539,29 @@ WMGret WMG::FormPreviewWindow(bool *switch_foot)
 
 
     // Indicate switch of the reference foot
-    if (    // if we are not in the initial support
-            (win_step_num != 0) && 
-            // we are in DS
+    if ((switch_foot != NULL) &&
+        // if we are not in the initial support
+        (win_step_num != 0))
+    {
+        if (// we are in DS
             (FS[win_step_num].type == FS_TYPE_DS) &&
             // the previous footstep was not DS
             (FS[win_step_num-1].type != FS_TYPE_DS) &&
-            // this is the first iteration in DS
-            (FS[win_step_num].repeat_counter == FS[win_step_num].repeat_times))
-    {
-        if (switch_foot != NULL)
+            // this is the middle of DS
+            (FS[win_step_num].repeat_counter == FS[win_step_num].repeat_times%2))
         {
             *switch_foot = true;
         }
-    }
-    else
-    {
-        if (switch_foot != NULL)
+        else if(// from left support to right
+                ((FS[win_step_num].type == FS_TYPE_SS_L) && 
+                (FS[win_step_num-1].type == FS_TYPE_SS_R)) ||
+                // from right support to left
+                ((FS[win_step_num].type == FS_TYPE_SS_R) && 
+                (FS[win_step_num-1].type == FS_TYPE_SS_L)))
+        {
+            *switch_foot = true;
+        }
+        else
         {
             *switch_foot = false;
         }
