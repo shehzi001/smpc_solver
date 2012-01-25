@@ -59,9 +59,13 @@ int main(int argc, char **argv)
     vector<double> CoM_x;
     vector<double> CoM_y;
 
-    vector<double> swing_foot_x;
-    vector<double> swing_foot_y;
-    vector<double> swing_foot_z;
+    vector<double> left_foot_x;
+    vector<double> left_foot_y;
+    vector<double> left_foot_z;
+
+    vector<double> right_foot_x;
+    vector<double> right_foot_y;
+    vector<double> right_foot_z;
 
 
     for(int i=0 ;; i++)
@@ -107,46 +111,44 @@ int main(int argc, char **argv)
         CoM_y.push_back(wmg.init_state.y());
     
 
-        // support foot and swing foot position/orientation
-        double LegPos[3+1];
+        // feet position/orientation
+        double left_foot_pos[3+1];
+        double right_foot_pos[3+1];
         /* wrong, but makes nice graph */
-        wmg.getSwingFootPosition (
+        wmg.getFeetPositions (
                 preview_sampling_time_ms / control_sampling_time_ms,
-                (preview_sampling_time_ms - next_preview_len_ms) / control_sampling_time_ms,
-                LegPos);
+                (preview_sampling_time_ms - next_preview_len_ms) / control_sampling_time_ms + 1,
+                left_foot_pos,
+                right_foot_pos);
                 
-        /* correct
-        wmg.getSwingFootPosition (
-                WMG_SWING_2D_PARABOLA,
-                1,
-                1,
-                LegPos,
-                &angle);
-                */
+        left_foot_x.push_back(left_foot_pos[0]);
+        left_foot_y.push_back(left_foot_pos[1]);
+        left_foot_z.push_back(left_foot_pos[2]);
 
-        swing_foot_x.push_back(LegPos[0]);
-        swing_foot_y.push_back(LegPos[1]);
-        swing_foot_z.push_back(LegPos[2]);
-        /*
-        fprintf(file_op, "plot3([%f %f], [%f %f], [%f %f])\n",
-                LegPos[0], LegPos[0] + cos(angle)*0.005,
-                LegPos[1], LegPos[1] + sin(angle)*0.005,
-                LegPos[2], LegPos[2]);
-        */
+        right_foot_x.push_back(right_foot_pos[0]);
+        right_foot_y.push_back(right_foot_pos[1]);
+        right_foot_z.push_back(right_foot_pos[2]);
         
         next_preview_len_ms -= control_sampling_time_ms;
     }
 
-    /*
-    fprintf(file_op,"SFP = [\n");
-    for (unsigned int i=0; i < swing_foot_x.size(); i++)
+    // feet positions    
+    fprintf(file_op,"LFP = [\n");
+    for (unsigned int i=0; i < left_foot_x.size(); i++)
     {
-        fprintf(file_op, "%f %f %f;\n", swing_foot_x[i], swing_foot_y[i], swing_foot_z[i]);
+        fprintf(file_op, "%f %f %f;\n", left_foot_x[i], left_foot_y[i], left_foot_z[i]);
     }
-    fprintf(file_op, "];\n\n plot3(SFP(:,1), SFP(:,2), SFP(:,3), 'r')\n");
-    */
+    fprintf(file_op, "];\n\n plot3(LFP(:,1), LFP(:,2), LFP(:,3), 'r')\n");
+    
+    fprintf(file_op,"RFP = [\n");
+    for (unsigned int i=0; i < right_foot_x.size(); i++)
+    {
+        fprintf(file_op, "%f %f %f;\n", right_foot_x[i], right_foot_y[i], right_foot_z[i]);
+    }
+    fprintf(file_op, "];\n\n plot3(RFP(:,1), RFP(:,2), RFP(:,3), 'r')\n");
 
 
+    // ZMP
     fprintf(file_op,"ZMP = [\n");
     for (unsigned int i=0; i < ZMP_x.size(); i++)
     {
@@ -154,6 +156,7 @@ int main(int argc, char **argv)
     }
     fprintf(file_op, "];\n\n plot(ZMP(:,1), ZMP(:,2), 'k')\n");
 
+    // reference ZMP points
     fprintf(file_op,"ZMPref = [\n");
     for (unsigned int i=0; i < ZMP_ref_x.size(); i++)
     {
@@ -161,6 +164,7 @@ int main(int argc, char **argv)
     }
     fprintf(file_op, "];\n\n plot(ZMPref(:,1), ZMPref(:,2), 'ko')\n");
 
+    // CoM
     fprintf(file_op,"CoM = [\n");
     for (unsigned int i=0; i < CoM_x.size(); i++)
     {

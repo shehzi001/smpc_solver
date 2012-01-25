@@ -32,8 +32,6 @@ WMG::WMG()
 
     A = NULL;
     B = NULL;
-
-    current_reference_foot = FS_TYPE_AUTO;
 }
 
 
@@ -426,7 +424,8 @@ int WMG::getPrevSS(const int start_ind, const fs_type type)
  * @param[in] loops_per_preview_iter number of control loops per preview iteration
  * @param[in] loops_in_current_preview number of control loops passed in the current 
  *                                     preview iteration
- * @param[out] swing_foot_pos 3x1 vector of coordinates [x y z] + angle (orientation in x,y plane)
+ * @param[out] left_foot_pos 3x1 vector of coordinates [x y z] + angle (orientation in x,y plane)
+ * @param[out] right_foot_pos 3x1 vector of coordinates [x y z] + angle (orientation in x,y plane)
  *
  * @attention This function requires the walking pattern to be started and finished
  * by single support.
@@ -437,39 +436,64 @@ int WMG::getPrevSS(const int start_ind, const fs_type type)
  * @note If loops_per_preview_iter is set to 1, then the function returns a position 
  * at the end of preview window with number loops_in_current_preview.
  */
-void WMG::getSwingFootPosition (
+void WMG::getFeetPositions (
         const int loops_per_preview_iter,
         const int loops_in_current_preview,
-        double *swing_foot_pos)
+        double *left_foot_pos,
+        double *right_foot_pos)
 {
     if (FS[current_step_number].type == FS_TYPE_DS)
     {
-        int fs_ind;
+        int left_ind, right_ind;
 
-        fs_ind = getNextSS (current_step_number);
-        if (FS[fs_ind].type == current_reference_foot)
+        left_ind = getNextSS (current_step_number);
+        if (FS[left_ind].type == FS_TYPE_SS_L)
         {
-            fs_ind = getPrevSS (current_step_number);
+            right_ind = getPrevSS (current_step_number);
+        }
+        else
+        {
+            right_ind = left_ind;
+            left_ind = getPrevSS (current_step_number);
         }
 
-        swing_foot_pos[0] = FS[fs_ind].x;
-        swing_foot_pos[1] = FS[fs_ind].y;
-        swing_foot_pos[2] = 0.0;
-        swing_foot_pos[3] = FS[fs_ind].angle;
+        left_foot_pos[0] = FS[left_ind].x;
+        left_foot_pos[1] = FS[left_ind].y;
+        left_foot_pos[2] = 0.0;
+        left_foot_pos[3] = FS[left_ind].angle;
+
+        right_foot_pos[0] = FS[right_ind].x;
+        right_foot_pos[1] = FS[right_ind].y;
+        right_foot_pos[2] = 0.0;
+        right_foot_pos[3] = FS[right_ind].angle;
     }
     else
     {
+        double *swing_foot_pos, *ref_foot_pos;
         int next_swing_ind, prev_swing_ind;
-        if (current_reference_foot == FS_TYPE_SS_L)
+
+
+        if (FS[current_step_number].type == FS_TYPE_SS_L)
         {
+            ref_foot_pos = left_foot_pos;
+            swing_foot_pos = right_foot_pos;
+
             prev_swing_ind = getPrevSS (current_step_number, FS_TYPE_SS_R);
             next_swing_ind = getNextSS (current_step_number, FS_TYPE_SS_R);
         }
         else
         {
+            ref_foot_pos = right_foot_pos;
+            swing_foot_pos = left_foot_pos;
+
             prev_swing_ind = getPrevSS (current_step_number, FS_TYPE_SS_L);
             next_swing_ind = getNextSS (current_step_number, FS_TYPE_SS_L);
         }
+
+        ref_foot_pos[0] = FS[current_step_number].x;
+        ref_foot_pos[1] = FS[current_step_number].y;
+        ref_foot_pos[2] = 0.0;
+        ref_foot_pos[3] = FS[current_step_number].angle;
 
 
         int num_iter_in_ss = FS[current_step_number].repeat_times;
@@ -514,14 +538,6 @@ WMGret WMG::FormPreviewWindow(bool *switch_foot)
     int step_repeat_times = FS[win_step_num].repeat_counter;
 
 
-    // If reference foot is unknown, this function is executed
-    // for the first time: we need to use the next SS as the
-    // reference foot, since the first SS must be fake.
-    if (current_reference_foot == FS_TYPE_AUTO)
-    {
-        current_reference_foot = FS[getNextSS (win_step_num)].type;
-    }
-
     // Indicate switch of the reference foot
     if (    // if we are not in the initial support
             (win_step_num != 0) && 
@@ -536,7 +552,6 @@ WMGret WMG::FormPreviewWindow(bool *switch_foot)
         {
             *switch_foot = true;
         }
-        current_reference_foot = FS[getNextSS (win_step_num)].type;
     }
     else
     {

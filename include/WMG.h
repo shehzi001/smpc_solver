@@ -83,7 +83,7 @@ class WMG
         WMGret FormPreviewWindow(bool *switch_foot = NULL);
         void FS2file(const std::string, const bool plot_ds = true);
 
-        void getSwingFootPosition (const int, const int, double *);
+        void getFeetPositions (const int, const int, double *, double *);
 
 
         void initABMatrices (const double);
@@ -153,9 +153,6 @@ class WMG
 
         /** This is the step in FS that is at the start of the current preview window. */
         int current_step_number;
-
-        /// Reference foot (R/L), even in DS we need to choose a reference foot.
-        fs_type current_reference_foot;
 
         /// The maximum height, that can be reached by a swing foot.
         double step_height;
