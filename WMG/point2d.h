@@ -36,6 +36,26 @@ class Point2D
             y = y_;
         };
 
+    
+        /**
+         * @brief New point is located at 'offset' from 'base' in the direction
+         *  specified using cos and sin of the rotation angle.
+         *
+         * @param[in] base base point
+         * @param[in] offset offset from the base point
+         * @param[in] sa sin of the rotation angle
+         * @param[in] ca cos of the rotation angle
+         */
+        Point2D(const Point2D& base, 
+                const Point2D& offset, 
+                const double sa, 
+                const double ca)
+        {
+            x = base.x + offset.x*ca - offset.y*sa;
+            y = base.y + offset.x*sa + offset.y*ca;
+        };
+
+
         /** \brief x position [meter]*/
         double x;
 

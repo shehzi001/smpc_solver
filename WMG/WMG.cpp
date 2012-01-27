@@ -242,6 +242,9 @@ void WMG::AddFootstep(
         const double angle_relative, 
         fs_type type)
 {
+    Point2D zref_offset ((def_constraint[0] - def_constraint[2])/2, 0);
+    Point2D offset (x_relative, y_relative);
+
     if (FS.size() == 0)
     {
         // this is the first ("virtual") step.
@@ -250,15 +253,13 @@ void WMG::AddFootstep(
             type = FS_TYPE_DS;
         }
 
-        Point2D zref_rel ((def_constraint[0] - def_constraint[2])/2, 0);
-        Point2D zref_abs (
-                x_relative + zref_rel.x*cos(angle_relative) + zref_rel.y*sin(angle_relative),
-                y_relative - zref_rel.x*sin(angle_relative) + zref_rel.y*cos(angle_relative));
+        // offset is the absolute position here.
+        Point2D zref_abs (offset, zref_offset, sin(angle_relative), cos(angle_relative));
 
         FS.push_back(
                 FootStep(
                     angle_relative, 
-                    Point2D(x_relative, y_relative),
+                    offset,
                     zref_abs,
                     def_repeat_times, 
                     type,
@@ -266,10 +267,6 @@ void WMG::AddFootstep(
     }
     else
     {
-        // Angle and position of the previous step
-        double prev_a = FS.back().angle;
-        Point2D prev_p(FS.back());        
-
         // determine type of the step
         if (type == FS_TYPE_AUTO)
         {
@@ -289,16 +286,12 @@ void WMG::AddFootstep(
         }
 
         // Position of the next step
-        Point2D next_p(prev_p);        
-        next_p.x += FS.back().ca*x_relative - FS.back().sa*y_relative;
-        next_p.y += FS.back().sa*x_relative + FS.back().ca*y_relative;
+        Point2D prev_p (FS.back());
+        Point2D next_p (prev_p, offset, FS.back().sa, FS.back().ca);
 
-        double next_angle = prev_a + angle_relative;
-
-        Point2D zref_rel ((def_constraint[0] - def_constraint[2])/2, 0);
-        Point2D next_zref (
-                next_p.x + zref_rel.x*cos(next_angle) + zref_rel.y*sin(next_angle),
-                next_p.y - zref_rel.x*sin(next_angle) + zref_rel.y*cos(next_angle));
+        double prev_a = FS.back().angle;
+        double next_a = prev_a + angle_relative;
+        Point2D next_zref (next_p, zref_offset, sin(next_a), cos(next_a));
 
         // Add double support constraints that lie between the
         // newly added step and the previous step
@@ -308,35 +301,30 @@ void WMG::AddFootstep(
             double ds_a = prev_a + angle_relative * theta;
 
             Point2D position ((1-theta)*prev_p.x + theta*next_p.x, (1-theta)*prev_p.y + theta*next_p.y);
+            Point2D *zmp_ref;
             if (i < def_ds_num/2)
             {
-                FS.push_back(
-                        FootStep(
-                            ds_a, 
-                            position,
-                            FS.back().ZMPref,
-                            1, 
-                            FS_TYPE_DS,
-                            def_ds_constraint));
+                zmp_ref = &FS.back().ZMPref;
             }
             else
             {
-                FS.push_back(
-                        FootStep(
-                            ds_a, 
-                            position,
-                            next_zref,
-                            1, 
-                            FS_TYPE_DS,
-                            def_ds_constraint));
+                zmp_ref = &next_zref;
             }
+            FS.push_back(
+                    FootStep(
+                        ds_a, 
+                        position,
+                        *zmp_ref,
+                        1, 
+                        FS_TYPE_DS,
+                        def_ds_constraint));
         }
 
 
         // add the new step
         FS.push_back(
                 FootStep(
-                    next_angle, 
+                    next_a, 
                     next_p, 
                     next_zref,
                     def_repeat_times, 
@@ -538,7 +526,7 @@ bool WMG::isSupportSwitchNeeded ()
             // the previous footstep was not DS
             (FS[current_step_number-1].type != FS_TYPE_DS) &&
             // this is the middle of DS
-            (FS[current_step_number].repeat_counter == FS[current_step_number].repeat_times%2))
+            (FS[current_step_number].repeat_counter == FS[current_step_number].repeat_times / 2))
         {
             return (true);
         }
