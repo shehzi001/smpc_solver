@@ -30,7 +30,7 @@ int main(int argc, char **argv)
     for(int counter = 0 ;; counter++)
     {
         //------------------------------------------------------
-        if (wmg.FormPreviewWindow() == WMG_HALT)
+        if (wmg.formPreviewWindow() == WMG_HALT)
         {
             cout << "EXIT (halt = 1)" << endl;
             break;

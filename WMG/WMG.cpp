@@ -523,49 +523,51 @@ void WMG::getFeetPositions (
 
 
 
+/**
+ * @brief Checks if the support foot switch is needed.
+ *
+ * @return true if the support foot must be switched. 
+ */
+bool WMG::isSupportSwitchNeeded ()
+{
+    // if we are not in the initial support
+    if (current_step_number != 0) 
+    {
+        if (// we are in DS
+            (FS[current_step_number].type == FS_TYPE_DS) &&
+            // the previous footstep was not DS
+            (FS[current_step_number-1].type != FS_TYPE_DS) &&
+            // this is the middle of DS
+            (FS[current_step_number].repeat_counter == FS[current_step_number].repeat_times%2))
+        {
+            return (true);
+        }
+        else if(// from left support to right
+                ((FS[current_step_number].type == FS_TYPE_SS_L) && 
+                (FS[current_step_number-1].type == FS_TYPE_SS_R)) ||
+                // from right support to left
+                ((FS[current_step_number].type == FS_TYPE_SS_R) && 
+                (FS[current_step_number-1].type == FS_TYPE_SS_L)))
+        {
+            return (true);
+        }
+    }
+
+    return (false);
+}
+
+
 
 /**
  * @brief Forms a preview window.
  *
- * @param[out] switch_foot true if the support foot must be switched.
- *
  * @return WMG_OK or WMG_HALT (simulation must be stopped)
  */
-WMGret WMG::FormPreviewWindow(bool *switch_foot)
+WMGret WMG::formPreviewWindow()
 {
     WMGret retval = WMG_OK;
     int win_step_num = current_step_number;
     int step_repeat_times = FS[win_step_num].repeat_counter;
-
-
-    // Indicate switch of the reference foot
-    if ((switch_foot != NULL) &&
-        // if we are not in the initial support
-        (win_step_num != 0))
-    {
-        if (// we are in DS
-            (FS[win_step_num].type == FS_TYPE_DS) &&
-            // the previous footstep was not DS
-            (FS[win_step_num-1].type != FS_TYPE_DS) &&
-            // this is the middle of DS
-            (FS[win_step_num].repeat_counter == FS[win_step_num].repeat_times%2))
-        {
-            *switch_foot = true;
-        }
-        else if(// from left support to right
-                ((FS[win_step_num].type == FS_TYPE_SS_L) && 
-                (FS[win_step_num-1].type == FS_TYPE_SS_R)) ||
-                // from right support to left
-                ((FS[win_step_num].type == FS_TYPE_SS_R) && 
-                (FS[win_step_num-1].type == FS_TYPE_SS_L)))
-        {
-            *switch_foot = true;
-        }
-        else
-        {
-            *switch_foot = false;
-        }
-    }
 
 
     for (int i = 0; i < N;)

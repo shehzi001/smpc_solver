@@ -70,7 +70,7 @@ int main(int argc, char **argv)
   
     for(;;)
     {
-        if (wmg.FormPreviewWindow() == WMG_HALT) // initialize input for QP
+        if (wmg.formPreviewWindow() == WMG_HALT) // initialize input for QP
         {
             // not enough time steps left (<15)
             break;

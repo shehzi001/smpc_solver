@@ -80,7 +80,8 @@ class WMG
                 const double, 
                 const double, 
                 fs_type type = FS_TYPE_AUTO);
-        WMGret FormPreviewWindow(bool *switch_foot = NULL);
+        bool isSupportSwitchNeeded ();
+        WMGret formPreviewWindow ();
         void FS2file(const std::string, const bool plot_ds = true);
 
         void getFeetPositions (const int, const int, double *, double *);
