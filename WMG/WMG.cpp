@@ -334,6 +334,21 @@ void WMG::AddFootstep(
 }
 
 
+/**
+ * @brief Returns index of the next SS.
+ *
+ * @param[in] type search for a footstep of certain type,
+ *                 by default (FS_TYPE_AUTO) both left and right
+ *                 are searched.
+ *
+ * @return index of the next SS.
+ */
+int WMG::getNextSS(const fs_type type)
+{
+    return (getNextSS (current_step_number, type));
+}
+
+
 
 /**
  * @brief Returns index of the next SS.
@@ -373,6 +388,22 @@ int WMG::getNextSS(const int start_ind, const fs_type type)
 /**
  * @brief Returns index of the previous SS.
  *
+ * @param[in] type search for a footstep of certain type,
+ *                 by default (FS_TYPE_AUTO) both left and right
+ *                 are searched.
+ *
+ * @return index of the previous SS.
+ */
+int WMG::getPrevSS(const fs_type type)
+{
+    return (getPrevSS (current_step_number, type));
+}
+
+
+
+/**
+ * @brief Returns index of the previous SS.
+ *
  * @param[in] start_ind start search from this index.
  * @param[in] type search for a footstep of certain type,
  *                 by default (FS_TYPE_AUTO) both left and right
@@ -405,7 +436,6 @@ int WMG::getPrevSS(const int start_ind, const fs_type type)
 
 
 
-
 /**
  * @brief Determine position and orientation of feet
  *
@@ -434,15 +464,15 @@ void WMG::getFeetPositions (
     {
         int left_ind, right_ind;
 
-        left_ind = getNextSS (current_step_number);
+        left_ind = getNextSS ();
         if (FS[left_ind].type == FS_TYPE_SS_L)
         {
-            right_ind = getPrevSS (current_step_number);
+            right_ind = getPrevSS ();
         }
         else
         {
             right_ind = left_ind;
-            left_ind = getPrevSS (current_step_number);
+            left_ind = getPrevSS ();
         }
 
         left_foot_pos[0] = FS[left_ind].x;
@@ -466,16 +496,16 @@ void WMG::getFeetPositions (
             ref_foot_pos = left_foot_pos;
             swing_foot_pos = right_foot_pos;
 
-            prev_swing_ind = getPrevSS (current_step_number, FS_TYPE_SS_R);
-            next_swing_ind = getNextSS (current_step_number, FS_TYPE_SS_R);
+            prev_swing_ind = getPrevSS (FS_TYPE_SS_R);
+            next_swing_ind = getNextSS (FS_TYPE_SS_R);
         }
         else
         {
             ref_foot_pos = right_foot_pos;
             swing_foot_pos = left_foot_pos;
 
-            prev_swing_ind = getPrevSS (current_step_number, FS_TYPE_SS_L);
-            next_swing_ind = getNextSS (current_step_number, FS_TYPE_SS_L);
+            prev_swing_ind = getPrevSS (FS_TYPE_SS_L);
+            next_swing_ind = getNextSS (FS_TYPE_SS_L);
         }
 
         ref_foot_pos[0] = FS[current_step_number].x;
@@ -526,7 +556,7 @@ bool WMG::isSupportSwitchNeeded ()
             // the previous footstep was not DS
             (FS[current_step_number-1].type != FS_TYPE_DS) &&
             // this is the middle of DS
-            (FS[current_step_number].repeat_counter == FS[current_step_number].repeat_times / 2))
+            (current_step_number == (getNextSS() + getPrevSS()) / 2))
         {
             return (true);
         }
