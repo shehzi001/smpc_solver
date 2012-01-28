@@ -159,6 +159,8 @@ class WMG
         double step_height;
 
     private:
+        void getDSFeetPositions (double *, double *);
+        void getSSFeetPositions (const int, const int, double *, double *);
         int getNextSS (const int, const fs_type);
         int getPrevSS (const int, const fs_type);
         int getNextSS (const fs_type type = FS_TYPE_AUTO);
