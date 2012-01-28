@@ -382,46 +382,49 @@ void WMG::getFeetPositions (
  */
 bool WMG::isSupportSwitchNeeded ()
 {
-    // if we are not in the initial support
-    if (current_step_number != 0) 
+    if (FS[current_step_number].type == FS_TYPE_DS)
     {
-        if (// we are in DS
-            (FS[current_step_number].type == FS_TYPE_DS) &&
-            // the previous footstep was not DS
-            (FS[current_step_number-1].type != FS_TYPE_DS))
+        int total_ds_iter = FS[current_step_number].repeat_times;
+        int passed_ds_iter = FS[current_step_number].repeat_counter;
+        int i;
+
+        for (i = current_step_number - 1; FS[i].type == FS_TYPE_DS; i--)
         {
-            int total_ds_iter = FS[current_step_number].repeat_times;
-            int passed_ds_iter = FS[current_step_number].repeat_counter;
-            int i;
-
-            for (i = current_step_number - 1; FS[i].type == FS_TYPE_DS; i--)
-            {
-                passed_ds_iter += FS[i].repeat_times;
-                total_ds_iter += FS[i].repeat_times;
-            }
-            for (i = current_step_number + 1; FS[i].type == FS_TYPE_DS; i++)
-            {
-                total_ds_iter += FS[i].repeat_times;
-            }
-
-            // this is the middle of DS
-            if (passed_ds_iter == total_ds_iter/2)
-            {
-                return (true);
-            }
-            else
-            {
-                return (false);
-            }
+            passed_ds_iter += FS[i].repeat_times;
+            total_ds_iter += FS[i].repeat_times;
         }
-        else if(// from left support to right
+        for (i = current_step_number + 1; FS[i].type == FS_TYPE_DS; i++)
+        {
+            total_ds_iter += FS[i].repeat_times;
+        }
+
+        
+        if (// this is the middle of DS
+            (passed_ds_iter == total_ds_iter/2) && 
+            // the previous SS is not fake (if it is the support is already set to next)
+            (FS[getPrevSS()].repeat_times != 0))
+        {
+            return (true);
+        }
+        else
+        {
+            return (false);
+        }
+    }
+    else
+    {
+        // if we are not in the initial support
+        if (current_step_number != 0) 
+        {
+            if(// from left support to right
                 ((FS[current_step_number].type == FS_TYPE_SS_L) && 
                 (FS[current_step_number-1].type == FS_TYPE_SS_R)) ||
                 // from right support to left
                 ((FS[current_step_number].type == FS_TYPE_SS_R) && 
                 (FS[current_step_number-1].type == FS_TYPE_SS_L)))
-        {
-            return (true);
+            {
+                return (true);
+            }
         }
     }
 
