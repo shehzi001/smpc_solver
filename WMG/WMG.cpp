@@ -554,11 +554,31 @@ bool WMG::isSupportSwitchNeeded ()
         if (// we are in DS
             (FS[current_step_number].type == FS_TYPE_DS) &&
             // the previous footstep was not DS
-            (FS[current_step_number-1].type != FS_TYPE_DS) &&
-            // this is the middle of DS
-            (current_step_number == (getNextSS() + getPrevSS()) / 2))
+            (FS[current_step_number-1].type != FS_TYPE_DS))
         {
-            return (true);
+            int total_ds_iter = FS[current_step_number].repeat_times;
+            int passed_ds_iter = FS[current_step_number].repeat_counter;
+            int i;
+
+            for (i = current_step_number - 1; FS[i].type == FS_TYPE_DS; i--)
+            {
+                passed_ds_iter += FS[i].repeat_times;
+                total_ds_iter += FS[i].repeat_times;
+            }
+            for (i = current_step_number + 1; FS[i].type == FS_TYPE_DS; i++)
+            {
+                total_ds_iter += FS[i].repeat_times;
+            }
+
+            // this is the middle of DS
+            if (passed_ds_iter == total_ds_iter/2)
+            {
+                return (true);
+            }
+            else
+            {
+                return (false);
+            }
         }
         else if(// from left support to right
                 ((FS[current_step_number].type == FS_TYPE_SS_L) && 

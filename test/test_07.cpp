@@ -72,6 +72,7 @@ int main(int argc, char **argv)
     {
         if (next_preview_len_ms == 0)
         {
+            cout << wmg.isSupportSwitchNeeded() << endl;
             WMGret wmg_retval = wmg.formPreviewWindow();
 
             if (wmg_retval == WMG_HALT)
