@@ -384,47 +384,18 @@ bool WMG::isSupportSwitchNeeded ()
 {
     if (FS[current_step_number].type == FS_TYPE_DS)
     {
-        int total_ds_iter = FS[current_step_number].repeat_times;
-        int passed_ds_iter = FS[current_step_number].repeat_counter;
-        int i;
-
-        for (i = current_step_number - 1; FS[i].type == FS_TYPE_DS; i--)
-        {
-            passed_ds_iter += FS[i].repeat_times;
-            total_ds_iter += FS[i].repeat_times;
-        }
-        for (i = current_step_number + 1; FS[i].type == FS_TYPE_DS; i++)
-        {
-            total_ds_iter += FS[i].repeat_times;
-        }
-
-        
-        if (// this is the middle of DS
-            (passed_ds_iter == total_ds_iter/2) && 
-            // the previous SS is not fake (if it is the support is already set to next)
-            (FS[getPrevSS()].repeat_times != 0))
+        return (false);
+    }
+    else // single support
+    {
+        if (// if we are not in the initial support
+            (current_step_number != 0) &&
+            // this is the first iteration in SS
+            (FS[current_step_number].repeat_counter == FS[current_step_number].repeat_times) &&
+            // the previous SS was different
+            (FS[getPrevSS()].type != FS[current_step_number].type))
         {
             return (true);
-        }
-        else
-        {
-            return (false);
-        }
-    }
-    else
-    {
-        // if we are not in the initial support
-        if (current_step_number != 0) 
-        {
-            if(// from left support to right
-                ((FS[current_step_number].type == FS_TYPE_SS_L) && 
-                (FS[current_step_number-1].type == FS_TYPE_SS_R)) ||
-                // from right support to left
-                ((FS[current_step_number].type == FS_TYPE_SS_R) && 
-                (FS[current_step_number-1].type == FS_TYPE_SS_L)))
-            {
-                return (true);
-            }
         }
     }
 
