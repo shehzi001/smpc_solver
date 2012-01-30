@@ -12,7 +12,8 @@
 
 
 /**
- * @brief Returns index of the next SS.
+ * @brief Returns index of the next SS starting from the first
+ * step in the current preview window.
  *
  * @param[in] type search for a footstep of certain type,
  *                 by default (FS_TYPE_AUTO) both left and right
@@ -22,7 +23,7 @@
  */
 int WMG::getNextSS(const fs_type type)
 {
-    return (getNextSS (current_step_number, type));
+    return (getNextSS (first_preview_step, type));
 }
 
 
@@ -63,7 +64,8 @@ int WMG::getNextSS(const int start_ind, const fs_type type)
 
 
 /**
- * @brief Returns index of the previous SS.
+ * @brief Returns index of the previous SS starting from the first
+ * step in the current preview window.
  *
  * @param[in] type search for a footstep of certain type,
  *                 by default (FS_TYPE_AUTO) both left and right
@@ -73,7 +75,7 @@ int WMG::getNextSS(const int start_ind, const fs_type type)
  */
 int WMG::getPrevSS(const fs_type type)
 {
-    return (getPrevSS (current_step_number, type));
+    return (getPrevSS (first_preview_step, type));
 }
 
 
@@ -166,9 +168,10 @@ void WMG::getSSFeetPositions (
 {
     double *swing_foot_pos, *ref_foot_pos;
     int next_swing_ind, prev_swing_ind;
+    FootStep & current_step = FS[first_preview_step];
 
 
-    if (FS[current_step_number].type == FS_TYPE_SS_L)
+    if (current_step.type == FS_TYPE_SS_L)
     {
         ref_foot_pos = left_foot_pos;
         swing_foot_pos = right_foot_pos;
@@ -185,14 +188,15 @@ void WMG::getSSFeetPositions (
         next_swing_ind = getNextSS (FS_TYPE_SS_L);
     }
 
-    ref_foot_pos[0] = FS[current_step_number].x;
-    ref_foot_pos[1] = FS[current_step_number].y;
+    ref_foot_pos[0] = current_step.x;
+    ref_foot_pos[1] = current_step.y;
     ref_foot_pos[2] = 0.0;
-    ref_foot_pos[3] = FS[current_step_number].angle;
+    ref_foot_pos[3] = current_step.angle;
 
 
-    int num_iter_in_ss = FS[current_step_number].repeat_times;
-    int num_iter_in_ss_passed = num_iter_in_ss - FS[current_step_number].repeat_counter;
+    int num_iter_in_ss = current_step.repeat_times;
+    // formPreviewWindow() have already decremented the counter, +1 is needed.
+    int num_iter_in_ss_passed = num_iter_in_ss - (current_step.repeat_counter + 1);
     double theta =
         (double) (loops_per_preview_iter * num_iter_in_ss_passed + loops_in_current_preview) /
         (loops_per_preview_iter * num_iter_in_ss);

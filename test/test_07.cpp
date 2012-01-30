@@ -118,7 +118,7 @@ int main(int argc, char **argv)
         /* wrong, but makes nice graph */
         wmg.getFeetPositions (
                 preview_sampling_time_ms / control_sampling_time_ms,
-                (preview_sampling_time_ms - next_preview_len_ms) / control_sampling_time_ms + 1,
+                (preview_sampling_time_ms - next_preview_len_ms) / control_sampling_time_ms,
                 left_foot_pos,
                 right_foot_pos);
                 

@@ -359,7 +359,7 @@ void WMG::getFeetPositions (
         double *left_foot_pos,
         double *right_foot_pos)
 {
-    if (FS[current_step_number].type == FS_TYPE_DS)
+    if (FS[first_preview_step].type == FS_TYPE_DS)
     {
         getDSFeetPositions (left_foot_pos, right_foot_pos);
     }
@@ -466,16 +466,19 @@ WMGret WMG::formPreviewWindow()
         }
     }
 
-
-    if (FS[current_step_number].repeat_counter == 0)
+    if (retval == WMG_OK)
     {
-        current_step_number++;
-    }
+        while (FS[current_step_number].repeat_counter == 0)
+        {
+            current_step_number++;
+        }
 
-    FS[current_step_number].repeat_counter--;
-    if (FS[current_step_number].repeat_counter == 0)
-    {
-        current_step_number++;
+        first_preview_step = current_step_number;
+        FS[current_step_number].repeat_counter--;
+        if (FS[current_step_number].repeat_counter == 0)
+        {
+            current_step_number++;
+        }
     }
 
     return (retval);

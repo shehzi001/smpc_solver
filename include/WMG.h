@@ -156,6 +156,9 @@ class WMG
         /** This is the step in FS that is at the start of the current preview window. */
         int current_step_number;
 
+        /// The first step in the current preview window.
+        int first_preview_step;
+
         /// The maximum height, that can be reached by a swing foot.
         double step_height;
 
