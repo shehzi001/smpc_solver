@@ -3,6 +3,7 @@
  * @author Alexander Sherikov
  */
 
+#include <cmath> // sqrt
 
 #include "WMG.h"
 #include "footstep.h"
@@ -197,20 +198,22 @@ void WMG::getSSFeetPositions (
         (loops_per_preview_iter * num_iter_in_ss);
 
 
-    double x[3] = {
-        FS[prev_swing_ind].x,
-        (FS[prev_swing_ind].x + FS[next_swing_ind].x)/2,
-        FS[next_swing_ind].x};
+    double dx = FS[next_swing_ind].x - FS[prev_swing_ind].x;
+    double dy = FS[next_swing_ind].y - FS[prev_swing_ind].y;
+    double l = sqrt(dx*dx + dy*dy);
 
-    double b_coef = - (x[2]*x[2] - x[0]*x[0])/(x[2] - x[0]);
-    double a = step_height / (x[1]*x[1] - x[0]*x[0] + b_coef*(x[1] - x[0]));
+
+    double x[3] = {0.0, l/2, l};
+    double b_coef = - (x[2]*x[2] /*- x[0]*x[0]*/)/(x[2] /*- x[0]*/);
+    double a = step_height / (x[1]*x[1] /*- x[0]*x[0]*/ + b_coef*(x[1] /*- x[0]*/));
     double b = a * b_coef;
-    double c = - a*x[0]*x[0] - b*x[0];
+    //double c = - a*x[0]*x[0] - b*x[0];
 
 
-    swing_foot_pos[0] = (1-theta)*x[0] + theta*x[2]; // linear equation
-    swing_foot_pos[1] = FS[next_swing_ind].y;
-    swing_foot_pos[2] = a * swing_foot_pos[0] * swing_foot_pos[0] + b * swing_foot_pos[0] + c;
+    double dl = /*(1-theta)*x[0] +*/ theta * l;
+    swing_foot_pos[0] = FS[prev_swing_ind].x + theta * dx; // linear equation
+    swing_foot_pos[1] = FS[prev_swing_ind].y + theta * dy;
+    swing_foot_pos[2] = a*dl*dl + b*dl /*+ c*/;
     swing_foot_pos[3] = FS[next_swing_ind].angle;
 }
 
