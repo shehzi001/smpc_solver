@@ -102,6 +102,7 @@ WMG::~WMG()
 void WMG::init(const int _N)
 {
     current_step_number = 0;
+    first_preview_step = current_step_number;
     gravity = 9.81; // hard-coded
 
     N = _N;
