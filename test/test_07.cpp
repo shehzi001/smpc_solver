@@ -37,6 +37,7 @@ int main(int argc, char **argv)
             1.0,    // Gamma
             0.01,   // regularization
             1e-7);  // tolerance
+    solver.enable_fexceptions();
     //-----------------------------------------------------------
 
 

@@ -12,6 +12,8 @@
  * INCLUDES 
  ****************************************/
 
+#include <fenv.h>
+
 #include "qp_solver.h"
 #include "qp_as.h"
 #include "qp_ip.h"
@@ -58,6 +60,21 @@ smpc::solver::~solver()
     }
 }
 
+
+void smpc::solver::enable_fexceptions()
+{
+    feenableexcept(
+            // the currently enable exceptions
+            fegetexcept() | 
+            // division by zero
+            FE_DIVBYZERO |
+            // invalid operations (subtraction of Inf, comparison of NaN, etc.)
+            FE_INVALID |
+            // magnitude of the result is larger than destination
+            FE_OVERFLOW |
+            // the result is too small to be represented
+            FE_UNDERFLOW);
+}
 
 
 void smpc::solver::set_parameters(

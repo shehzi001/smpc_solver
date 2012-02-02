@@ -299,6 +299,15 @@ namespace smpc
 
             ~solver();
 
+            // -------------------------------
+
+            
+            /**
+             * @brief Enable floating point exceptions: die rather than processing 
+             *  incorrect data). SIGFPE is sent to the program, when an error occures.
+             */
+            void enable_fexceptions();
+
 
             // -------------------------------
 
