@@ -48,3 +48,17 @@ FootStep::FootStep(
     repeat_times = repeat_times_;
     repeat_counter = repeat_times;
 }
+
+
+/**
+ * @brief Correct position of the footstep.
+ *
+ * @param[in] x_error error along x axis.
+ * @param[in] y_error error along y axis.
+ */
+void FootStep::correct(const double x_error, const double y_error)
+{
+    x -= x_error;
+    y -= y_error;
+    rotate_translate(ca, sa, *this);
+}

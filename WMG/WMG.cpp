@@ -410,13 +410,13 @@ bool WMG::isSupportSwitchNeeded ()
  *
  * @param[in] pos_error 3x1 vector of error between expected and real position.
  *
- * @todo Preceding DS must be adjusted as well.
+ * @todo Following DS and the angle must be adjusted as well.
  */
 void WMG::correctNextSSPosition (const double *pos_error)
 {
-    FS[getNextSS()].x -= pos_error[0];
-    FS[getNextSS()].y -= pos_error[1];
+    FS[getNextSS()].correct(pos_error[0], pos_error[1]);
 }
+
 
 
 /**

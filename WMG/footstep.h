@@ -37,6 +37,7 @@ class FootStep : public Point2D, public RectangularConstraint_ZMP
                 const fs_type, 
                 const double *);
 
+        void correct(const double, const double);
 
         /// Angle (relative to the world frame) of a footstep [rad.].
         double angle;
