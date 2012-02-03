@@ -79,10 +79,10 @@ void RectangularConstraint_ZMP::rotate_translate(const double ca, const double s
     D[3] =  sa; D[7] = -ca;
 
     // d = d - D*p
-    d[0] += D[0]*p.x + D[4]*p.y;
-    d[1] += D[1]*p.x + D[5]*p.y;
-    d[2] += D[2]*p.x + D[6]*p.y;
-    d[3] += D[3]*p.x + D[7]*p.y;
+    d[0] = d_orig[0] + D[0]*p.x + D[4]*p.y;
+    d[1] = d_orig[1] + D[1]*p.x + D[5]*p.y;
+    d[2] = d_orig[2] + D[2]*p.x + D[6]*p.y;
+    d[3] = d_orig[3] + D[3]*p.x + D[7]*p.y;
 
     Constraints2Vert(); // determine coordinates of vertices
 }
