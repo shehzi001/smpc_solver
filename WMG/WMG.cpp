@@ -124,16 +124,22 @@ void WMG::init(const int _N)
 
 
     /// NAO constraint with safety margin.
-    def_constraint[0] = 0.09;
-    def_constraint[1] = 0.025;
-    def_constraint[2] = 0.03;
-    def_constraint[3] = 0.025;
-    def_repeat_times = 4;
+    def_ss_constraint[0] = 0.09;
+    def_ss_constraint[1] = 0.025;
+    def_ss_constraint[2] = 0.03;
+    def_ss_constraint[3] = 0.025;
 
     def_ds_constraint[0] = 0.07;
     def_ds_constraint[1] = 0.025;
     def_ds_constraint[2] = 0.025;
     def_ds_constraint[3] = 0.025;
+
+    addstep_constraint[0] = def_ss_constraint[0];
+    addstep_constraint[1] = def_ss_constraint[1];
+    addstep_constraint[2] = def_ss_constraint[2];
+    addstep_constraint[3] = def_ss_constraint[3];
+
+    def_repeat_times = 4;
     def_ds_num = 0;
 }
 
@@ -185,10 +191,10 @@ void WMG::AddFootstep(
         const double *d, 
         const fs_type type)
 {
-    def_constraint[0] = d[0];
-    def_constraint[1] = d[1];
-    def_constraint[2] = d[2];
-    def_constraint[3] = d[3];
+    addstep_constraint[0] = d[0];
+    addstep_constraint[1] = d[1];
+    addstep_constraint[2] = d[2];
+    addstep_constraint[3] = d[3];
     def_repeat_times = n_this;
     def_ds_num = n - n_this;
     AddFootstep(x_relative, y_relative, angle_relative, type);
@@ -243,7 +249,7 @@ void WMG::AddFootstep(
         const double angle_relative, 
         fs_type type)
 {
-    Point2D zref_offset ((def_constraint[0] - def_constraint[2])/2, 0);
+    Point2D zref_offset ((addstep_constraint[0] - addstep_constraint[2])/2, 0);
     Point2D offset (x_relative, y_relative);
 
     if (FS.size() == 0)
@@ -264,7 +270,7 @@ void WMG::AddFootstep(
                     zref_abs,
                     def_repeat_times, 
                     type,
-                    def_constraint));
+                    addstep_constraint));
     }
     else
     {
@@ -330,7 +336,7 @@ void WMG::AddFootstep(
                     next_zref,
                     def_repeat_times, 
                     type,
-                    def_constraint));
+                    addstep_constraint));
     }    
 }
 

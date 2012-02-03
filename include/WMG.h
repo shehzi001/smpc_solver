@@ -162,6 +162,9 @@ class WMG
         /// The maximum height, that can be reached by a swing foot.
         double step_height;
 
+        double def_ss_constraint[4];
+        double def_ds_constraint[4];
+
     private:
         void getDSFeetPositions (double *, double *);
         void getSSFeetPositions (const int, const int, double *, double *);
@@ -170,10 +173,8 @@ class WMG
         int getNextSS (const fs_type type = FS_TYPE_AUTO);
         int getPrevSS (const fs_type type = FS_TYPE_AUTO);
 
-        double def_constraint[4];
+        double addstep_constraint[4];
         int def_repeat_times;
-
-        double def_ds_constraint[4];
         int def_ds_num;
 
         
