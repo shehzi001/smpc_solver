@@ -50,9 +50,6 @@ class matrix_ecL_as
         void solve_backward (const int, double *);
         void solve_forward (const int, double *);
 
-        double *getDiagMatrix (const int);
-        double *getNonDiagMatrix (const int);
-
         double *ecL;
         double **ecL_diag;
         double **ecL_ndiag;
