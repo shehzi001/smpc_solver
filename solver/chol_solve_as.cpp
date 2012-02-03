@@ -233,10 +233,6 @@ void chol_solve_as::update (const problem_parameters& ppar, const int nW, const 
 
     int last_num = ic_num + ppar.N*SMPC_NUM_STATE_VAR; // the last !=0 element
 
-    // a matrix on diagonal of ecL
-    double* ecL_diag = &ecL.ecL[state_num * MATRIX_SIZE_3x3 * 2];
-    // a matrix below the ecL_diag
-    double* ecL_ndiag = &ecL.ecL[state_num * MATRIX_SIZE_3x3 * 2 + MATRIX_SIZE_3x3];
 
 
     // form row 'a' in the current row of icL
@@ -252,53 +248,51 @@ void chol_solve_as::update (const problem_parameters& ppar, const int nW, const 
     double* cur_pos = &new_row[k];
 
     // variables corresponding to x and y are computed using the same matrices
-    for(i = state_num*2; i < ppar.N*2; i++, cur_pos = &cur_pos[3], k += 3)
+    for(i = state_num; i < ppar.N; i++)
     {                                  
-        double tmp_copy_el[3]; // make a copy for faster computations
-
-        // ----------------------------------------------------------------
-        cur_pos[0] /= ecL_diag[0];
-        tmp_copy_el[0] = cur_pos[0];
-        cur_pos[1] -= tmp_copy_el[0] * ecL_diag[1];
-        cur_pos[1] /= ecL_diag[4];
-        tmp_copy_el[1] = cur_pos[1];
-        cur_pos[2] -= tmp_copy_el[0] * ecL_diag[2] + tmp_copy_el[1] * ecL_diag[5];
-        cur_pos[2] /= ecL_diag[8];
-        tmp_copy_el[2] = cur_pos[2];
-
-        // ----------------------------------------------------------------
-        if (i < 2*(ppar.N - 1))  // non-diagonal matrix of ecL cannot be
-        {                   // used when the last state is processed
-
-            // these elements can be updated here, since they are not 
-            // used in computation of other elements on this iteration
-            cur_pos[6] -= tmp_copy_el[0] * ecL_ndiag[0] 
-                        + tmp_copy_el[1] * ecL_ndiag[3]
-                        + tmp_copy_el[2] * ecL_ndiag[6];
-
-            cur_pos[7] -= tmp_copy_el[1] * ecL_ndiag[4]
-                        + tmp_copy_el[2] * ecL_ndiag[7];
-
-            cur_pos[8] -= tmp_copy_el[2] * ecL_ndiag[8];
-
-            if ((i+1)%2 == 0) // jump to the next pair of matrices in ecL.
-            {
-                ecL_diag = &ecL_diag[MATRIX_SIZE_3x3 * 2];
-                ecL_ndiag = &ecL_ndiag[MATRIX_SIZE_3x3 * 2];
-            }
-        }
-        // update the last (diagonal) number in the row
-        new_row[last_num] -= tmp_copy_el[0] * tmp_copy_el[0] 
-                           + tmp_copy_el[1] * tmp_copy_el[1] 
-                           + tmp_copy_el[2] * tmp_copy_el[2];
-
-        // update elements after N*SMPC_NUM_STATE_VAR using the previously added rows
-        // in icL
-        for (j = 0; j < ic_num; j++)
+        for (int l = 0; l < 2; l++)
         {
-            new_row_end[j] -= tmp_copy_el[0] * icL[j][k]
-                            + tmp_copy_el[1] * icL[j][k+1]
-                            + tmp_copy_el[2] * icL[j][k+2];
+            double tmp_copy_el[3]; // make a copy for faster computations
+            // ----------------------------------------------------------------
+            cur_pos[0] /= ecL.ecL_diag[i][0];
+            tmp_copy_el[0] = cur_pos[0];
+            cur_pos[1] -= tmp_copy_el[0] * ecL.ecL_diag[i][1];
+            cur_pos[1] /= ecL.ecL_diag[i][4];
+            tmp_copy_el[1] = cur_pos[1];
+            cur_pos[2] -= tmp_copy_el[0] * ecL.ecL_diag[i][2] + tmp_copy_el[1] * ecL.ecL_diag[i][5];
+            cur_pos[2] /= ecL.ecL_diag[i][8];
+            tmp_copy_el[2] = cur_pos[2];
+
+            // ----------------------------------------------------------------
+            if (i < ppar.N - 1) // non-diagonal matrix of ecL cannot be
+            {                   // used when the last state is processed
+
+                // these elements can be updated here, since they are not 
+                // used in computation of other elements on this iteration
+                cur_pos[6] -= tmp_copy_el[0] * ecL.ecL_ndiag[i][0] 
+                            + tmp_copy_el[1] * ecL.ecL_ndiag[i][3]
+                            + tmp_copy_el[2] * ecL.ecL_ndiag[i][6];
+
+                cur_pos[7] -= tmp_copy_el[1] * ecL.ecL_ndiag[i][4]
+                            + tmp_copy_el[2] * ecL.ecL_ndiag[i][7];
+
+                cur_pos[8] -= tmp_copy_el[2] * ecL.ecL_ndiag[i][8];
+            }
+            // update the last (diagonal) number in the row
+            new_row[last_num] -= tmp_copy_el[0] * tmp_copy_el[0] 
+                               + tmp_copy_el[1] * tmp_copy_el[1] 
+                               + tmp_copy_el[2] * tmp_copy_el[2];
+
+            // update elements after N*SMPC_NUM_STATE_VAR using the previously added rows
+            // in icL
+            for (j = 0; j < ic_num; j++)
+            {
+                new_row_end[j] -= tmp_copy_el[0] * icL[j][k]
+                                + tmp_copy_el[1] * icL[j][k+1]
+                                + tmp_copy_el[2] * icL[j][k+2];
+            }
+            cur_pos = &cur_pos[3];
+            k+= 3;
         }
     }
 

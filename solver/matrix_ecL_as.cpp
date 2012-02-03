@@ -26,6 +26,16 @@ matrix_ecL_as::matrix_ecL_as (const int N)
     ecL = new double[MATRIX_SIZE_3x3*N + MATRIX_SIZE_3x3*(N-1)]();
 
     iQAT = new double[MATRIX_SIZE_3x3];
+    ecL_diag = new double*[N];
+    for (int i = 0; i < N; i++)
+    {
+        ecL_diag[i] = &ecL[i * MATRIX_SIZE_3x3 * 2];
+    }
+    ecL_ndiag = new double*[N-1];
+    for (int i = 0; i < N-1; i++)
+    {
+        ecL_ndiag[i] = &ecL[i * MATRIX_SIZE_3x3 * 2 + MATRIX_SIZE_3x3];
+    }
 }
 
 
@@ -33,6 +43,12 @@ matrix_ecL_as::~matrix_ecL_as()
 {
     if (ecL != NULL)
         delete ecL;
+
+    if (ecL_diag != NULL)
+        delete ecL_diag;
+
+    if (ecL_ndiag != NULL)
+        delete ecL_ndiag;
 
     if (iQAT != NULL)
         delete iQAT;
@@ -222,30 +238,22 @@ void matrix_ecL_as::form (const problem_parameters& ppar)
 
     // the first matrix on diagonal
     stp = ppar.spar[0];
-    form_iQBiPB (stp.B, ppar.i2Q, ppar.i2P, ecL);
-    chol_dec (ecL);
+    form_iQBiPB (stp.B, ppar.i2Q, ppar.i2P, ecL_diag[0]);
+    chol_dec (ecL_diag[0]);
 
 
     // offsets
-    double *ecL_cur = &ecL[MATRIX_SIZE_3x3];
-    double *ecL_prev = ecL;
     for (i = 1; i < ppar.N; i++)
     {
         stp = ppar.spar[i];
         form_iQAT (stp.A3, stp.A6, ppar.i2Q);
 
         // form (b), (d), (f) ... 
-        form_L_non_diag(ecL_prev, ecL_cur);
-        // update offsets
-        ecL_cur = &ecL_cur[MATRIX_SIZE_3x3];
-        ecL_prev = &ecL_prev[MATRIX_SIZE_3x3];
+        form_L_non_diag(ecL_diag[i-1], ecL_ndiag[i-1]);
 
         // form (c), (e), (g) ...
-        form_AiQATiQBiPB (ppar, stp, ecL_cur);
-        form_L_diag(ecL_prev, ecL_cur);
-        // update offsets
-        ecL_cur = &ecL_cur[MATRIX_SIZE_3x3];
-        ecL_prev = &ecL_prev[MATRIX_SIZE_3x3];
+        form_AiQATiQBiPB (ppar, stp, ecL_diag[i]);
+        form_L_diag(ecL_ndiag[i-1], ecL_diag[i]);
     }
 }
 
@@ -259,62 +267,55 @@ void matrix_ecL_as::form (const problem_parameters& ppar)
  */
 void matrix_ecL_as::solve_forward(const int N, double *x)
 {
-    int i;
+    int i, j;
     double *xc = x; // 6 current elements of x
     double *xp; // 6 elements of x computed on the previous iteration
-    double *cur_ecL = &ecL[0];  // lower triangular matrix lying on the 
-                                // diagonal of L
-    double *prev_ecL;   // upper triangular matrix lying to the left from
-                        // cur_ecL at the same level of L
 
 
     // compute the first 6 elements using forward substitution
-    xc[0] /= cur_ecL[0];
-    xc[3] /= cur_ecL[0];
+    xc[0] /= ecL_diag[0][0];
+    xc[3] /= ecL_diag[0][0];
 
-    xc[1] -= xc[0] * cur_ecL[1];
-    xc[1] /= cur_ecL[4];
+    xc[1] -= xc[0] * ecL_diag[0][1];
+    xc[1] /= ecL_diag[0][4];
 
-    xc[4] -= xc[3] * cur_ecL[1];
-    xc[4] /= cur_ecL[4];
+    xc[4] -= xc[3] * ecL_diag[0][1];
+    xc[4] /= ecL_diag[0][4];
 
-    xc[2] -= xc[0] * cur_ecL[2] + xc[1] * cur_ecL[5];
-    xc[2] /= cur_ecL[8];
+    xc[2] -= xc[0] * ecL_diag[0][2] + xc[1] * ecL_diag[0][5];
+    xc[2] /= ecL_diag[0][8];
 
-    xc[5] -= xc[3] * cur_ecL[2] + xc[4] * cur_ecL[5];
-    xc[5] /= cur_ecL[8];
+    xc[5] -= xc[3] * ecL_diag[0][2] + xc[4] * ecL_diag[0][5];
+    xc[5] /= ecL_diag[0][8];
 
 
-    for (i = 1; i < N; i++)
+    for (i = 1, j = 0; i < N; i++,j++)
     {
         // switch to the next level of L / next 6 elements
         xp = xc;
         xc = &xc[SMPC_NUM_STATE_VAR];
 
-        prev_ecL = &cur_ecL[MATRIX_SIZE_3x3];
-        cur_ecL = &cur_ecL[2 * MATRIX_SIZE_3x3];
-
 
         // update the right part of the equation and compute elements
-        xc[0] -= xp[0] * prev_ecL[0] + xp[1] * prev_ecL[3] + xp[2] * prev_ecL[6];
-        xc[0] /= cur_ecL[0];
+        xc[0] -= xp[0] * ecL_ndiag[j][0] + xp[1] * ecL_ndiag[j][3] + xp[2] * ecL_ndiag[j][6];
+        xc[0] /= ecL_diag[i][0];
 
-        xc[3] -= xp[3] * prev_ecL[0] + xp[4] * prev_ecL[3] + xp[5] * prev_ecL[6];
-        xc[3] /= cur_ecL[0];
-
-
-        xc[1] -= xp[1] * prev_ecL[4] + xp[2] * prev_ecL[7] + xc[0] * cur_ecL[1];
-        xc[1] /= cur_ecL[4];
-
-        xc[4] -= xp[4] * prev_ecL[4] + xp[5] * prev_ecL[7] + xc[3] * cur_ecL[1];
-        xc[4] /= cur_ecL[4];
+        xc[3] -= xp[3] * ecL_ndiag[j][0] + xp[4] * ecL_ndiag[j][3] + xp[5] * ecL_ndiag[j][6];
+        xc[3] /= ecL_diag[i][0];
 
 
-        xc[2] -= xp[2] * prev_ecL[8] + xc[0] * cur_ecL[2] + xc[1] * cur_ecL[5];
-        xc[2] /= cur_ecL[8];
+        xc[1] -= xp[1] * ecL_ndiag[j][4] + xp[2] * ecL_ndiag[j][7] + xc[0] * ecL_diag[i][1];
+        xc[1] /= ecL_diag[i][4];
 
-        xc[5] -= xp[5] * prev_ecL[8] + xc[3] * cur_ecL[2] + xc[4] * cur_ecL[5];
-        xc[5] /= cur_ecL[8];
+        xc[4] -= xp[4] * ecL_ndiag[j][4] + xp[5] * ecL_ndiag[j][7] + xc[3] * ecL_diag[i][1];
+        xc[4] /= ecL_diag[i][4];
+
+
+        xc[2] -= xp[2] * ecL_ndiag[j][8] + xc[0] * ecL_diag[i][2] + xc[1] * ecL_diag[i][5];
+        xc[2] /= ecL_diag[i][8];
+
+        xc[5] -= xp[5] * ecL_ndiag[j][8] + xc[3] * ecL_diag[i][2] + xc[4] * ecL_diag[i][5];
+        xc[5] /= ecL_diag[i][8];
     }
 }
 
@@ -331,26 +332,20 @@ void matrix_ecL_as::solve_backward (const int N, double *x)
     double *xc = & x[(N-1)*SMPC_NUM_STATE_VAR]; // current 6 elements of result
     double *xp; // 6 elements computed on the previous iteration
     
-    // elements of these matrices accessed as if they were transposed
-    // lower triangular matrix lying on the diagonal of L
-    double *cur_ecL = &ecL[2 * (N - 1) * MATRIX_SIZE_3x3];
-    // upper triangular matrix lying to the right from cur_ecL at the same level of L'
-    double *prev_ecL; 
-
 
     // compute the last 6 elements using backward substitution
-    xc[2] /= cur_ecL[8];
-    xc[5] /= cur_ecL[8];
+    xc[2] /= ecL_diag[N-1][8];
+    xc[5] /= ecL_diag[N-1][8];
 
-    xc[1] -= xc[2] * cur_ecL[5];
-    xc[1] /= cur_ecL[4];
-    xc[4] -= xc[5] * cur_ecL[5];
-    xc[4] /= cur_ecL[4];
+    xc[1] -= xc[2] * ecL_diag[N-1][5];
+    xc[1] /= ecL_diag[N-1][4];
+    xc[4] -= xc[5] * ecL_diag[N-1][5];
+    xc[4] /= ecL_diag[N-1][4];
 
-    xc[0] -= xc[2] * cur_ecL[2] + xc[1] * cur_ecL[1];
-    xc[0] /= cur_ecL[0];
-    xc[3] -= xc[5] * cur_ecL[2] + xc[4] * cur_ecL[1];
-    xc[3] /= cur_ecL[0];
+    xc[0] -= xc[2] * ecL_diag[N-1][2] + xc[1] * ecL_diag[N-1][1];
+    xc[0] /= ecL_diag[N-1][0];
+    xc[3] -= xc[5] * ecL_diag[N-1][2] + xc[4] * ecL_diag[N-1][1];
+    xc[3] /= ecL_diag[N-1][0];
 
 
     for (i = N-2; i >= 0 ; i--)
@@ -358,29 +353,25 @@ void matrix_ecL_as::solve_backward (const int N, double *x)
         xp = xc;
         xc = & x[i*SMPC_NUM_STATE_VAR];
 
-        cur_ecL = &ecL[2 * i * MATRIX_SIZE_3x3];
-        prev_ecL = &cur_ecL[MATRIX_SIZE_3x3];
-
-
         // update the right part of the equation and compute elements
-        xc[2] -= xp[0] * prev_ecL[6] + xp[1] * prev_ecL[7] + xp[2] * prev_ecL[8];
-        xc[2] /= cur_ecL[8];
+        xc[2] -= xp[0] * ecL_ndiag[i][6] + xp[1] * ecL_ndiag[i][7] + xp[2] * ecL_ndiag[i][8];
+        xc[2] /= ecL_diag[i][8];
 
-        xc[5] -= xp[3] * prev_ecL[6] + xp[4] * prev_ecL[7] + xp[5] * prev_ecL[8];
-        xc[5] /= cur_ecL[8];
-
-
-        xc[1] -= xp[0] * prev_ecL[3] + xp[1] * prev_ecL[4] + xc[2] * cur_ecL[5];
-        xc[1] /= cur_ecL[4];
-
-        xc[4] -= xp[3] * prev_ecL[3] + xp[4] * prev_ecL[4] + xc[5] * cur_ecL[5];
-        xc[4] /= cur_ecL[4];
+        xc[5] -= xp[3] * ecL_ndiag[i][6] + xp[4] * ecL_ndiag[i][7] + xp[5] * ecL_ndiag[i][8];
+        xc[5] /= ecL_diag[i][8];
 
 
-        xc[0] -= xp[0] * prev_ecL[0] + xc[2] * cur_ecL[2] + xc[1] * cur_ecL[1];
-        xc[0] /= cur_ecL[0];
+        xc[1] -= xp[0] * ecL_ndiag[i][3] + xp[1] * ecL_ndiag[i][4] + xc[2] * ecL_diag[i][5];
+        xc[1] /= ecL_diag[i][4];
 
-        xc[3] -= xp[3] * prev_ecL[0] + xc[5] * cur_ecL[2] + xc[4] * cur_ecL[1];
-        xc[3] /= cur_ecL[0];
+        xc[4] -= xp[3] * ecL_ndiag[i][3] + xp[4] * ecL_ndiag[i][4] + xc[5] * ecL_diag[i][5];
+        xc[4] /= ecL_diag[i][4];
+
+
+        xc[0] -= xp[0] * ecL_ndiag[i][0] + xc[2] * ecL_diag[i][2] + xc[1] * ecL_diag[i][1];
+        xc[0] /= ecL_diag[i][0];
+
+        xc[3] -= xp[3] * ecL_ndiag[i][0] + xc[5] * ecL_diag[i][2] + xc[4] * ecL_diag[i][1];
+        xc[3] /= ecL_diag[i][0];
     }
 }
