@@ -84,7 +84,12 @@ class WMG
         WMGret formPreviewWindow ();
         void FS2file(const std::string, const bool plot_ds = true);
 
-        void getFeetPositions (const int, const int, double *, double *);
+        void getFeetPositions (
+                const int, 
+                const int, 
+                const int, 
+                double *, 
+                double *);
 
 
         void initABMatrices (const double);
@@ -166,12 +171,10 @@ class WMG
         double def_ds_constraint[4];
 
     private:
-        void getDSFeetPositions (double *, double *);
-        void getSSFeetPositions (const int, const int, double *, double *);
-        int getNextSS (const int, const fs_type);
-        int getPrevSS (const int, const fs_type);
-        int getNextSS (const fs_type type = FS_TYPE_AUTO);
-        int getPrevSS (const fs_type type = FS_TYPE_AUTO);
+        void getDSFeetPositions (const int, double *, double *);
+        void getSSFeetPositions (const int, const double, double *, double *);
+        int getNextSS (const int, const fs_type type = FS_TYPE_AUTO);
+        int getPrevSS (const int, const fs_type type = FS_TYPE_AUTO);
 
         double addstep_constraint[4];
         int def_repeat_times;

@@ -345,6 +345,8 @@ void WMG::AddFootstep(
 /**
  * @brief Determine position and orientation of feet
  *
+ * @param[in] shift_from_current a positive shift from the current support (allows to get
+ *  positions for the future supports)
  * @param[in] loops_per_preview_iter number of control loops per preview iteration
  * @param[in] loops_in_current_preview number of control loops passed in the current 
  *                                     preview iteration
@@ -361,20 +363,54 @@ void WMG::AddFootstep(
  * at the end of preview window with number loops_in_current_preview.
  */
 void WMG::getFeetPositions (
+        const int shift_from_current,
         const int loops_per_preview_iter,
         const int loops_in_current_preview,
         double *left_foot_pos,
         double *right_foot_pos)
 {
-    if (FS[first_preview_step].type == FS_TYPE_DS)
+    int support_number = first_preview_step;
+    // formPreviewWindow() have already decremented the counter, +1 is needed.
+    int step_repeat_times = FS[support_number].repeat_counter + 1;
+    int shift_counter = shift_from_current;
+
+
+    while (shift_counter > 0)
     {
-        getDSFeetPositions (left_foot_pos, right_foot_pos);
+        if (step_repeat_times == 0)
+        {
+            ++support_number;
+            if (support_number == (int) FS.size())
+            {
+                return;
+            }
+            step_repeat_times = FS[support_number].repeat_counter;
+        }
+        else
+        {
+            --step_repeat_times;
+            --shift_counter;
+        }
+    }
+
+
+    if (FS[support_number].type == FS_TYPE_DS)
+    {
+        getDSFeetPositions (support_number, left_foot_pos, right_foot_pos);
     }
     else
     {
+        int num_iter_in_ss = FS[support_number].repeat_times;
+        int num_iter_in_ss_passed = num_iter_in_ss - step_repeat_times;
+
+        double theta =
+            (double) (loops_per_preview_iter * num_iter_in_ss_passed + loops_in_current_preview) /
+            (loops_per_preview_iter * num_iter_in_ss);
+
+
         getSSFeetPositions (
-                loops_per_preview_iter, 
-                loops_in_current_preview, 
+                support_number,
+                theta,
                 left_foot_pos, 
                 right_foot_pos);
     }
@@ -400,7 +436,7 @@ bool WMG::isSupportSwitchNeeded ()
             // this is the first iteration in SS
             (FS[current_step_number].repeat_counter == FS[current_step_number].repeat_times) &&
             // the previous SS was different
-            (FS[getPrevSS()].type != FS[current_step_number].type))
+            (FS[getPrevSS(first_preview_step)].type != FS[current_step_number].type))
         {
             return (true);
         }
@@ -420,7 +456,7 @@ bool WMG::isSupportSwitchNeeded ()
  */
 void WMG::correctNextSSPosition (const double *pos_error)
 {
-    FS[getNextSS()].correct(pos_error[0], pos_error[1]);
+    FS[getNextSS(first_preview_step)].correct(pos_error[0], pos_error[1]);
 }
 
 

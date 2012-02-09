@@ -10,24 +10,6 @@
 
 
 
-
-/**
- * @brief Returns index of the next SS starting from the first
- * step in the current preview window.
- *
- * @param[in] type search for a footstep of certain type,
- *                 by default (FS_TYPE_AUTO) both left and right
- *                 are searched.
- *
- * @return index of the next SS.
- */
-int WMG::getNextSS(const fs_type type)
-{
-    return (getNextSS (first_preview_step, type));
-}
-
-
-
 /**
  * @brief Returns index of the next SS.
  *
@@ -59,23 +41,6 @@ int WMG::getNextSS(const int start_ind, const fs_type type)
         }
     }
     return (index);
-}
-
-
-
-/**
- * @brief Returns index of the previous SS starting from the first
- * step in the current preview window.
- *
- * @param[in] type search for a footstep of certain type,
- *                 by default (FS_TYPE_AUTO) both left and right
- *                 are searched.
- *
- * @return index of the previous SS.
- */
-int WMG::getPrevSS(const fs_type type)
-{
-    return (getPrevSS (first_preview_step, type));
 }
 
 
@@ -118,24 +83,26 @@ int WMG::getPrevSS(const int start_ind, const fs_type type)
 /**
  * @brief Determine position and orientation of feet in DS
  *
+ * @param[in] support_number number of the support
  * @param[out] left_foot_pos 3x1 vector of coordinates [x y z] + angle (orientation in x,y plane)
  * @param[out] right_foot_pos 3x1 vector of coordinates [x y z] + angle (orientation in x,y plane)
  */
 void WMG::getDSFeetPositions (
+        const int support_number,
         double *left_foot_pos,
         double *right_foot_pos)
 {
     int left_ind, right_ind;
 
-    left_ind = getNextSS ();
+    left_ind = getNextSS (support_number);
     if (FS[left_ind].type == FS_TYPE_SS_L)
     {
-        right_ind = getPrevSS ();
+        right_ind = getPrevSS (support_number);
     }
     else
     {
         right_ind = left_ind;
-        left_ind = getPrevSS ();
+        left_ind = getPrevSS (support_number);
     }
 
     left_foot_pos[0] = FS[left_ind].x;
@@ -154,21 +121,20 @@ void WMG::getDSFeetPositions (
 /**
  * @brief Determine position and orientation of feet
  *
- * @param[in] loops_per_preview_iter number of control loops per preview iteration
- * @param[in] loops_in_current_preview number of control loops passed in the current 
- *                                     preview iteration
+ * @param[in] support_number number of the support
+ * @param[in] theta a number between 0 and 1, a fraction of support time that have passed 
  * @param[out] left_foot_pos 3x1 vector of coordinates [x y z] + angle (orientation in x,y plane)
  * @param[out] right_foot_pos 3x1 vector of coordinates [x y z] + angle (orientation in x,y plane)
  */
 void WMG::getSSFeetPositions (
-        const int loops_per_preview_iter,
-        const int loops_in_current_preview,
+        const int support_number,
+        const double theta,
         double *left_foot_pos,
         double *right_foot_pos)
 {
     double *swing_foot_pos, *ref_foot_pos;
     int next_swing_ind, prev_swing_ind;
-    FootStep & current_step = FS[first_preview_step];
+    FootStep & current_step = FS[support_number];
 
 
     if (current_step.type == FS_TYPE_SS_L)
@@ -176,16 +142,16 @@ void WMG::getSSFeetPositions (
         ref_foot_pos = left_foot_pos;
         swing_foot_pos = right_foot_pos;
 
-        prev_swing_ind = getPrevSS (FS_TYPE_SS_R);
-        next_swing_ind = getNextSS (FS_TYPE_SS_R);
+        prev_swing_ind = getPrevSS (support_number, FS_TYPE_SS_R);
+        next_swing_ind = getNextSS (support_number, FS_TYPE_SS_R);
     }
     else
     {
         ref_foot_pos = right_foot_pos;
         swing_foot_pos = left_foot_pos;
 
-        prev_swing_ind = getPrevSS (FS_TYPE_SS_L);
-        next_swing_ind = getNextSS (FS_TYPE_SS_L);
+        prev_swing_ind = getPrevSS (support_number, FS_TYPE_SS_L);
+        next_swing_ind = getNextSS (support_number, FS_TYPE_SS_L);
     }
 
     ref_foot_pos[0] = current_step.x;
@@ -193,13 +159,6 @@ void WMG::getSSFeetPositions (
     ref_foot_pos[2] = 0.0;
     ref_foot_pos[3] = current_step.angle;
 
-
-    int num_iter_in_ss = current_step.repeat_times;
-    // formPreviewWindow() have already decremented the counter, +1 is needed.
-    int num_iter_in_ss_passed = num_iter_in_ss - (current_step.repeat_counter + 1);
-    double theta =
-        (double) (loops_per_preview_iter * num_iter_in_ss_passed + loops_in_current_preview) /
-        (loops_per_preview_iter * num_iter_in_ss);
 
 
     double dx = FS[next_swing_ind].x - FS[prev_swing_ind].x;

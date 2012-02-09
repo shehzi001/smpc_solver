@@ -116,8 +116,8 @@ int main(int argc, char **argv)
         // feet position/orientation
         double left_foot_pos[3+1];
         double right_foot_pos[3+1];
-        /* wrong, but makes nice graph */
         wmg.getFeetPositions (
+                1,
                 preview_sampling_time_ms / control_sampling_time_ms,
                 (preview_sampling_time_ms - next_preview_len_ms) / control_sampling_time_ms,
                 left_foot_pos,
