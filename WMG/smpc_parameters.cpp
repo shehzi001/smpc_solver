@@ -7,21 +7,39 @@
 #include "WMG.h"
 
 
-/** \brief Default constructor. */
-smpc_parameters::smpc_parameters ()
+/**
+ * @brief Allocate memory and initialize some of the parameters.
+ *
+ * @param[in] N preview window length
+ * @param[in] hCoM_ Height of the Center of Mass [meter]
+ * @param[in] gravity_ gravity [m/s^2]
+ */
+smpc_parameters::smpc_parameters(
+        const unsigned int N,
+        const double hCoM_,
+        const double gravity_)
 {
-    X = NULL;
+    hCoM = hCoM_;
+    gravity = gravity_;
 
-    T = NULL;
-    h = NULL;
+    X = new double[SMPC_NUM_VAR*N];
 
-    angle = NULL;
-    zref_x = NULL;
-    zref_y = NULL;
-    fp_x = NULL;
-    fp_y = NULL;
-    lb = NULL;
-    ub = NULL;
+    T = new double[N];
+    h = new double[N];
+
+    h0 = hCoM/gravity;
+    for (unsigned int i = 0; i < N; i++)
+    {
+        h[i] = h0;
+    }
+
+    angle = new double[N];
+    zref_x = new double[N];
+    zref_y = new double[N];
+    fp_x = new double[N];
+    fp_y = new double[N];
+    lb = new double[2*N];
+    ub = new double[2*N];
 }
 
 
@@ -72,36 +90,4 @@ smpc_parameters::~smpc_parameters()
     {
         delete ub;
     }
-}
-
-
-
-/**
- * @brief Allocate memory and initialize some of the parameters.
- *
- * @param[in] N preview window length
- * @param[in] h_ height of center of mass divided by gravity.
- */
-void smpc_parameters::init(
-        const unsigned int N,
-        const double h_)
-{
-    X = new double[SMPC_NUM_VAR*N];
-
-    T = new double[N];
-    h = new double[N];
-
-    h0 = h_;
-    for (unsigned int i = 0; i < N; i++)
-    {
-        h[i] = h_;
-    }
-
-    angle = new double[N];
-    zref_x = new double[N];
-    zref_y = new double[N];
-    fp_x = new double[N];
-    fp_y = new double[N];
-    lb = new double[2*N];
-    ub = new double[2*N];
 }

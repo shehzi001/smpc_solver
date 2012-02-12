@@ -55,21 +55,23 @@ enum fs_type
 class smpc_parameters
 {
     public:
-        smpc_parameters();
+        smpc_parameters (
+                const unsigned int, 
+                const double, 
+                const double gravity_ = 9.81);
         ~smpc_parameters();
 
-        void init (const unsigned int, const double);
 
 
 // variables
+        double hCoM;    /// Height of the CoM.
 
-        /** \brief Preview sampling time  */
-        double *T;
+        double gravity; /// Norm of the acceleration due to gravity.
 
-        /** \brief h = #hCoM/#gravity. */
-        double *h;
+        double *T;      /// Preview sampling time
 
-        double h0;
+        double *h;      /// h = #hCoM/#gravity for each preview step
+        double h0;      /// initial h
 
         /// Array of N absolute angles corresponding to supports in the preview window.
         double *angle;
@@ -102,19 +104,41 @@ class smpc_parameters
 
 
 
+/**
+ * @brief Inverted pendulum model
+ */
+class IPM
+{
+    public:
+        IPM (const double);
+        ~IPM ();
+        void calculateNextState (smpc::control&, smpc::state_orig&);
+
+
+        ///@{
+        /// State and control matrices, that can be used to determine the next
+        /// state based on the current state and the controls.
+        double *A;
+        double *B;
+        ///@}
+
+        smpc::control control_vector;
+        smpc::state_orig state_vector;
+};
+
+
+
 /** \brief Defines the parameters of the Walking Pattern Generator. */
 class WMG
 {
     public:
 // methods
-        WMG();
-        ~WMG();
-        void init (
-                const unsigned int,
+        WMG (   const unsigned int,
                 const unsigned int, 
-                const double,
-                const double step_height_ = 0.0135,
-                const double gravity_ = 9.81);
+                const double step_height_ = 0.0135);
+        ~WMG();
+
+
         void AddFootstep(
                 const double, 
                 const double, 
@@ -135,15 +159,15 @@ class WMG
                 const double, 
                 const double, 
                 fs_type type = FS_TYPE_AUTO);
+
+
         bool isSupportSwitchNeeded ();
+
         WMGret formPreviewWindow (smpc_parameters &);
+
         void FS2file(const std::string, const bool plot_ds = true);
 
         void getFeetPositions (const unsigned int, double *, double *);
-
-
-        void initABMatrices (const double);
-        void calculateNextState (smpc::control&, smpc::state_orig&);
 
         void getFootsteps(
                 std::vector<double> &,
@@ -164,22 +188,7 @@ class WMG
         unsigned int *T_ms;
         unsigned int sampling_period;
 
-        /** \brief Height of the CoM. */
-        double hCoM;
-
-        /** \brief Norm of the acceleration due to gravity. For the moment gravity is set equal to 9.81. */
-        double gravity;
         
-
-        /** Initial state. */
-        smpc::state_tilde X_tilde;
-        
-
-        /// A storage for the controls, that must be applied to reach the next state.
-        smpc::control next_control;
-
-
-
         /** This is the step in FS that is at the start of the current preview window. */
         int current_step_number;
 
@@ -204,13 +213,6 @@ class WMG
         unsigned int def_ds_num;
 
         unsigned int last_time_decrement;
-        
-        ///@{
-        /// State and control matrices, that can be used to determine the next
-        /// state based on the current state and the controls.
-        double *A;
-        double *B;
-        ///@}
 };
 
 ///@}

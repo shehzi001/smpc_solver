@@ -13,52 +13,40 @@
 
 int main(int argc, char **argv)
 {
-    test_start(argv[0]);
+    test_init_base* test_06 = NULL;
 
 
     for (int j = 0; j < 6; j++)
     {
         ofstream fs_out;
-        WMG wmg;
-        smpc_parameters par;
-        std::string fs_out_filename("");
 
         switch (j)
         {
             case 0:
-                init_01 (&wmg);
-                fs_out_filename = "test_06_init_01_fs.m";
+                test_06 = new init_01 ("test_06_init_01");
                 break;
             case 1:
-                init_02 (&wmg);
-                fs_out_filename = "test_06_init_02_fs.m";
+                test_06 = new init_02 ("test_06_init_02");
                 break;
             case 2:
-                init_03 (&wmg);
-                fs_out_filename = "test_06_init_03_fs.m";
+                test_06 = new init_03 ("test_06_init_03");
                 break;
             case 3:
-                init_04 (&wmg);
-                fs_out_filename = "test_06_init_04_fs.m";
+                test_06 = new init_04 ("test_06_init_04");
                 break;
             case 4:
-                init_05 (&wmg);
-                fs_out_filename = "test_06_init_05_fs.m";
+                test_06 = new init_05 ("test_06_init_05");
                 break;
             case 5:
-                init_06 (&wmg);
-                fs_out_filename = "test_06_init_06_fs.m";
+                test_06 = new init_06 ("test_06_init_06");
                 break;
         }
 
-        par.init(wmg.N, wmg.hCoM/wmg.gravity);
-        wmg.FS2file(fs_out_filename); // output results for later use in Matlab/Octave
+
+        smpc::solver solver(test_06->wmg->N);
 
 
-        smpc::solver solver(wmg.N);
-
-
-        fs_out.open(fs_out_filename.c_str(), fstream::app);
+        fs_out.open(test_06->fs_out_filename.c_str(), fstream::app);
         fs_out.precision (numeric_limits<double>::digits10);
         fs_out << endl << endl;
         fs_out << "CoM_ZMP = [";
@@ -68,7 +56,7 @@ int main(int argc, char **argv)
         for(;;)
         {
             //------------------------------------------------------
-            if (wmg.formPreviewWindow(par) == WMG_HALT)
+            if (test_06->wmg->formPreviewWindow(*test_06->par) == WMG_HALT)
             {
                 cout << "EXIT (halt = 1)" << endl;
                 break;
@@ -76,22 +64,23 @@ int main(int argc, char **argv)
             //------------------------------------------------------
 
             //------------------------------------------------------
-            solver.set_parameters (par.T, par.h, par.h0, par.angle, par.fp_x, par.fp_y, par.lb, par.ub);
-            solver.form_init_fp (par.fp_x, par.fp_y, par.init_state, par.X);
+            solver.set_parameters (test_06->par->T, test_06->par->h, test_06->par->h0, test_06->par->angle, test_06->par->fp_x, test_06->par->fp_y, test_06->par->lb, test_06->par->ub);
+            solver.form_init_fp (test_06->par->fp_x, test_06->par->fp_y, test_06->par->init_state, test_06->par->X);
             solver.solve();
-            par.init_state.get_next_state (solver);
+            test_06->par->init_state.get_next_state (solver);
             //------------------------------------------------------
 
-            wmg.X_tilde.get_next_state (solver);
-            fs_out << endl << par.init_state.x() << " " << par.init_state.y() << " " << wmg.X_tilde.x() << " " << wmg.X_tilde.y() << ";";
+            test_06->X_tilde.get_next_state (solver);
+            fs_out << endl << test_06->par->init_state.x() << " " << test_06->par->init_state.y() << " " << test_06->X_tilde.x() << " " << test_06->X_tilde.y() << ";";
         }
 
         fs_out << "];" << endl;
         fs_out << "plot (CoM_ZMP(:,1), CoM_ZMP(:,2), 'b');" << endl;
         fs_out << "plot (CoM_ZMP(:,3), CoM_ZMP(:,4), 'ks','MarkerSize',5);" << endl;
         fs_out.close();
+
+        delete test_06;
     }
-    test_end(argv[0]);
     return 0;
 }
 ///@}

@@ -15,14 +15,11 @@ int main(int argc, char **argv)
 
     // WMG is a helper class, which provides data for QP on each
     // iteration of simulation
-    WMG wmg;
-    smpc_parameters param;
-
-    wmg.init (
-            15,     // size of the preview window
-            100,    // sampling time [ms.]
+    WMG wmg(15,     // size of the preview window
+            100);   // sampling time [ms.]
+    smpc_parameters param (
+            wmg.N,  // size of the preview window
             0.261); // height of the center of mass [meter]
-    param.init(wmg.N, wmg.hCoM/wmg.gravity);
 
 
     // Initial double support

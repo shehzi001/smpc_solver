@@ -20,20 +20,14 @@ int main(int argc, char **argv)
     int next_preview_len_ms = 0;
 
     // initialize
-    WMG wmg;
-    smpc_parameters par;
-    init_04 (&wmg);
-    par.init(wmg.N, wmg.hCoM/wmg.gravity);
-
-    std::string fs_out_filename("test_07_fs.m");
-    wmg.FS2file(fs_out_filename); // output results for later use in Matlab/Octave
+    init_04 test_07("test_07");
+    IPM ipm((double) control_sampling_time_ms / 1000);
     //-----------------------------------------------------------
 
 
-    test_start(argv[0]);
     //-----------------------------------------------------------
     smpc::solver solver(
-            wmg.N, // size of the preview window
+            test_07.wmg->N, // size of the preview window
             300.0,  // Alpha
             800.0,  // Beta
             1.0,    // Gamma
@@ -45,14 +39,13 @@ int main(int argc, char **argv)
 
 
     //-----------------------------------------------------------
-    wmg.initABMatrices ((double) control_sampling_time_ms / 1000);
-    par.init_state.set (0.019978839010709938, -6.490507362468014e-05);
+    test_07.par->init_state.set (0.019978839010709938, -6.490507362468014e-05);
     // state_tilde = state_orig, when velocity = acceleration = 0
-    wmg.X_tilde.set (0.019978839010709938, -6.490507362468014e-05);
+    test_07.X_tilde.set (0.019978839010709938, -6.490507362468014e-05);
     //-----------------------------------------------------------
 
 
-    FILE *file_op = fopen(fs_out_filename.c_str(), "a");
+    FILE *file_op = fopen(test_07.fs_out_filename.c_str(), "a");
     fprintf(file_op,"hold on\n");
 
     vector<double> ZMP_ref_x;
@@ -75,31 +68,29 @@ int main(int argc, char **argv)
     {
         if (next_preview_len_ms == 0)
         {
-            cout << wmg.isSupportSwitchNeeded() << endl;
-            WMGret wmg_retval = wmg.formPreviewWindow(par);
-
-            if (wmg_retval == WMG_HALT)
+            cout << test_07.wmg->isSupportSwitchNeeded() << endl;
+            if (test_07.wmg->formPreviewWindow(*test_07.par) == WMG_HALT)
             {
                 cout << "EXIT (halt = 1)" << endl;
                 break;
             }
 
-            ZMP_ref_x.push_back(par.zref_x[0]);
-            ZMP_ref_y.push_back(par.zref_y[0]);
+            ZMP_ref_x.push_back(test_07.par->zref_x[0]);
+            ZMP_ref_y.push_back(test_07.par->zref_y[0]);
 
             next_preview_len_ms = preview_sampling_time_ms;
         }   
 
         
         //------------------------------------------------------
-        par.T[0] = (double) next_preview_len_ms / 1000; // get seconds
-        solver.set_parameters (par.T, par.h, par.h0, par.angle, par.zref_x, par.zref_y, par.lb, par.ub);
-        solver.form_init_fp (par.fp_x, par.fp_y, par.init_state, par.X);
+        test_07.par->T[0] = (double) next_preview_len_ms / 1000; // get seconds
+        solver.set_parameters (test_07.par->T, test_07.par->h, test_07.par->h0, test_07.par->angle, test_07.par->zref_x, test_07.par->zref_y, test_07.par->lb, test_07.par->ub);
+        solver.form_init_fp (test_07.par->fp_x, test_07.par->fp_y, test_07.par->init_state, test_07.par->X);
         solver.solve();
         //------------------------------------------------------
         // update state
-        wmg.next_control.get_first_controls (solver);
-        wmg.calculateNextState(wmg.next_control, par.init_state);
+        ipm.control_vector.get_first_controls (solver);
+        ipm.calculateNextState(ipm.control_vector, test_07.par->init_state);
         //-----------------------------------------------------------
 
 
@@ -107,18 +98,18 @@ int main(int argc, char **argv)
         {
             // if the values are saved on each iteration the plot becomes sawlike.
             // better solution - more frequent sampling.
-            ZMP_x.push_back(wmg.X_tilde.x());
-            ZMP_y.push_back(wmg.X_tilde.y());
-            wmg.X_tilde.get_next_state (solver);
+            ZMP_x.push_back(test_07.X_tilde.x());
+            ZMP_y.push_back(test_07.X_tilde.y());
+            test_07.X_tilde.get_next_state (solver);
         }
-        CoM_x.push_back(par.init_state.x());
-        CoM_y.push_back(par.init_state.y());
+        CoM_x.push_back(test_07.par->init_state.x());
+        CoM_y.push_back(test_07.par->init_state.y());
     
 
         // feet position/orientation
         double left_foot_pos[3+1];
         double right_foot_pos[3+1];
-        wmg.getFeetPositions (preview_sampling_time_ms, left_foot_pos, right_foot_pos);
+        test_07.wmg->getFeetPositions (preview_sampling_time_ms, left_foot_pos, right_foot_pos);
                 
         left_foot_x.push_back(left_foot_pos[0]);
         left_foot_y.push_back(left_foot_pos[1]);
@@ -174,7 +165,6 @@ int main(int argc, char **argv)
 
     fprintf(file_op,"hold off\n");
     fclose(file_op);
-    test_end(argv[0]);
 
     return 0;
 }

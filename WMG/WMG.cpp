@@ -14,55 +14,19 @@
 #include "footstep.h"
 
 
-/** \brief Default constructor. */
-WMG::WMG()
-{
-    T_ms = NULL;
-
-    A = NULL;
-    B = NULL;
-}
-
-
-/** \brief Default destructor. */
-WMG::~WMG()
-{
-    if (T_ms != NULL)
-    {
-        delete T_ms;
-    }
-
-    if (A != NULL)
-    {
-        delete A;
-    }
-    if (B != NULL)
-    {
-        delete B;
-    }
-}
-
-
-
 /** 
  * @brief Initializes a WMG object.
  *
  * @param[in] N_ Number of sampling times in a preview window
  * @param[in] T_ Sampling time [ms.]
- * @param[in] hCoM_ Height of the Center of Mass [meter]
  * @param[in] step_height_ step height (for interpolation of feet movements) [meter]
- * @param[in] gravity_ gravity [m/s^2]
  */
-void WMG::init (
+WMG::WMG (
         const unsigned int N_,
         const unsigned int T_, 
-        const double hCoM_,
-        const double step_height_,
-        const double gravity_)
+        const double step_height_)
 {
-    hCoM = hCoM_;      
     step_height = step_height_;
-    gravity = gravity_; 
     N = N_;
     sampling_period = T_;
 
@@ -96,6 +60,16 @@ void WMG::init (
 
     def_repeat_times = 4;
     def_ds_num = 0;
+}
+
+
+/** \brief Default destructor. */
+WMG::~WMG()
+{
+    if (T_ms != NULL)
+    {
+        delete T_ms;
+    }
 }
 
 

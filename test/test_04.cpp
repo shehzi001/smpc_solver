@@ -16,16 +16,10 @@ int main(int argc, char **argv)
 {
     bool dump_to_stdout = false;
     ofstream fs_out;
+    string test_name = "";
 
     //-----------------------------------------------------------
     // initialize
-    WMG wmg;
-    smpc_parameters par;
-    init_03 (&wmg);
-    par.init(wmg.N, wmg.hCoM/wmg.gravity);
-
-    string fs_out_filename("test_04_fs.m");
-    wmg.FS2file(fs_out_filename); // output results for later use in Matlab/Octave
     //-----------------------------------------------------------
 
 
@@ -34,47 +28,54 @@ int main(int argc, char **argv)
         dump_to_stdout = true;
         cout.precision (numeric_limits<double>::digits10);
     }
+    else
+    {
+        test_name = "test_04";
+    }
 
 
-    if (!dump_to_stdout)
-        test_start(argv[0]);
+    init_03 test_04(test_name);
 
 
-    fs_out.open(fs_out_filename.c_str(), fstream::app);
+
+    fs_out.open(test_04.fs_out_filename.c_str(), fstream::app);
     fs_out.precision (numeric_limits<double>::digits10);
     fs_out << endl << endl;
     fs_out << "CoM_ZMP = [";
 
 
-    smpc::solver solver(wmg.N);
+    smpc::solver solver(test_04.wmg->N);
 
 
     for(;;)
     {
         //------------------------------------------------------
-        if (wmg.formPreviewWindow(par) == WMG_HALT)
+        if (test_04.wmg->formPreviewWindow(*test_04.par) == WMG_HALT)
         {
-            cout << "EXIT (halt = 1)" << endl;
+            if (dump_to_stdout == false)
+            {
+                cout << "EXIT (halt = 1)" << endl;
+            }
             break;
         }
         //------------------------------------------------------
 
 
         //------------------------------------------------------
-        solver.set_parameters (par.T, par.h, par.h0, par.angle, par.fp_x, par.fp_y, par.lb, par.ub);
-        solver.form_init_fp (par.fp_x, par.fp_y, par.init_state, par.X);
+        solver.set_parameters (test_04.par->T, test_04.par->h, test_04.par->h0, test_04.par->angle, test_04.par->fp_x, test_04.par->fp_y, test_04.par->lb, test_04.par->ub);
+        solver.form_init_fp (test_04.par->fp_x, test_04.par->fp_y, test_04.par->init_state, test_04.par->X);
         solver.solve();
-        par.init_state.get_next_state (solver);
+        test_04.par->init_state.get_next_state (solver);
         //------------------------------------------------------
 
-        wmg.X_tilde.get_next_state (solver);
-        fs_out << endl << par.init_state.x() << " " << par.init_state.y() << " " << wmg.X_tilde.x() << " " << wmg.X_tilde.y() << ";";
+        test_04.X_tilde.get_next_state (solver);
+        fs_out << endl << test_04.par->init_state.x() << " " << test_04.par->init_state.y() << " " << test_04.X_tilde.x() << " " << test_04.X_tilde.y() << ";";
     
         if (dump_to_stdout)
         {
-            for (unsigned int i = 0; i < wmg.N*SMPC_NUM_VAR; i++)
+            for (unsigned int i = 0; i < test_04.wmg->N*SMPC_NUM_VAR; i++)
             {
-                cout << par.X[i] << endl;
+                cout << test_04.par->X[i] << endl;
             }
         }
     }
@@ -84,9 +85,6 @@ int main(int argc, char **argv)
     fs_out << "plot (CoM_ZMP(:,3), CoM_ZMP(:,4), 'ks','MarkerSize',5);" << endl;
     fs_out.close();
 
-
-    if (!dump_to_stdout)
-        test_end(argv[0]);
 
     return 0;
 }

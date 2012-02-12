@@ -15,26 +15,21 @@ int main(int argc, char **argv)
 {
     //-----------------------------------------------------------
     // initialize
-    WMG wmg;
-    smpc_parameters par;
-    init_01 (&wmg);
-    par.init(wmg.N, wmg.hCoM/wmg.gravity);
+    init_01 test_03 ("test_03");
     //-----------------------------------------------------------
   
 
-    test_start (argv[0]);
-
-    smpc::solver solver(wmg.N);
+    smpc::solver solver(test_03.wmg->N);
     int nW;
 
     unsigned int j=0;
     for(;;)
     {
-        wmg.T_ms[(wmg.N-1) - j] = 50;
+        test_03.wmg->T_ms[(test_03.wmg->N-1) - j] = 50;
         if (j != 0)
         {
-            wmg.T_ms[(wmg.N-1) - j + 1] = 100;
-            if (j == wmg.N-1)
+            test_03.wmg->T_ms[(test_03.wmg->N-1) - j + 1] = 100;
+            if (j == test_03.wmg->N-1)
             {
                 j = 0;
             }
@@ -45,17 +40,17 @@ int main(int argc, char **argv)
         }
         else
         {
-            wmg.T_ms[j] = 100;
+            test_03.wmg->T_ms[j] = 100;
             j++;
         }
-        for (unsigned int i=0; i < wmg.N; i++)
+        for (unsigned int i=0; i < test_03.wmg->N; i++)
         {
-            cout << wmg.T_ms[i] << "   ";
+            cout << test_03.wmg->T_ms[i] << "   ";
         }
         cout << endl;
 
         //------------------------------------------------------
-        if (wmg.formPreviewWindow(par) == WMG_HALT)
+        if (test_03.wmg->formPreviewWindow(*test_03.par) == WMG_HALT)
         {
             cout << "EXIT (halt = 1)" << endl;
             break;
@@ -64,10 +59,10 @@ int main(int argc, char **argv)
 
 
         //------------------------------------------------------
-        solver.set_parameters (par.T, par.h, par.h0, par.angle, par.fp_x, par.fp_y, par.lb, par.ub);
-        solver.form_init_fp (par.fp_x, par.fp_y, par.init_state, par.X);
+        solver.set_parameters (test_03.par->T, test_03.par->h, test_03.par->h0, test_03.par->angle, test_03.par->fp_x, test_03.par->fp_y, test_03.par->lb, test_03.par->ub);
+        solver.form_init_fp (test_03.par->fp_x, test_03.par->fp_y, test_03.par->init_state, test_03.par->X);
         nW = solver.solve();
-        par.init_state.get_next_state (solver);
+        test_03.par->init_state.get_next_state (solver);
         //------------------------------------------------------
 
 
@@ -75,12 +70,11 @@ int main(int argc, char **argv)
         printf("Num. of activated constraints: %d\n", nW);
         for (int i = 0; i < 6; i++)
         {
-            printf("value: % 8e\n", par.X[i]);
+            printf("value: % 8e\n", test_03.par->X[i]);
         }
         //------------------------------------------------------
     }
 
-    test_end (argv[0]);
     return 0;
 }
 ///@}

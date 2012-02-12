@@ -19,20 +19,15 @@ int main(int argc, char **argv)
     struct timeval start, end;
     double CurrentCPUTime;
 
-    WMG wmg;
-    smpc_parameters par;
-    init_02 (&wmg);
-    par.init(wmg.N, wmg.hCoM/wmg.gravity);
+    init_02 test_02("test_02");
     //-----------------------------------------------------------
  
 
-    test_start(argv[0]);
-
-    smpc::solver solver(wmg.N);
+    smpc::solver solver(test_02.wmg->N);
     for(int counter = 0 ;; counter++)
     {
         //------------------------------------------------------
-        if (wmg.formPreviewWindow(par) == WMG_HALT)
+        if (test_02.wmg->formPreviewWindow(*test_02.par) == WMG_HALT)
         {
             cout << "EXIT (halt = 1)" << endl;
             break;
@@ -46,11 +41,11 @@ int main(int argc, char **argv)
         gettimeofday(&start,0);
         for(int kk=0; kk<NN ;kk++)
         {
-            solver.set_parameters (par.T, par.h, par.h0, par.angle, par.fp_x, par.fp_y, par.lb, par.ub);
-            solver.form_init_fp (par.fp_x, par.fp_y, par.init_state, par.X);
+            solver.set_parameters (test_02.par->T, test_02.par->h, test_02.par->h0, test_02.par->angle, test_02.par->fp_x, test_02.par->fp_y, test_02.par->lb, test_02.par->ub);
+            solver.form_init_fp (test_02.par->fp_x, test_02.par->fp_y, test_02.par->init_state, test_02.par->X);
             nW = solver.solve();
         }
-        par.init_state.get_next_state (solver);
+        test_02.par->init_state.get_next_state (solver);
         gettimeofday(&end,0);             
         CurrentCPUTime = end.tv_sec - start.tv_sec + 0.000001 * (end.tv_usec - start.tv_usec);
         double TT = CurrentCPUTime/NN;
@@ -58,8 +53,6 @@ int main(int argc, char **argv)
         //------------------------------------------------------
     }
 
-
-    test_end(argv[0]);
     return 0;
 }
 ///@}

@@ -13,7 +13,7 @@
  *
  * @param[in] sampling_time period of time T.
  */
-void WMG::initABMatrices (const double sampling_time)
+IPM::IPM (const double sampling_time)
 {
     A = new double[9];
     B = new double[3];
@@ -31,21 +31,30 @@ void WMG::initABMatrices (const double sampling_time)
 
 
 /**
+ * @brief Destructor.
+ */
+IPM::~IPM()
+{
+    if (A != NULL)
+    {
+        delete A;
+    }
+    if (B != NULL)
+    {
+        delete B;
+    }
+}
+
+
+
+/**
  * @brief Calculate next state using inverted pendulum model (#A and #B matrices).
  *
  * @param[in] control 1x2 vector of controls
  * @param[in,out] state 1x6 state vector
- *
- * @attention If #A or #B are not initialized, the function does nothing.
  */
-void WMG::calculateNextState (smpc::control &control, smpc::state_orig &state)
+void IPM::calculateNextState (smpc::control &control, smpc::state_orig &state)
 {
-    if ((A == NULL) || (B == NULL))
-    {
-        return;
-    }
-
-
     state.x()  = state.x()  * A[0]
                + state.vx() * A[3]
                + state.ax() * A[6]
