@@ -15,18 +15,18 @@ int main(int argc, char **argv)
 {
     //-----------------------------------------------------------
     // the numbers must correspond to the numbers in init_04()
-    int control_sampling_time_ms = 10;
-    int preview_sampling_time_ms = 100;
+    int control_sampling_time_ms = 20;
+    int preview_sampling_time_ms = 40;
     int next_preview_len_ms = 0;
 
     // initialize
     WMG wmg;
     smpc_parameters par;
-    init_04 (&wmg);
+    init_07 (&wmg);
     par.init(wmg.N, wmg.hCoM/wmg.gravity);
 
-    std::string fs_out_filename("test_07_fs.m");
-    wmg.FS2file(fs_out_filename); // output results for later use in Matlab/Octave
+    std::string fs_out_filename("test_08_fs.m");
+    wmg.FS2file(fs_out_filename, false); // output results for later use in Matlab/Octave
     //-----------------------------------------------------------
 
 
@@ -70,29 +70,32 @@ int main(int argc, char **argv)
     vector<double> right_foot_y;
     vector<double> right_foot_z;
 
+    wmg.T_ms[0] = control_sampling_time_ms;
+    wmg.T_ms[1] = control_sampling_time_ms;
 
     for(int i=0 ;; i++)
     {
         if (next_preview_len_ms == 0)
         {
-            cout << wmg.isSupportSwitchNeeded() << endl;
-            WMGret wmg_retval = wmg.formPreviewWindow(par);
-
-            if (wmg_retval == WMG_HALT)
-            {
-                cout << "EXIT (halt = 1)" << endl;
-                break;
-            }
-
-            ZMP_ref_x.push_back(par.zref_x[0]);
-            ZMP_ref_y.push_back(par.zref_y[0]);
-
             next_preview_len_ms = preview_sampling_time_ms;
         }   
 
+
+        wmg.T_ms[2] = next_preview_len_ms;
+
+        cout << wmg.isSupportSwitchNeeded() << endl;
+        if (wmg.formPreviewWindow(par) == WMG_HALT)
+        {
+            cout << "EXIT (halt = 1)" << endl;
+            break;
+        }
+
+        ZMP_ref_x.push_back(par.zref_x[0]);
+        ZMP_ref_y.push_back(par.zref_y[0]);
+
+
         
         //------------------------------------------------------
-        par.T[0] = (double) next_preview_len_ms / 1000; // get seconds
         solver.set_parameters (par.T, par.h, par.h0, par.angle, par.zref_x, par.zref_y, par.lb, par.ub);
         solver.form_init_fp (par.fp_x, par.fp_y, par.init_state, par.X);
         solver.solve();
@@ -118,7 +121,7 @@ int main(int argc, char **argv)
         // feet position/orientation
         double left_foot_pos[3+1];
         double right_foot_pos[3+1];
-        wmg.getFeetPositions (preview_sampling_time_ms, left_foot_pos, right_foot_pos);
+        wmg.getFeetPositions (control_sampling_time_ms, left_foot_pos, right_foot_pos);
                 
         left_foot_x.push_back(left_foot_pos[0]);
         left_foot_y.push_back(left_foot_pos[1]);

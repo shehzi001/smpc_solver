@@ -16,7 +16,9 @@ int main(int argc, char **argv)
     //-----------------------------------------------------------
     // initialize
     WMG wmg;
+    smpc_parameters par;
     init_01 (&wmg);
+    par.init(wmg.N, wmg.hCoM/wmg.gravity);
     //-----------------------------------------------------------
   
 
@@ -25,13 +27,13 @@ int main(int argc, char **argv)
     smpc::solver solver(wmg.N);
     int nW;
 
-    int j=0;
+    unsigned int j=0;
     for(;;)
     {
-        wmg.T[(wmg.N-1) - j] = 0.05;
+        wmg.T_ms[(wmg.N-1) - j] = 50;
         if (j != 0)
         {
-            wmg.T[(wmg.N-1) - j + 1] = 0.1;
+            wmg.T_ms[(wmg.N-1) - j + 1] = 100;
             if (j == wmg.N-1)
             {
                 j = 0;
@@ -43,17 +45,17 @@ int main(int argc, char **argv)
         }
         else
         {
-            wmg.T[j] = 0.1;
+            wmg.T_ms[j] = 100;
             j++;
         }
-        for (int i=0; i < wmg.N; i++)
+        for (unsigned int i=0; i < wmg.N; i++)
         {
-            cout << wmg.T[i] << "   ";
+            cout << wmg.T_ms[i] << "   ";
         }
         cout << endl;
 
         //------------------------------------------------------
-        if (wmg.formPreviewWindow() == WMG_HALT)
+        if (wmg.formPreviewWindow(par) == WMG_HALT)
         {
             cout << "EXIT (halt = 1)" << endl;
             break;
@@ -62,10 +64,10 @@ int main(int argc, char **argv)
 
 
         //------------------------------------------------------
-        solver.set_parameters (wmg.T, wmg.h, wmg.h[0], wmg.angle, wmg.fp_x, wmg.fp_y, wmg.lb, wmg.ub);
-        solver.form_init_fp (wmg.fp_x, wmg.fp_y, wmg.init_state, wmg.X);
+        solver.set_parameters (par.T, par.h, par.h0, par.angle, par.fp_x, par.fp_y, par.lb, par.ub);
+        solver.form_init_fp (par.fp_x, par.fp_y, par.init_state, par.X);
         nW = solver.solve();
-        wmg.init_state.get_next_state (solver);
+        par.init_state.get_next_state (solver);
         //------------------------------------------------------
 
 
@@ -73,7 +75,7 @@ int main(int argc, char **argv)
         printf("Num. of activated constraints: %d\n", nW);
         for (int i = 0; i < 6; i++)
         {
-            printf("value: % 8e\n", wmg.X[i]);
+            printf("value: % 8e\n", par.X[i]);
         }
         //------------------------------------------------------
     }

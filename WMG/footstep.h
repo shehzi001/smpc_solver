@@ -29,11 +29,11 @@
 class FootStep : public Point2D, public RectangularConstraint_ZMP
 {
     public:
-        FootStep(
+        FootStep (
                 const double, 
                 const Point2D&,
                 const Point2D&,
-                const int, 
+                const unsigned int, 
                 const fs_type, 
                 const double *);
 
@@ -48,11 +48,11 @@ class FootStep : public Point2D, public RectangularConstraint_ZMP
         /// sin(angle).
         double sa;
 
-        /// number of times this step appears in the preview window.
-        int repeat_times;
+        /// the period of time spent in this support
+        unsigned int time_period;
 
-        /// a counter of repeats,on initialization = repeat_times.
-        int repeat_counter;
+        /// the amount of time left in this support (=time_period on initialization)
+        unsigned int time_left;
 
         /// type of the step.
         fs_type type;

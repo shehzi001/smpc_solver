@@ -48,93 +48,28 @@ enum fs_type
 };
 
 
-/** \brief Defines the parameters of the Walking Pattern Generator. */
-class WMG
+
+/**
+ * @brief A container for parameters of the SMPC solver.
+ */
+class smpc_parameters
 {
     public:
-// methods
-        WMG();
-        ~WMG();
-        void init (const int);
-        void init_param (
-                const double, 
-                const double,
-                const double step_height_ = 0.0135);
-        void AddFootstep(
-                const double, 
-                const double, 
-                const double, 
-                const int, 
-                const int, 
-                const double *, 
-                const fs_type type = FS_TYPE_AUTO);
-        void AddFootstep(
-                const double, 
-                const double, 
-                const double, 
-                const int, 
-                const int, 
-                const fs_type type = FS_TYPE_AUTO);
-        void AddFootstep(
-                const double, 
-                const double, 
-                const double, 
-                fs_type type = FS_TYPE_AUTO);
-        bool isSupportSwitchNeeded ();
-        WMGret formPreviewWindow ();
-        void FS2file(const std::string, const bool plot_ds = true);
+        smpc_parameters();
+        ~smpc_parameters();
 
-        void getFeetPositions (
-                const int, 
-                const int, 
-                const int, 
-                double *, 
-                double *);
-
-
-        void initABMatrices (const double);
-        void calculateNextState (smpc::control&, smpc::state_orig&);
-
-        void getFootsteps(
-                std::vector<double> &,
-                std::vector<double> &,
-                std::vector<double> &);
-
-        void correctNextSSPosition (const double *);
+        void init (const unsigned int, const double);
 
 
 // variables
-        /** \brief A vector of footsteps. */
-        std::vector<FootStep> FS; 
-
-
-        /** \brief Number of iterations in a preview window. */
-        int N;
 
         /** \brief Preview sampling time  */
         double *T;
 
-
-        /** \brief Height of the CoM. */
-        double hCoM;
-
-        /** \brief Norm of the acceleration due to gravity. For the moment gravity is set equal to 9.81. */
-        double gravity;
-        
         /** \brief h = #hCoM/#gravity. */
         double *h;
-        
-        /// A chunk of memory allocated for solution.
-        double *X;
 
-        /** Initial state. */
-        smpc::state_tilde X_tilde;
-        
-        /** Initial state. */
-        smpc::state_orig init_state;
-
-        /// A storage for the controls, that must be applied to reach the next state.
-        smpc::control next_control;
+        double h0;
 
         /// Array of N absolute angles corresponding to supports in the preview window.
         double *angle;
@@ -158,6 +93,93 @@ class WMG
         ///@}
 
 
+        /** Initial state. */
+        smpc::state_orig init_state;
+
+        /// A chunk of memory allocated for solution.
+        double *X;
+};
+
+
+
+/** \brief Defines the parameters of the Walking Pattern Generator. */
+class WMG
+{
+    public:
+// methods
+        WMG();
+        ~WMG();
+        void init (
+                const unsigned int,
+                const unsigned int, 
+                const double,
+                const double step_height_ = 0.0135,
+                const double gravity_ = 9.81);
+        void AddFootstep(
+                const double, 
+                const double, 
+                const double, 
+                const int, 
+                const int, 
+                const double *, 
+                const fs_type type = FS_TYPE_AUTO);
+        void AddFootstep(
+                const double, 
+                const double, 
+                const double, 
+                const int, 
+                const int, 
+                const fs_type type = FS_TYPE_AUTO);
+        void AddFootstep(
+                const double, 
+                const double, 
+                const double, 
+                fs_type type = FS_TYPE_AUTO);
+        bool isSupportSwitchNeeded ();
+        WMGret formPreviewWindow (smpc_parameters &);
+        void FS2file(const std::string, const bool plot_ds = true);
+
+        void getFeetPositions (const unsigned int, double *, double *);
+
+
+        void initABMatrices (const double);
+        void calculateNextState (smpc::control&, smpc::state_orig&);
+
+        void getFootsteps(
+                std::vector<double> &,
+                std::vector<double> &,
+                std::vector<double> &);
+
+        void correctNextSSPosition (const double *);
+
+
+// variables
+        /** \brief A vector of footsteps. */
+        std::vector<FootStep> FS; 
+
+
+        /** \brief Number of iterations in a preview window. */
+        unsigned int N;
+
+        unsigned int *T_ms;
+        unsigned int sampling_period;
+
+        /** \brief Height of the CoM. */
+        double hCoM;
+
+        /** \brief Norm of the acceleration due to gravity. For the moment gravity is set equal to 9.81. */
+        double gravity;
+        
+
+        /** Initial state. */
+        smpc::state_tilde X_tilde;
+        
+
+        /// A storage for the controls, that must be applied to reach the next state.
+        smpc::control next_control;
+
+
+
         /** This is the step in FS that is at the start of the current preview window. */
         int current_step_number;
 
@@ -170,6 +192,7 @@ class WMG
         double def_ss_constraint[4];
         double def_ds_constraint[4];
 
+
     private:
         void getDSFeetPositions (const int, double *, double *);
         void getSSFeetPositions (const int, const double, double *, double *);
@@ -177,9 +200,10 @@ class WMG
         int getPrevSS (const int, const fs_type type = FS_TYPE_AUTO);
 
         double addstep_constraint[4];
-        int def_repeat_times;
-        int def_ds_num;
+        unsigned int def_repeat_times;
+        unsigned int def_ds_num;
 
+        unsigned int last_time_decrement;
         
         ///@{
         /// State and control matrices, that can be used to determine the next

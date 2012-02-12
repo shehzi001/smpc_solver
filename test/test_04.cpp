@@ -20,7 +20,9 @@ int main(int argc, char **argv)
     //-----------------------------------------------------------
     // initialize
     WMG wmg;
+    smpc_parameters par;
     init_03 (&wmg);
+    par.init(wmg.N, wmg.hCoM/wmg.gravity);
 
     string fs_out_filename("test_04_fs.m");
     wmg.FS2file(fs_out_filename); // output results for later use in Matlab/Octave
@@ -50,7 +52,7 @@ int main(int argc, char **argv)
     for(;;)
     {
         //------------------------------------------------------
-        if (wmg.formPreviewWindow() == WMG_HALT)
+        if (wmg.formPreviewWindow(par) == WMG_HALT)
         {
             cout << "EXIT (halt = 1)" << endl;
             break;
@@ -59,20 +61,20 @@ int main(int argc, char **argv)
 
 
         //------------------------------------------------------
-        solver.set_parameters (wmg.T, wmg.h, wmg.h[0], wmg.angle, wmg.fp_x, wmg.fp_y, wmg.lb, wmg.ub);
-        solver.form_init_fp (wmg.fp_x, wmg.fp_y, wmg.init_state, wmg.X);
+        solver.set_parameters (par.T, par.h, par.h0, par.angle, par.fp_x, par.fp_y, par.lb, par.ub);
+        solver.form_init_fp (par.fp_x, par.fp_y, par.init_state, par.X);
         solver.solve();
-        wmg.init_state.get_next_state (solver);
+        par.init_state.get_next_state (solver);
         //------------------------------------------------------
 
         wmg.X_tilde.get_next_state (solver);
-        fs_out << endl << wmg.init_state.x() << " " << wmg.init_state.y() << " " << wmg.X_tilde.x() << " " << wmg.X_tilde.y() << ";";
+        fs_out << endl << par.init_state.x() << " " << par.init_state.y() << " " << wmg.X_tilde.x() << " " << wmg.X_tilde.y() << ";";
     
         if (dump_to_stdout)
         {
-            for (int i = 0; i < wmg.N*SMPC_NUM_VAR; i++)
+            for (unsigned int i = 0; i < wmg.N*SMPC_NUM_VAR; i++)
             {
-                cout << wmg.X[i] << endl;
+                cout << par.X[i] << endl;
             }
         }
     }

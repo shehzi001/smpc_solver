@@ -8,7 +8,8 @@ TESTS=\
 	  test_04 \
 	  test_05 \
 	  test_06 \
-	  test_07
+	  test_07 \
+	  test_08
 
 
 all: ${TESTS} demo

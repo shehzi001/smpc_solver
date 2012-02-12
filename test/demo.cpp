@@ -16,12 +16,13 @@ int main(int argc, char **argv)
     // WMG is a helper class, which provides data for QP on each
     // iteration of simulation
     WMG wmg;
+    smpc_parameters param;
 
     wmg.init (
-            15);    // size of the preview window
-    wmg.init_param (
-            0.1,    // sampling time [sec.]
+            15,     // size of the preview window
+            100,    // sampling time [ms.]
             0.261); // height of the center of mass [meter]
+    param.init(wmg.N, wmg.hCoM/wmg.gravity);
 
 
     // Initial double support
@@ -70,7 +71,7 @@ int main(int argc, char **argv)
   
     for(;;)
     {
-        if (wmg.formPreviewWindow() == WMG_HALT) // initialize input for QP
+        if (wmg.formPreviewWindow(param) == WMG_HALT) // initialize input for QP
         {
             // not enough time steps left (<15)
             break;
@@ -81,31 +82,31 @@ int main(int argc, char **argv)
         // initialize quadratic problem
         solver.set_parameters(
                 // sampling time for each time step [sec.]
-                wmg.T,
+                param.T,
                 // height of the center of mass divided by gravity for each time step
-                wmg.h, 
+                param.h, 
                 // current height of the center of mass divided by gravity
-                wmg.h[0], 
+                param.h0, 
                 // rotation angle for each state relative to the world frame
-                wmg.angle, 
+                param.angle, 
                 // reference values of x coordinate of ZMP
-                wmg.fp_x, 
+                param.fp_x, 
                 // reference values of y coordinate of ZMP
-                wmg.fp_y, 
+                param.fp_y, 
                 // array of lower bounds for coordinates of ZMP
-                wmg.lb, 
+                param.lb, 
                 // array of upper bounds for coordinates of ZMP
-                wmg.ub);
+                param.ub);
 
         solver.form_init_fp (
                 // coordinates of points, that can be used to generate
                 // an initial feasible point
-                wmg.fp_x, 
-                wmg.fp_y, 
+                param.fp_x, 
+                param.fp_y, 
                 // initial state
-                wmg.init_state, 
+                param.init_state, 
                 // solution of the optimization problem
-                wmg.X);
+                param.X);
 
         //------------------------------------------------------
 
@@ -114,7 +115,7 @@ int main(int argc, char **argv)
         //------------------------------------------------------
 
         // obtain the next state
-        wmg.init_state.get_next_state (solver);
+        param.init_state.get_next_state (solver);
     }
 
     return 0;

@@ -33,7 +33,7 @@ FootStep::FootStep(
         const double angle_, 
         const Point2D& Position,
         const Point2D& ZMPref_,
-        const int repeat_times_, 
+        const unsigned int time_period_, 
         const fs_type type_, 
         const double *d_) : 
     Point2D(Position), 
@@ -45,8 +45,7 @@ FootStep::FootStep(
     ca = cos(angle); 
     sa = sin(angle);
     rotate_translate(ca, sa, *this);
-    repeat_times = repeat_times_;
-    repeat_counter = repeat_times;
+    time_left = time_period = time_period_;
 }
 
 

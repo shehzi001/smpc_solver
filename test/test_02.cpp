@@ -20,7 +20,9 @@ int main(int argc, char **argv)
     double CurrentCPUTime;
 
     WMG wmg;
+    smpc_parameters par;
     init_02 (&wmg);
+    par.init(wmg.N, wmg.hCoM/wmg.gravity);
     //-----------------------------------------------------------
  
 
@@ -30,7 +32,7 @@ int main(int argc, char **argv)
     for(int counter = 0 ;; counter++)
     {
         //------------------------------------------------------
-        if (wmg.formPreviewWindow() == WMG_HALT)
+        if (wmg.formPreviewWindow(par) == WMG_HALT)
         {
             cout << "EXIT (halt = 1)" << endl;
             break;
@@ -44,11 +46,11 @@ int main(int argc, char **argv)
         gettimeofday(&start,0);
         for(int kk=0; kk<NN ;kk++)
         {
-            solver.set_parameters (wmg.T, wmg.h, wmg.h[0], wmg.angle, wmg.fp_x, wmg.fp_y, wmg.lb, wmg.ub);
-            solver.form_init_fp (wmg.fp_x, wmg.fp_y, wmg.init_state, wmg.X);
+            solver.set_parameters (par.T, par.h, par.h0, par.angle, par.fp_x, par.fp_y, par.lb, par.ub);
+            solver.form_init_fp (par.fp_x, par.fp_y, par.init_state, par.X);
             nW = solver.solve();
         }
-        wmg.init_state.get_next_state (solver);
+        par.init_state.get_next_state (solver);
         gettimeofday(&end,0);             
         CurrentCPUTime = end.tv_sec - start.tv_sec + 0.000001 * (end.tv_usec - start.tv_usec);
         double TT = CurrentCPUTime/NN;
