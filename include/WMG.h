@@ -27,8 +27,7 @@
 /****************************************
  * TYPEDEFS 
  ****************************************/
-class FootStep;
-
+class footstep;
 
 /// @addtogroup gWMG_API
 /// @{
@@ -179,7 +178,7 @@ class WMG
 
 // variables
         /** \brief A vector of footsteps. */
-        std::vector<FootStep> FS; 
+        std::vector<footstep> FS; 
 
 
         /** \brief Number of iterations in a preview window. */

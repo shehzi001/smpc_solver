@@ -12,7 +12,6 @@
  * INCLUDES 
  ****************************************/
 
-#include "point2d.h"
 #include "rect_constraint.h"
 #include "WMG.h"
 
@@ -22,22 +21,27 @@
  * TYPEDEFS 
  ****************************************/
 
+
 /// @addtogroup gWMG_INTERNALS
 /// @{
 
 /** \brief Defines a footstep. */
-class FootStep : public Point2D, public RectangularConstraint_ZMP
+class footstep : public RectangularConstraint_ZMP
 {
     public:
-        FootStep (
+        footstep (
                 const double, 
-                const Point2D&,
-                const Point2D&,
+                const Transform<double, 3>&,
+                const Vector3d&,
                 const unsigned int, 
                 const fs_type, 
                 const double *);
 
-        void correct(const double, const double);
+        void changePosture(const Transform<double, 3>);
+        double x();
+        double y();
+
+
 
         /// Angle (relative to the world frame) of a footstep [rad.].
         double angle;
@@ -58,7 +62,10 @@ class FootStep : public Point2D, public RectangularConstraint_ZMP
         fs_type type;
 
         /// Reference ZMP point
-        Point2D ZMPref;
+        Vector3d ZMPref;
+
+
+        Transform<double, 3> posture;
 };
 ///@}
 #endif /*FOOTSTEP_H*/

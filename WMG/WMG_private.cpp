@@ -105,13 +105,13 @@ void WMG::getDSFeetPositions (
         left_ind = getPrevSS (support_number);
     }
 
-    left_foot_pos[0] = FS[left_ind].x;
-    left_foot_pos[1] = FS[left_ind].y;
+    left_foot_pos[0] = FS[left_ind].x();
+    left_foot_pos[1] = FS[left_ind].y();
     left_foot_pos[2] = 0.0;
     left_foot_pos[3] = FS[left_ind].angle;
 
-    right_foot_pos[0] = FS[right_ind].x;
-    right_foot_pos[1] = FS[right_ind].y;
+    right_foot_pos[0] = FS[right_ind].x();
+    right_foot_pos[1] = FS[right_ind].y();
     right_foot_pos[2] = 0.0;
     right_foot_pos[3] = FS[right_ind].angle;
 }
@@ -134,7 +134,7 @@ void WMG::getSSFeetPositions (
 {
     double *swing_foot_pos, *ref_foot_pos;
     int next_swing_ind, prev_swing_ind;
-    FootStep & current_step = FS[support_number];
+    footstep& current_step = FS[support_number];
 
 
     if (current_step.type == FS_TYPE_SS_L)
@@ -154,15 +154,15 @@ void WMG::getSSFeetPositions (
         next_swing_ind = getNextSS (support_number, FS_TYPE_SS_L);
     }
 
-    ref_foot_pos[0] = current_step.x;
-    ref_foot_pos[1] = current_step.y;
+    ref_foot_pos[0] = current_step.x();
+    ref_foot_pos[1] = current_step.y();
     ref_foot_pos[2] = 0.0;
     ref_foot_pos[3] = current_step.angle;
 
 
 
-    double dx = FS[next_swing_ind].x - FS[prev_swing_ind].x;
-    double dy = FS[next_swing_ind].y - FS[prev_swing_ind].y;
+    double dx = FS[next_swing_ind].x() - FS[prev_swing_ind].x();
+    double dy = FS[next_swing_ind].y() - FS[prev_swing_ind].y();
     double l = sqrt(dx*dx + dy*dy);
 
 
@@ -174,8 +174,8 @@ void WMG::getSSFeetPositions (
 
 
     double dl = /*(1-theta)*x[0] +*/ theta * l;
-    swing_foot_pos[0] = FS[prev_swing_ind].x + theta * dx; // linear equation
-    swing_foot_pos[1] = FS[prev_swing_ind].y + theta * dy;
+    swing_foot_pos[0] = FS[prev_swing_ind].x() + theta * dx; // linear equation
+    swing_foot_pos[1] = FS[prev_swing_ind].y() + theta * dy;
     swing_foot_pos[2] = a*dl*dl + b*dl /*+ c*/;
     swing_foot_pos[3] = FS[next_swing_ind].angle;
 }

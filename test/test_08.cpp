@@ -21,15 +21,14 @@ int main(int argc, char **argv)
 
     // initialize
     init_07 test_08 ("test_08", false);
-    IPM ipm ((double) control_sampling_time_ms / 1000);
     //-----------------------------------------------------------
 
 
     //-----------------------------------------------------------
     smpc::solver solver(
             test_08.wmg->N, // size of the preview window
-            300.0,  // Alpha
-            800.0,  // Beta
+            400.0,  // Alpha
+            4000.0,  // Beta
             1.0,    // Gamma
             0.01,   // regularization
             1e-7);  // tolerance
@@ -94,8 +93,7 @@ int main(int argc, char **argv)
         solver.solve();
         //------------------------------------------------------
         // update state
-        ipm.control_vector.get_first_controls (solver);
-        ipm.calculateNextState(ipm.control_vector, test_08.par->init_state);
+        test_08.par->init_state.get_next_state(solver);
         //-----------------------------------------------------------
 
 

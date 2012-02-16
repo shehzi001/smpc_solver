@@ -12,15 +12,18 @@
  * INCLUDES 
  ****************************************/
 
+#include <Eigen/Geometry>
 #include <vector>
-
-#include "point2d.h"
 
 
 
 /****************************************
  * TYPEDEFS 
  ****************************************/
+
+using namespace Eigen;
+
+
 /// @addtogroup gWMG_INTERNALS
 /// @{
 
@@ -29,7 +32,7 @@ class RectangularConstraint_ZMP
 {
     public:
         RectangularConstraint_ZMP(const double *);
-        void rotate_translate(const double, const double, const Point2D&);
+        void rotate_translate(const double, const double, const double, const double);
         void Constraints2Vert();
 
 
@@ -63,7 +66,7 @@ class RectangularConstraint_ZMP
         double d_orig[4];
 
         /// Absolute coordinates of vertices.
-        std::vector<Point2D> vert;
+        std::vector<Vector2d> vert;
 };
 
 ///@}

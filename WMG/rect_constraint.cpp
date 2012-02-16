@@ -66,11 +66,12 @@ RectangularConstraint_ZMP::RectangularConstraint_ZMP(const double *d_)
 
     \param[in] ca cos(angle)
     \param[in] sa sin(angle)
-    \param[in] p a 2D reference point 
+    \param[in] x x coordinate of the reference point
+    \param[in] y y coordinate of the reference point
                 
     \note This is used when the constraints are initialized (only then the orientation can be set).
  */
-void RectangularConstraint_ZMP::rotate_translate(const double ca, const double sa, const Point2D& p)
+void RectangularConstraint_ZMP::rotate_translate(const double ca, const double sa, const double x, const double y)
 {
     // D = D*R'
     D[0] =  ca; D[4] =  sa;
@@ -79,10 +80,10 @@ void RectangularConstraint_ZMP::rotate_translate(const double ca, const double s
     D[3] =  sa; D[7] = -ca;
 
     // d = d - D*p
-    d[0] = d_orig[0] + D[0]*p.x + D[4]*p.y;
-    d[1] = d_orig[1] + D[1]*p.x + D[5]*p.y;
-    d[2] = d_orig[2] + D[2]*p.x + D[6]*p.y;
-    d[3] = d_orig[3] + D[3]*p.x + D[7]*p.y;
+    d[0] = d_orig[0] + D[0]*x + D[4]*y;
+    d[1] = d_orig[1] + D[1]*x + D[5]*y;
+    d[2] = d_orig[2] + D[2]*x + D[6]*y;
+    d[3] = d_orig[3] + D[3]*x + D[7]*y;
 
     Constraints2Vert(); // determine coordinates of vertices
 }
@@ -114,21 +115,21 @@ void RectangularConstraint_ZMP::Constraints2Vert()
     // |0 4|   0    1/det * | 7 -4|
     // |3 7|   3            |-3  0|
     det = D[0]*D[7] - D[3]*D[4];
-    vert.push_back(Point2D( D[7]/det*d[0] - D[4]/det*d[3],-D[3]/det*d[0] + D[0]/det*d[3])); 
+    vert.push_back(Vector2d( D[7]/det*d[0] - D[4]/det*d[3],-D[3]/det*d[0] + D[0]/det*d[3])); 
     
     // |0 4|   0     | 5 -4|
     // |1 5|   1     |-1  0|
     det = D[0]*D[5] - D[4]*D[1]; 
-    vert.push_back(Point2D( D[5]/det*d[0] - D[4]/det*d[1],-D[1]/det*d[0] + D[0]/det*d[1])); 
+    vert.push_back(Vector2d( D[5]/det*d[0] - D[4]/det*d[1],-D[1]/det*d[0] + D[0]/det*d[1])); 
     
     // |1 5|   1     | 6 -5|
     // |2 6|   2     |-2  1|
     det = D[1]*D[6] - D[5]*D[2]; 
-    vert.push_back(Point2D( D[6]/det*d[1] - D[5]/det*d[2],-D[2]/det*d[1] + D[1]/det*d[2])); 
+    vert.push_back(Vector2d( D[6]/det*d[1] - D[5]/det*d[2],-D[2]/det*d[1] + D[1]/det*d[2])); 
     
     // |2 6|   2     | 7 -6|
     // |3 7|   3     |-3  2|
     det = D[2]*D[7] - D[3]*D[6]; 
-    vert.push_back(Point2D( D[7]/det*d[2] - D[6]/det*d[3],-D[3]/det*d[2] + D[2]/det*d[3])); 
+    vert.push_back(Vector2d( D[7]/det*d[2] - D[6]/det*d[3],-D[3]/det*d[2] + D[2]/det*d[3])); 
 }
 

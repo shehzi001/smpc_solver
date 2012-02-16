@@ -10,7 +10,6 @@
 
 
 #include "WMG.h"
-#include "point2d.h"
 #include "footstep.h"
 
 
@@ -155,8 +154,9 @@ void WMG::AddFootstep(
         const double angle_relative, 
         fs_type type)
 {
-    Point2D zref_offset ((addstep_constraint[0] - addstep_constraint[2])/2, 0);
-    Point2D offset (x_relative, y_relative);
+    Transform<double, 3>    posture (Translation<double, 3>(x_relative, y_relative, 0.0));
+    Vector3d    zref_offset ((addstep_constraint[0] - addstep_constraint[2])/2, 0.0, 0.0);
+
 
     if (FS.size() == 0)
     {
@@ -166,13 +166,14 @@ void WMG::AddFootstep(
             type = FS_TYPE_DS;
         }
 
+        posture = posture.rotate(AngleAxisd(angle_relative, Vector3d::UnitZ()));
         // offset is the absolute position here.
-        Point2D zref_abs (offset, zref_offset, sin(angle_relative), cos(angle_relative));
+        Vector3d zref_abs = posture * zref_offset;
 
         FS.push_back(
-                FootStep(
+                footstep(
                     angle_relative, 
-                    offset,
+                    posture,
                     zref_abs,
                     def_repeat_times * sampling_period, 
                     type,
@@ -199,35 +200,31 @@ void WMG::AddFootstep(
         }
 
         // Position of the next step
-        Point2D prev_p (FS.back());
-        Point2D next_p (prev_p, offset, FS.back().sa, FS.back().ca);
+        posture = FS.back().posture * posture.rotate(AngleAxisd(angle_relative, Vector3d::UnitZ()));
 
         double prev_a = FS.back().angle;
         double next_a = prev_a + angle_relative;
-        Point2D next_zref (next_p, zref_offset, sin(next_a), cos(next_a));
+        Vector3d next_zref = posture * zref_offset;
+
 
         // Add double support constraints that lie between the
         // newly added step and the previous step
+        double theta = (double) 1/(def_ds_num + 1);
+        double angle_shift = angle_relative * theta;
+        double x_shift = theta*x_relative;
+        double y_shift = theta*y_relative;
         for (unsigned int i = 0; i < def_ds_num; i++)
         {
-            double theta = (double) (i+1)/(def_ds_num + 1);
-            double ds_a = prev_a + angle_relative * theta;
+            Transform<double, 3> ds_posture = FS.back().posture 
+                       * Translation<double, 3>(x_shift, y_shift, 0.0)
+                       * AngleAxisd(angle_shift, Vector3d::UnitZ());
 
-            Point2D position ((1-theta)*prev_p.x + theta*next_p.x, (1-theta)*prev_p.y + theta*next_p.y);
-            Point2D *zmp_ref;
-            if (i < def_ds_num/2)
-            {
-                zmp_ref = &FS.back().ZMPref;
-            }
-            else
-            {
-                zmp_ref = &next_zref;
-            }
+
             FS.push_back(
-                    FootStep(
-                        ds_a, 
-                        position,
-                        *zmp_ref,
+                    footstep(
+                        FS.back().angle + angle_shift,
+                        ds_posture,
+                        next_zref,
                         sampling_period, 
                         FS_TYPE_DS,
                         def_ds_constraint));
@@ -236,9 +233,9 @@ void WMG::AddFootstep(
 
         // add the new step
         FS.push_back(
-                FootStep(
+                footstep(
                     next_a, 
-                    next_p, 
+                    posture, 
                     next_zref,
                     def_repeat_times * sampling_period, 
                     type,
@@ -251,11 +248,8 @@ void WMG::AddFootstep(
 /**
  * @brief Determine position and orientation of feet
  *
- * @param[in] shift_from_current a positive shift from the current support (allows to get
- *  positions for the future supports)
- * @param[in] loops_per_preview_iter number of control loops per preview iteration
- * @param[in] loops_in_current_preview number of control loops passed in the current 
- *                                     preview iteration
+ * @param[in] shift_from_current_ms a positive shift in time (ms.) from the current time
+ *  (allows to get positions for the future supports)
  * @param[out] left_foot_pos 3x1 vector of coordinates [x y z] + angle (orientation in x,y plane)
  * @param[out] right_foot_pos 3x1 vector of coordinates [x y z] + angle (orientation in x,y plane)
  *
@@ -343,13 +337,13 @@ bool WMG::isSupportSwitchNeeded ()
 /**
  * @brief Corrects position of the next SS.
  *
- * @param[in] pos_error 3x1 vector of error between expected and real position.
+ * @param[in] posture a 4x4 homogenous matrix representing new position and orientation
  *
- * @todo Following DS and the angle must be adjusted as well.
+ * @todo DS must be adjusted as well.
  */
-void WMG::correctNextSSPosition (const double *pos_error)
+void WMG::correctNextSSPosition (const double* posture)
 {
-    FS[getNextSS(first_preview_step)].correct(pos_error[0], pos_error[1]);
+    FS[getNextSS(first_preview_step)].changePosture(Transform<double,3> (Matrix4d::Map(posture)));
 }
 
 
@@ -372,13 +366,13 @@ WMGret WMG::formPreviewWindow(smpc_parameters & par)
         {
             par.angle[i] = FS[win_step_num].angle;
 
-            par.fp_x[i] = FS[win_step_num].x;
-            par.fp_y[i] = FS[win_step_num].y;
+            par.fp_x[i] = FS[win_step_num].x();
+            par.fp_y[i] = FS[win_step_num].y();
 
 
             // ZMP reference coordinates
-            par.zref_x[i] = FS[win_step_num].ZMPref.x;
-            par.zref_y[i] = FS[win_step_num].ZMPref.y;
+            par.zref_x[i] = FS[win_step_num].ZMPref.x();
+            par.zref_y[i] = FS[win_step_num].ZMPref.y();
 
 
             par.lb[i*2] = -FS[win_step_num].d[2];
@@ -459,7 +453,7 @@ void WMG::FS2file(const std::string filename, const bool plot_ds)
         {
             fprintf(file_op, "FS(%i).a = %f;\nFS(%i).p = [%f;%f];\nFS(%i).d = [%f;%f;%f;%f];\n", 
                     i+1, FS[i].angle, 
-                    i+1, FS[i].x, FS[i].y, 
+                    i+1, FS[i].x(), FS[i].y(), 
                     i+1, FS[i].d[0], FS[i].d[1], FS[i].d[2], FS[i].d[3]);
 
             fprintf(file_op, "FS(%i).D = [%f %f;%f %f;%f %f;%f %f];\n", 
@@ -469,11 +463,11 @@ void WMG::FS2file(const std::string filename, const bool plot_ds)
                          FS[i].D[3], FS[i].D[7]); 
 
             fprintf(file_op, "FS(%i).v = [%f %f; %f %f; %f %f; %f %f; %f %f];\n", 
-                    i+1, FS[i].vert[0].x, FS[i].vert[0].y, 
-                         FS[i].vert[1].x, FS[i].vert[1].y, 
-                         FS[i].vert[2].x, FS[i].vert[2].y, 
-                         FS[i].vert[3].x, FS[i].vert[3].y, 
-                         FS[i].vert[0].x, FS[i].vert[0].y);
+                    i+1, FS[i].vert[0].x(), FS[i].vert[0].y(), 
+                         FS[i].vert[1].x(), FS[i].vert[1].y(), 
+                         FS[i].vert[2].x(), FS[i].vert[2].y(), 
+                         FS[i].vert[3].x(), FS[i].vert[3].y(), 
+                         FS[i].vert[0].x(), FS[i].vert[0].y());
 
             if (FS[i].type == FS_TYPE_DS)
             {
@@ -519,8 +513,8 @@ void WMG::getFootsteps(
     {
         if ((FS[i].type == FS_TYPE_SS_L) || (FS[i].type == FS_TYPE_SS_R))
         {
-            x_coord.push_back(FS[i].x);
-            y_coord.push_back(FS[i].y);
+            x_coord.push_back(FS[i].x());
+            y_coord.push_back(FS[i].y());
             angle_rot.push_back(FS[i].angle);
         }
     }

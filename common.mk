@@ -1,11 +1,15 @@
-CXX_WARN_FLAGS=-Wall -Wfloat-equal -Wshadow -pedantic -std=c++98
+CXX_WARN_FLAGS_EIGEN=-Wall -Wfloat-equal -std=c++98
+CXX_WARN_FLAGS=${CXX_WARN_FLAGS_EIGEN} -Wshadow -pedantic
 IFLAGS+=-I../include
+IFLAGS_EIGEN=${IFLAGS} -I/usr/local/include/eigen2/ -I/usr/include/eigen2/
 LDFLAGS+=-L../lib/ -lsmpc_solver -lwmg
 
 ifdef DEBUG
 CXXFLAGS=-g ${CXX_WARN_FLAGS} ${IFLAGS}
+CXXFLAGS_EIGEN=-g ${CXX_WARN_FLAGS_EIGEN} ${IFLAGS}
 CMAKEFLAGS=-DCMAKE_BUILD_TYPE=DEBUG
 else
-CXXFLAGS+=-O3 ${CXX_WARN_FLAGS} ${IFLAGS}
+CXXFLAGS=-O3 -DNDEBUG ${CXX_WARN_FLAGS} ${IFLAGS}
+CXXFLAGS_EIGEN=-O3 -DNDEBUG ${CXX_WARN_FLAGS_EIGEN} ${IFLAGS}
 CMAKEFLAGS=-DCMAKE_BUILD_TYPE=Release
 endif
