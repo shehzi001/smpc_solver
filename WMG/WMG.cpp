@@ -460,11 +460,11 @@ void WMG::FS2file(const std::string filename, const bool plot_ds)
                          FS[i].D[3], FS[i].D[7]); 
 
             fprintf(file_op, "FS(%i).v = [%f %f; %f %f; %f %f; %f %f; %f %f];\n", 
-                    i+1, FS[i].vert[0].x(), FS[i].vert[0].y(), 
-                         FS[i].vert[1].x(), FS[i].vert[1].y(), 
-                         FS[i].vert[2].x(), FS[i].vert[2].y(), 
-                         FS[i].vert[3].x(), FS[i].vert[3].y(), 
-                         FS[i].vert[0].x(), FS[i].vert[0].y());
+                    i+1, FS[i].vert(0,0), FS[i].vert(0,1), 
+                         FS[i].vert(1,0), FS[i].vert(1,1), 
+                         FS[i].vert(2,0), FS[i].vert(2,1), 
+                         FS[i].vert(3,0), FS[i].vert(3,1), 
+                         FS[i].vert(0,0), FS[i].vert(0,1));
 
             if (FS[i].type == FS_TYPE_DS)
             {

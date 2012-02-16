@@ -103,7 +103,6 @@ void RectangularConstraint_ZMP::rotate_translate(const double ca, const double s
 void RectangularConstraint_ZMP::Constraints2Vert()
 {
     double det;
-    vert.clear();
     
     // Indexes of ctr.D
     // 0 4
@@ -115,21 +114,25 @@ void RectangularConstraint_ZMP::Constraints2Vert()
     // |0 4|   0    1/det * | 7 -4|
     // |3 7|   3            |-3  0|
     det = D[0]*D[7] - D[3]*D[4];
-    vert.push_back(Vector2d( D[7]/det*d[0] - D[4]/det*d[3],-D[3]/det*d[0] + D[0]/det*d[3])); 
+    vert(0,0) =  D[7]/det*d[0] - D[4]/det*d[3];
+    vert(0,1) = -D[3]/det*d[0] + D[0]/det*d[3]; 
     
     // |0 4|   0     | 5 -4|
     // |1 5|   1     |-1  0|
     det = D[0]*D[5] - D[4]*D[1]; 
-    vert.push_back(Vector2d( D[5]/det*d[0] - D[4]/det*d[1],-D[1]/det*d[0] + D[0]/det*d[1])); 
+    vert(1,0) =  D[5]/det*d[0] - D[4]/det*d[1];
+    vert(1,1) = -D[1]/det*d[0] + D[0]/det*d[1]; 
     
     // |1 5|   1     | 6 -5|
     // |2 6|   2     |-2  1|
     det = D[1]*D[6] - D[5]*D[2]; 
-    vert.push_back(Vector2d( D[6]/det*d[1] - D[5]/det*d[2],-D[2]/det*d[1] + D[1]/det*d[2])); 
+    vert(2,0) =  D[6]/det*d[1] - D[5]/det*d[2];
+    vert(2,1) = -D[2]/det*d[1] + D[1]/det*d[2]; 
     
     // |2 6|   2     | 7 -6|
     // |3 7|   3     |-3  2|
     det = D[2]*D[7] - D[3]*D[6]; 
-    vert.push_back(Vector2d( D[7]/det*d[2] - D[6]/det*d[3],-D[3]/det*d[2] + D[2]/det*d[3])); 
+    vert(3,0) =  D[7]/det*d[2] - D[6]/det*d[3];
+    vert(3,1) = -D[3]/det*d[2] + D[2]/det*d[3]; 
 }
 

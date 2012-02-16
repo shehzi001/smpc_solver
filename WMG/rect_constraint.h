@@ -13,7 +13,6 @@
  ****************************************/
 
 #include <Eigen/Geometry>
-#include <vector>
 
 
 
@@ -66,7 +65,8 @@ class RectangularConstraint_ZMP
         double d_orig[4];
 
         /// Absolute coordinates of vertices.
-        std::vector<Vector2d> vert;
+        Matrix<double,4,2> vert;
+        EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
 };
 
 ///@}
