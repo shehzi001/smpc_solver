@@ -84,8 +84,8 @@ int WMG::getPrevSS(const int start_ind, const fs_type type)
  * @brief Determine position and orientation of feet in DS
  *
  * @param[in] support_number number of the support
- * @param[out] left_foot_pos 3x1 vector of coordinates [x y z] + angle (orientation in x,y plane)
- * @param[out] right_foot_pos 3x1 vector of coordinates [x y z] + angle (orientation in x,y plane)
+ * @param[out] left_foot_pos 4x4 homogeneous matrix, which represents position and orientation
+ * @param[out] right_foot_pos 4x4 homogeneous matrix, which represents position and orientation
  */
 void WMG::getDSFeetPositions (
         const int support_number,
@@ -105,15 +105,8 @@ void WMG::getDSFeetPositions (
         left_ind = getPrevSS (support_number);
     }
 
-    left_foot_pos[0] = FS[left_ind].x();
-    left_foot_pos[1] = FS[left_ind].y();
-    left_foot_pos[2] = 0.0;
-    left_foot_pos[3] = FS[left_ind].angle;
-
-    right_foot_pos[0] = FS[right_ind].x();
-    right_foot_pos[1] = FS[right_ind].y();
-    right_foot_pos[2] = 0.0;
-    right_foot_pos[3] = FS[right_ind].angle;
+    Matrix4d::Map(left_foot_pos) = FS[left_ind].posture.matrix();
+    Matrix4d::Map(right_foot_pos) = FS[right_ind].posture.matrix();
 }
 
 
@@ -123,8 +116,8 @@ void WMG::getDSFeetPositions (
  *
  * @param[in] support_number number of the support
  * @param[in] theta a number between 0 and 1, a fraction of support time that have passed 
- * @param[out] left_foot_pos 3x1 vector of coordinates [x y z] + angle (orientation in x,y plane)
- * @param[out] right_foot_pos 3x1 vector of coordinates [x y z] + angle (orientation in x,y plane)
+ * @param[out] left_foot_pos 4x4 homogeneous matrix, which represents position and orientation
+ * @param[out] right_foot_pos 4x4 homogeneous matrix, which represents position and orientation
  */
 void WMG::getSSFeetPositions (
         const int support_number,
@@ -154,11 +147,7 @@ void WMG::getSSFeetPositions (
         next_swing_ind = getNextSS (support_number, FS_TYPE_SS_L);
     }
 
-    ref_foot_pos[0] = current_step.x();
-    ref_foot_pos[1] = current_step.y();
-    ref_foot_pos[2] = 0.0;
-    ref_foot_pos[3] = current_step.angle;
-
+    Matrix4d::Map(ref_foot_pos) = current_step.posture.matrix();
 
 
     double dx = FS[next_swing_ind].x() - FS[prev_swing_ind].x();
@@ -174,10 +163,12 @@ void WMG::getSSFeetPositions (
 
 
     double dl = /*(1-theta)*x[0] +*/ theta * l;
-    swing_foot_pos[0] = FS[prev_swing_ind].x() + theta * dx; // linear equation
-    swing_foot_pos[1] = FS[prev_swing_ind].y() + theta * dy;
-    swing_foot_pos[2] = a*dl*dl + b*dl /*+ c*/;
-    swing_foot_pos[3] = FS[next_swing_ind].angle;
+
+    Matrix4d::Map(swing_foot_pos) = (
+            FS[prev_swing_ind].posture
+          * Translation<double, 3>(theta * dx, theta * dy, a*dl*dl + b*dl)
+          * AngleAxisd(FS[next_swing_ind].angle - FS[prev_swing_ind].angle, Vector3d::UnitZ())
+            ).matrix();
 }
 
 

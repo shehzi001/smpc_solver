@@ -73,9 +73,9 @@ double footstep::y()
  *
  * @param[in] new_posture new posture of the step.
  */
-void footstep::changePosture (const Transform<double,3> new_posture)
+void footstep::changePosture (const double * new_posture)
 {
-    posture = new_posture;
+    posture.matrix() = Matrix4d::Map(new_posture);
     Matrix3d rotation = posture.matrix().corner(TopLeft,3,3);
     angle = rotation.eulerAngles(0,1,2)[2];
     ca = cos(angle);

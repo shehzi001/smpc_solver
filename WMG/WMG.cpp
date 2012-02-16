@@ -250,17 +250,14 @@ void WMG::AddFootstep(
  *
  * @param[in] shift_from_current_ms a positive shift in time (ms.) from the current time
  *  (allows to get positions for the future supports)
- * @param[out] left_foot_pos 3x1 vector of coordinates [x y z] + angle (orientation in x,y plane)
- * @param[out] right_foot_pos 3x1 vector of coordinates [x y z] + angle (orientation in x,y plane)
+ * @param[out] left_foot_pos 4x4 homogeneous matrix, which represents position and orientation
+ * @param[out] right_foot_pos 4x4 homogeneous matrix, which represents position and orientation
  *
  * @attention This function requires the walking pattern to be started and finished
  * by single support.
  *
  * @attention Cannot be called on the first or last SS  =>  must be called after 
  * FormPreviewWindow().
- *
- * @note If loops_per_preview_iter is set to 1, then the function returns a position 
- * at the end of preview window with number loops_in_current_preview.
  */
 void WMG::getFeetPositions (
         const unsigned int shift_from_current_ms,
@@ -337,13 +334,13 @@ bool WMG::isSupportSwitchNeeded ()
 /**
  * @brief Corrects position of the next SS.
  *
- * @param[in] posture a 4x4 homogenous matrix representing new position and orientation
+ * @param[in] posture a 4x4 homogeneous matrix representing new position and orientation
  *
  * @todo DS must be adjusted as well.
  */
 void WMG::correctNextSSPosition (const double* posture)
 {
-    FS[getNextSS(first_preview_step)].changePosture(Transform<double,3> (Matrix4d::Map(posture)));
+    FS[getNextSS(first_preview_step)].changePosture(posture);
 }
 
 

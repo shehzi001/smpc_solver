@@ -110,17 +110,17 @@ int main(int argc, char **argv)
     
 
         // feet position/orientation
-        double left_foot_pos[3+1];
-        double right_foot_pos[3+1];
+        double left_foot_pos[16];
+        double right_foot_pos[16];
         test_08.wmg->getFeetPositions (control_sampling_time_ms, left_foot_pos, right_foot_pos);
                 
-        left_foot_x.push_back(left_foot_pos[0]);
-        left_foot_y.push_back(left_foot_pos[1]);
-        left_foot_z.push_back(left_foot_pos[2]);
+        left_foot_x.push_back(left_foot_pos[12]);
+        left_foot_y.push_back(left_foot_pos[13]);
+        left_foot_z.push_back(left_foot_pos[14]);
 
-        right_foot_x.push_back(right_foot_pos[0]);
-        right_foot_y.push_back(right_foot_pos[1]);
-        right_foot_z.push_back(right_foot_pos[2]);
+        right_foot_x.push_back(right_foot_pos[12]);
+        right_foot_y.push_back(right_foot_pos[13]);
+        right_foot_z.push_back(right_foot_pos[14]);
         
         next_preview_len_ms -= control_sampling_time_ms;
     }
