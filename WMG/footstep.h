@@ -66,6 +66,8 @@ class footstep : public RectangularConstraint_ZMP
 
 
         Transform<double, 3> posture;
+
+        EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
 };
 ///@}
 #endif /*FOOTSTEP_H*/
