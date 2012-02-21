@@ -37,7 +37,7 @@ class footstep : public RectangularConstraint_ZMP
                 const fs_type, 
                 const double *);
 
-        void changePosture(const double *);
+        void changePosture(const double *, const bool);
         double x();
         double y();
 

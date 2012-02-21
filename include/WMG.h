@@ -173,7 +173,7 @@ class WMG
                 std::vector<double> &,
                 std::vector<double> &);
 
-        void correctNextSSPosition (const double *);
+        void changeNextSSPosition (const double *, const bool);
 
 
 // variables

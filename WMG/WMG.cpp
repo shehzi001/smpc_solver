@@ -309,6 +309,9 @@ void WMG::getFeetPositions (
  */
 bool WMG::isSupportSwitchNeeded ()
 {
+    // current_step_number is the number of step, which will
+    // be the first in the preview window, when formPreviewWindow()
+    // is called.
     if (FS[current_step_number].type == FS_TYPE_DS)
     {
         return (false);
@@ -332,15 +335,16 @@ bool WMG::isSupportSwitchNeeded ()
 
 
 /**
- * @brief Corrects position of the next SS.
+ * @brief Changes position of the next SS.
  *
  * @param[in] posture a 4x4 homogeneous matrix representing new position and orientation
+ * @param[in] zero_z_coordinate set z coordinate to 0.0
  *
  * @todo DS must be adjusted as well.
  */
-void WMG::correctNextSSPosition (const double* posture)
+void WMG::changeNextSSPosition (const double* posture, const bool zero_z_coordinate)
 {
-    FS[getNextSS(first_preview_step)].changePosture(posture);
+    FS[getNextSS(first_preview_step)].changePosture(posture, zero_z_coordinate);
 }
 
 

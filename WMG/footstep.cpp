@@ -72,10 +72,15 @@ double footstep::y()
  * @brief Correct position of the footstep.
  *
  * @param[in] new_posture new posture of the step.
+ * @param[in] zero_z_coordinate set z coordinate to 0.0
  */
-void footstep::changePosture (const double * new_posture)
+void footstep::changePosture (const double * new_posture, const bool zero_z_coordinate)
 {
     posture.matrix() = Matrix4d::Map(new_posture);
+    if (zero_z_coordinate)
+    {
+        posture.translation()[2] = 0.0;
+    }
     Matrix3d rotation = posture.matrix().corner(TopLeft,3,3);
     angle = rotation.eulerAngles(0,1,2)[2];
     ca = cos(angle);
