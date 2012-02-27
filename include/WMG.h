@@ -204,6 +204,7 @@ class WMG
     private:
         void getDSFeetPositions (const int, double *, double *);
         void getSSFeetPositions (const int, const double, double *, double *);
+        void getSSFeetPositionsBezier (const int, const double, double *, double *);
         int getNextSS (const int, const fs_type type = FS_TYPE_AUTO);
         int getPrevSS (const int, const fs_type type = FS_TYPE_AUTO);
 

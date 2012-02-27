@@ -292,7 +292,7 @@ void WMG::getFeetPositions (
             ((FS[support_number].time_period - step_time_left) + shift_ms) 
             / FS[support_number].time_period;
 
-        getSSFeetPositions (
+        getSSFeetPositionsBezier (
                 support_number,
                 theta,
                 left_foot_pos, 
