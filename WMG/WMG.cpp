@@ -213,18 +213,23 @@ void WMG::AddFootstep(
         double angle_shift = angle_relative * theta;
         double x_shift = theta*x_relative;
         double y_shift = theta*y_relative;
+        Vector3d *ds_zref = &FS.back().ZMPref;
         for (unsigned int i = 0; i < def_ds_num; i++)
         {
             Transform<double, 3> ds_posture = FS.back().posture 
                        * Translation<double, 3>(x_shift, y_shift, 0.0)
                        * AngleAxisd(angle_shift, Vector3d::UnitZ());
 
+            if (i == def_ds_num / 2)
+            {
+                ds_zref = &next_zref;
+            }
 
             FS.push_back(
                     footstep(
                         FS.back().angle + angle_shift,
                         ds_posture,
-                        next_zref,
+                        *ds_zref,
                         sampling_period, 
                         FS_TYPE_DS,
                         def_ds_constraint));
