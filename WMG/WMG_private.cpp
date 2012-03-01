@@ -192,11 +192,14 @@ void WMG::getSSFeetPositionsBezier (
 {
     double *swing_foot_pos, *ref_foot_pos;
     int next_swing_ind, prev_swing_ind;
+    int inclination_sign = 0;
     footstep& current_step = FS[support_number];
 
 
     if (current_step.type == FS_TYPE_SS_L)
     {
+        inclination_sign = -1;
+
         ref_foot_pos = left_foot_pos;
         swing_foot_pos = right_foot_pos;
 
@@ -205,6 +208,8 @@ void WMG::getSSFeetPositionsBezier (
     }
     else
     {
+        inclination_sign = 1;
+
         ref_foot_pos = right_foot_pos;
         swing_foot_pos = left_foot_pos;
 
@@ -243,10 +248,11 @@ void WMG::getSSFeetPositionsBezier (
     // lets take z1=z2=z, then:
     //
     // z = step_height * S / (3*0.5^3 * (w1+w2))
-    control_points.col(1)     = control_points.col(0);
-    control_points.col(1).z() = step_height*weighted_binomial_coef.sum() / (3*0.5*0.5*0.5 * (w1+w2));
-    control_points.col(2)     = control_points.col(3);
-    control_points.col(2).z() = control_points.col(1).z();
+    control_points.col(1)      = control_points.col(0);
+    control_points.col(1).y() += inclination_sign * step_height/2;
+    control_points.col(1).z()  = step_height*weighted_binomial_coef.sum() / (3*0.5*0.5*0.5 * (w1+w2));
+    control_points.col(2)      = control_points.col(3);
+    control_points.col(2).z()  = control_points.col(1).z();
 
 
     Transform<double, 3> swing_posture =
