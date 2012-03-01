@@ -229,9 +229,8 @@ void WMG::getSSFeetPositionsBezier (
 
 
     Matrix<double, 3, 4> control_points;
-    control_points.col(0).setZero();
-    control_points.col(3) = FS[next_swing_ind].posture.translation() 
-                          - FS[prev_swing_ind].posture.translation();
+    control_points.col(0) = FS[prev_swing_ind].posture.translation();
+    control_points.col(3) = FS[next_swing_ind].posture.translation(); 
 
     // In order to reach step_height on z axis in the middle of trajectory, 
     // z coordinates for these  two points are derived as follows:
@@ -250,14 +249,14 @@ void WMG::getSSFeetPositionsBezier (
     control_points.col(2).z() = control_points.col(1).z();
 
 
-    Translation<double,3> swing_translation (
-        control_points * weighted_binomial_coef / weighted_binomial_coef.sum());
+    Transform<double, 3> swing_posture =
+        Translation<double,3>(
+                control_points * weighted_binomial_coef / weighted_binomial_coef.sum())
+        *
+        AngleAxisd (
+                FS[prev_swing_ind].angle + theta*(FS[next_swing_ind].angle - FS[prev_swing_ind].angle), 
+                Vector3d::UnitZ());
 
-    AngleAxisd swing_rotation (
-            theta*(FS[next_swing_ind].angle - FS[prev_swing_ind].angle), 
-            Vector3d::UnitZ());
-
-    Matrix4d::Map(swing_foot_pos) = 
-        (FS[prev_swing_ind].posture * swing_translation * swing_rotation).matrix();
+    Matrix4d::Map(swing_foot_pos) = swing_posture.matrix();
 }
 
