@@ -32,7 +32,7 @@ WMG::WMG (
     T_ms = new unsigned int[N];
     for (unsigned int i = 0; i < N; i++)
     {
-        T_ms[i] = T_;
+        T_ms[i] = 0;
     }
     
 
@@ -387,13 +387,35 @@ WMGret WMG::formPreviewWindow(smpc_parameters & par)
             par.lb[i*2 + 1] = -FS[win_step_num].d[3];
             par.ub[i*2 + 1] = FS[win_step_num].d[1];
 
-            if (T_ms[i] > step_time_left) 
+
+            unsigned int step_len_ms;
+            if (T_ms[i] == 0)
             {
-                retval = WMG_HALT;
-                break;
+                if (sampling_period > step_time_left) 
+                {
+                    step_len_ms = step_time_left;
+                }
+                else
+                {
+                    step_len_ms = sampling_period;
+                }
             }
-            step_time_left -= T_ms[i];
-            par.T[i] = (double) T_ms[i] / 1000;
+            else
+            {
+                if (T_ms[i] > step_time_left) 
+                {
+                    retval = WMG_HALT;
+                    break;
+                }
+                step_len_ms = T_ms[i];
+            }
+            par.T[i] = (double) step_len_ms / 1000;
+            step_time_left -= step_len_ms;
+
+            if (i == 0)
+            {
+                last_time_decrement = step_len_ms;
+            }
             i++;
         }
         else
@@ -417,8 +439,7 @@ WMGret WMG::formPreviewWindow(smpc_parameters & par)
         }
 
         first_preview_step = current_step_number;
-        last_time_decrement = T_ms[0];
-        FS[current_step_number].time_left -= T_ms[0];
+        FS[current_step_number].time_left -= last_time_decrement;
         if (FS[current_step_number].time_left == 0)
         {
             current_step_number++;
