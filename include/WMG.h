@@ -138,22 +138,17 @@ class WMG
         ~WMG();
 
 
-        void AddFootstep(
-                const double, 
-                const double, 
-                const double, 
-                const int, 
-                const int, 
-                const double *, 
-                const fs_type type = FS_TYPE_AUTO);
-        void AddFootstep(
-                const double, 
-                const double, 
-                const double, 
-                const int, 
-                const int, 
-                const fs_type type = FS_TYPE_AUTO);
-        void AddFootstep(
+        void setFootstepDefaults(
+                const unsigned int, 
+                const unsigned int,
+                const double * constraints = NULL);
+        void setFootstepDefaults(
+                const unsigned int, 
+                const unsigned int, 
+                const unsigned int,
+                const double * constraints = NULL);
+
+        void addFootstep(
                 const double, 
                 const double, 
                 const double, 
@@ -198,7 +193,7 @@ class WMG
         double step_height;
 
         double def_ss_constraint[4];
-        double def_ds_constraint[4];
+        double def_auto_ds_constraint[4];
 
 
     private:
@@ -208,9 +203,12 @@ class WMG
         int getNextSS (const int, const fs_type type = FS_TYPE_AUTO);
         int getPrevSS (const int, const fs_type type = FS_TYPE_AUTO);
 
+
         double addstep_constraint[4];
-        unsigned int def_repeat_times;
-        unsigned int def_ds_num;
+
+        unsigned int def_time_ms;
+        unsigned int ds_time_ms;
+        unsigned int ds_num;
 
         unsigned int last_time_decrement;
 };

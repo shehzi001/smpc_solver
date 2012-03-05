@@ -24,7 +24,8 @@ int main(int argc, char **argv)
 
     // Initial double support
     double d[4] = {0.09 , 0.075, 0.03, 0.025};
-    wmg.AddFootstep(0.0, 0.0, 0.0, 2, 3, d, FS_TYPE_DS);
+    wmg.setFootstepDefaults(2, 1, d);
+    wmg.addFootstep(0.0, 0.0, 0.0, FS_TYPE_DS);
     // ZMP, CoM are at [0;0]
 
     // each step is defined relatively to the previous step
@@ -39,15 +40,15 @@ int main(int argc, char **argv)
     d[3] = 0.025;
     // 2 reference ZMP positions in single support 
     // 1 in double support
-    // 1 + 2 = 3
-    wmg.AddFootstep(0.0   , -step_y/2, 0.0 , 2,  3, d);
-    wmg.AddFootstep(step_x,  step_y, z);
-    wmg.AddFootstep(step_x, -step_y, z);
-    wmg.AddFootstep(step_x,  step_y, z);
-    wmg.AddFootstep(step_x, -step_y, z);
-    wmg.AddFootstep(step_x,  step_y, z);
-    wmg.AddFootstep(step_x, -step_y, z);
-    wmg.AddFootstep(step_x,  step_y, 0.0);
+    wmg.setFootstepDefaults(2, 1, d);
+    wmg.addFootstep(0.0   , -step_y/2, 0.0);
+    wmg.addFootstep(step_x,  step_y, z);
+    wmg.addFootstep(step_x, -step_y, z);
+    wmg.addFootstep(step_x,  step_y, z);
+    wmg.addFootstep(step_x, -step_y, z);
+    wmg.addFootstep(step_x,  step_y, z);
+    wmg.addFootstep(step_x, -step_y, z);
+    wmg.addFootstep(step_x,  step_y, 0.0);
 
     // here we give many reference points, since otherwise we 
     // would not have enough steps in preview window to reach 
@@ -56,7 +57,8 @@ int main(int argc, char **argv)
     d[1] = 0.025;
     d[2] = 0.03;
     d[3] = 0.075;
-    wmg.AddFootstep(0.0   , -step_y/2, 0.0, 30, 30, d, FS_TYPE_DS);
+    wmg.setFootstepDefaults(30, 0, d);
+    wmg.addFootstep(0.0   , -step_y/2, 0.0, FS_TYPE_DS);
     //-----------------------------------------------------------
 
 

@@ -47,18 +47,18 @@ WMG::WMG (
     def_ss_constraint[2] = 0.03;
     def_ss_constraint[3] = 0.025;
 
-    def_ds_constraint[0] = 0.07;
-    def_ds_constraint[1] = 0.025;
-    def_ds_constraint[2] = 0.025;
-    def_ds_constraint[3] = 0.025;
+    def_auto_ds_constraint[0] = 0.07;
+    def_auto_ds_constraint[1] = 0.025;
+    def_auto_ds_constraint[2] = 0.025;
+    def_auto_ds_constraint[3] = 0.025;
 
     addstep_constraint[0] = def_ss_constraint[0];
     addstep_constraint[1] = def_ss_constraint[1];
     addstep_constraint[2] = def_ss_constraint[2];
     addstep_constraint[3] = def_ss_constraint[3];
 
-    def_repeat_times = 4;
-    def_ds_num = 0;
+    def_time_ms = 400;
+    ds_time_ms = 0;
 }
 
 
@@ -74,64 +74,59 @@ WMG::~WMG()
 
 
 /**
- * @brief Adds a footstep to FS; sets the default constraints, the total number of 
- * iterations and the number of iterations in single support.
+ * @brief Set default parameters of footsteps
  *
- * @param[in] x_relative x_relative X position [meter] relative to the previous footstep.
- * @param[in] y_relative y_relative Y position [meter] relative to the previous footstep.
- * @param[in] angle_relative angle_relative Angle [rad.] relative to the previous footstep.
- * @param[in] n_this Number of (preview window) iterations in the added step.
- * @param[in] n Total number of (preview window) iterations, i.e., nSS + nDS.
- * @param[in] d Vector of the PoS constraints (assumed to be [4 x 1]).
- * @param[in] type (optional) type of the footstep.
+ * @param[in] def_num_ default time in ms (for SS or DS depending on the type of added footstep)
+ * @param[in] ds_num_ number of DS to be generated automatically.
+ * @param[in] constraints Vector of the PoS constraints (assumed to be [4 x 1], can be NULL).
  *
- * @note Coordinates and angle are treated as absolute for the first step in the preview window.
+ * @note length of one automatically generated DS is assumed to be equal to sampling_period.
  */
-void WMG::AddFootstep(
-        const double x_relative, 
-        const double y_relative, 
-        const double angle_relative, 
-        const int n_this, 
-        const int n, 
-        const double *d, 
-        const fs_type type)
+void WMG::setFootstepDefaults(
+        const unsigned int def_num_, 
+        const unsigned int ds_num_,
+        const double *constraints) 
 {
-    addstep_constraint[0] = d[0];
-    addstep_constraint[1] = d[1];
-    addstep_constraint[2] = d[2];
-    addstep_constraint[3] = d[3];
-    def_repeat_times = n_this;
-    def_ds_num = n - n_this;
-    AddFootstep(x_relative, y_relative, angle_relative, type);
+    if (constraints != NULL)
+    {
+        addstep_constraint[0] = constraints[0];
+        addstep_constraint[1] = constraints[1];
+        addstep_constraint[2] = constraints[2];
+        addstep_constraint[3] = constraints[3];
+    }
+
+    def_time_ms = def_num_ * sampling_period;
+    ds_time_ms  = sampling_period; 
+    ds_num      = ds_num_;
 }
 
 
 
 /**
- * @brief Adds a footstep to FS; sets the default total number of iterations and the 
- * number of iterations in single support.
+ * @brief Set default parameters of footsteps
  *
- * @param[in] x_relative x_relative X position [meter] relative to the previous footstep.
- * @param[in] y_relative y_relative Y position [meter] relative to the previous footstep.
- * @param[in] angle_relative angle_relative Angle [rad.] relative to the previous footstep.
- * @param[in] n_this Number of (preview window) iterations in the added step.
- * @param[in] n Total number of (preview window) iterations, i.e., nSS + nDS.
- * @param[in] type (optional) type of the footstep.
- *
- * @note Coordinates and angle are treated as absolute for the first step in the preview window.
- * @note Default vector of the PoS constraints is used.
+ * @param[in] def_time_ms_ default time in ms (for SS or DS depending on the type of added footstep)
+ * @param[in] ds_time_ms_ length of one automatically generated DS [ms.]
+ * @param[in] ds_num_ number of DS to be generated automatically.
+ * @param[in] constraints Vector of the PoS constraints (assumed to be [4 x 1], can be NULL).
  */
-void WMG::AddFootstep(
-        const double x_relative, 
-        const double y_relative, 
-        const double angle_relative, 
-        const int n_this, 
-        const int n, 
-        const fs_type type)
+void WMG::setFootstepDefaults(
+        const unsigned int def_time_ms_, 
+        const unsigned int ds_time_ms_, 
+        const unsigned int ds_num_,
+        const double *constraints) 
 {
-    def_repeat_times = n_this;
-    def_ds_num = n - n_this;
-    AddFootstep(x_relative, y_relative, angle_relative, type);
+    if (constraints != NULL)
+    {
+        addstep_constraint[0] = constraints[0];
+        addstep_constraint[1] = constraints[1];
+        addstep_constraint[2] = constraints[2];
+        addstep_constraint[3] = constraints[3];
+    }
+
+    def_time_ms = def_time_ms_;
+    ds_time_ms  = ds_time_ms_; 
+    ds_num      = ds_num_;
 }
 
 
@@ -145,10 +140,8 @@ void WMG::AddFootstep(
  * @param[in] type (optional) type of the footstep.
  *
  * @note Coordinates and angle are treated as absolute for the first step in the preview window.
- * @note Default vector of the PoS constraintsi, number of iterations in single support and
- * total number of iterations are used.
  */
-void WMG::AddFootstep(
+void WMG::addFootstep(
         const double x_relative, 
         const double y_relative, 
         const double angle_relative, 
@@ -175,7 +168,7 @@ void WMG::AddFootstep(
                     angle_relative, 
                     posture,
                     zref_abs,
-                    def_repeat_times * sampling_period, 
+                    def_time_ms, 
                     type,
                     addstep_constraint));
     }
@@ -209,18 +202,18 @@ void WMG::AddFootstep(
 
         // Add double support constraints that lie between the
         // newly added step and the previous step
-        double theta = (double) 1/(def_ds_num + 1);
+        double theta = (double) 1/(ds_num + 1);
         double angle_shift = angle_relative * theta;
         double x_shift = theta*x_relative;
         double y_shift = theta*y_relative;
         Vector3d *ds_zref = &FS.back().ZMPref;
-        for (unsigned int i = 0; i < def_ds_num; i++)
+        for (unsigned int i = 0; i < ds_num; i++)
         {
             Transform<double, 3> ds_posture = FS.back().posture 
                        * Translation<double, 3>(x_shift, y_shift, 0.0)
                        * AngleAxisd(angle_shift, Vector3d::UnitZ());
 
-            if (i == def_ds_num / 2)
+            if (i == ds_num / 2)
             {
                 ds_zref = &next_zref;
             }
@@ -230,9 +223,9 @@ void WMG::AddFootstep(
                         FS.back().angle + angle_shift,
                         ds_posture,
                         *ds_zref,
-                        sampling_period, 
+                        ds_time_ms, 
                         FS_TYPE_DS,
-                        def_ds_constraint));
+                        def_auto_ds_constraint));
         }
 
 
@@ -242,7 +235,7 @@ void WMG::AddFootstep(
                     next_a, 
                     posture, 
                     next_zref,
-                    def_repeat_times * sampling_period, 
+                    def_time_ms, 
                     type,
                     addstep_constraint));
     }    
