@@ -16,11 +16,11 @@ int main(int argc, char **argv)
     //-----------------------------------------------------------
     // the numbers must correspond to the numbers in init_04()
     int control_sampling_time_ms = 20;
-    int preview_sampling_time_ms = 40;
+    int preview_sampling_time_ms = 60;
     int next_preview_len_ms = 0;
 
     // initialize
-    init_07 test_08 ("test_08", false);
+    init_08 test_08 ("test_08", true);
     //-----------------------------------------------------------
 
 
@@ -67,20 +67,19 @@ int main(int argc, char **argv)
 
     for(int i=0 ;; i++)
     {
-        if (next_preview_len_ms == 0)
-        {
-            next_preview_len_ms = preview_sampling_time_ms;
-        }   
-
-
-        test_08.wmg->T_ms[2] = next_preview_len_ms;
-
         cout << test_08.wmg->isSupportSwitchNeeded() << endl;
         if (test_08.wmg->formPreviewWindow(*test_08.par) == WMG_HALT)
         {
             cout << "EXIT (halt = 1)" << endl;
             break;
         }
+
+        for (unsigned int j=0; j < test_08.wmg->N; j++)
+        {
+            cout << test_08.par->T[j] << "  ";
+        }
+        cout << endl;
+
 
         ZMP_ref_x.push_back(test_08.par->zref_x[0]);
         ZMP_ref_y.push_back(test_08.par->zref_y[0]);
@@ -97,14 +96,18 @@ int main(int argc, char **argv)
         //-----------------------------------------------------------
 
 
-        if (next_preview_len_ms == preview_sampling_time_ms)
+        if (next_preview_len_ms == 0)
         {
+            next_preview_len_ms = preview_sampling_time_ms;
+
             // if the values are saved on each iteration the plot becomes sawlike.
             // better solution - more frequent sampling.
             ZMP_x.push_back(test_08.X_tilde.x());
             ZMP_y.push_back(test_08.X_tilde.y());
             test_08.X_tilde.get_next_state (solver);
         }
+        next_preview_len_ms -= control_sampling_time_ms;
+
         CoM_x.push_back(test_08.par->init_state.x());
         CoM_y.push_back(test_08.par->init_state.y());
     
@@ -121,8 +124,6 @@ int main(int argc, char **argv)
         right_foot_x.push_back(right_foot_pos[12]);
         right_foot_y.push_back(right_foot_pos[13]);
         right_foot_z.push_back(right_foot_pos[14]);
-        
-        next_preview_len_ms -= control_sampling_time_ms;
     }
 
     // feet positions    
