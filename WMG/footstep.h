@@ -36,6 +36,8 @@ class footstep : public RectangularConstraint_ZMP
                 const unsigned int, 
                 const fs_type, 
                 const double *);
+        footstep (const footstep&);
+        ~footstep();
 
         void changePosture(const double *, const bool);
         double x();
@@ -65,9 +67,7 @@ class footstep : public RectangularConstraint_ZMP
         Vector3d ZMPref;
 
 
-        Transform<double, 3> posture;
-
-        EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
+        Transform<double, 3>* posture;
 };
 ///@}
 #endif /*FOOTSTEP_H*/

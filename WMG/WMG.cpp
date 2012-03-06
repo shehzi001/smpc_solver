@@ -159,7 +159,7 @@ void WMG::addFootstep(
             type = FS_TYPE_DS;
         }
 
-        posture = posture.rotate(AngleAxisd(angle_relative, Vector3d::UnitZ()));
+        posture *= AngleAxisd(angle_relative, Vector3d::UnitZ());
         // offset is the absolute position here.
         Vector3d zref_abs = posture * zref_offset;
 
@@ -193,7 +193,7 @@ void WMG::addFootstep(
         }
 
         // Position of the next step
-        posture = FS.back().posture * posture.rotate(AngleAxisd(angle_relative, Vector3d::UnitZ()));
+        posture = (*FS.back().posture) * posture * AngleAxisd(angle_relative, Vector3d::UnitZ());
 
         double prev_a = FS.back().angle;
         double next_a = prev_a + angle_relative;
@@ -209,7 +209,7 @@ void WMG::addFootstep(
         Vector3d *ds_zref = &FS.back().ZMPref;
         for (unsigned int i = 0; i < ds_num; i++)
         {
-            Transform<double, 3> ds_posture = FS.back().posture 
+            Transform<double, 3> ds_posture = (*FS.back().posture) 
                        * Translation<double, 3>(x_shift, y_shift, 0.0)
                        * AngleAxisd(angle_shift, Vector3d::UnitZ());
 

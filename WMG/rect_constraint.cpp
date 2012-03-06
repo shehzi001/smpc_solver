@@ -38,7 +38,7 @@
     \endverbatim
     At creation p is assumed to be [0;0] and rotation angle = 0.
  */
-RectangularConstraint_ZMP::RectangularConstraint_ZMP(const double *d_)
+RectangularConstraint_ZMP::RectangularConstraint_ZMP(const double *d_) : vert(4,2)
 {
     D[0] =  1.0; D[4] =  0.0;
     D[1] =  0.0; D[5] =  1.0;

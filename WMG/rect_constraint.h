@@ -65,8 +65,7 @@ class RectangularConstraint_ZMP
         double d_orig[4];
 
         /// Absolute coordinates of vertices.
-        Matrix<double,4,2> vert;
-        EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
+        MatrixXd vert;
 };
 
 ///@}

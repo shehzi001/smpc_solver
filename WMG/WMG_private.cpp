@@ -105,8 +105,8 @@ void WMG::getDSFeetPositions (
         left_ind = getPrevSS (support_number);
     }
 
-    Matrix4d::Map(left_foot_pos) = FS[left_ind].posture.matrix();
-    Matrix4d::Map(right_foot_pos) = FS[right_ind].posture.matrix();
+    Matrix4d::Map(left_foot_pos) = FS[left_ind].posture->matrix();
+    Matrix4d::Map(right_foot_pos) = FS[right_ind].posture->matrix();
 }
 
 
@@ -147,7 +147,7 @@ void WMG::getSSFeetPositions (
         next_swing_ind = getNextSS (support_number, FS_TYPE_SS_L);
     }
 
-    Matrix4d::Map(ref_foot_pos) = current_step.posture.matrix();
+    Matrix4d::Map(ref_foot_pos) = current_step.posture->matrix();
 
 
 
@@ -168,7 +168,7 @@ void WMG::getSSFeetPositions (
     double dl = /*(1-theta)*x[0] +*/ theta * l;
 
     Matrix4d::Map(swing_foot_pos) = (
-            FS[prev_swing_ind].posture
+            (*FS[prev_swing_ind].posture)
           * Translation<double, 3>(theta * dx, theta * dy, a*dl*dl + b*dl)
           * AngleAxisd(FS[next_swing_ind].angle - FS[prev_swing_ind].angle, Vector3d::UnitZ())
             ).matrix();
@@ -217,7 +217,7 @@ void WMG::getSSFeetPositionsBezier (
         next_swing_ind = getNextSS (support_number, FS_TYPE_SS_L);
     }
 
-    Matrix4d::Map(ref_foot_pos) = current_step.posture.matrix();
+    Matrix4d::Map(ref_foot_pos) = current_step.posture->matrix();
 
 
 
@@ -234,8 +234,8 @@ void WMG::getSSFeetPositionsBezier (
 
 
     Matrix<double, 3, 4> control_points;
-    control_points.col(0) = FS[prev_swing_ind].posture.translation();
-    control_points.col(3) = FS[next_swing_ind].posture.translation(); 
+    control_points.col(0) = FS[prev_swing_ind].posture->translation();
+    control_points.col(3) = FS[next_swing_ind].posture->translation(); 
 
     // In order to reach step_height on z axis in the middle of trajectory, 
     // z coordinates for these  two points are derived as follows:
@@ -265,4 +265,3 @@ void WMG::getSSFeetPositionsBezier (
 
     Matrix4d::Map(swing_foot_pos) = swing_posture.matrix();
 }
-

@@ -39,7 +39,7 @@ footstep::footstep(
     RectangularConstraint_ZMP(d_),
     ZMPref(ZMPref_)
 {
-    posture = posture_;
+    posture = new Transform<double, 3>(posture_);
     type = type_;
     angle = angle_; 
     ca = cos(angle); 
@@ -50,11 +50,40 @@ footstep::footstep(
 
 
 /**
+ * @brief A copy constructor.
+ *
+ * @param[in] copy_from original class instance
+ */
+footstep::footstep (const footstep& copy_from) : 
+    RectangularConstraint_ZMP(copy_from),
+    ZMPref(copy_from.ZMPref)
+{
+    posture = new Transform<double, 3>(*copy_from.posture);
+    type = copy_from.type;
+    angle = copy_from.angle; 
+    ca = copy_from.ca; 
+    sa = copy_from.sa;
+    time_left = copy_from.time_left;
+    time_period = copy_from.time_period;
+}
+
+
+
+/**
+ * @brief Destructor
+ */
+footstep::~footstep()
+{
+    delete posture;
+}
+
+
+/**
  * @return x coordinate
  */
 double footstep::x()
 {
-    return (posture.translation()[0]);
+    return (posture->translation()[0]);
 }
 
 
@@ -63,7 +92,7 @@ double footstep::x()
  */
 double footstep::y()
 {
-    return (posture.translation()[1]);
+    return (posture->translation()[1]);
 }
 
 
@@ -76,12 +105,12 @@ double footstep::y()
  */
 void footstep::changePosture (const double * new_posture, const bool zero_z_coordinate)
 {
-    posture.matrix() = Matrix4d::Map(new_posture);
+    posture->matrix() = Matrix4d::Map(new_posture);
     if (zero_z_coordinate)
     {
-        posture.translation()[2] = 0.0;
+        posture->translation()[2] = 0.0;
     }
-    Matrix3d rotation = posture.matrix().corner(TopLeft,3,3);
+    Matrix3d rotation = posture->matrix().corner(TopLeft,3,3);
     angle = rotation.eulerAngles(0,1,2)[2];
     ca = cos(angle);
     sa = sin(angle);
