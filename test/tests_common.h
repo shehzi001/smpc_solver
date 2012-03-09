@@ -453,7 +453,7 @@ class init_08 : public test_init_base
             wmg->addFootstep(0.0, step_y/2, 0.0, FS_TYPE_SS_L);
 
             // Initial double support
-            wmg->setFootstepDefaults (3*ss_time_ms, 0, 0, wmg->def_ss_constraint);
+            wmg->setFootstepDefaults (3*ss_time_ms, 0, 0, ds_constraint);
             wmg->addFootstep(0.0, -step_y/2, 0.0, FS_TYPE_DS);
             // ZMP, CoM are at [0;0]
 
