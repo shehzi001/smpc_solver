@@ -177,7 +177,7 @@ void WMG::addFootstep(
         // determine type of the step
         if (type == FS_TYPE_AUTO)
         {
-            switch (FS.back().type)
+            switch (FS[getPrevSS(FS.size())].type)
             {
                 case FS_TYPE_SS_L:
                     type = FS_TYPE_SS_R;
