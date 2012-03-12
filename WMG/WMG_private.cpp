@@ -222,7 +222,7 @@ void WMG::getSSFeetPositionsBezier (
     // Note, that since we want to obtain a curve of a certain height (see below),
     // the weights have a rather limited impact. They may be useful in future, though.
     double w1 = 1.0;
-    double w2 = 2.5;
+    double w2 = 2.0;
     // first number is the weight
     weighted_binomial_coef(0) = 1  * (1-theta)*(1-theta)*(1-theta);
     weighted_binomial_coef(1) = w1 * 3*(1-theta)*(1-theta)*theta;
@@ -246,7 +246,7 @@ void WMG::getSSFeetPositionsBezier (
     //
     // z = step_height * S / (3*0.5^3 * (w1+w2))
     control_points.col(1)      = control_points.col(0);
-    control_points.col(1).y() += inclination_sign * step_height/2;
+    control_points.col(1).y() += inclination_sign * step_height/1.5;
     control_points.col(1).z()  = step_height*weighted_binomial_coef.sum() / (3*0.5*0.5*0.5 * (w1+w2));
     control_points.col(2)      = control_points.col(3);
     control_points.col(2).z()  = control_points.col(1).z();
