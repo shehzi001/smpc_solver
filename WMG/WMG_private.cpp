@@ -256,9 +256,9 @@ void WMG::getSSFeetPositionsBezier (
         Translation<double,3>(
                 control_points * weighted_binomial_coef / weighted_binomial_coef.sum())
         *
-        AngleAxisd (
-                FS[prev_swing_ind].angle + theta*(FS[next_swing_ind].angle - FS[prev_swing_ind].angle), 
-                Vector3d::UnitZ());
+        Quaterniond (AngleAxisd (FS[prev_swing_ind].angle,Vector3d::UnitZ())).slerp (
+                theta,
+                Quaterniond (AngleAxisd (FS[next_swing_ind].angle,Vector3d::UnitZ())));
 
     Matrix4d::Map(swing_foot_pos) = swing_posture.matrix();
 }
