@@ -99,7 +99,7 @@ namespace state_handling
             state[i] = X[index*SMPC_NUM_STATE_VAR + i];
         }
 
-        state_handling::bar_to_tilde (sp.spar[0].sin, sp.spar[0].cos, state);
+        state_handling::bar_to_tilde (sp.spar[index].sin, sp.spar[index].cos, state);
     }
 
 
@@ -113,8 +113,17 @@ namespace state_handling
      */
     void get_state (const problem_parameters& sp, const double *X, const int ind, double *state)
     {
+        int index;
+        if (ind >= sp.N)
+        {
+            index = sp.N - 1;
+        }
+        else
+        {
+            index = ind;
+        }
         get_state_tilde (sp, X, ind, state);
-        state_handling::tilde_to_orig (sp.spar[0].h, state);
+        state_handling::tilde_to_orig (sp.spar[index].h, state);
     }
 
 
@@ -131,7 +140,7 @@ namespace state_handling
         int index;
         if (ind >= preview_window_size)
         {
-            index = preview_window_size;
+            index = preview_window_size-1;
         }
         else
         {
