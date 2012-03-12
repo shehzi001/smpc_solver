@@ -150,9 +150,6 @@ void WMG::getSSFeetPositions (
     Matrix4d::Map(ref_foot_pos) = current_step.posture->matrix();
 
 
-
-
-
     double dx = FS[next_swing_ind].x() - FS[prev_swing_ind].x();
     double dy = FS[next_swing_ind].y() - FS[prev_swing_ind].y();
     double l = sqrt(dx*dx + dy*dy);
@@ -224,8 +221,8 @@ void WMG::getSSFeetPositionsBezier (
     Vector4d weighted_binomial_coef;
     // Note, that since we want to obtain a curve of a certain height (see below),
     // the weights have a rather limited impact. They may be useful in future, though.
-    double w1 = 1;
-    double w2 = 1;
+    double w1 = 1.0;
+    double w2 = 2.5;
     // first number is the weight
     weighted_binomial_coef(0) = 1  * (1-theta)*(1-theta)*(1-theta);
     weighted_binomial_coef(1) = w1 * 3*(1-theta)*(1-theta)*theta;
