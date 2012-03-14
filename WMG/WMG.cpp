@@ -23,7 +23,11 @@
 WMG::WMG (
         const unsigned int N_,
         const unsigned int T_, 
-        const double step_height_)
+        const double step_height_,
+        const double bezier_weight_1_,
+        const double bezier_weight_2_,
+        const double bezier_inclination_1_,
+        const double bezier_inclination_2_)
 {
     step_height = step_height_;
     N = N_;
@@ -59,6 +63,11 @@ WMG::WMG (
 
     def_time_ms = 400;
     ds_time_ms = 0;
+
+    bezier_weight_1 = bezier_weight_1_;
+    bezier_weight_2 = bezier_weight_2_;
+    bezier_inclination_1 = bezier_inclination_1_;
+    bezier_inclination_2 = bezier_inclination_2_;
 }
 
 

@@ -134,7 +134,11 @@ class WMG
 // methods
         WMG (   const unsigned int,
                 const unsigned int, 
-                const double step_height_ = 0.0135);
+                const double step_height_ = 0.0135,
+                double bezier_weight_1_ = 1.0,
+                double bezier_weight_2_ = 2.0,
+                double bezier_inclination_1_ = 0.01,
+                double bezier_inclination_2_ = 0.008);
         ~WMG();
 
 
@@ -195,6 +199,29 @@ class WMG
         double def_ss_constraint[4];
         double def_auto_ds_constraint[4];
 
+        /// @{
+        /**
+         * The foot trajectories, that are build using Bezier curve have four control
+         * points (0,1,3,4). The first and the last points are defined by positions
+         * of adjacent steps of a foot on the floor. The 1 and 2 points are computed
+         * depending on the given parameters.
+         *
+         * The step height is fixed in the middle (theta = 0.5) of the step, note,
+         * that this is not the geometrical middle.
+         *
+         * The control points have weights, the weights of the first and the last points
+         * are always equal to 1.0. The weights of other two points can be given by the
+         * user.
+         *
+         * The 1 and 2 points also have inclination, i.e. the shift along y axis (in 
+         * the frame fixed in the step reference point). The values of inclinations are 
+         * given in meters.
+         */
+        double bezier_weight_1;
+        double bezier_weight_2;
+        double bezier_inclination_1;
+        double bezier_inclination_2;
+        /// @}
 
     private:
         void getDSFeetPositions (const int, double *, double *);

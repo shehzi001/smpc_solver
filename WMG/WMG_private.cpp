@@ -219,15 +219,11 @@ void WMG::getSSFeetPositionsBezier (
 
 
     Vector4d weighted_binomial_coef;
-    // Note, that since we want to obtain a curve of a certain height (see below),
-    // the weights have a rather limited impact. They may be useful in future, though.
-    double w1 = 1.0;
-    double w2 = 2.0;
     // first number is the weight
-    weighted_binomial_coef(0) = 1  * (1-theta)*(1-theta)*(1-theta);
-    weighted_binomial_coef(1) = w1 * 3*(1-theta)*(1-theta)*theta;
-    weighted_binomial_coef(2) = w2 * 3*(1-theta)*theta*theta;
-    weighted_binomial_coef(3) = 1  * theta*theta*theta;
+    weighted_binomial_coef(0) = 1               * (1-theta)*(1-theta)*(1-theta);
+    weighted_binomial_coef(1) = bezier_weight_1 * 3*(1-theta)*(1-theta)*theta;
+    weighted_binomial_coef(2) = bezier_weight_2 * 3*(1-theta)*theta*theta;
+    weighted_binomial_coef(3) = 1               * theta*theta*theta;
 
 
     Matrix<double, 3, 4> control_points;
@@ -245,11 +241,20 @@ void WMG::getSSFeetPositionsBezier (
     // lets take z1=z2=z, then:
     //
     // z = step_height * S / (3*0.5^3 * (w1+w2))
-    control_points.col(1)      = control_points.col(0);
-    control_points.col(1).y() += inclination_sign * step_height/1.5;
-    control_points.col(1).z()  = step_height*weighted_binomial_coef.sum() / (3*0.5*0.5*0.5 * (w1+w2));
-    control_points.col(2)      = control_points.col(3);
-    control_points.col(2).z()  = control_points.col(1).z();
+
+    // control points in a frame fixed in the reference points of the steps 
+    control_points.col(1).x() = 0.0;
+    control_points.col(1).y() = inclination_sign * bezier_inclination_1;
+    control_points.col(1).z() = step_height*weighted_binomial_coef.sum() 
+                               / (3*0.5*0.5*0.5 * (bezier_weight_1 + bezier_weight_2));
+    control_points.col(2).x() = 0.0;
+    control_points.col(2).y() = inclination_sign * bezier_inclination_2;
+    control_points.col(2).z() = control_points.col(1).z();
+
+    // control points in the world frame
+    control_points.col(1)     = (*FS[prev_swing_ind].posture) * control_points.col(1);
+    control_points.col(2)     = (*FS[next_swing_ind].posture) * control_points.col(2);
+
 
 
     Transform<double, 3> swing_posture =
