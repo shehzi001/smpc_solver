@@ -12,7 +12,11 @@
  * INCLUDES 
  ****************************************/
 
-#include <fenv.h>
+#include "solver_config.h"
+
+#ifdef HAVE_FEENABLEEXCEPT
+#include <fenv.h> // feenableexcept()
+#endif
 
 #include "qp_solver.h"
 #include "qp_as.h"
@@ -63,6 +67,7 @@ smpc::solver::~solver()
 
 void smpc::solver::enable_fexceptions()
 {
+#ifdef HAVE_FEENABLEEXCEPT
     feenableexcept(
             // the currently enable exceptions
             fegetexcept() | 
@@ -74,6 +79,7 @@ void smpc::solver::enable_fexceptions()
             FE_OVERFLOW |
             // the result is too small to be represented
             FE_UNDERFLOW);
+#endif
 }
 
 

@@ -1,5 +1,7 @@
 include ./common.mk
 
+libs: smpc_solver wmg
+
 smpc_solver:
 	cd solver; ${MAKE}
 

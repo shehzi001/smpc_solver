@@ -1,6 +1,9 @@
 # General parameters
 cmake_minimum_required (VERSION 2.6)
-project (smpc_solver CXX)
+project (smpc_solver CXX C)
+
+include (CheckFunctionExists)
+include (CheckIncludeFile)
 
 
 ####################################
@@ -27,11 +30,17 @@ set (CMAKE_RULE_MESSAGES OFF CACHE BOOL "")
 # Other parameters
 ####################################
 
+
 find_path(EIGEN_INCLUDE_DIRS "Eigen/Core" PATHS "${SDK_DIR}/include" PATH_SUFFIXES "eigen2")
 if (EIGEN_INCLUDE_DIRS)
     include_directories ("${EIGEN_INCLUDE_DIRS}")
 endif (EIGEN_INCLUDE_DIRS)
 include_directories ("${PROJECT_SOURCE_DIR}/include/")
+
+
+set (CMAKE_REQUIRED_LIBRARIES "m")
+check_function_exists (feenableexcept HAVE_FEENABLEEXCEPT)
+configure_file ("${smpc_solver_SOURCE_DIR}/solver_config.h.in" "${smpc_solver_SOURCE_DIR}/solver_config.h" )
 
 
 file (GLOB SMPC_SRC "${smpc_solver_SOURCE_DIR}/*.cpp")
