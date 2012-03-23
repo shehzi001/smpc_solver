@@ -10,7 +10,8 @@ TESTS=\
 	  test_06 \
 	  test_07 \
 	  test_08 \
-	  test_09
+	  test_09 \
+	  test_10
 
 
 all: ${TESTS} demo
@@ -24,7 +25,7 @@ demo:
 	${CXX} -o $@.a $@.o ${LDFLAGS}
 
 clean:
-	rm -f *.a *.o test_*.m
+	rm -f *.a *.o test_*.m test_*.out
 
 # dummy targets
 .PHONY: clean
