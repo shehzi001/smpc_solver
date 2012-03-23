@@ -7,13 +7,6 @@
 #include "WMG.h"
 
 
-/**
- * @brief Allocate memory and initialize some of the parameters.
- *
- * @param[in] N preview window length
- * @param[in] hCoM_ Height of the Center of Mass [meter]
- * @param[in] gravity_ gravity [m/s^2]
- */
 smpc_parameters::smpc_parameters(
         const unsigned int N,
         const double hCoM_,
@@ -44,7 +37,6 @@ smpc_parameters::smpc_parameters(
 
 
 
-/** \brief Default destructor. */
 smpc_parameters::~smpc_parameters()
 {
     if (X != NULL)

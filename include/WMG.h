@@ -30,7 +30,7 @@
 class footstep;
 
 /// @addtogroup gWMG_API
-/// @{
+//@{
 
 enum WMGret
 {
@@ -54,10 +54,21 @@ enum fs_type
 class smpc_parameters
 {
     public:
+        /**
+         * @brief Allocate memory and initialize some of the parameters.
+         *
+         * @param[in] N preview window length
+         * @param[in] hCoM_ Height of the Center of Mass [meter]
+         * @param[in] gravity_ gravity [m/s^2]
+         */
         smpc_parameters (
                 const unsigned int, 
                 const double, 
                 const double gravity_ = 9.81);
+
+        /**
+         * @brief Default destructor
+         */
         ~smpc_parameters();
 
 
@@ -75,23 +86,23 @@ class smpc_parameters
         /// Array of N absolute angles corresponding to supports in the preview window.
         double *angle;
 
-        ///@{
+        //@{
         /// Coordinates of N points satisfying constraints, 
         double *fp_x;
         double *fp_y;
-        ///@}
+        //@}
         
-        ///@{
+        //@{
         /// 2*N bounds for coordinates of ZMP position.
         double *lb;
         double *ub;
-        ///@}
+        //@}
 
-        ///@{
+        //@{
         /// N reference coordinates of ZMP.
         double *zref_x;
         double *zref_y;
-        ///@}
+        //@}
 
 
         /** Initial state. */
@@ -103,31 +114,9 @@ class smpc_parameters
 
 
 
-/**
- * @brief Inverted pendulum model
+/** 
+ * @brief Defines the parameters of the Walking Pattern Generator. 
  */
-class IPM
-{
-    public:
-        IPM (const double);
-        ~IPM ();
-        void calculateNextState (smpc::control&, smpc::state_orig&);
-
-
-        ///@{
-        /// State and control matrices, that can be used to determine the next
-        /// state based on the current state and the controls.
-        double *A;
-        double *B;
-        ///@}
-
-        smpc::control control_vector;
-        smpc::state_orig state_vector;
-};
-
-
-
-/** \brief Defines the parameters of the Walking Pattern Generator. */
 class WMG
 {
     public:
@@ -199,7 +188,7 @@ class WMG
         double def_ss_constraint[4];
         double def_auto_ds_constraint[4];
 
-        /// @{
+        //@{
         /**
          * The foot trajectories, that are build using Bezier curve have four control
          * points (0,1,3,4). The first and the last points are defined by positions
@@ -221,7 +210,7 @@ class WMG
         double bezier_weight_2;
         double bezier_inclination_1;
         double bezier_inclination_2;
-        /// @}
+        //@}
 
     private:
         void getDSFeetPositions (const int, double *, double *);
@@ -240,6 +229,30 @@ class WMG
         unsigned int last_time_decrement;
 };
 
-///@}
+
+
+/**
+ * @brief Inverted pendulum model
+ */
+class IPM
+{
+    public:
+        IPM (const double);
+        ~IPM ();
+        void calculateNextState (smpc::control&, smpc::state_orig&);
+
+
+        //@{
+        /// State and control matrices, that can be used to determine the next
+        /// state based on the current state and the controls.
+        double *A;
+        double *B;
+        //@}
+
+        smpc::control control_vector;
+        smpc::state_orig state_vector;
+};
+
+//@}
 
 #endif /*WMG_H*/

@@ -13,12 +13,16 @@
 #include "footstep.h"
 
 
-/** 
+/**
  * @brief Initializes a WMG object.
  *
  * @param[in] N_ Number of sampling times in a preview window
  * @param[in] T_ Sampling time [ms.]
  * @param[in] step_height_ step height (for interpolation of feet movements) [meter]
+ * @param[in] bezier_weight_1_ see #bezier_weight_1
+ * @param[in] bezier_weight_2_ see #bezier_weight_2
+ * @param[in] bezier_inclination_1_ see #bezier_inclination_1
+ * @param[in] bezier_inclination_2_ see #bezier_inclination_2
  */
 WMG::WMG (
         const unsigned int N_,
