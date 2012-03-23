@@ -8,7 +8,7 @@ all:
 
 clean:
 	rm -f *.o
-	rm solver_config.h
+	rm -f solver_config.h
 
 
 # dummy targets
