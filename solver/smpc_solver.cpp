@@ -69,16 +69,9 @@ void smpc::solver::enable_fexceptions()
 {
 #ifdef HAVE_FEENABLEEXCEPT
     feenableexcept(
-            // the currently enable exceptions
-            fegetexcept() | 
-            // division by zero
-            FE_DIVBYZERO |
-            // invalid operations (subtraction of Inf, comparison of NaN, etc.)
-            FE_INVALID |
-            // magnitude of the result is larger than destination
-            FE_OVERFLOW |
-            // the result is too small to be represented
-            FE_UNDERFLOW);
+            FE_ALL_EXCEPT &
+            // ignore precision loss due to rounding
+            !FE_INEXACT);
 #endif
 }
 

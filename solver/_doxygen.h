@@ -141,7 +141,7 @@
  * \n\n
  *
  * @section MainNotes Important notes
- * @todo The library is not thoroughly tested with variable period T and variable height of CoM.
+ * @todo The library is not thoroughly tested with variable height of CoM.
  */
 
 
