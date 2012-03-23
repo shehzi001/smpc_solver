@@ -57,29 +57,28 @@
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classchol__solve__as.html#a88aa4c5a4f104664782afef9a7bd8dd0">chol_solve_as</a> (int)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a88aa4c5a4f104664782afef9a7bd8dd0"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classchol__solve__as.html#a4ca0b0be290de8c4436cb2044737a5d5">chol_solve_as</a> (const int)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a4ca0b0be290de8c4436cb2044737a5d5"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classchol__solve__as.html#a209074037f356c860c05520212d46f1d">~chol_solve_as</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classchol__solve__as.html#aa9aaf64d670d4cf2f5afbfe4b85f6529">solve</a> (const <a class="el" href="classproblem__parameters.html">problem_parameters</a> *, const double *, const double *, double *)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines feasible descent direction.  <a href="#aa9aaf64d670d4cf2f5afbfe4b85f6529"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classchol__solve__as.html#a19a7021396f83c787fdc3d450c1be796">up_resolve</a> (const <a class="el" href="classproblem__parameters.html">problem_parameters</a> *, const double *, const int, const int *, const double *, double *)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">A wrapper around private functions, which update Cholesky factor and resolve the system.  <a href="#a19a7021396f83c787fdc3d450c1be796"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classchol__solve__as.html#a3e8abcdcc38cc5445ce0afa49a0fa754">get_lambda</a> (const <a class="el" href="classproblem__parameters.html">problem_parameters</a> *)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classchol__solve__as.html#a4cfb0182644b589264651bc686de1079">down_resolve</a> (const <a class="el" href="classproblem__parameters.html">problem_parameters</a> *, const double *, const int, const int *, const int, const double *, double *)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">A wrapper around private functions, which downdate Cholesky factor and resolve the system.  <a href="#a4cfb0182644b589264651bc686de1079"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classchol__solve__as.html#abda95a7f83db6ea13c014055a89f82c6">solve</a> (const <a class="el" href="classproblem__parameters.html">problem_parameters</a> &amp;, const double *, const double *, double *)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines feasible descent direction.  <a href="#abda95a7f83db6ea13c014055a89f82c6"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classchol__solve__as.html#ab4c96a0d911ebcc1d4ff8f3e95253fad">up_resolve</a> (const <a class="el" href="classproblem__parameters.html">problem_parameters</a> &amp;, const double *, const int, const int *, const double *, double *)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">A wrapper around private functions, which update Cholesky factor and resolve the system.  <a href="#ab4c96a0d911ebcc1d4ff8f3e95253fad"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classchol__solve__as.html#a3a37e8d4c3cdc3e58932d2050abc0037">get_lambda</a> (const <a class="el" href="classproblem__parameters.html">problem_parameters</a> &amp;)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classchol__solve__as.html#ae48c0723832c47e21f17bea43317e5d6">down_resolve</a> (const <a class="el" href="classproblem__parameters.html">problem_parameters</a> &amp;, const double *, const int, const int *, const int, const double *, double *)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">A wrapper around private functions, which downdate Cholesky factor and resolve the system.  <a href="#ae48c0723832c47e21f17bea43317e5d6"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classchol__solve__as.html#aa35264cb7334f5cfc856927b85a75e80">update</a> (const <a class="el" href="classproblem__parameters.html">problem_parameters</a> *, const int, const int *)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a row corresponding to some inequality constraint to L, see '<a class="el" href="pAddIC.html#pCholUpAlg">Algorithm of Cholesky factor update</a>'.  <a href="#aa35264cb7334f5cfc856927b85a75e80"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classchol__solve__as.html#a6bb1eaea0756e90824002077f559f04f">update_z</a> (const <a class="el" href="classproblem__parameters.html">problem_parameters</a> *, const double *, const int, const int *, const double *)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Adjust vector '<a class="el" href="pAddIC.html#pz">z</a>' after update.  <a href="#a6bb1eaea0756e90824002077f559f04f"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classchol__solve__as.html#a7a234ea922afec7e37f1445ace59c9fd">downdate</a> (const <a class="el" href="classproblem__parameters.html">problem_parameters</a> *, const int, const int, const double *)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete a line from icL, see page '<a class="el" href="pRemoveIC.html#pCholDown">Downdate of Cholesky factor</a>'.  <a href="#a7a234ea922afec7e37f1445ace59c9fd"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classchol__solve__as.html#a850aa02aefb93d22e7b66a83de6b4601">downdate_z</a> (const <a class="el" href="classproblem__parameters.html">problem_parameters</a> *, const int, const int *, const int, const double *)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classchol__solve__as.html#af09b6aca6b0a33c73c3bcfc79451697a">resolve</a> (const <a class="el" href="classproblem__parameters.html">problem_parameters</a> *, const double *, const int, const int *, const double *, double *)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines feasible descent direction with respect to added inequality constraints.  <a href="#af09b6aca6b0a33c73c3bcfc79451697a"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classchol__solve__as.html#ad3ce90a2e2e667ff3133dc70095357bf">form_sa_row</a> (const <a class="el" href="classproblem__parameters.html">problem_parameters</a> *, const int, const int, double *)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Forms row vector 's_a' (<a class="el" href="pAddIC.html#pCholUp">Update of Cholesky factor</a>).  <a href="#ad3ce90a2e2e667ff3133dc70095357bf"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classchol__solve__as.html#adaf340e07459603a4eafa743d3ad524b">update</a> (const <a class="el" href="classproblem__parameters.html">problem_parameters</a> &amp;, const int, const int *)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a row corresponding to some inequality constraint to L, see '<a class="el" href="pAddIC.html#pCholUpAlg">Algorithm of Cholesky factor update</a>'.  <a href="#adaf340e07459603a4eafa743d3ad524b"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classchol__solve__as.html#a32d3c6dea4875187a27b17cc1727bc40">update_z</a> (const <a class="el" href="classproblem__parameters.html">problem_parameters</a> &amp;, const double *, const int, const int *, const double *)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Adjust vector '<a class="el" href="pAddIC.html#pz">z</a>' after update.  <a href="#a32d3c6dea4875187a27b17cc1727bc40"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classchol__solve__as.html#a3ff25e850340048807a025d3e33d908c">downdate</a> (const <a class="el" href="classproblem__parameters.html">problem_parameters</a> &amp;, const int, const int, const double *)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete a line from icL, see page '<a class="el" href="pRemoveIC.html#pCholDown">Downdate of Cholesky factor</a>'.  <a href="#a3ff25e850340048807a025d3e33d908c"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classchol__solve__as.html#afefcf9ad4e9441bca9a7bc097ca12cda">resolve</a> (const <a class="el" href="classproblem__parameters.html">problem_parameters</a> &amp;, const double *, const int, const int *, const double *, double *)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines feasible descent direction with respect to added inequality constraints.  <a href="#afefcf9ad4e9441bca9a7bc097ca12cda"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classchol__solve__as.html#a9d3919666130f2ab99a184a480f3d250">form_sa_row</a> (const <a class="el" href="classproblem__parameters.html">problem_parameters</a> &amp;, const int, const int, double *)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Forms row vector 's_a' (<a class="el" href="pAddIC.html#pCholUp">Update of Cholesky factor</a>).  <a href="#a9d3919666130f2ab99a184a480f3d250"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classchol__solve__as.html#a02ef1ad06a20bc92f15b47b267dc8205">nu</a></td></tr>
@@ -105,14 +104,14 @@ Private Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="chol__solve__as_8h_source.html#l00033">33</a> of file <a class="el" href="chol__solve__as_8h_source.html">chol_solve_as.h</a>.</p>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a88aa4c5a4f104664782afef9a7bd8dd0"></a><!-- doxytag: member="chol_solve_as::chol_solve_as" ref="a88aa4c5a4f104664782afef9a7bd8dd0" args="(int)" -->
+<a class="anchor" id="a4ca0b0be290de8c4436cb2044737a5d5"></a><!-- doxytag: member="chol_solve_as::chol_solve_as" ref="a4ca0b0be290de8c4436cb2044737a5d5" args="(const int)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">chol_solve_as::chol_solve_as </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
+          <td class="paramtype">const int&#160;</td>
           <td class="paramname"><em>N</em></td><td>)</td>
           <td></td>
         </tr>
@@ -151,14 +150,14 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="a4cfb0182644b589264651bc686de1079"></a><!-- doxytag: member="chol_solve_as::down_resolve" ref="a4cfb0182644b589264651bc686de1079" args="(const problem_parameters *, const double *, const int, const int *, const int, const double *, double *)" -->
+<a class="anchor" id="ae48c0723832c47e21f17bea43317e5d6"></a><!-- doxytag: member="chol_solve_as::down_resolve" ref="ae48c0723832c47e21f17bea43317e5d6" args="(const problem_parameters &amp;, const double *, const int, const int *, const int, const double *, double *)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void chol_solve_as::down_resolve </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classproblem__parameters.html">problem_parameters</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="classproblem__parameters.html">problem_parameters</a> &amp;&#160;</td>
           <td class="paramname"><em>ppar</em>, </td>
         </tr>
         <tr>
@@ -221,18 +220,18 @@ Private Attributes</h2></td></tr>
 </dl>
 <dl class="note"><dt><b>Note:</b></dt><dd>Downdate of vector <a class="el" href="pAddIC.html#pz">pz</a> 'z' is described on the page '<a class="el" href="pRemoveIC.html#pRemoveICz">Downdate of z</a>'. </dd></dl>
 
-<p>Definition at line <a class="el" href="chol__solve__as_8cpp_source.html#l00450">450</a> of file <a class="el" href="chol__solve__as_8cpp_source.html">chol_solve_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="chol__solve__as_8cpp_source.html#l00440">440</a> of file <a class="el" href="chol__solve__as_8cpp_source.html">chol_solve_as.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a7a234ea922afec7e37f1445ace59c9fd"></a><!-- doxytag: member="chol_solve_as::downdate" ref="a7a234ea922afec7e37f1445ace59c9fd" args="(const problem_parameters *, const int, const int, const double *)" -->
+<a class="anchor" id="a3ff25e850340048807a025d3e33d908c"></a><!-- doxytag: member="chol_solve_as::downdate" ref="a3ff25e850340048807a025d3e33d908c" args="(const problem_parameters &amp;, const int, const int, const double *)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void chol_solve_as::downdate </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classproblem__parameters.html">problem_parameters</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="classproblem__parameters.html">problem_parameters</a> &amp;&#160;</td>
           <td class="paramname"><em>ppar</em>, </td>
         </tr>
         <tr>
@@ -273,63 +272,18 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="chol__solve__as_8cpp_source.html#l00528">528</a> of file <a class="el" href="chol__solve__as_8cpp_source.html">chol_solve_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="chol__solve__as_8cpp_source.html#l00518">518</a> of file <a class="el" href="chol__solve__as_8cpp_source.html">chol_solve_as.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a850aa02aefb93d22e7b66a83de6b4601"></a><!-- doxytag: member="chol_solve_as::downdate_z" ref="a850aa02aefb93d22e7b66a83de6b4601" args="(const problem_parameters *, const int, const int *, const int, const double *)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void chol_solve_as::downdate_z </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classproblem__parameters.html">problem_parameters</a> *&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const int&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const int *&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const int&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const double *&#160;</td>
-          <td class="paramname">&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td><code> [private]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="ad3ce90a2e2e667ff3133dc70095357bf"></a><!-- doxytag: member="chol_solve_as::form_sa_row" ref="ad3ce90a2e2e667ff3133dc70095357bf" args="(const problem_parameters *, const int, const int, double *)" -->
+<a class="anchor" id="a9d3919666130f2ab99a184a480f3d250"></a><!-- doxytag: member="chol_solve_as::form_sa_row" ref="a9d3919666130f2ab99a184a480f3d250" args="(const problem_parameters &amp;, const int, const int, double *)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void chol_solve_as::form_sa_row </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classproblem__parameters.html">problem_parameters</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="classproblem__parameters.html">problem_parameters</a> &amp;&#160;</td>
           <td class="paramname"><em>ppar</em>, </td>
         </tr>
         <tr>
@@ -374,14 +328,14 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a3e8abcdcc38cc5445ce0afa49a0fa754"></a><!-- doxytag: member="chol_solve_as::get_lambda" ref="a3e8abcdcc38cc5445ce0afa49a0fa754" args="(const problem_parameters *)" -->
+<a class="anchor" id="a3a37e8d4c3cdc3e58932d2050abc0037"></a><!-- doxytag: member="chol_solve_as::get_lambda" ref="a3a37e8d4c3cdc3e58932d2050abc0037" args="(const problem_parameters &amp;)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">double * chol_solve_as::get_lambda </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classproblem__parameters.html">problem_parameters</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="classproblem__parameters.html">problem_parameters</a> &amp;&#160;</td>
           <td class="paramname"><em>ppar</em></td><td>)</td>
           <td></td>
         </tr>
@@ -396,18 +350,18 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="chol__solve__as_8cpp_source.html#l00512">512</a> of file <a class="el" href="chol__solve__as_8cpp_source.html">chol_solve_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="chol__solve__as_8cpp_source.html#l00502">502</a> of file <a class="el" href="chol__solve__as_8cpp_source.html">chol_solve_as.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="af09b6aca6b0a33c73c3bcfc79451697a"></a><!-- doxytag: member="chol_solve_as::resolve" ref="af09b6aca6b0a33c73c3bcfc79451697a" args="(const problem_parameters *, const double *, const int, const int *, const double *, double *)" -->
+<a class="anchor" id="afefcf9ad4e9441bca9a7bc097ca12cda"></a><!-- doxytag: member="chol_solve_as::resolve" ref="afefcf9ad4e9441bca9a7bc097ca12cda" args="(const problem_parameters &amp;, const double *, const int, const int *, const double *, double *)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void chol_solve_as::resolve </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classproblem__parameters.html">problem_parameters</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="classproblem__parameters.html">problem_parameters</a> &amp;&#160;</td>
           <td class="paramname"><em>ppar</em>, </td>
         </tr>
         <tr>
@@ -462,18 +416,18 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="chol__solve__as_8cpp_source.html#l00372">372</a> of file <a class="el" href="chol__solve__as_8cpp_source.html">chol_solve_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="chol__solve__as_8cpp_source.html#l00362">362</a> of file <a class="el" href="chol__solve__as_8cpp_source.html">chol_solve_as.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="aa9aaf64d670d4cf2f5afbfe4b85f6529"></a><!-- doxytag: member="chol_solve_as::solve" ref="aa9aaf64d670d4cf2f5afbfe4b85f6529" args="(const problem_parameters *, const double *, const double *, double *)" -->
+<a class="anchor" id="abda95a7f83db6ea13c014055a89f82c6"></a><!-- doxytag: member="chol_solve_as::solve" ref="abda95a7f83db6ea13c014055a89f82c6" args="(const problem_parameters &amp;, const double *, const double *, double *)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void chol_solve_as::solve </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classproblem__parameters.html">problem_parameters</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="classproblem__parameters.html">problem_parameters</a> &amp;&#160;</td>
           <td class="paramname"><em>ppar</em>, </td>
         </tr>
         <tr>
@@ -518,14 +472,14 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a19a7021396f83c787fdc3d450c1be796"></a><!-- doxytag: member="chol_solve_as::up_resolve" ref="a19a7021396f83c787fdc3d450c1be796" args="(const problem_parameters *, const double *, const int, const int *, const double *, double *)" -->
+<a class="anchor" id="ab4c96a0d911ebcc1d4ff8f3e95253fad"></a><!-- doxytag: member="chol_solve_as::up_resolve" ref="ab4c96a0d911ebcc1d4ff8f3e95253fad" args="(const problem_parameters &amp;, const double *, const int, const int *, const double *, double *)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void chol_solve_as::up_resolve </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classproblem__parameters.html">problem_parameters</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="classproblem__parameters.html">problem_parameters</a> &amp;&#160;</td>
           <td class="paramname"><em>ppar</em>, </td>
         </tr>
         <tr>
@@ -584,14 +538,14 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="aa35264cb7334f5cfc856927b85a75e80"></a><!-- doxytag: member="chol_solve_as::update" ref="aa35264cb7334f5cfc856927b85a75e80" args="(const problem_parameters *, const int, const int *)" -->
+<a class="anchor" id="adaf340e07459603a4eafa743d3ad524b"></a><!-- doxytag: member="chol_solve_as::update" ref="adaf340e07459603a4eafa743d3ad524b" args="(const problem_parameters &amp;, const int, const int *)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void chol_solve_as::update </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classproblem__parameters.html">problem_parameters</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="classproblem__parameters.html">problem_parameters</a> &amp;&#160;</td>
           <td class="paramname"><em>ppar</em>, </td>
         </tr>
         <tr>
@@ -629,14 +583,14 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a6bb1eaea0756e90824002077f559f04f"></a><!-- doxytag: member="chol_solve_as::update_z" ref="a6bb1eaea0756e90824002077f559f04f" args="(const problem_parameters *, const double *, const int, const int *, const double *)" -->
+<a class="anchor" id="a32d3c6dea4875187a27b17cc1727bc40"></a><!-- doxytag: member="chol_solve_as::update_z" ref="a32d3c6dea4875187a27b17cc1727bc40" args="(const problem_parameters &amp;, const double *, const int, const int *, const double *)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void chol_solve_as::update_z </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classproblem__parameters.html">problem_parameters</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="classproblem__parameters.html">problem_parameters</a> &amp;&#160;</td>
           <td class="paramname"><em>ppar</em>, </td>
         </tr>
         <tr>
@@ -684,7 +638,7 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="chol__solve__as_8cpp_source.html#l00336">336</a> of file <a class="el" href="chol__solve__as_8cpp_source.html">chol_solve_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="chol__solve__as_8cpp_source.html#l00326">326</a> of file <a class="el" href="chol__solve__as_8cpp_source.html">chol_solve_as.cpp</a>.</p>
 
 </div>
 </div>
@@ -702,7 +656,7 @@ Private Attributes</h2></td></tr>
 
 <p>matrix of equality constraints </p>
 
-<p>Definition at line <a class="el" href="chol__solve__as_8h_source.html#l00068">68</a> of file <a class="el" href="chol__solve__as_8h_source.html">chol_solve_as.h</a>.</p>
+<p>Definition at line <a class="el" href="chol__solve__as_8h_source.html#l00067">67</a> of file <a class="el" href="chol__solve__as_8h_source.html">chol_solve_as.h</a>.</p>
 
 </div>
 </div>
@@ -719,7 +673,7 @@ Private Attributes</h2></td></tr>
 
 <p>L for equality constraints, see '<a class="el" href="pDetails.html#pDetCholesky">Cholesky factor</a>'. </p>
 
-<p>Definition at line <a class="el" href="chol__solve__as_8h_source.html#l00071">71</a> of file <a class="el" href="chol__solve__as_8h_source.html">chol_solve_as.h</a>.</p>
+<p>Definition at line <a class="el" href="chol__solve__as_8h_source.html#l00070">70</a> of file <a class="el" href="chol__solve__as_8h_source.html">chol_solve_as.h</a>.</p>
 
 </div>
 </div>
@@ -736,7 +690,7 @@ Private Attributes</h2></td></tr>
 
 <p>L for inequality constraints, see '<a class="el" href="pDetails.html#pDetCholesky">Cholesky factor</a>'. </p>
 
-<p>Definition at line <a class="el" href="chol__solve__as_8h_source.html#l00074">74</a> of file <a class="el" href="chol__solve__as_8h_source.html">chol_solve_as.h</a>.</p>
+<p>Definition at line <a class="el" href="chol__solve__as_8h_source.html#l00073">73</a> of file <a class="el" href="chol__solve__as_8h_source.html">chol_solve_as.h</a>.</p>
 
 </div>
 </div>
@@ -753,7 +707,7 @@ Private Attributes</h2></td></tr>
 
 <p>All lines of <a class="el" href="classchol__solve__as.html#a7c37a9bf013a1f77ab88d6ceb2392e2b" title="L for inequality constraints, see &#39;Cholesky factor&#39;.">icL</a> are stored in one chunk of memory. </p>
 
-<p>Definition at line <a class="el" href="chol__solve__as_8h_source.html#l00077">77</a> of file <a class="el" href="chol__solve__as_8h_source.html">chol_solve_as.h</a>.</p>
+<p>Definition at line <a class="el" href="chol__solve__as_8h_source.html#l00076">76</a> of file <a class="el" href="chol__solve__as_8h_source.html">chol_solve_as.h</a>.</p>
 
 </div>
 </div>
@@ -770,7 +724,7 @@ Private Attributes</h2></td></tr>
 
 <p>Vector of Lagrange multipliers. </p>
 
-<p>Definition at line <a class="el" href="chol__solve__as_8h_source.html#l00062">62</a> of file <a class="el" href="chol__solve__as_8h_source.html">chol_solve_as.h</a>.</p>
+<p>Definition at line <a class="el" href="chol__solve__as_8h_source.html#l00061">61</a> of file <a class="el" href="chol__solve__as_8h_source.html">chol_solve_as.h</a>.</p>
 
 </div>
 </div>
@@ -790,7 +744,7 @@ Private Attributes</h2></td></tr>
 </ul>
 </p>
 
-<p>Definition at line <a class="el" href="chol__solve__as_8h_source.html#l00065">65</a> of file <a class="el" href="chol__solve__as_8h_source.html">chol_solve_as.h</a>.</p>
+<p>Definition at line <a class="el" href="chol__solve__as_8h_source.html#l00064">64</a> of file <a class="el" href="chol__solve__as_8h_source.html">chol_solve_as.h</a>.</p>
 
 </div>
 </div>
@@ -807,7 +761,7 @@ Private Attributes</h2></td></tr>
 
 <p>Vector <a class="el" href="pAddIC.html#pz">z</a>. </p>
 
-<p>Definition at line <a class="el" href="chol__solve__as_8h_source.html#l00080">80</a> of file <a class="el" href="chol__solve__as_8h_source.html">chol_solve_as.h</a>.</p>
+<p>Definition at line <a class="el" href="chol__solve__as_8h_source.html#l00079">79</a> of file <a class="el" href="chol__solve__as_8h_source.html">chol_solve_as.h</a>.</p>
 
 </div>
 </div>

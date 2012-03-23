@@ -77,7 +77,7 @@
 <a name="l00049"></a>00049     <a class="code" href="classqp__ip.html#ad2a280b2a654a989a890cc4387d90f2a" title="Diagonal elements of H.">Q</a>[0] = Beta/2;
 <a name="l00050"></a>00050     <a class="code" href="classqp__ip.html#ad2a280b2a654a989a890cc4387d90f2a" title="Diagonal elements of H.">Q</a>[1] = Alpha/2;
 <a name="l00051"></a>00051     <a class="code" href="classqp__ip.html#ad2a280b2a654a989a890cc4387d90f2a" title="Diagonal elements of H.">Q</a>[2] = regularization;
-<a name="l00052"></a>00052     <a class="code" href="classqp__ip.html#ae85665b860bc2ad22f7bca7023d0c8fc">P</a> = Gamma/2;
+<a name="l00052"></a>00052     <a class="code" href="classqp__ip.html#ae85665b860bc2ad22f7bca7023d0c8fc" title="Diagonal elements of H.">P</a> = Gamma/2;
 <a name="l00053"></a>00053 }
 <a name="l00054"></a>00054 
 <a name="l00055"></a>00055 
@@ -108,7 +108,7 @@
 <a name="l00092"></a>00092     <a class="code" href="classproblem__parameters.html#a756b24a4ed81ed61b5e7fe7cfdfcdd9e" title="Initializes quadratic problem.">set_state_parameters</a> (T, h, h_initial_, angle);
 <a name="l00093"></a>00093 
 <a name="l00094"></a>00094     <a class="code" href="classqp__ip.html#a862913be8b0e1bc671c4608b7f80ea3f" title="lower and upper bounds">lb</a> = lb_;
-<a name="l00095"></a>00095     <a class="code" href="classqp__ip.html#adbeb65ae6d044fc9de151cfd742e8a58">ub</a> = ub_;
+<a name="l00095"></a>00095     <a class="code" href="classqp__ip.html#adbeb65ae6d044fc9de151cfd742e8a58" title="lower and upper bounds">ub</a> = ub_;
 <a name="l00096"></a>00096 
 <a name="l00097"></a>00097     <a class="code" href="classqp__ip.html#aed25cd519c18f4f6c0432935ae01732e" title="Forms vector g.">form_g</a> (zref_x, zref_y);
 <a name="l00098"></a>00098 }
@@ -130,8 +130,8 @@
 <a name="l00120"></a>00120         p1 = zref_y[i];
 <a name="l00121"></a>00121 
 <a name="l00122"></a>00122         <span class="comment">// inv (2*H) * R&#39; * Cp&#39; * zref</span>
-<a name="l00123"></a>00123         <a class="code" href="classqp__ip.html#a765df1117c481f8c8cd5ef76d94ea35c" title="2*N non-zero elements of vector g.">g</a>[i*2] = -(cosA*p0 + sinA*p1)*<a class="code" href="classqp__solver.html#a7946eedcefac79c2acccba87ee927f79">gain_beta</a>;
-<a name="l00124"></a>00124         <a class="code" href="classqp__ip.html#a765df1117c481f8c8cd5ef76d94ea35c" title="2*N non-zero elements of vector g.">g</a>[i*2 + 1] = -(-sinA*p0 + cosA*p1)*<a class="code" href="classqp__solver.html#a7946eedcefac79c2acccba87ee927f79">gain_beta</a>; 
+<a name="l00123"></a>00123         <a class="code" href="classqp__ip.html#a765df1117c481f8c8cd5ef76d94ea35c" title="2*N non-zero elements of vector g.">g</a>[i*2] = -(cosA*p0 + sinA*p1)*<a class="code" href="classqp__solver.html#a7946eedcefac79c2acccba87ee927f79" title="Gains used in objective function.">gain_beta</a>;
+<a name="l00124"></a>00124         <a class="code" href="classqp__ip.html#a765df1117c481f8c8cd5ef76d94ea35c" title="2*N non-zero elements of vector g.">g</a>[i*2 + 1] = -(-sinA*p0 + cosA*p1)*<a class="code" href="classqp__solver.html#a7946eedcefac79c2acccba87ee927f79" title="Gains used in objective function.">gain_beta</a>; 
 <a name="l00125"></a>00125     }
 <a name="l00126"></a>00126 }
 <a name="l00127"></a>00127 
@@ -160,7 +160,7 @@
 <a name="l00156"></a>00156     <span class="keywordflow">for</span> (i = 0, j = 0; i &lt; 2*<a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>; i++, j += 3)
 <a name="l00157"></a>00157     {
 <a name="l00158"></a>00158         <span class="keywordtype">double</span> lb_diff = -<a class="code" href="classqp__ip.html#a862913be8b0e1bc671c4608b7f80ea3f" title="lower and upper bounds">lb</a>[i] + <a class="code" href="classqp__solver.html#a913e4e5a4936b84794bd3a37e7abcaa6">X</a>[j];
-<a name="l00159"></a>00159         <span class="keywordtype">double</span> ub_diff =  <a class="code" href="classqp__ip.html#adbeb65ae6d044fc9de151cfd742e8a58">ub</a>[i] - X[j];
+<a name="l00159"></a>00159         <span class="keywordtype">double</span> ub_diff =  <a class="code" href="classqp__ip.html#adbeb65ae6d044fc9de151cfd742e8a58" title="lower and upper bounds">ub</a>[i] - X[j];
 <a name="l00160"></a>00160 
 <a name="l00161"></a>00161         <span class="comment">// logarithmic barrier</span>
 <a name="l00162"></a>00162         <a class="code" href="classqp__ip.html#accf711f0bfa3f523c2862e47e388494c" title="Value of phi(X), where phi is the cost function + log barrier.">phi_X</a> -= log(lb_diff) + log(ub_diff);
@@ -212,7 +212,7 @@
 <a name="l00215"></a>00215     }
 <a name="l00216"></a>00216     <span class="keywordflow">for</span> (; i &lt; <a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>*<a class="code" href="group__gAPI.html#ga74b56d50f3995ffd5282a2f2289dfd1a" title="Total number of variables.">SMPC_NUM_VAR</a>; i++)
 <a name="l00217"></a>00217     {
-<a name="l00218"></a>00218         <a class="code" href="classqp__ip.html#accf711f0bfa3f523c2862e47e388494c" title="Value of phi(X), where phi is the cost function + log barrier.">phi_X</a> += <a class="code" href="classqp__ip.html#ae85665b860bc2ad22f7bca7023d0c8fc">P</a> * <a class="code" href="classqp__solver.html#a913e4e5a4936b84794bd3a37e7abcaa6">X</a>[i] * <a class="code" href="classqp__solver.html#a913e4e5a4936b84794bd3a37e7abcaa6">X</a>[i];
+<a name="l00218"></a>00218         <a class="code" href="classqp__ip.html#accf711f0bfa3f523c2862e47e388494c" title="Value of phi(X), where phi is the cost function + log barrier.">phi_X</a> += <a class="code" href="classqp__ip.html#ae85665b860bc2ad22f7bca7023d0c8fc" title="Diagonal elements of H.">P</a> * <a class="code" href="classqp__solver.html#a913e4e5a4936b84794bd3a37e7abcaa6">X</a>[i] * <a class="code" href="classqp__solver.html#a913e4e5a4936b84794bd3a37e7abcaa6">X</a>[i];
 <a name="l00219"></a>00219     }
 <a name="l00220"></a>00220 
 <a name="l00221"></a>00221     <span class="comment">// phi_X += g&#39;*X</span>
@@ -242,7 +242,7 @@
 <a name="l00250"></a>00250         <span class="comment">// upper bound may be violated</span>
 <a name="l00251"></a>00251         <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code" href="classqp__solver.html#a36916afec3fbe6e3cf60fc36b31a79a9">dX</a>[i*3] &gt; 0)
 <a name="l00252"></a>00252         {
-<a name="l00253"></a>00253             <span class="keywordtype">double</span> tmp_alpha = (<a class="code" href="classqp__ip.html#adbeb65ae6d044fc9de151cfd742e8a58">ub</a>[i]-<a class="code" href="classqp__solver.html#a913e4e5a4936b84794bd3a37e7abcaa6">X</a>[i*3])/<a class="code" href="classqp__solver.html#a36916afec3fbe6e3cf60fc36b31a79a9">dX</a>[i*3];
+<a name="l00253"></a>00253             <span class="keywordtype">double</span> tmp_alpha = (<a class="code" href="classqp__ip.html#adbeb65ae6d044fc9de151cfd742e8a58" title="lower and upper bounds">ub</a>[i]-<a class="code" href="classqp__solver.html#a913e4e5a4936b84794bd3a37e7abcaa6">X</a>[i*3])/<a class="code" href="classqp__solver.html#a36916afec3fbe6e3cf60fc36b31a79a9">dX</a>[i*3];
 <a name="l00254"></a>00254             <span class="keywordflow">if</span> (tmp_alpha &lt; min_alpha)
 <a name="l00255"></a>00255             {
 <a name="l00256"></a>00256                 min_alpha = tmp_alpha;
@@ -292,7 +292,7 @@
 <a name="l00312"></a>00312         j++;
 <a name="l00313"></a>00313 
 <a name="l00314"></a>00314         <span class="comment">// logarithmic barrier</span>
-<a name="l00315"></a>00315         res -= kappa * (log(-<a class="code" href="classqp__ip.html#a862913be8b0e1bc671c4608b7f80ea3f" title="lower and upper bounds">lb</a>[i] + X_tmp) + log(<a class="code" href="classqp__ip.html#adbeb65ae6d044fc9de151cfd742e8a58">ub</a>[i] - X_tmp));
+<a name="l00315"></a>00315         res -= kappa * (log(-<a class="code" href="classqp__ip.html#a862913be8b0e1bc671c4608b7f80ea3f" title="lower and upper bounds">lb</a>[i] + X_tmp) + log(<a class="code" href="classqp__ip.html#adbeb65ae6d044fc9de151cfd742e8a58" title="lower and upper bounds">ub</a>[i] - X_tmp));
 <a name="l00316"></a>00316 
 <a name="l00317"></a>00317         <span class="comment">// phi_X += g&#39;*X</span>
 <a name="l00318"></a>00318         res += <a class="code" href="classqp__ip.html#a765df1117c481f8c8cd5ef76d94ea35c" title="2*N non-zero elements of vector g.">g</a>[i] * X_tmp;
@@ -313,7 +313,7 @@
 <a name="l00333"></a>00333     <span class="keywordflow">for</span> (i = N*<a class="code" href="group__gAPI.html#gab7984838b079762f5087b37a731e0b79" title="Number of state variables.">SMPC_NUM_STATE_VAR</a>; i &lt; N*<a class="code" href="group__gAPI.html#ga74b56d50f3995ffd5282a2f2289dfd1a" title="Total number of variables.">SMPC_NUM_VAR</a>; i++)
 <a name="l00334"></a>00334     {
 <a name="l00335"></a>00335         X_tmp = <a class="code" href="classqp__solver.html#a913e4e5a4936b84794bd3a37e7abcaa6">X</a>[i] + <a class="code" href="classqp__solver.html#a5a5567d24c04b40ed5630ad0991c881f">alpha</a> * <a class="code" href="classqp__solver.html#a36916afec3fbe6e3cf60fc36b31a79a9">dX</a>[i];
-<a name="l00336"></a>00336         res += <a class="code" href="classqp__ip.html#ae85665b860bc2ad22f7bca7023d0c8fc">P</a> * X_tmp * X_tmp;
+<a name="l00336"></a>00336         res += <a class="code" href="classqp__ip.html#ae85665b860bc2ad22f7bca7023d0c8fc" title="Diagonal elements of H.">P</a> * X_tmp * X_tmp;
 <a name="l00337"></a>00337     }
 <a name="l00338"></a>00338 
 <a name="l00339"></a>00339     <span class="keywordflow">return</span> (res);
@@ -370,7 +370,7 @@
 <a name="l00412"></a>00412     <a class="code" href="classqp__ip.html#a3c222fe5e2dfe989828faf6bb75dd66b" title="Compute phi_X for initial point, phi_X must already store logarithmic barrier term.">form_phi_X</a> ();
 <a name="l00413"></a>00413     <a class="code" href="classqp__ip.html#a914248ed08f018c52c4dd7e24aa6889d" title="Finish initialization of i2hess_grad = -i2hess*grad.">form_i2hess_grad</a> ();
 <a name="l00414"></a>00414 
-<a name="l00415"></a>00415     <a class="code" href="classqp__ip.html#a8f174c0d96edd496ca0cea9e315a71c4" title="An instance of chol_solve_ip class.">chol</a>.<a class="code" href="classchol__solve__ip.html#a9dcfbd168aeb103efecfdb02e76f5119" title="Determines feasible descent direction.">solve</a> (<span class="keyword">this</span>, <a class="code" href="classqp__ip.html#a6dd422a6960475a56b8dc751252b5450" title="Inverted hessian * gradient (N*SMPC_NUM_VAR vector)">i2hess_grad</a>, <a class="code" href="classqp__ip.html#af57fb1c8b1c58d4876da6fa7f0ec8a28" title="Inverted hessian: non-repeating diagonal elements 1:3:N*SMPC_NUM_STATE_VAR, 2*N in total...">i2hess</a>, <a class="code" href="classqp__solver.html#a913e4e5a4936b84794bd3a37e7abcaa6">X</a>, <a class="code" href="classqp__solver.html#a36916afec3fbe6e3cf60fc36b31a79a9">dX</a>);
+<a name="l00415"></a>00415     <a class="code" href="classqp__ip.html#a8f174c0d96edd496ca0cea9e315a71c4" title="An instance of chol_solve_ip class.">chol</a>.<a class="code" href="classchol__solve__ip.html#ac4bb8f863ad108d9337db0043abe1424" title="Determines feasible descent direction.">solve</a> (*<span class="keyword">this</span>, <a class="code" href="classqp__ip.html#a6dd422a6960475a56b8dc751252b5450" title="Inverted hessian * gradient (N*SMPC_NUM_VAR vector)">i2hess_grad</a>, <a class="code" href="classqp__ip.html#af57fb1c8b1c58d4876da6fa7f0ec8a28" title="Inverted hessian: non-repeating diagonal elements 1:3:N*SMPC_NUM_STATE_VAR, 2*N in total...">i2hess</a>, <a class="code" href="classqp__solver.html#a913e4e5a4936b84794bd3a37e7abcaa6">X</a>, <a class="code" href="classqp__solver.html#a36916afec3fbe6e3cf60fc36b31a79a9">dX</a>);
 <a name="l00416"></a>00416 
 <a name="l00417"></a>00417 
 <a name="l00418"></a>00418     <span class="comment">// stopping criterion (decrement)</span>

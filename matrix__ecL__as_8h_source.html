@@ -75,29 +75,31 @@
 <a name="l00045"></a>00045         <a class="code" href="classmatrix__ecL__as.html" title="Initializes lower diagonal matrix L and performs backward and forward substitutions using this matrix...">matrix_ecL_as</a>(<span class="keyword">const</span> <span class="keywordtype">int</span>);
 <a name="l00046"></a>00046         ~<a class="code" href="classmatrix__ecL__as.html" title="Initializes lower diagonal matrix L and performs backward and forward substitutions using this matrix...">matrix_ecL_as</a>();
 <a name="l00047"></a>00047 
-<a name="l00048"></a>00048         <span class="keywordtype">void</span> form (<span class="keyword">const</span> <a class="code" href="classproblem__parameters.html" title="A set of problem parameters.">problem_parameters</a>*);
+<a name="l00048"></a>00048         <span class="keywordtype">void</span> form (<span class="keyword">const</span> <a class="code" href="classproblem__parameters.html" title="A set of problem parameters.">problem_parameters</a>&amp;);
 <a name="l00049"></a>00049 
 <a name="l00050"></a>00050         <span class="keywordtype">void</span> solve_backward (<span class="keyword">const</span> <span class="keywordtype">int</span>, <span class="keywordtype">double</span> *);
 <a name="l00051"></a>00051         <span class="keywordtype">void</span> solve_forward (<span class="keyword">const</span> <span class="keywordtype">int</span>, <span class="keywordtype">double</span> *);
 <a name="l00052"></a>00052 
 <a name="l00053"></a><a class="code" href="classmatrix__ecL__as.html#a9cd06b62ac34fe18b13f8cb90e761af3">00053</a>         <span class="keywordtype">double</span> *<a class="code" href="classmatrix__ecL__as.html#a9cd06b62ac34fe18b13f8cb90e761af3">ecL</a>;
-<a name="l00054"></a>00054 
-<a name="l00055"></a>00055     <span class="keyword">private</span>:
-<a name="l00056"></a>00056         <span class="keywordtype">void</span> chol_dec (<span class="keywordtype">double</span> *);
-<a name="l00057"></a>00057 
-<a name="l00058"></a>00058         <span class="keywordtype">void</span> form_iQBiPB (<span class="keyword">const</span> <span class="keywordtype">double</span> *, <span class="keyword">const</span> <span class="keywordtype">double</span> *, <span class="keyword">const</span> <span class="keywordtype">double</span>, <span class="keywordtype">double</span>*);
-<a name="l00059"></a>00059         <span class="keywordtype">void</span> form_iQAT (<span class="keyword">const</span> <span class="keywordtype">double</span>, <span class="keyword">const</span> <span class="keywordtype">double</span>, <span class="keyword">const</span> <span class="keywordtype">double</span> *);
-<a name="l00060"></a>00060         <span class="keywordtype">void</span> form_AiQATiQBiPB (<span class="keyword">const</span> <a class="code" href="classproblem__parameters.html" title="A set of problem parameters.">problem_parameters</a>*, <span class="keyword">const</span> <a class="code" href="classstate__parameters.html">state_parameters</a>, <span class="keywordtype">double</span> *);
-<a name="l00061"></a>00061 
-<a name="l00062"></a>00062         <span class="keywordtype">void</span> form_L_non_diag(<span class="keyword">const</span> <span class="keywordtype">double</span> *, <span class="keywordtype">double</span> *);
-<a name="l00063"></a>00063         <span class="keywordtype">void</span> form_L_diag(<span class="keyword">const</span> <span class="keywordtype">double</span> *, <span class="keywordtype">double</span> *);
-<a name="l00064"></a>00064 
-<a name="l00065"></a>00065 
-<a name="l00066"></a>00066         <span class="comment">// intermediate results used in computation of L</span>
-<a name="l00067"></a><a class="code" href="classmatrix__ecL__as.html#a29ac53b94afda182f7c8993c338ad019">00067</a>         <span class="keywordtype">double</span> *<a class="code" href="classmatrix__ecL__as.html#a29ac53b94afda182f7c8993c338ad019">iQAT</a>;       
-<a name="l00068"></a>00068 };
-<a name="l00070"></a>00070 
-<a name="l00071"></a>00071 <span class="preprocessor">#endif </span><span class="comment">/*MATRIX_ECL_AS_H*/</span>
+<a name="l00054"></a><a class="code" href="classmatrix__ecL__as.html#a6af10104e2cefa394b0b3e2c7289b852">00054</a>         <span class="keywordtype">double</span> **<a class="code" href="classmatrix__ecL__as.html#a6af10104e2cefa394b0b3e2c7289b852">ecL_diag</a>;
+<a name="l00055"></a><a class="code" href="classmatrix__ecL__as.html#ac9f57cb414cf3597d5a2a33401390daf">00055</a>         <span class="keywordtype">double</span> **<a class="code" href="classmatrix__ecL__as.html#ac9f57cb414cf3597d5a2a33401390daf">ecL_ndiag</a>;
+<a name="l00056"></a>00056 
+<a name="l00057"></a>00057     <span class="keyword">private</span>:
+<a name="l00058"></a>00058         <span class="keywordtype">void</span> chol_dec (<span class="keywordtype">double</span> *);
+<a name="l00059"></a>00059 
+<a name="l00060"></a>00060         <span class="keywordtype">void</span> form_iQBiPB (<span class="keyword">const</span> <span class="keywordtype">double</span> *, <span class="keyword">const</span> <span class="keywordtype">double</span> *, <span class="keyword">const</span> <span class="keywordtype">double</span>, <span class="keywordtype">double</span>*);
+<a name="l00061"></a>00061         <span class="keywordtype">void</span> form_iQAT (<span class="keyword">const</span> <span class="keywordtype">double</span>, <span class="keyword">const</span> <span class="keywordtype">double</span>, <span class="keyword">const</span> <span class="keywordtype">double</span> *);
+<a name="l00062"></a>00062         <span class="keywordtype">void</span> form_AiQATiQBiPB (<span class="keyword">const</span> <a class="code" href="classproblem__parameters.html" title="A set of problem parameters.">problem_parameters</a>&amp;, <span class="keyword">const</span> <a class="code" href="classstate__parameters.html">state_parameters</a>&amp;, <span class="keywordtype">double</span> *);
+<a name="l00063"></a>00063 
+<a name="l00064"></a>00064         <span class="keywordtype">void</span> form_L_non_diag(<span class="keyword">const</span> <span class="keywordtype">double</span> *, <span class="keywordtype">double</span> *);
+<a name="l00065"></a>00065         <span class="keywordtype">void</span> form_L_diag(<span class="keyword">const</span> <span class="keywordtype">double</span> *, <span class="keywordtype">double</span> *);
+<a name="l00066"></a>00066 
+<a name="l00067"></a>00067 
+<a name="l00068"></a>00068         <span class="comment">// intermediate results used in computation of L</span>
+<a name="l00069"></a><a class="code" href="classmatrix__ecL__as.html#a29ac53b94afda182f7c8993c338ad019">00069</a>         <span class="keywordtype">double</span> *<a class="code" href="classmatrix__ecL__as.html#a29ac53b94afda182f7c8993c338ad019">iQAT</a>;       
+<a name="l00070"></a>00070 };
+<a name="l00072"></a>00072 
+<a name="l00073"></a>00073 <span class="preprocessor">#endif </span><span class="comment">/*MATRIX_ECL_AS_H*/</span>
 </pre></div></div>
 </div>
 <hr class="footer"/><address class="footer"><small>Generated by&#160;

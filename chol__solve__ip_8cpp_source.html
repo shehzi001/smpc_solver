@@ -70,8 +70,8 @@
 <a name="l00039"></a>00039 <span class="comment">//==============================================</span>
 <a name="l00040"></a>00040 
 <a name="l00041"></a>00041 
-<a name="l00051"></a><a class="code" href="classchol__solve__ip.html#a9dcfbd168aeb103efecfdb02e76f5119">00051</a> <span class="keywordtype">void</span> <a class="code" href="classchol__solve__ip.html#a9dcfbd168aeb103efecfdb02e76f5119" title="Determines feasible descent direction.">chol_solve_ip::solve</a>(
-<a name="l00052"></a>00052         <span class="keyword">const</span> <a class="code" href="classproblem__parameters.html" title="A set of problem parameters.">problem_parameters</a>* ppar, 
+<a name="l00051"></a><a class="code" href="classchol__solve__ip.html#ac4bb8f863ad108d9337db0043abe1424">00051</a> <span class="keywordtype">void</span> <a class="code" href="classchol__solve__ip.html#ac4bb8f863ad108d9337db0043abe1424" title="Determines feasible descent direction.">chol_solve_ip::solve</a>(
+<a name="l00052"></a>00052         <span class="keyword">const</span> <a class="code" href="classproblem__parameters.html" title="A set of problem parameters.">problem_parameters</a>&amp; ppar, 
 <a name="l00053"></a>00053         <span class="keyword">const</span> <span class="keywordtype">double</span> *i2hess_grad,
 <a name="l00054"></a>00054         <span class="keyword">const</span> <span class="keywordtype">double</span> *i2hess,
 <a name="l00055"></a>00055         <span class="keyword">const</span> <span class="keywordtype">double</span> *x, 
@@ -79,27 +79,27 @@
 <a name="l00057"></a>00057 {
 <a name="l00058"></a>00058     <span class="keywordtype">double</span> *s_w = <a class="code" href="classchol__solve__ip.html#a11a95a35bd226c851f27689ea1a0ad80" title="Lagrange multipliers.">w</a>;
 <a name="l00059"></a>00059     <span class="keywordtype">int</span> i,j;
-<a name="l00060"></a>00060     <span class="keywordtype">double</span> i2Q[2] = {ppar-&gt;<a class="code" href="classproblem__parameters.html#aa1a23930743a84b91d77c77857150a57">i2Q</a>[1], ppar-&gt;<a class="code" href="classproblem__parameters.html#aa1a23930743a84b91d77c77857150a57">i2Q</a>[2]};
+<a name="l00060"></a>00060     <span class="keywordtype">double</span> i2Q[2] = {ppar.<a class="code" href="classproblem__parameters.html#aa1a23930743a84b91d77c77857150a57">i2Q</a>[1], ppar.<a class="code" href="classproblem__parameters.html#aa1a23930743a84b91d77c77857150a57">i2Q</a>[2]};
 <a name="l00061"></a>00061 
 <a name="l00062"></a>00062 
 <a name="l00063"></a>00063     <span class="comment">// generate L</span>
-<a name="l00064"></a>00064     <a class="code" href="classchol__solve__ip.html#af7723272e475ccbbf95210a376428426" title="L for equality constraints, see &amp;#39;Cholesky factor&amp;#39;.">ecL</a>.<a class="code" href="classmatrix__ecL__ip.html#ad3b91a493f5eab1652dda64b0754ae5c" title="Builds matrix L.">form</a> (ppar, i2hess);
+<a name="l00064"></a>00064     <a class="code" href="classchol__solve__ip.html#af7723272e475ccbbf95210a376428426" title="L for equality constraints, see &amp;#39;Cholesky factor&amp;#39;.">ecL</a>.<a class="code" href="classmatrix__ecL__ip.html#a8b435ac9259a8fdc1bb5dc8094b2e2f4" title="Builds matrix L.">form</a> (ppar, i2hess);
 <a name="l00065"></a>00065 
 <a name="l00066"></a>00066     <span class="comment">// obtain s = E * x;</span>
-<a name="l00067"></a>00067     <a class="code" href="classchol__solve__ip.html#a9560972f5319395e6d1bddd8692a0126" title="matrix of equality constraints">E</a>.<a class="code" href="classmatrix__E.html#aae9b982b617c42eb96b5f23cfe38f31c" title="Forms E*x.">form_Ex</a> (ppar, i2hess_grad, s_w);
+<a name="l00067"></a>00067     <a class="code" href="classchol__solve__ip.html#a9560972f5319395e6d1bddd8692a0126" title="matrix of equality constraints">E</a>.<a class="code" href="classmatrix__E.html#ad85d9e0f2c17b32570c150c2d93df09e" title="Forms E*x.">form_Ex</a> (ppar, i2hess_grad, s_w);
 <a name="l00068"></a>00068 
 <a name="l00069"></a>00069     <span class="comment">// obtain w</span>
-<a name="l00070"></a>00070     <a class="code" href="classchol__solve__ip.html#af7723272e475ccbbf95210a376428426" title="L for equality constraints, see &amp;#39;Cholesky factor&amp;#39;.">ecL</a>.<a class="code" href="classmatrix__ecL__ip.html#a8603ec351adf1f22dd2f3e9d512dc506" title="Solve system ecL * x = b using forward substitution.">solve_forward</a>(ppar-&gt;<a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>, s_w);
-<a name="l00071"></a>00071     <a class="code" href="classchol__solve__ip.html#af7723272e475ccbbf95210a376428426" title="L for equality constraints, see &amp;#39;Cholesky factor&amp;#39;.">ecL</a>.<a class="code" href="classmatrix__ecL__ip.html#a389e56b2773a75d86480cb3ee1b100d2" title="Solve system ecL&amp;#39; * x = b using backward substitution.">solve_backward</a>(ppar-&gt;<a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>, s_w);
+<a name="l00070"></a>00070     <a class="code" href="classchol__solve__ip.html#af7723272e475ccbbf95210a376428426" title="L for equality constraints, see &amp;#39;Cholesky factor&amp;#39;.">ecL</a>.<a class="code" href="classmatrix__ecL__ip.html#a8603ec351adf1f22dd2f3e9d512dc506" title="Solve system ecL * x = b using forward substitution.">solve_forward</a>(ppar.<a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>, s_w);
+<a name="l00071"></a>00071     <a class="code" href="classchol__solve__ip.html#af7723272e475ccbbf95210a376428426" title="L for equality constraints, see &amp;#39;Cholesky factor&amp;#39;.">ecL</a>.<a class="code" href="classmatrix__ecL__ip.html#a389e56b2773a75d86480cb3ee1b100d2" title="Solve system ecL&amp;#39; * x = b using backward substitution.">solve_backward</a>(ppar.<a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>, s_w);
 <a name="l00072"></a>00072 
 <a name="l00073"></a>00073     <span class="comment">// E&#39; * w</span>
-<a name="l00074"></a>00074     <a class="code" href="classchol__solve__ip.html#a9560972f5319395e6d1bddd8692a0126" title="matrix of equality constraints">E</a>.<a class="code" href="classmatrix__E.html#a5fa7bb68fb8f671c9e4b284d8b1cb823" title="Forms E&amp;#39; * x.">form_ETx</a> (ppar, s_w, dx);
+<a name="l00074"></a>00074     <a class="code" href="classchol__solve__ip.html#a9560972f5319395e6d1bddd8692a0126" title="matrix of equality constraints">E</a>.<a class="code" href="classmatrix__E.html#abf097bb2df4fa0045a9720644a41aac0" title="Forms E&amp;#39; * x.">form_ETx</a> (ppar, s_w, dx);
 <a name="l00075"></a>00075 
 <a name="l00076"></a>00076     
 <a name="l00077"></a>00077     <span class="comment">// dx = -iH*(grad + E&#39;*w)</span>
 <a name="l00078"></a>00078     <span class="comment">//</span>
 <a name="l00079"></a>00079     <span class="comment">// dx   -( -i2hess_grad  + inv(H) *   dx   ) </span>
-<a name="l00080"></a>00080     <span class="keywordflow">for</span> (i = 0,j = 0; i &lt; ppar-&gt;<a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>*2; i++)
+<a name="l00080"></a>00080     <span class="keywordflow">for</span> (i = 0,j = 0; i &lt; ppar.<a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>*2; i++)
 <a name="l00081"></a>00081     {
 <a name="l00082"></a>00082         <span class="comment">// dx for state variables</span>
 <a name="l00083"></a>00083         dx[j] = i2hess_grad[j] - i2hess[i] * dx[j]; 
@@ -109,10 +109,10 @@
 <a name="l00087"></a>00087         dx[j] = i2hess_grad[j] - i2Q[1] * dx[j]; 
 <a name="l00088"></a>00088         j++;
 <a name="l00089"></a>00089     }
-<a name="l00090"></a>00090     <span class="keywordflow">for</span> (i = ppar-&gt;<a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>*<a class="code" href="group__gAPI.html#gab7984838b079762f5087b37a731e0b79" title="Number of state variables.">SMPC_NUM_STATE_VAR</a>; i &lt; ppar-&gt;N*<a class="code" href="group__gAPI.html#ga74b56d50f3995ffd5282a2f2289dfd1a" title="Total number of variables.">SMPC_NUM_VAR</a>; i++)
+<a name="l00090"></a>00090     <span class="keywordflow">for</span> (i = ppar.<a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>*<a class="code" href="group__gAPI.html#gab7984838b079762f5087b37a731e0b79" title="Number of state variables.">SMPC_NUM_STATE_VAR</a>; i &lt; ppar.<a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>*<a class="code" href="group__gAPI.html#ga74b56d50f3995ffd5282a2f2289dfd1a" title="Total number of variables.">SMPC_NUM_VAR</a>; i++)
 <a name="l00091"></a>00091     {
 <a name="l00092"></a>00092         <span class="comment">// dx for control variables</span>
-<a name="l00093"></a>00093         dx[i] = i2hess_grad[i] - ppar-&gt;<a class="code" href="classproblem__parameters.html#aa7c28f51f09f182cc82dd57d6175325e">i2P</a> * dx[i];
+<a name="l00093"></a>00093         dx[i] = i2hess_grad[i] - ppar.<a class="code" href="classproblem__parameters.html#aa7c28f51f09f182cc82dd57d6175325e">i2P</a> * dx[i];
 <a name="l00094"></a>00094     }
 <a name="l00095"></a>00095 }
 </pre></div></div>

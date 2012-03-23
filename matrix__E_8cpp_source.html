@@ -54,19 +54,19 @@
 <a name="l00018"></a>00018 <span class="comment"> * FUNCTIONS </span>
 <a name="l00019"></a>00019 <span class="comment"> ****************************************/</span>
 <a name="l00020"></a>00020 
-<a name="l00028"></a><a class="code" href="classmatrix__E.html#aae9b982b617c42eb96b5f23cfe38f31c">00028</a> <span class="keywordtype">void</span> <a class="code" href="classmatrix__E.html#aae9b982b617c42eb96b5f23cfe38f31c" title="Forms E*x.">matrix_E::form_Ex</a> (<span class="keyword">const</span> <a class="code" href="classproblem__parameters.html" title="A set of problem parameters.">problem_parameters</a>* ppar, <span class="keyword">const</span> <span class="keywordtype">double</span> *x, <span class="keywordtype">double</span> *result)
+<a name="l00028"></a><a class="code" href="classmatrix__E.html#ad85d9e0f2c17b32570c150c2d93df09e">00028</a> <span class="keywordtype">void</span> <a class="code" href="classmatrix__E.html#ad85d9e0f2c17b32570c150c2d93df09e" title="Forms E*x.">matrix_E::form_Ex</a> (<span class="keyword">const</span> <a class="code" href="classproblem__parameters.html" title="A set of problem parameters.">problem_parameters</a>&amp; ppar, <span class="keyword">const</span> <span class="keywordtype">double</span> *x, <span class="keywordtype">double</span> *result)
 <a name="l00029"></a>00029 {
 <a name="l00030"></a>00030     <span class="keywordtype">int</span> i;
 <a name="l00031"></a>00031     <a class="code" href="classstate__parameters.html">state_parameters</a> stp;
 <a name="l00032"></a>00032 
 <a name="l00033"></a>00033 
-<a name="l00034"></a>00034     <span class="keyword">const</span> <span class="keywordtype">double</span> *control = &amp;x[ppar-&gt;<a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>*<a class="code" href="group__gAPI.html#gab7984838b079762f5087b37a731e0b79" title="Number of state variables.">SMPC_NUM_STATE_VAR</a>];
+<a name="l00034"></a>00034     <span class="keyword">const</span> <span class="keywordtype">double</span> *control = &amp;x[ppar.<a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>*<a class="code" href="group__gAPI.html#gab7984838b079762f5087b37a731e0b79" title="Number of state variables.">SMPC_NUM_STATE_VAR</a>];
 <a name="l00035"></a>00035     <span class="comment">// a pointer to 6 current elements of result</span>
 <a name="l00036"></a>00036     <span class="keywordtype">double</span> *res = result;
 <a name="l00037"></a>00037 
-<a name="l00038"></a>00038     <span class="keywordflow">for</span> (i = 0; i &lt; ppar-&gt;<a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>; i++)
+<a name="l00038"></a>00038     <span class="keywordflow">for</span> (i = 0; i &lt; ppar.<a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>; i++)
 <a name="l00039"></a>00039     {
-<a name="l00040"></a>00040         stp = ppar-&gt;<a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[i];
+<a name="l00040"></a>00040         stp = ppar.<a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[i];
 <a name="l00041"></a>00041 
 <a name="l00042"></a>00042         <span class="comment">// a pointer to 6 current state variables</span>
 <a name="l00043"></a>00043         <span class="keyword">const</span> <span class="keywordtype">double</span> *xc = &amp;x[i*<a class="code" href="group__gAPI.html#gab7984838b079762f5087b37a731e0b79" title="Number of state variables.">SMPC_NUM_STATE_VAR</a>];
@@ -83,8 +83,8 @@
 <a name="l00054"></a>00054 
 <a name="l00055"></a>00055         <span class="keywordflow">if</span> (i != 0) <span class="comment">// no multiplication by A on the first iteration</span>
 <a name="l00056"></a>00056         {
-<a name="l00057"></a>00057             <span class="keywordtype">double</span> cosA = ppar-&gt;<a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[i-1].<a class="code" href="classstate__parameters.html#a30c26512d64a186f13660c690e27756a">cos</a>;
-<a name="l00058"></a>00058             <span class="keywordtype">double</span> sinA = ppar-&gt;<a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[i-1].<a class="code" href="classstate__parameters.html#a2ed5b2103152d2e52633198560fe7df7">sin</a>;
+<a name="l00057"></a>00057             <span class="keywordtype">double</span> cosA = ppar.<a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[i-1].<a class="code" href="classstate__parameters.html#a30c26512d64a186f13660c690e27756a">cos</a>;
+<a name="l00058"></a>00058             <span class="keywordtype">double</span> sinA = ppar.<a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[i-1].<a class="code" href="classstate__parameters.html#a2ed5b2103152d2e52633198560fe7df7">sin</a>;
 <a name="l00059"></a>00059 
 <a name="l00060"></a>00060             xc = &amp;x[(i-1)*<a class="code" href="group__gAPI.html#gab7984838b079762f5087b37a731e0b79" title="Number of state variables.">SMPC_NUM_STATE_VAR</a>];
 <a name="l00061"></a>00061 
@@ -105,7 +105,7 @@
 <a name="l00076"></a>00076 }
 <a name="l00077"></a>00077 
 <a name="l00078"></a>00078 
-<a name="l00086"></a><a class="code" href="classmatrix__E.html#a5fa7bb68fb8f671c9e4b284d8b1cb823">00086</a> <span class="keywordtype">void</span> <a class="code" href="classmatrix__E.html#a5fa7bb68fb8f671c9e4b284d8b1cb823" title="Forms E&amp;#39; * x.">matrix_E::form_ETx</a> (<span class="keyword">const</span> <a class="code" href="classproblem__parameters.html" title="A set of problem parameters.">problem_parameters</a>* ppar, <span class="keyword">const</span> <span class="keywordtype">double</span> *x, <span class="keywordtype">double</span> *result)
+<a name="l00086"></a><a class="code" href="classmatrix__E.html#abf097bb2df4fa0045a9720644a41aac0">00086</a> <span class="keywordtype">void</span> <a class="code" href="classmatrix__E.html#abf097bb2df4fa0045a9720644a41aac0" title="Forms E&amp;#39; * x.">matrix_E::form_ETx</a> (<span class="keyword">const</span> <a class="code" href="classproblem__parameters.html" title="A set of problem parameters.">problem_parameters</a>&amp; ppar, <span class="keyword">const</span> <span class="keywordtype">double</span> *x, <span class="keywordtype">double</span> *result)
 <a name="l00087"></a>00087 {
 <a name="l00088"></a>00088     <span class="keywordtype">int</span> i;
 <a name="l00089"></a>00089     <a class="code" href="classstate__parameters.html">state_parameters</a> stp;
@@ -113,11 +113,11 @@
 <a name="l00091"></a>00091 
 <a name="l00092"></a>00092 
 <a name="l00093"></a>00093     <span class="keywordtype">double</span> *res = result;
-<a name="l00094"></a>00094     <span class="keywordtype">double</span> *control_res = &amp;result[ppar-&gt;<a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>*<a class="code" href="group__gAPI.html#gab7984838b079762f5087b37a731e0b79" title="Number of state variables.">SMPC_NUM_STATE_VAR</a>];
+<a name="l00094"></a>00094     <span class="keywordtype">double</span> *control_res = &amp;result[ppar.<a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>*<a class="code" href="group__gAPI.html#gab7984838b079762f5087b37a731e0b79" title="Number of state variables.">SMPC_NUM_STATE_VAR</a>];
 <a name="l00095"></a>00095 
-<a name="l00096"></a>00096     <span class="keywordflow">for</span> (i = 0; i &lt; ppar-&gt;<a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>; i++)
+<a name="l00096"></a>00096     <span class="keywordflow">for</span> (i = 0; i &lt; ppar.<a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>; i++)
 <a name="l00097"></a>00097     {
-<a name="l00098"></a>00098         stp = ppar-&gt;<a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[i];
+<a name="l00098"></a>00098         stp = ppar.<a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[i];
 <a name="l00099"></a>00099 
 <a name="l00100"></a>00100 
 <a name="l00101"></a>00101         <span class="comment">// a pointer to 6 current elements of result</span>
@@ -134,10 +134,10 @@
 <a name="l00112"></a>00112         res[5] = -xc[5];
 <a name="l00113"></a>00113 
 <a name="l00114"></a>00114 
-<a name="l00115"></a>00115         <span class="keywordflow">if</span> (i != ppar-&gt;<a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>-1) <span class="comment">// no multiplication by A on the last iteration</span>
+<a name="l00115"></a>00115         <span class="keywordflow">if</span> (i != ppar.<a class="code" href="classproblem__parameters.html#a48a1d6c82570910e2c07c91ce9a2030b">N</a>-1) <span class="comment">// no multiplication by A on the last iteration</span>
 <a name="l00116"></a>00116         {
-<a name="l00117"></a>00117             <span class="keywordtype">double</span> A3 = ppar-&gt;<a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[i+1].<a class="code" href="classstate__parameters.html#a6898a8094f6f21bbe400bf8dfb41d133">A3</a>;
-<a name="l00118"></a>00118             <span class="keywordtype">double</span> A6 = ppar-&gt;<a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[i+1].<a class="code" href="classstate__parameters.html#ab213715801526935c2386b75babf3e1b">A6</a>;
+<a name="l00117"></a>00117             <span class="keywordtype">double</span> A3 = ppar.<a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[i+1].<a class="code" href="classstate__parameters.html#a6898a8094f6f21bbe400bf8dfb41d133">A3</a>;
+<a name="l00118"></a>00118             <span class="keywordtype">double</span> A6 = ppar.<a class="code" href="classproblem__parameters.html#a2105ba57e11939fe654d1f609ff7beff">spar</a>[i+1].<a class="code" href="classstate__parameters.html#ab213715801526935c2386b75babf3e1b">A6</a>;
 <a name="l00119"></a>00119 
 <a name="l00120"></a>00120             xc = &amp;x[i*<a class="code" href="group__gAPI.html#gab7984838b079762f5087b37a731e0b79" title="Number of state variables.">SMPC_NUM_STATE_VAR</a> + <a class="code" href="group__gAPI.html#gab7984838b079762f5087b37a731e0b79" title="Number of state variables.">SMPC_NUM_STATE_VAR</a>];
 <a name="l00121"></a>00121 

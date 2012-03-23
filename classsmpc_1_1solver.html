@@ -67,6 +67,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc_1_1solver.html#abb24f208790e3ffd33253ae4f8bde916">solver</a> (const int N, const int max_iter, const double Alpha=150.0, const double Beta=2000.0, const double Gamma=1.0, const double regularization=0.01, const double tol=1e-3, const double tol_out=1e-2, const double t=100, const double mu=15, const double bs_alpha=0.01, const double bs_beta=0.5)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor: initialize an interior-point method solver.  <a href="#abb24f208790e3ffd33253ae4f8bde916"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc_1_1solver.html#a4a848ccfa79f1748dd40eeeef876cad9">~solver</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc_1_1solver.html#a90ecad03fa0eed0cbc576d9532156e42">enable_fexceptions</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable floating point exceptions: die rather than processing incorrect data). SIGFPE is sent to the program, when an error occurs.  <a href="#a90ecad03fa0eed0cbc576d9532156e42"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc_1_1solver.html#a826ef486b0bae0b387358b2b450e4126">set_parameters</a> (const double *T, const double *h, const double h_initial, const double *angle, const double *zref_x, const double *zref_y, const double *lb, const double *ub)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes quadratic problem.  <a href="#a826ef486b0bae0b387358b2b450e4126"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc_1_1solver.html#a1842ec2c62415e97744a141349568458">form_init_fp</a> (const double *x_coord, const double *y_coord, const <a class="el" href="classsmpc_1_1state__orig.html">state_orig</a> &amp;init_state, double *X)</td></tr>
@@ -81,7 +83,7 @@ Public Attributes</h2></td></tr>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>API of the sparse MPC solver. </p>
 
-<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00240">240</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
+<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00243">243</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="afbcfca02c6f69426e307ce8502c601ef"></a><!-- doxytag: member="smpc::solver::solver" ref="afbcfca02c6f69426e307ce8502c601ef" args="(const int N, const double Alpha=150.0, const double Beta=2000.0, const double Gamma=1.0, const double regularization=0.01, const double tol=1e&#45;7)" -->
 <div class="memitem">
@@ -145,7 +147,7 @@ Public Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00028">28</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
+<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00034">34</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
 
 </div>
 </div>
@@ -248,13 +250,12 @@ Public Attributes</h2></td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">t</td><td>logarithmic barrier parameter </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">mu</td><td>multiplier of t, &gt;1. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">bs_alpha</td><td>backtracking search parameter 0 &lt; alpha &lt; 0.5 </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">bs_beta</td><td>backtracking search parameter 0 &lt; beta &lt; 1</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">bs_beta</td><td>backtracking search parameter 0 &lt; beta &lt; 1 </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>Which defaults are good? </dd></dl>
 
-<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00037">37</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
+<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00043">43</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
 
 </div>
 </div>
@@ -272,11 +273,32 @@ Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00053">53</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
+<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00059">59</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
 
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="a90ecad03fa0eed0cbc576d9532156e42"></a><!-- doxytag: member="smpc::solver::enable_fexceptions" ref="a90ecad03fa0eed0cbc576d9532156e42" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void smpc::solver::enable_fexceptions </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Enable floating point exceptions: die rather than processing incorrect data). SIGFPE is sent to the program, when an error occurs. </p>
+<dl class="note"><dt><b>Note:</b></dt><dd>If feenableexcept() is not present on the system, the function does nothing. </dd></dl>
+
+<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00068">68</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a1842ec2c62415e97744a141349568458"></a><!-- doxytag: member="smpc::solver::form_init_fp" ref="a1842ec2c62415e97744a141349568458" args="(const double *x_coord, const double *y_coord, const state_orig &amp;init_state, double *X)" -->
 <div class="memitem">
 <div class="memproto">
@@ -325,7 +347,7 @@ Public Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00077">77</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
+<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00093">93</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
 
 </div>
 </div>
@@ -405,7 +427,7 @@ Public Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00063">63</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
+<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00079">79</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
 
 </div>
 </div>
@@ -426,7 +448,7 @@ Public Attributes</h2></td></tr>
 <p>Solve QP problem. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>A negative number on error. Number of activated constraints for active set method and 0 for interior-point method on success. </dd></dl>
 
-<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00091">91</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
+<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00107">107</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
 
 </div>
 </div>
@@ -444,7 +466,7 @@ Public Attributes</h2></td></tr>
 
 <p>Internal representation. </p>
 
-<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00355">355</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
+<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00367">367</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
 
 </div>
 </div>

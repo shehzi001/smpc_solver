@@ -55,25 +55,73 @@
 <a name="l00019"></a>00019 <span class="comment"> * FUNCTIONS </span>
 <a name="l00020"></a>00020 <span class="comment"> ****************************************/</span>
 <a name="l00021"></a>00021 
-<a name="l00032"></a><a class="code" href="classFootStep.html#afa2ee86eac57b8c1ef55de4a3839392f">00032</a> <a class="code" href="classFootStep.html#afa2ee86eac57b8c1ef55de4a3839392f" title="Defines a footstep at a given position with a given orientation.">FootStep::FootStep</a>(
+<a name="l00032"></a><a class="code" href="classfootstep.html#a57918a7a68c9090789fdbb305668b93e">00032</a> <a class="code" href="classfootstep.html#a57918a7a68c9090789fdbb305668b93e" title="Defines a footstep at a given position with a given orientation.">footstep::footstep</a>(
 <a name="l00033"></a>00033         <span class="keyword">const</span> <span class="keywordtype">double</span> angle_, 
-<a name="l00034"></a>00034         <span class="keyword">const</span> <a class="code" href="classPoint2D.html" title="Defines a 2D point.">Point2D</a> Position,
-<a name="l00035"></a>00035         <span class="keyword">const</span> <a class="code" href="classPoint2D.html" title="Defines a 2D point.">Point2D</a> ZMPref_,
-<a name="l00036"></a>00036         <span class="keyword">const</span> <span class="keywordtype">int</span> repeat_times_, 
+<a name="l00034"></a>00034         <span class="keyword">const</span> Transform&lt;double, 3&gt;&amp; posture_,
+<a name="l00035"></a>00035         <span class="keyword">const</span> Vector3d&amp; ZMPref_,
+<a name="l00036"></a>00036         <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> time_period_, 
 <a name="l00037"></a>00037         <span class="keyword">const</span> <a class="code" href="group__gWMG__API.html#ga45147e528b9243fa8842d38163498449">fs_type</a> type_, 
 <a name="l00038"></a>00038         <span class="keyword">const</span> <span class="keywordtype">double</span> *d_) : 
-<a name="l00039"></a>00039     <a class="code" href="classPoint2D.html" title="Defines a 2D point.">Point2D</a>(Position), 
-<a name="l00040"></a>00040     <a class="code" href="classRectangularConstraint__ZMP.html" title="Defines rectangular constraints (of the form D*z &amp;lt;= d) for the ZMP.">RectangularConstraint_ZMP</a>(d_),
-<a name="l00041"></a>00041     ZMPref(ZMPref_)
-<a name="l00042"></a>00042 {
-<a name="l00043"></a>00043     <a class="code" href="classFootStep.html#a5c0b7a7841b2b53d4bd6a28eda2fb977" title="type of the step.">type</a> = type_;
-<a name="l00044"></a>00044     <a class="code" href="classFootStep.html#a1acb6f981aa58cfec41a2a2e9f6cd6a6" title="Angle (relative to the world frame) of a footstep [rad.].">angle</a> = angle_; 
-<a name="l00045"></a>00045     <a class="code" href="classFootStep.html#a81faab6c5e8ce565077b519defa66859" title="cos(angle).">ca</a> = cos(<a class="code" href="classFootStep.html#a1acb6f981aa58cfec41a2a2e9f6cd6a6" title="Angle (relative to the world frame) of a footstep [rad.].">angle</a>); 
-<a name="l00046"></a>00046     <a class="code" href="classFootStep.html#a8692f8a0017ece845ab40e0aabc9837d" title="sin(angle).">sa</a> = sin(<a class="code" href="classFootStep.html#a1acb6f981aa58cfec41a2a2e9f6cd6a6" title="Angle (relative to the world frame) of a footstep [rad.].">angle</a>);
-<a name="l00047"></a>00047     <a class="code" href="classRectangularConstraint__ZMP.html#a1f6446a733c7868e172764db231a6595" title="translates from [0;0] to &amp;quot;p&amp;quot; and rotates from 0 to &amp;quot;angle&amp;quot;. The 0 initial angle i...">rotate_translate</a>(<a class="code" href="classFootStep.html#a81faab6c5e8ce565077b519defa66859" title="cos(angle).">ca</a>, <a class="code" href="classFootStep.html#a8692f8a0017ece845ab40e0aabc9837d" title="sin(angle).">sa</a>, *<span class="keyword">this</span>);
-<a name="l00048"></a>00048     <a class="code" href="classFootStep.html#a68d814856ea507ac7d3a946cadd978d2" title="number of times this step appears in the preview window.">repeat_times</a> = repeat_times_;
-<a name="l00049"></a>00049     <a class="code" href="classFootStep.html#aa313a2a209ba8b05438cffeaccd9bfa9" title="a counter of repeats,on initialization = repeat_times.">repeat_counter</a> = <a class="code" href="classFootStep.html#a68d814856ea507ac7d3a946cadd978d2" title="number of times this step appears in the preview window.">repeat_times</a>;
-<a name="l00050"></a>00050 }
+<a name="l00039"></a>00039     <a class="code" href="classRectangularConstraint__ZMP.html" title="Defines rectangular constraints (of the form D*z &amp;lt;= d) for the ZMP.">RectangularConstraint_ZMP</a>(d_),
+<a name="l00040"></a>00040     ZMPref(ZMPref_)
+<a name="l00041"></a>00041 {
+<a name="l00042"></a>00042     <a class="code" href="classfootstep.html#aecad6827b8b11d9fcd69a3ed2f3bc807">posture</a> = <span class="keyword">new</span> Transform&lt;double, 3&gt;(posture_);
+<a name="l00043"></a>00043     <a class="code" href="classfootstep.html#a2128d651515445de69214ac349578f2e" title="type of the step.">type</a> = type_;
+<a name="l00044"></a>00044     <a class="code" href="classfootstep.html#ac6d602abd2407ca8fa231e768bf1b68f" title="Angle (relative to the world frame) of a footstep [rad.].">angle</a> = angle_; 
+<a name="l00045"></a>00045     <a class="code" href="classfootstep.html#aa3aa8ab6c248830fed7415d9b24b3935" title="cos(angle).">ca</a> = cos(<a class="code" href="classfootstep.html#ac6d602abd2407ca8fa231e768bf1b68f" title="Angle (relative to the world frame) of a footstep [rad.].">angle</a>); 
+<a name="l00046"></a>00046     <a class="code" href="classfootstep.html#aeb43f587a007a006b038c3a99432c128" title="sin(angle).">sa</a> = sin(<a class="code" href="classfootstep.html#ac6d602abd2407ca8fa231e768bf1b68f" title="Angle (relative to the world frame) of a footstep [rad.].">angle</a>);
+<a name="l00047"></a>00047     <a class="code" href="classRectangularConstraint__ZMP.html#a257c0a0a20bdd7ef0921414717efa26e" title="translates from [0;0] to &amp;quot;p&amp;quot; and rotates from 0 to &amp;quot;angle&amp;quot;. The 0 initial angle i...">rotate_translate</a>(<a class="code" href="classfootstep.html#aa3aa8ab6c248830fed7415d9b24b3935" title="cos(angle).">ca</a>, <a class="code" href="classfootstep.html#aeb43f587a007a006b038c3a99432c128" title="sin(angle).">sa</a>, <a class="code" href="classfootstep.html#a4d3105ded51bc6969afaf22112df9bc0">x</a>(), <a class="code" href="classfootstep.html#ac1c80a20c01366c04b7b2416c4dfb154">y</a>());
+<a name="l00048"></a>00048     <a class="code" href="classfootstep.html#aa9ca2a872cca410e95b4d88ed11d4eea" title="the amount of time left in this support (=time_period on initialization)">time_left</a> = <a class="code" href="classfootstep.html#a88d9b2475a23f08497cff1cb33b3a7f7" title="the period of time spent in this support">time_period</a> = time_period_;
+<a name="l00049"></a>00049 }
+<a name="l00050"></a>00050 
+<a name="l00051"></a>00051 
+<a name="l00057"></a><a class="code" href="classfootstep.html#a21d967b805761c544940efb2e862a366">00057</a> <a class="code" href="classfootstep.html#a57918a7a68c9090789fdbb305668b93e" title="Defines a footstep at a given position with a given orientation.">footstep::footstep</a> (<span class="keyword">const</span> <a class="code" href="classfootstep.html" title="Defines a footstep.">footstep</a>&amp; copy_from) : 
+<a name="l00058"></a>00058     <a class="code" href="classRectangularConstraint__ZMP.html" title="Defines rectangular constraints (of the form D*z &amp;lt;= d) for the ZMP.">RectangularConstraint_ZMP</a>(copy_from),
+<a name="l00059"></a>00059     ZMPref(copy_from.ZMPref)
+<a name="l00060"></a>00060 {
+<a name="l00061"></a>00061     <a class="code" href="classfootstep.html#aecad6827b8b11d9fcd69a3ed2f3bc807">posture</a> = <span class="keyword">new</span> Transform&lt;double, 3&gt;(*copy_from.<a class="code" href="classfootstep.html#aecad6827b8b11d9fcd69a3ed2f3bc807">posture</a>);
+<a name="l00062"></a>00062     <a class="code" href="classfootstep.html#a2128d651515445de69214ac349578f2e" title="type of the step.">type</a> = copy_from.<a class="code" href="classfootstep.html#a2128d651515445de69214ac349578f2e" title="type of the step.">type</a>;
+<a name="l00063"></a>00063     <a class="code" href="classfootstep.html#ac6d602abd2407ca8fa231e768bf1b68f" title="Angle (relative to the world frame) of a footstep [rad.].">angle</a> = copy_from.<a class="code" href="classfootstep.html#ac6d602abd2407ca8fa231e768bf1b68f" title="Angle (relative to the world frame) of a footstep [rad.].">angle</a>; 
+<a name="l00064"></a>00064     <a class="code" href="classfootstep.html#aa3aa8ab6c248830fed7415d9b24b3935" title="cos(angle).">ca</a> = copy_from.<a class="code" href="classfootstep.html#aa3aa8ab6c248830fed7415d9b24b3935" title="cos(angle).">ca</a>; 
+<a name="l00065"></a>00065     <a class="code" href="classfootstep.html#aeb43f587a007a006b038c3a99432c128" title="sin(angle).">sa</a> = copy_from.<a class="code" href="classfootstep.html#aeb43f587a007a006b038c3a99432c128" title="sin(angle).">sa</a>;
+<a name="l00066"></a>00066     <a class="code" href="classfootstep.html#aa9ca2a872cca410e95b4d88ed11d4eea" title="the amount of time left in this support (=time_period on initialization)">time_left</a> = copy_from.<a class="code" href="classfootstep.html#aa9ca2a872cca410e95b4d88ed11d4eea" title="the amount of time left in this support (=time_period on initialization)">time_left</a>;
+<a name="l00067"></a>00067     <a class="code" href="classfootstep.html#a88d9b2475a23f08497cff1cb33b3a7f7" title="the period of time spent in this support">time_period</a> = copy_from.<a class="code" href="classfootstep.html#a88d9b2475a23f08497cff1cb33b3a7f7" title="the period of time spent in this support">time_period</a>;
+<a name="l00068"></a>00068 }
+<a name="l00069"></a>00069 
+<a name="l00070"></a>00070 
+<a name="l00071"></a>00071 
+<a name="l00075"></a><a class="code" href="classfootstep.html#a97aebdd83aec344f9172e1ffddac5fc8">00075</a> <a class="code" href="classfootstep.html#a97aebdd83aec344f9172e1ffddac5fc8" title="Destructor.">footstep::~footstep</a>()
+<a name="l00076"></a>00076 {
+<a name="l00077"></a>00077     <span class="keyword">delete</span> <a class="code" href="classfootstep.html#aecad6827b8b11d9fcd69a3ed2f3bc807">posture</a>;
+<a name="l00078"></a>00078 }
+<a name="l00079"></a>00079 
+<a name="l00080"></a>00080 
+<a name="l00084"></a><a class="code" href="classfootstep.html#a4d3105ded51bc6969afaf22112df9bc0">00084</a> <span class="keywordtype">double</span> <a class="code" href="classfootstep.html#a4d3105ded51bc6969afaf22112df9bc0">footstep::x</a>()
+<a name="l00085"></a>00085 {
+<a name="l00086"></a>00086     <span class="keywordflow">return</span> (<a class="code" href="classfootstep.html#aecad6827b8b11d9fcd69a3ed2f3bc807">posture</a>-&gt;translation()[0]);
+<a name="l00087"></a>00087 }
+<a name="l00088"></a>00088 
+<a name="l00089"></a>00089 
+<a name="l00093"></a><a class="code" href="classfootstep.html#ac1c80a20c01366c04b7b2416c4dfb154">00093</a> <span class="keywordtype">double</span> <a class="code" href="classfootstep.html#ac1c80a20c01366c04b7b2416c4dfb154">footstep::y</a>()
+<a name="l00094"></a>00094 {
+<a name="l00095"></a>00095     <span class="keywordflow">return</span> (<a class="code" href="classfootstep.html#aecad6827b8b11d9fcd69a3ed2f3bc807">posture</a>-&gt;translation()[1]);
+<a name="l00096"></a>00096 }
+<a name="l00097"></a>00097 
+<a name="l00098"></a>00098 
+<a name="l00099"></a>00099 
+<a name="l00106"></a><a class="code" href="classfootstep.html#a6c40eef3be4b1601c7117ef476dfce97">00106</a> <span class="keywordtype">void</span> <a class="code" href="classfootstep.html#a6c40eef3be4b1601c7117ef476dfce97" title="Correct position of the footstep.">footstep::changePosture</a> (<span class="keyword">const</span> <span class="keywordtype">double</span> * new_posture, <span class="keyword">const</span> <span class="keywordtype">bool</span> zero_z_coordinate)
+<a name="l00107"></a>00107 {
+<a name="l00108"></a>00108     <a class="code" href="classfootstep.html#aecad6827b8b11d9fcd69a3ed2f3bc807">posture</a>-&gt;matrix() = Matrix4d::Map(new_posture);
+<a name="l00109"></a>00109     <span class="keywordflow">if</span> (zero_z_coordinate)
+<a name="l00110"></a>00110     {
+<a name="l00111"></a>00111         <a class="code" href="classfootstep.html#aecad6827b8b11d9fcd69a3ed2f3bc807">posture</a>-&gt;translation()[2] = 0.0;
+<a name="l00112"></a>00112     }
+<a name="l00113"></a>00113     Matrix3d rotation = <a class="code" href="classfootstep.html#aecad6827b8b11d9fcd69a3ed2f3bc807">posture</a>-&gt;matrix().corner(TopLeft,3,3);
+<a name="l00114"></a>00114     <a class="code" href="classfootstep.html#ac6d602abd2407ca8fa231e768bf1b68f" title="Angle (relative to the world frame) of a footstep [rad.].">angle</a> = rotation.eulerAngles(0,1,2)[2];
+<a name="l00115"></a>00115     <a class="code" href="classfootstep.html#aa3aa8ab6c248830fed7415d9b24b3935" title="cos(angle).">ca</a> = cos(<a class="code" href="classfootstep.html#ac6d602abd2407ca8fa231e768bf1b68f" title="Angle (relative to the world frame) of a footstep [rad.].">angle</a>);
+<a name="l00116"></a>00116     <a class="code" href="classfootstep.html#aeb43f587a007a006b038c3a99432c128" title="sin(angle).">sa</a> = sin(<a class="code" href="classfootstep.html#ac6d602abd2407ca8fa231e768bf1b68f" title="Angle (relative to the world frame) of a footstep [rad.].">angle</a>);
+<a name="l00117"></a>00117     <a class="code" href="classRectangularConstraint__ZMP.html#a257c0a0a20bdd7ef0921414717efa26e" title="translates from [0;0] to &amp;quot;p&amp;quot; and rotates from 0 to &amp;quot;angle&amp;quot;. The 0 initial angle i...">rotate_translate</a>(<a class="code" href="classfootstep.html#aa3aa8ab6c248830fed7415d9b24b3935" title="cos(angle).">ca</a>, <a class="code" href="classfootstep.html#aeb43f587a007a006b038c3a99432c128" title="sin(angle).">sa</a>, <a class="code" href="classfootstep.html#a4d3105ded51bc6969afaf22112df9bc0">x</a>(), <a class="code" href="classfootstep.html#ac1c80a20c01366c04b7b2416c4dfb154">y</a>());
+<a name="l00118"></a>00118 }
 </pre></div></div>
 </div>
 <hr class="footer"/><address class="footer"><small>Generated by&#160;

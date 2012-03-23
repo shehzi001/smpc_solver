@@ -71,15 +71,11 @@ Inheritance diagram for smpc::state_orig:</div>
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc_1_1state__orig.html#aadb87c1c35c4a17f9c9e67430f889c5d">state_orig</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc_1_1state__orig.html#aab4c0eadc3a32301eb6084dedffb2e92">set</a> (double x_, double y_)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Set coordinates, velocities and accelerations are assumed to be zero.  <a href="#aab4c0eadc3a32301eb6084dedffb2e92"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc_1_1state__orig.html#ab3fc70b071d412063c6c43de95f11cf4">set</a> (double x_, double vx_, double ax_, double y_, double vy_, double ay_)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Set state to given values.  <a href="#ab3fc70b071d412063c6c43de95f11cf4"></a><br/></td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc_1_1state__orig.html#ab193990da1fe69324e26980274672969">get_next_state</a> (const <a class="el" href="classsmpc_1_1solver.html">solver</a> &amp;smpc_solver)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Refer to the base class state for description.  <a href="#ab193990da1fe69324e26980274672969"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc_1_1state__orig.html#ab863db8282e6b3fa5a38d562d1e1c82b">get_state</a> (const <a class="el" href="classsmpc_1_1solver.html">solver</a> &amp;smpc_solver, const int ind)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The same as <a class="el" href="classsmpc_1_1state__orig.html#ab193990da1fe69324e26980274672969" title="Refer to the base class state for description.">get_next_state</a>, but takes an additional parameter - index of the desired state in the state vector.  <a href="#ab863db8282e6b3fa5a38d562d1e1c82b"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Refer to the base class state for description.  <a href="#ab863db8282e6b3fa5a38d562d1e1c82b"></a><br/></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>A container for a state in the original form: </p>
@@ -91,7 +87,7 @@ Public Member Functions</h2></td></tr>
         y CoM velocity [meter/s]
         y CoM acceleration [meter/s^2]
         </pre></div> 
-<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00119">119</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
+<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00146">146</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="aadb87c1c35c4a17f9c9e67430f889c5d"></a><!-- doxytag: member="smpc::state_orig::state_orig" ref="aadb87c1c35c4a17f9c9e67430f889c5d" args="()" -->
 <div class="memitem">
@@ -107,7 +103,7 @@ Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00122">122</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
+<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00149">149</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
 
 </div>
 </div>
@@ -131,7 +127,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classsmpc_1_1state.html#a2393e64ebdad23cb43a3d939aec1fbd3">smpc::state</a>.</p>
 
-<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00159">159</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
+<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00175">175</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
 
 </div>
 </div>
@@ -160,122 +156,11 @@ Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>The same as <a class="el" href="classsmpc_1_1state__orig.html#ab193990da1fe69324e26980274672969" title="Refer to the base class state for description.">get_next_state</a>, but takes an additional parameter - index of the desired state in the state vector. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">smpc_solver</td><td>initialized solver </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">ind</td><td>index of a state [0 : N-1]. </td></tr>
-  </table>
-  </dd>
-</dl>
+<p>Refer to the base class state for description. </p>
 
 <p>Implements <a class="el" href="classsmpc_1_1state.html#aef8bbd0fa899b21860e3bde433c35a70">smpc::state</a>.</p>
 
-<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00165">165</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aab4c0eadc3a32301eb6084dedffb2e92"></a><!-- doxytag: member="smpc::state_orig::set" ref="aab4c0eadc3a32301eb6084dedffb2e92" args="(double x_, double y_)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void smpc::state_orig::set </td>
-          <td>(</td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>x_</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>y_</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Set coordinates, velocities and accelerations are assumed to be zero. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">x_</td><td>x CoM position [meter] </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">y_</td><td>y CoM position [meter] </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00139">139</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ab3fc70b071d412063c6c43de95f11cf4"></a><!-- doxytag: member="smpc::state_orig::set" ref="ab3fc70b071d412063c6c43de95f11cf4" args="(double x_, double vx_, double ax_, double y_, double vy_, double ay_)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void smpc::state_orig::set </td>
-          <td>(</td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>x_</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>vx_</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>ax_</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>y_</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>vy_</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>ay_</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Set state to given values. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">x_</td><td>x CoM position [meter] </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">vx_</td><td>x CoM velocity [meter/s] </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">ax_</td><td>x CoM acceleration [meter/s^2] </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">y_</td><td>y CoM or ZMP position [meter] </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">vy_</td><td>y CoM velocity [meter/s] </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">ay_</td><td>y CoM acceleration [meter/s^2] </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00145">145</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
+<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00181">181</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
 
 </div>
 </div>

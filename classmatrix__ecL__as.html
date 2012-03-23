@@ -60,8 +60,8 @@
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmatrix__ecL__as.html#ac668d305015506aa96a95dbd82d93021">matrix_ecL_as</a> (const int)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmatrix__ecL__as.html#ad2471f9a96fbfbd724d115a6dca27fc7">~matrix_ecL_as</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmatrix__ecL__as.html#a3d1b9376a6fa8183cf25bd7605944129">form</a> (const <a class="el" href="classproblem__parameters.html">problem_parameters</a> *)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds matrix L.  <a href="#a3d1b9376a6fa8183cf25bd7605944129"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmatrix__ecL__as.html#a02661c7439af0f165355b60c7d41458b">form</a> (const <a class="el" href="classproblem__parameters.html">problem_parameters</a> &amp;)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds matrix L.  <a href="#a02661c7439af0f165355b60c7d41458b"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmatrix__ecL__as.html#a1c448431424b8f76f83b02cfba25ffe2">solve_backward</a> (const int, double *)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Solve system ecL' * x = b using backward substitution.  <a href="#a1c448431424b8f76f83b02cfba25ffe2"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmatrix__ecL__as.html#a375da9dd4b9f2287e07ceeec5cbe9206">solve_forward</a> (const int, double *)</td></tr>
@@ -69,6 +69,8 @@ Public Member Functions</h2></td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmatrix__ecL__as.html#a9cd06b62ac34fe18b13f8cb90e761af3">ecL</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">double **&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmatrix__ecL__as.html#a6af10104e2cefa394b0b3e2c7289b852">ecL_diag</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">double **&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmatrix__ecL__as.html#ac9f57cb414cf3597d5a2a33401390daf">ecL_ndiag</a></td></tr>
 <tr><td colspan="2"><h2><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmatrix__ecL__as.html#a1b9327bba8ca6f21fc5d98e384af70d5">chol_dec</a> (double *)</td></tr>
@@ -77,8 +79,8 @@ Private Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Forms matrix iQBiPB = 0.5 * inv(Q) + 0.5 * B * inv(P) * B.  <a href="#adf6e9adc48dccdb595075aa455cec452"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmatrix__ecL__as.html#a97a964b3a03e398d18bcb2857d9c8037">form_iQAT</a> (const double, const double, const double *)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Forms matrix iQAT = 0.5 * inv (Q) * A'.  <a href="#a97a964b3a03e398d18bcb2857d9c8037"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmatrix__ecL__as.html#af4dcb8b28f76adf2ab0af6ab5416fd8a">form_AiQATiQBiPB</a> (const <a class="el" href="classproblem__parameters.html">problem_parameters</a> *, const <a class="el" href="classstate__parameters.html">state_parameters</a>, double *)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Forms matrix AiQATiQBiPB = A * inv(Q) * A' + 0.5 * inv(Q) + 0.5 * B * inv(P) * B.  <a href="#af4dcb8b28f76adf2ab0af6ab5416fd8a"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmatrix__ecL__as.html#aa4b076d98179a082de6396e6c2e29930">form_AiQATiQBiPB</a> (const <a class="el" href="classproblem__parameters.html">problem_parameters</a> &amp;, const <a class="el" href="classstate__parameters.html">state_parameters</a> &amp;, double *)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Forms matrix AiQATiQBiPB = A * inv(Q) * A' + 0.5 * inv(Q) + 0.5 * B * inv(P) * B.  <a href="#aa4b076d98179a082de6396e6c2e29930"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmatrix__ecL__as.html#ae7cda118b1f04b7fe3486dade258db57">form_L_non_diag</a> (const double *, double *)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Forms a 3x3 matrix L(k+1, k), which lies below the diagonal of L.  <a href="#ae7cda118b1f04b7fe3486dade258db57"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmatrix__ecL__as.html#a643bf71ec03e34e17e37985a58f2a08a">form_L_diag</a> (const double *, double *)</td></tr>
@@ -125,7 +127,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="matrix__ecL__as_8cpp_source.html#l00032">32</a> of file <a class="el" href="matrix__ecL__as_8cpp_source.html">matrix_ecL_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="matrix__ecL__as_8cpp_source.html#l00042">42</a> of file <a class="el" href="matrix__ecL__as_8cpp_source.html">matrix_ecL_as.cpp</a>.</p>
 
 </div>
 </div>
@@ -154,18 +156,18 @@ Private Attributes</h2></td></tr>
 </dl>
 <dl class="attention"><dt><b>Attention:</b></dt><dd>Only the elements below the main diagonal are initialized. </dd></dl>
 
-<p>Definition at line <a class="el" href="matrix__ecL__as_8cpp_source.html#l00052">52</a> of file <a class="el" href="matrix__ecL__as_8cpp_source.html">matrix_ecL_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="matrix__ecL__as_8cpp_source.html#l00068">68</a> of file <a class="el" href="matrix__ecL__as_8cpp_source.html">matrix_ecL_as.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a3d1b9376a6fa8183cf25bd7605944129"></a><!-- doxytag: member="matrix_ecL_as::form" ref="a3d1b9376a6fa8183cf25bd7605944129" args="(const problem_parameters *)" -->
+<a class="anchor" id="a02661c7439af0f165355b60c7d41458b"></a><!-- doxytag: member="matrix_ecL_as::form" ref="a02661c7439af0f165355b60c7d41458b" args="(const problem_parameters &amp;)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void matrix_ecL_as::form </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classproblem__parameters.html">problem_parameters</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="classproblem__parameters.html">problem_parameters</a> &amp;&#160;</td>
           <td class="paramname"><em>ppar</em></td><td>)</td>
           <td></td>
         </tr>
@@ -181,24 +183,24 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="matrix__ecL__as_8cpp_source.html#l00216">216</a> of file <a class="el" href="matrix__ecL__as_8cpp_source.html">matrix_ecL_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="matrix__ecL__as_8cpp_source.html#l00232">232</a> of file <a class="el" href="matrix__ecL__as_8cpp_source.html">matrix_ecL_as.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="af4dcb8b28f76adf2ab0af6ab5416fd8a"></a><!-- doxytag: member="matrix_ecL_as::form_AiQATiQBiPB" ref="af4dcb8b28f76adf2ab0af6ab5416fd8a" args="(const problem_parameters *, const state_parameters, double *)" -->
+<a class="anchor" id="aa4b076d98179a082de6396e6c2e29930"></a><!-- doxytag: member="matrix_ecL_as::form_AiQATiQBiPB" ref="aa4b076d98179a082de6396e6c2e29930" args="(const problem_parameters &amp;, const state_parameters &amp;, double *)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void matrix_ecL_as::form_AiQATiQBiPB </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classproblem__parameters.html">problem_parameters</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="classproblem__parameters.html">problem_parameters</a> &amp;&#160;</td>
           <td class="paramname"><em>ppar</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classstate__parameters.html">state_parameters</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="classstate__parameters.html">state_parameters</a> &amp;&#160;</td>
           <td class="paramname"><em>stp</em>, </td>
         </tr>
         <tr>
@@ -227,7 +229,7 @@ Private Attributes</h2></td></tr>
 </dl>
 <dl class="attention"><dt><b>Attention:</b></dt><dd>Only the elements below the main diagonal are initialized. </dd></dl>
 
-<p>Definition at line <a class="el" href="matrix__ecL__as_8cpp_source.html#l00127">127</a> of file <a class="el" href="matrix__ecL__as_8cpp_source.html">matrix_ecL_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="matrix__ecL__as_8cpp_source.html#l00143">143</a> of file <a class="el" href="matrix__ecL__as_8cpp_source.html">matrix_ecL_as.cpp</a>.</p>
 
 </div>
 </div>
@@ -272,7 +274,7 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="matrix__ecL__as_8cpp_source.html#l00106">106</a> of file <a class="el" href="matrix__ecL__as_8cpp_source.html">matrix_ecL_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="matrix__ecL__as_8cpp_source.html#l00122">122</a> of file <a class="el" href="matrix__ecL__as_8cpp_source.html">matrix_ecL_as.cpp</a>.</p>
 
 </div>
 </div>
@@ -325,7 +327,7 @@ Private Attributes</h2></td></tr>
 </dl>
 <dl class="attention"><dt><b>Attention:</b></dt><dd>Only the elements below the main diagonal are initialized. </dd></dl>
 
-<p>Definition at line <a class="el" href="matrix__ecL__as_8cpp_source.html#l00083">83</a> of file <a class="el" href="matrix__ecL__as_8cpp_source.html">matrix_ecL_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="matrix__ecL__as_8cpp_source.html#l00099">99</a> of file <a class="el" href="matrix__ecL__as_8cpp_source.html">matrix_ecL_as.cpp</a>.</p>
 
 </div>
 </div>
@@ -364,7 +366,7 @@ Private Attributes</h2></td></tr>
 </dl>
 <dl class="attention"><dt><b>Attention:</b></dt><dd>Only the elements below the main diagonal are initialized. </dd></dl>
 
-<p>Definition at line <a class="el" href="matrix__ecL__as_8cpp_source.html#l00193">193</a> of file <a class="el" href="matrix__ecL__as_8cpp_source.html">matrix_ecL_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="matrix__ecL__as_8cpp_source.html#l00209">209</a> of file <a class="el" href="matrix__ecL__as_8cpp_source.html">matrix_ecL_as.cpp</a>.</p>
 
 </div>
 </div>
@@ -402,7 +404,7 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="matrix__ecL__as_8cpp_source.html#l00157">157</a> of file <a class="el" href="matrix__ecL__as_8cpp_source.html">matrix_ecL_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="matrix__ecL__as_8cpp_source.html#l00173">173</a> of file <a class="el" href="matrix__ecL__as_8cpp_source.html">matrix_ecL_as.cpp</a>.</p>
 
 </div>
 </div>
@@ -440,7 +442,7 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="matrix__ecL__as_8cpp_source.html#l00328">328</a> of file <a class="el" href="matrix__ecL__as_8cpp_source.html">matrix_ecL_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="matrix__ecL__as_8cpp_source.html#l00329">329</a> of file <a class="el" href="matrix__ecL__as_8cpp_source.html">matrix_ecL_as.cpp</a>.</p>
 
 </div>
 </div>
@@ -478,7 +480,7 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="matrix__ecL__as_8cpp_source.html#l00260">260</a> of file <a class="el" href="matrix__ecL__as_8cpp_source.html">matrix_ecL_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="matrix__ecL__as_8cpp_source.html#l00268">268</a> of file <a class="el" href="matrix__ecL__as_8cpp_source.html">matrix_ecL_as.cpp</a>.</p>
 
 </div>
 </div>
@@ -498,6 +500,36 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a6af10104e2cefa394b0b3e2c7289b852"></a><!-- doxytag: member="matrix_ecL_as::ecL_diag" ref="a6af10104e2cefa394b0b3e2c7289b852" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double** <a class="el" href="classmatrix__ecL__as.html#a6af10104e2cefa394b0b3e2c7289b852">matrix_ecL_as::ecL_diag</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="matrix__ecL__as_8h_source.html#l00054">54</a> of file <a class="el" href="matrix__ecL__as_8h_source.html">matrix_ecL_as.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac9f57cb414cf3597d5a2a33401390daf"></a><!-- doxytag: member="matrix_ecL_as::ecL_ndiag" ref="ac9f57cb414cf3597d5a2a33401390daf" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double** <a class="el" href="classmatrix__ecL__as.html#ac9f57cb414cf3597d5a2a33401390daf">matrix_ecL_as::ecL_ndiag</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="matrix__ecL__as_8h_source.html#l00055">55</a> of file <a class="el" href="matrix__ecL__as_8h_source.html">matrix_ecL_as.h</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a29ac53b94afda182f7c8993c338ad019"></a><!-- doxytag: member="matrix_ecL_as::iQAT" ref="a29ac53b94afda182f7c8993c338ad019" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -509,7 +541,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="matrix__ecL__as_8h_source.html#l00067">67</a> of file <a class="el" href="matrix__ecL__as_8h_source.html">matrix_ecL_as.h</a>.</p>
+<p>Definition at line <a class="el" href="matrix__ecL__as_8h_source.html#l00069">69</a> of file <a class="el" href="matrix__ecL__as_8h_source.html">matrix_ecL_as.h</a>.</p>
 
 </div>
 </div>
