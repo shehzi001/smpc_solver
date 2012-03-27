@@ -336,8 +336,15 @@ void chol_solve_as::update_z (
     // sn
     double zn = -iHg[W[ic_num]] - x[W[ic_num]*3];
 
+    int i;
+    int first_nz_el = W[ic_num]/2 * SMPC_NUM_STATE_VAR;
+
     // zn
-    for (int i = 0; i < zind; i++)
+    for (i = 0; i < first_nz_el; i++)
+    {
+        nu[i] = z[i];
+    }
+    for (; i < zind; i++)
     {
         zn -= z[i] * icL[ic_num][i];
         nu[i] = z[i];
@@ -367,21 +374,17 @@ void chol_solve_as::resolve (
         const double *x, 
         double *dx)
 {
-    int i,j;
-
-    double i2Q[3] = {ppar.i2Q[0], ppar.i2Q[1], ppar.i2Q[2]};
-
+    int i;
 
     // backward substitution for icL
-    for (i = SMPC_NUM_STATE_VAR*ppar.N + nW-1; i >= SMPC_NUM_STATE_VAR*ppar.N; i--)
+    for (i = nW-1; i >= 0; i--)
     {
-        int constr_num = i-ppar.N*SMPC_NUM_STATE_VAR;
-        double nui = nu[i] / icL[constr_num][i];
+        int last_el_num = i + ppar.N*SMPC_NUM_STATE_VAR;
+        nu[last_el_num] /= icL[i][last_el_num];
 
-        nu[i] = nui;
-        for (j = i - 1; j >= W[constr_num]/2 * SMPC_NUM_STATE_VAR; j--)
+        for (int j = last_el_num - 1; j >= W[i]/2 * SMPC_NUM_STATE_VAR; j--)
         {
-            nu[j] -= nui * icL[constr_num][j];
+            nu[j] -= nu[last_el_num] * icL[i][j];
         }
     }
     // backward substitution for ecL
@@ -396,6 +399,8 @@ void chol_solve_as::resolve (
     // dx = -(x + inv(H) * g + inv(H) * E' * nu)
     //            ~~~~~~~~~~            ~~~~~~~
     // dx   -(x +  iHg       + inv(H) *   dx   ) 
+    double i2Q[3] = {ppar.i2Q[0], ppar.i2Q[1], ppar.i2Q[2]};
+
     for (i = 0; i < ppar.N*SMPC_NUM_STATE_VAR; i++)
     {
         // dx for state variables
