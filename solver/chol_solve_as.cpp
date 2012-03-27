@@ -372,20 +372,19 @@ void chol_solve_as::resolve (
     double i2Q[3] = {ppar.i2Q[0], ppar.i2Q[1], ppar.i2Q[2]};
 
 
-    // backward substituition for icL
+    // backward substitution for icL
     for (i = SMPC_NUM_STATE_VAR*ppar.N + nW-1; i >= SMPC_NUM_STATE_VAR*ppar.N; i--)
     {
-        double nui = nu[i];
-        double *icL_row = icL[i-ppar.N*SMPC_NUM_STATE_VAR];
+        int constr_num = i-ppar.N*SMPC_NUM_STATE_VAR;
+        double nui = nu[i] / icL[constr_num][i];
 
-        nui = nui / icL_row[i];
-        for (j = i - 1; j >= 0; j--)
-        {
-            nu[j] -= nui * icL_row[j];
-        }
         nu[i] = nui;
+        for (j = i - 1; j >= W[constr_num]/2 * SMPC_NUM_STATE_VAR; j--)
+        {
+            nu[j] -= nui * icL[constr_num][j];
+        }
     }
-    // backward substituition for ecL
+    // backward substitution for ecL
     ecL.solve_backward(ppar.N, nu);
 
 
