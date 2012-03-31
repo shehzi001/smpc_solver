@@ -20,7 +20,6 @@
 
 #include "qp_solver.h"
 #include "qp_as.h"
-#include "qp_ip.h"
 #include "smpc_solver.h"
 #include "state_handling.h"
 
@@ -40,22 +39,6 @@ smpc::solver::solver (
 }
 
 
-smpc::solver::solver (
-                const int N,
-                const int max_iter,
-                const double Alpha, const double Beta, const double Gamma,
-                const double regularization, 
-                const double tol, const double tol_out,
-                const double t,
-                const double mu,
-                const double bs_alpha, const double bs_beta)
-{
-    qp_ip * qpip_solver = new qp_ip (N, Alpha, Beta, Gamma, regularization, tol);
-    qpip_solver->set_ip_parameters (t, mu, bs_alpha, bs_beta, max_iter, tol_out);
-    qp_sol = qpip_solver;
-}
-
-
 smpc::solver::~solver()
 {
     if (qp_sol != NULL)
@@ -71,7 +54,7 @@ void smpc::solver::enable_fexceptions()
     feenableexcept(
             FE_ALL_EXCEPT &
             // ignore precision loss due to rounding
-            !FE_INEXACT);
+            ~FE_INEXACT);
 #endif
 }
 

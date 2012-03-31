@@ -48,7 +48,7 @@ qp_solver::qp_solver(
 /**
  * @brief Generates an initial feasible point. 
  * First we perform a change of variable to @ref pX_tilde "X_tilde"
- * generate a feasible point, and then we go back to @ref pX_bar "X_bar".
+ * and then generate a feasible point.
  *
  * @param[in] x_coord x coordinates of points satisfying constraints
  * @param[in] y_coord y coordinates of points satisfying constraints
@@ -113,14 +113,5 @@ void qp_solver::form_init_fp (
         prev_state = &X[SMPC_NUM_STATE_VAR*i];
         cur_state = &X[SMPC_NUM_STATE_VAR*(i+1)];
         control = &control[SMPC_NUM_CONTROL_VAR];
-    }
-
-
-    // go back to bar states
-    cur_state = X;
-    for (int i=0; i<N; i++)
-    {
-        state_handling::tilde_to_bar (spar[i].sin, spar[i].cos, cur_state);
-        cur_state = &cur_state[SMPC_NUM_STATE_VAR];
     }
 }

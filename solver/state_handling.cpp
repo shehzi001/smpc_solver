@@ -21,35 +21,6 @@
 namespace state_handling
 {
     /**
-     * @brief Converts state from @ref pX_tilde "X_tilde" to @ref pX_bar "X_bar".
-     *
-     * @param[in] sinA sin of the rotation angle.
-     * @param[in] cosA cos of the rotation angle.
-     * @param[in,out] state the state (@ref pX_tilde "X_tilde").
-     */
-    void tilde_to_bar (const double sinA, const double cosA, double *state)
-    {
-        double tmp =  cosA*state[0] + sinA*state[3];
-        state[3]   = -sinA*state[0] + cosA*state[3];
-        state[0]   = tmp;
-    }
-
-    /**
-     * @brief Converts state from @ref pX_tilde "X_tilde" to @ref pX_bar "X_bar".
-     *
-     * @param[in] sinA sin of the rotation angle.
-     * @param[in] cosA cos of the rotation angle.
-     * @param[in,out] state the state (@ref pX_bar "X_bar").
-     */
-    void bar_to_tilde (const double sinA, const double cosA, double *state)
-    {
-        double tmp = cosA*state[0] - sinA*state[3];
-        state[3]   = sinA*state[0] + cosA*state[3];
-        state[0]   = tmp;
-    }
-
-
-    /**
      * @brief Converts state from @ref pX_tilde "X_tilde" to original variables.
      *
      * @param[in] h @ref ph "hCoM/gravity".
@@ -98,8 +69,6 @@ namespace state_handling
         {
             state[i] = X[index*SMPC_NUM_STATE_VAR + i];
         }
-
-        state_handling::bar_to_tilde (sp.spar[index].sin, sp.spar[index].cos, state);
     }
 
 

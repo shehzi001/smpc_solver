@@ -11,10 +11,13 @@
  * INCLUDES 
  ****************************************/
 
+#include <vector>
+
 #include "smpc_common.h"
 #include "matrix_E.h"
 #include "matrix_ecL_as.h"
 #include "problem_param.h"
+#include "constraint.h"
 
 
 /****************************************
@@ -39,20 +42,20 @@ class chol_solve_as
 
         void solve(const problem_parameters&, const double *, const double *, double *);
 
-        void up_resolve(const problem_parameters&, const double *, const int, const int *, const double *, double *);
+        void up_resolve(const problem_parameters&, const double *, const std::vector<constraint>&, const int, const int *, const double *, double *);
 
         double * get_lambda(const problem_parameters&);
-        void down_resolve(const problem_parameters&, const double *, const int, const int *, const int, const double *, double *);
+        void down_resolve(const problem_parameters&, const double *, const std::vector<constraint>&, const int, const int *, const int, const double *, double *);
 
 
     private:
-        void update (const problem_parameters&, const int, const int *);
-        void update_z (const problem_parameters&, const double *, const int, const int *, const double *);
+        void update (const problem_parameters&, const constraint&, const int, const int);
+        void update_z (const problem_parameters&, const double *, const constraint&, const int, const int, const double *);
         void downdate(const problem_parameters&, const int, const int, const double *);
 
-        void resolve (const problem_parameters&, const double *, const int, const int *, const double *, double *);
+        void resolve (const problem_parameters&, const double *, const std::vector<constraint>&, const int, const int *, const double *, double *);
 
-        void form_sa_row(const problem_parameters&, const int, const int, double *);
+        void form_sa_row(const problem_parameters&, const constraint&, const int, const int, double *);
 
 
 // ----------------------------------------------

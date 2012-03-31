@@ -31,8 +31,7 @@
  * @par
  * - Sources: http://github.com/asherikov/smpc_solver
  * - Documentation: http://asherikov.github.com/smpc_solver/index.html
- *
- * \n
+ * \n\n
  *
  *
  * @section MainIntro Introduction
@@ -95,8 +94,7 @@
  * - @ref gAPI 
  * - @ref gWMG_API
  * - @ref pDemo "A simple demo"
- *
- * \n
+ * \n\n
  *
  *
  * @section MainFormulas Derivations and algorithms
@@ -132,17 +130,15 @@
  *          - @ref pIPSchur
  *      - @ref pIPImplementation
  *          - @ref pIPChol
+ * \n\n
  *
- * \n
- *
- * @section MainSrcDocs Internal implementation of the libraries
+ * @section MainSrcDocs Documentation extracted from the sources
  * @par
  * - @ref gINTERNALS
  *      - @ref gAS
  *      - @ref gIP
  * - @ref gWMG_INTERNALS
- *
- * \n
+ * \n\n
  *
  * @section MainNotes Important notes
  * @todo The library is not thoroughly tested with variable height of CoM.
@@ -730,7 +726,7 @@
     (due to the special structure of 
     @f$ \tilde{\mbm{Q}}^{-1} @f$ and 
     @f$ \bar{\mbm{R}}_i @f$), 
-    this is not true if logarithmic barrier is added to the objective see '@ref pIPSchur'.
+    this is not true if logarithmic barrier is added to the objective see "@ref pSchurIP".
 
     @f$\\
       \tilde{\mbm{E}}_u\mbm{H}_u^{-1}\tilde{\mbm{E}}_u^T =
@@ -800,7 +796,6 @@
 
 /**
  * @page pCholesky Cholesky decomposition of Schur complement
- 
     Once Schur complement is formed we can use Cholesky decomposition
     @f$\mbm{S} = \mbm{L}\mbm{L}^T@f$.
     to obtain Langrange multipliers.

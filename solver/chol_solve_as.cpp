@@ -65,58 +65,38 @@ chol_solve_as::~chol_solve_as()
  *
  * @param[in] ppar parameters
  * @param[in] ic_num number of constraint, for example 5 if 4 are already added 
- * @param[in] var_num number of constrained variable
+ * @param[in] state_num number of constrained state
  * @param[out] row 's_a' row
  */
 void chol_solve_as::form_sa_row(
         const problem_parameters& ppar, 
-        const int ic_num, 
-        const int var_num, 
+        const constraint& c,
+        const int ic_len, 
+        const int ic_ind,
         double *row)
 {
-    double aiH = ppar.i2Q[0]; // a'*inv(H) = a'*inv(H)*a
-    int state_num = var_num / 2; // number of state in the preview window
-    int first_num = state_num * SMPC_NUM_STATE_VAR; // first !=0 element
-    double aiHcosA;
-    double aiHsinA;
+    double i2H = ppar.i2Q[0]; // a'*inv(H) = a'*inv(H)*a
+    int first_num = c.ind; // first !=0 element
 
 
     // reset memory
-    memset(row, 0, (SMPC_NUM_STATE_VAR * ppar.N + ic_num) * sizeof(double));
+    memset(row, 0, ic_len * sizeof(double));
 
-    aiHcosA = aiH * ppar.spar[state_num].cos;
-    aiHsinA = aiH * ppar.spar[state_num].sin;
 
-    // compute elements of 'a'
-    if (var_num%2 == 0)   // constraint on z_x
+    // a * iH * -I
+    row[first_num] = -i2H * c.coef_x;
+    row[first_num + 3] = -i2H * c.coef_y;
+
+    if (ic_ind/2 != ppar.N-1)
     {
-        // a * -R
-        row[first_num] = -aiHcosA;
-        row[first_num + 3] = -aiHsinA;
-
-        // a * A'*R'
-        if (state_num != ppar.N-1)
-        {
-            row[first_num + 6] = aiHcosA;
-            row[first_num + 9] = aiHsinA;
-        }
-    }
-    else  // constraint on z_y
-    {   
-        // a * -R
-        row[first_num] = aiHsinA;
-        row[first_num + 3] = -aiHcosA;
-
-        // a * A'*R'
-        if (state_num != ppar.N-1)
-        {
-            row[first_num + 6] = -aiHsinA;
-            row[first_num + 9] = aiHcosA;
-        }
+        // a * iH * A'
+        row[first_num + 6] = i2H * c.coef_x;
+        row[first_num + 9] = i2H * c.coef_y;
     }
 
     // initialize the last element in the row
-    row[ic_num + ppar.N*SMPC_NUM_STATE_VAR] = aiH;
+    // coef_x^2 + coef_y^2 = 1, since they are row in a rotation matrix
+    row[ic_len] = i2H;
 }
 
 
@@ -131,7 +111,7 @@ void chol_solve_as::form_sa_row(
  */
 void chol_solve_as::solve(
         const problem_parameters& ppar, 
-        const double *iHg,
+        const double *i2Hg,
         const double *x, 
         double *dx)
 {
@@ -151,7 +131,7 @@ void chol_solve_as::solve(
     }
     for (i = 0; i < 2*ppar.N; i++)
     {
-        XiHg[i*3] -= iHg[i];
+        XiHg[i*3] -= i2Hg[i];
     }
 
     // obtain s = E * x;
@@ -202,14 +182,19 @@ void chol_solve_as::solve(
 void chol_solve_as::up_resolve(
         const problem_parameters& ppar, 
         const double *iHg,
+        const std::vector <constraint>& constraints,
         const int nW, 
         const int *W, 
         const double *x, 
         double *dx)
 {
-    update (ppar, nW, W);
-    update_z (ppar, iHg, nW, W, x);
-    resolve (ppar, iHg, nW, W, x, dx);
+    int ic_num = nW-1;
+    int ic_ind = W[ic_num];
+    constraint c = constraints[ic_ind];
+
+    update (ppar, c, ic_num, ic_ind);
+    update_z (ppar, iHg, c, ic_num, ic_ind, x);
+    resolve (ppar, iHg, constraints, nW, W, x, dx);
 }
 
 
@@ -218,14 +203,17 @@ void chol_solve_as::up_resolve(
  * '@ref pCholUpAlg'.
  *
  * @param[in] ppar parameters.
- * @param[in] nW number of added inequality constraints + 1.
+ * @param[in] ic_num index of added constraint in W
  * @param[in] W indexes of added inequality constraints + one index to be added.
  */
-void chol_solve_as::update (const problem_parameters& ppar, const int nW, const int *W)
+void chol_solve_as::update (
+        const problem_parameters& ppar, 
+        const constraint& c,
+        const int ic_num, 
+        const int ic_ind)
 {
     int i, j, k;
 
-    int ic_num = nW-1; // index of added constraint in W
     double *new_row = icL[ic_num]; // current row in icL
     // trailing elements of new_row corresponding to active constraints
     double *new_row_end = &new_row[ppar.N*SMPC_NUM_STATE_VAR]; 
@@ -233,9 +221,9 @@ void chol_solve_as::update (const problem_parameters& ppar, const int nW, const 
     int last_num = ic_num + ppar.N*SMPC_NUM_STATE_VAR; // the last !=0 element
 
 
-
     // form row 'a' in the current row of icL
-    form_sa_row(ppar, ic_num, W[ic_num], new_row);
+    form_sa_row(ppar, c, last_num, ic_ind, new_row);
+
 
     // update elements starting from the first non-zero
     // element in the row to SMPC_NUM_STATE_VAR * N (size of ecL)
@@ -243,7 +231,7 @@ void chol_solve_as::update (const problem_parameters& ppar, const int nW, const 
     // in a separate loop
     // each number in row 'a' causes update of only 3 elements following
     // it, they can be 1,2,6; 1,5,6; 4,5,6
-    for(i = W[ic_num]/2; i < ppar.N; i++)
+    for(i = ic_ind/2; i < ppar.N; i++)
     {                                  
         // variables corresponding to x and y are computed using the same matrices
         for (k = 0; k < 2; k++)
@@ -319,28 +307,31 @@ void chol_solve_as::update (const problem_parameters& ppar, const int nW, const 
  *
  * @param[in] ppar   parameters.
  * @param[in] iHg   inverted hessian * g.
- * @param[in] nW    number of added constrains.
+ * @param[in] nW    number of added constraints.
  * @param[in] W     indicies of added constraints.
  * @param[in] x     initial guess.
  */
 void chol_solve_as::update_z (
         const problem_parameters& ppar, 
-        const double *iHg,
-        const int nW, 
-        const int *W, 
+        const double *i2Hg,
+        const constraint& c,
+        const int ic_num, 
+        const int ic_ind, 
         const double *x)
 {
-    int ic_num = nW-1; // index of added constraint in W
     // update lagrange multipliers
     int zind = ppar.N*SMPC_NUM_STATE_VAR + ic_num;
     // sn
-    double zn = -iHg[W[ic_num]] - x[W[ic_num]*3];
+    int first_num = c.ind; // first !=0 element
+    int i2Hg_ind = 2 * first_num / SMPC_NUM_STATE_VAR;
+
+    double zn = -(i2Hg[i2Hg_ind] + x[first_num]) * c.coef_x
+                -(i2Hg[i2Hg_ind+1] + x[first_num+3]) * c.coef_y;
 
     int i;
-    int first_nz_el = W[ic_num]/2 * SMPC_NUM_STATE_VAR;
 
     // zn
-    for (i = 0; i < first_nz_el; i++)
+    for (i = 0; i < first_num; i++)
     {
         nu[i] = z[i];
     }
@@ -369,6 +360,7 @@ void chol_solve_as::update_z (
 void chol_solve_as::resolve (
         const problem_parameters& ppar, 
         const double *iHg,
+        const std::vector <constraint>& constraints,
         const int nW, 
         const int *W, 
         const double *x, 
@@ -421,7 +413,9 @@ void chol_solve_as::resolve (
     double *lambda = &nu[ppar.N*SMPC_NUM_STATE_VAR];
     for (i = 0; i < nW; i++)
     {
-        dx[W[i]*3] -= i2Q[0] * lambda[i];
+        int first_num = constraints[W[i]].ind;
+        dx[first_num]   -= i2Q[0] * constraints[W[i]].coef_x * lambda[i];
+        dx[first_num+3] -= i2Q[0] * constraints[W[i]].coef_y * lambda[i];
     }
 }
 
@@ -444,6 +438,7 @@ void chol_solve_as::resolve (
 void chol_solve_as::down_resolve(
         const problem_parameters& ppar, 
         const double *iHg,
+        const std::vector <constraint>& constraints,
         const int nW, 
         const int *W, 
         const int ind_exclude, 
@@ -494,7 +489,7 @@ void chol_solve_as::down_resolve(
     }
 
 
-    resolve (ppar, iHg, nW, W, x, dx);
+    resolve (ppar, iHg, constraints, nW, W, x, dx);
 }
 
 

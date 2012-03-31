@@ -11,32 +11,13 @@
 #include "qp_as.h"
 #include "state_handling.h"
 
+#include <cmath> //cos,sin
+
+
 
 /****************************************
  * FUNCTIONS
  ****************************************/
-//==============================================
-// bound
-/**
- * @brief Set parameters of the bound
- *
- * @param[in] var_num_ index of variable in the vector of states
- * @param[in] lb_ lower bound
- * @param[in] ub_ upper bound
- * @param[in] active activity of the bound
- */
-void bound::set(const int var_num_, const double lb_, const double ub_, const bool active)
-{
-    var_num = var_num_;
-    lb = lb_;
-    ub = ub_;
-    isActive = active;
-}
-
-
-
-//==============================================
-// qp_as
 
 /** @brief Constructor: initialization of the constant parameters
 
@@ -63,7 +44,7 @@ qp_as::qp_as(
     W = new int[2*N];
     W_sign = new int[2*N];
 
-    Bounds.resize(2*N);
+    constraints.resize(2*N);
 }
 
 
@@ -89,8 +70,8 @@ qp_as::~qp_as()
     @param[in] angle Rotation angle for each state in the preview window
     @param[in] zref_x reference values of z_x
     @param[in] zref_y reference values of z_y
-    @param[in] lb array of lower bounds for z_x and z_y
-    @param[in] ub array of upper bounds for z_x and z_y
+    @param[in] lb array of lower constraints for z_x and z_y
+    @param[in] ub array of upper constraints for z_x and z_y
 */
 void qp_as::set_parameters(
         const double* T_, 
@@ -105,9 +86,9 @@ void qp_as::set_parameters(
     nW = 0;
 
     h_initial = h_initial_;
-    set_state_parameters (T_, h_, h_initial_, angle);
+    set_state_parameters (T_, h_, h_initial_);
     form_iHg (zref_x, zref_y);
-    form_bounds(lb, ub);
+    form_constraints(lb, ub, angle);
 }
 
 
@@ -120,49 +101,51 @@ void qp_as::set_parameters(
  */
 void qp_as::form_iHg(const double *zref_x, const double *zref_y)
 {
-    double p0, p1;
-    double cosA, sinA;
-
     for (int i = 0; i < N; i++)
     {
-        cosA = spar[i].cos;
-        sinA = spar[i].sin;
-
-        // zref
-        p0 = zref_x[i];
-        p1 = zref_y[i];
-
-        // inv (2*H) * R' * Cp' * zref
-        iHg[i*2] =     -i2Q[0] * (cosA*p0 + sinA*p1)*gain_beta;
-        iHg[i*2 + 1] = -i2Q[0] * (-sinA*p0 + cosA*p1)*gain_beta; 
+        // inv (2*H) * Cp' * zref
+        iHg[i*2] =     -i2Q[0] * zref_x[i] * gain_beta;
+        iHg[i*2 + 1] = -i2Q[0] * zref_y[i] * gain_beta; 
     }
 }
 
 
 
 /**
- * @brief Forms the upper and lower bounds.
+ * @brief Forms the upper and lower constraints.
  *
- * @param[in] lb array of lower bounds for z
- * @param[in] ub array of upper bounds for z
+ * @param[in] lb array of lower constraints for z
+ * @param[in] ub array of upper constraints for z
+ * @param[in] angle Rotation angle for each state in the preview window
  */
-void qp_as::form_bounds(const double *lb, const double *ub)
+void qp_as::form_constraints(const double *lb, const double *ub, const double *angle)
 {
     for (int i=0; i < N; i++)
     {
-        Bounds[i*2].set(SMPC_NUM_STATE_VAR*i, lb[i*2], ub[i*2], false);
-        Bounds[i*2+1].set(SMPC_NUM_STATE_VAR*i+3, lb[i*2+1], ub[i*2+1], false);
+        double cosR = cos(angle[i]);
+        double sinR = sin(angle[i]);
+
+        constraints[i*2].set(
+                SMPC_NUM_STATE_VAR*i, 
+                cosR, sinR, 
+                lb[i*2], ub[i*2], 
+                false);
+        constraints[i*2+1].set(
+                SMPC_NUM_STATE_VAR*i, 
+                -sinR, cosR, 
+                lb[i*2+1], ub[i*2+1], 
+                false);
     }
 }
 
 
 
 /**
- * @brief Checks for blocking bounds.
+ * @brief Checks for blocking constraints.
  *
  * @return sequential number of constraint to be added, -1 if no constraints.
  */
-int qp_as::check_blocking_bounds()
+int qp_as::check_blocking_constraints()
 {
     alpha = 1;
 
@@ -175,27 +158,34 @@ int qp_as::check_blocking_bounds()
         // Check only inactive constraints for violation. 
         // The constraints in the working set will not be violated regardless of 
         // the depth of descent
-        if (!Bounds[i].isActive)
+        if (!constraints[i].isActive)
         {
-            int ind = Bounds[i].var_num;
-            int sign = 1;
-            double t = 1;
+            int ind = constraints[i].ind;
 
-            if ( dX[ind] < -tol )
-            {
-                t = (Bounds[i].lb - X[ind])/dX[ind];
-                sign = -1;
-            }
-            else if ( dX[ind] > tol ) 
-            {
-                t = (Bounds[i].ub - X[ind])/dX[ind];
-            }
+            double coef_x = constraints[i].coef_x;
+            double coef_y = constraints[i].coef_y;
+            double constr = X[ind]*coef_x + X[ind+3]*coef_y;
+            double d_constr = dX[ind]*coef_x + dX[ind+3]*coef_y;
 
-            if (t < alpha)
+            if ( d_constr < -tol )
             {
-                alpha = t;
-                activated_var_num = i;
-                W_sign[nW] = sign;
+                double t = (constraints[i].lb - constr)/d_constr;
+                if (t < alpha)
+                {
+                    alpha = t;
+                    activated_var_num = i;
+                    W_sign[nW] = -1;
+                }
+            }
+            else if ( d_constr > tol )
+            {
+                double t = (constraints[i].ub - constr)/d_constr;
+                if (t < alpha)
+                {
+                    alpha = t;
+                    activated_var_num = i;
+                    W_sign[nW] = 1;
+                }
             }
         }
     }
@@ -203,7 +193,7 @@ int qp_as::check_blocking_bounds()
     {
         W[nW] = activated_var_num;    
         nW++;
-        Bounds[activated_var_num].isActive = true;
+        constraints[activated_var_num].isActive = true;
     }
 
     return (activated_var_num);
@@ -240,7 +230,7 @@ int qp_as::choose_excl_constr (const double *lambda)
 
     if (ind_exclude != -1)
     {
-        Bounds[W[ind_exclude]].isActive = false;
+        constraints[W[ind_exclude]].isActive = false;
         for (int i = ind_exclude; i < nW-1; i++)
         {
             W[i] = W[i + 1];
@@ -265,7 +255,7 @@ int qp_as::solve ()
 
     for (;;)
     {
-        int activated_var_num = check_blocking_bounds();
+        int activated_var_num = check_blocking_constraints();
 
         // Move in the feasible descent direction
         for (int i = 0; i < N*SMPC_NUM_VAR ; i++)
@@ -279,7 +269,7 @@ int qp_as::solve ()
             int ind_exclude = choose_excl_constr (chol.get_lambda(*this));
             if (ind_exclude != -1)
             {
-                chol.down_resolve (*this, iHg, nW, W, ind_exclude, X, dX);
+                chol.down_resolve (*this, iHg, constraints, nW, W, ind_exclude, X, dX);
             }
             else
             {
@@ -289,7 +279,7 @@ int qp_as::solve ()
         else
         {
             // add row to the L matrix and find new dX
-            chol.up_resolve (*this, iHg, nW, W, X, dX);
+            chol.up_resolve (*this, iHg, constraints, nW, W, X, dX);
         }
     }
 

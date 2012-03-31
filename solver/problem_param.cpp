@@ -12,8 +12,6 @@
 
 #include "problem_param.h"
 
-#include <cmath> //cos,sin
-
 /****************************************
  * FUNCTIONS 
  ****************************************/
@@ -50,19 +48,14 @@ problem_parameters::~problem_parameters()
     @param[in] T_ Sampling time (for the moment it is assumed to be constant) [sec.]
     @param[in] h_ Height of the Center of Mass divided by gravity
     @param[in] h_initial current h
-    @param[in] angle Rotation angle for each state in the preview window
  */
 void problem_parameters::set_state_parameters (
     const double* T_,
     const double* h_,
-    const double h_initial,
-    const double* angle)
+    const double h_initial)
 {
     for (int i = 0; i < N; i++)
     {
-        spar[i].cos = cos(angle[i]);
-        spar[i].sin = sin(angle[i]);
-
         if (i == 0)
         {
             spar[i].A6 = T_[i]*T_[i]/2 - (h_[0] - h_initial);

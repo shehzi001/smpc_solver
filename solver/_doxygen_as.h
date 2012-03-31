@@ -13,9 +13,8 @@
 
 /**
  * @page pAddIC Adding inequality constraints
- 
-   This page describes changes in @ref pKKT "KKT system" after addition of
-   inequality constraint to the active set.
+    This page describes changes in @ref pKKT "KKT system" after addition of
+    inequality constraint to the active set.
 
 @section pCholUp Update of Cholesky factor
 
@@ -58,7 +57,7 @@
     \mbm{s_a}^T = 
     \frac{1}{2}
     \left[
-        \mbm{a}^T \mbm{H}^{-1} \mbm{E}^T \quad
+        \mbm{a}^T \mbm{H}^{-1} \mbm{C}^T \quad
         \mbm{a}^T \mbm{H}^{-1} \mbm{A}_W^T \quad
         \mbm{a}^T \mbm{H}^{-1} \mbm{a}
     \right]
@@ -79,9 +78,9 @@
 
     @f$
     \frac{1}{2}
-    \mbm{a}^T \mbm{H}^{-1} \mbm{E}^T 
+    \mbm{a}^T \mbm{H}^{-1} \mbm{C}^T 
     @f$
-    selects and scales one column of @f$ \mbm{E} @f$, this column corresponds to
+    selects and scales one column of E, this column corresponds to
     ZMP coordinates and can have at most 4 non-zero elements.
 
     The total number of non-zero elements in the new row of Schur complement
@@ -195,10 +194,9 @@ Output:
 
 /**
  * @page pRemoveIC Removing inequality constraints
- *
- *  This page describes changes in @ref pKKT "KKT system" after removal of
- *  inequality constraint from the active set.
- *  \n\n
+    This page describes changes in @ref pKKT "KKT system" after removal of
+    inequality constraint from the active set.
+    \n\n
 
 @section pCholDown Downdate of Cholesky factor
     Imagine, that we have selected an inequality constraint for removal,

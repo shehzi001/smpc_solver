@@ -15,6 +15,7 @@
 #include "smpc_common.h"
 #include "chol_solve_as.h"
 #include "qp_solver.h"
+#include "constraint.h"
 
 #include <vector>
 
@@ -28,32 +29,6 @@ using namespace std;
 
 /// @addtogroup gAS
 /// @{
-
-/** \brief Defines simple bounds associated with variables. */
-class bound
-{
-    public:
-        void set (const int, const double, const double, const bool);
-
-
-        /** Variable number (on which to impose the bounds). */
-        int var_num;
-
-        /** Lower bound. */
-        double lb;
-
-        /** Upper bound. */
-        double ub;
-
-        /** 
-         * If isActive then one of the bounds is in the 
-         * working set.
-         */
-        bool isActive;
-};
-
-
-
 
 /** 
  * @brief Solve a quadratic program with a specific structure. 
@@ -90,8 +65,8 @@ class qp_as : public qp_solver
 
 // functions        
         void form_iHg(const double *, const double *);
-        void form_bounds(const double *, const double *);
-        int check_blocking_bounds();
+        void form_constraints(const double *, const double *, const double *);
+        int check_blocking_constraints();
 
         int choose_excl_constr (const double *);
 
@@ -104,8 +79,7 @@ class qp_as : public qp_solver
 
 
     // active set        
-        /** Working set (contains the indexes of only inequality constraints). It is assumed that
-            the only inequality constraints are simple bounds. See also '@ref pBounds'. */
+        /** Working set (contains the indexes of only inequality constraints). */
         int *W;
 
         /** 
@@ -119,8 +93,8 @@ class qp_as : public qp_solver
             index of the last inequality constraint added to #W. */
         int nW;
 
-        /// Vector of bounds.
-        std::vector <bound> Bounds;
+        /// Vector of constraints.
+        std::vector <constraint> constraints;
 };
 
 ///@}

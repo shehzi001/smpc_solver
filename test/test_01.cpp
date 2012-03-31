@@ -41,6 +41,8 @@ int main(int argc, char **argv)
     init_01 test_01 (test_name);
 
     smpc::solver solver(test_01.wmg->N);
+    solver.enable_fexceptions();
+
 
     double err = 0;
     double max_err = 0;
@@ -93,19 +95,30 @@ int main(int argc, char **argv)
                 double dataref;
 
                 inFile >> dataref;
-                err = abs(test_01.par->X[i] - dataref);
-                if ((i < 6) && (err > max_err_first_state))
+                if (i%3 == 0)
                 {
-                    max_err_first_state = err;
+                    // Test reference data was generated using a variant of the solver 
+                    // with two variable substitutions, and consequently the coordinates
+                    // of ZMP cannot be compared with the current implementation, which
+                    // makes only one variable substitution.
+                    printf("value: % 8e   ref: % 8e   err: -skip-\n", test_01.par->X[i], dataref);
                 }
-                if (err > max_err)
+                else
                 {
-                    max_err = err;
+                    err = abs(test_01.par->X[i] - dataref);
+                    if ((i < 6) && (err > max_err_first_state))
+                    {
+                        max_err_first_state = err;
+                    }
+                    if (err > max_err)
+                    {
+                        max_err = err;
+                    }
+                    printf("value: % 8e   ref: % 8e   err: % 8e\n", test_01.par->X[i], dataref, err);
                 }
-                //printf("value: % 8e   ref: % 8e   err: % 8e\n", test_01.par->X[i], dataref, err);
             }
-            cout << "Max. error (first state, all steps): " << max_err_first_state << endl;
-            cout << "Max. error (all states, all steps): " << max_err << endl;
+            cout << "Max. error (first state, all preview windows): " << max_err_first_state << endl;
+            cout << "Max. error (all states, all preview windows): " << max_err << endl;
             //------------------------------------------------------
         }
     }
