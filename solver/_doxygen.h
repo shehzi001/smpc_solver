@@ -29,13 +29,14 @@
  * - @ref MainSrcDocs
  * - @ref MainNotes
  * @par
- * - Sources: http://github.com/asherikov/smpc_solver
- * - Documentation: http://asherikov.github.com/smpc_solver/index.html
- * \n\n
+ * - <a href="http://github.com/asherikov/smpc_solver/">Sources on GitHub</a>
+ * - <a href="./v1/index.html">Old version of the solver</a>
+ *
+ * \n
  *
  *
  * @section MainIntro Introduction
- * @verbinclude "README"
+ * @verbinclude "README.md"
  * \n
  *
  *
@@ -94,7 +95,8 @@
  * - @ref gAPI 
  * - @ref gWMG_API
  * - @ref pDemo "A simple demo"
- * \n\n
+ *
+ * \n
  *
  *
  * @section MainFormulas Derivations and algorithms
@@ -108,7 +110,7 @@
  *      - @ref pPDModel
  *      - @ref pPDVarSub
  *      - @ref pPDObj
- *      - @ref pPD_EC (example: @ref pExampleEC)
+ *      - @ref pPD_EC
  *      - @ref pPD_IC
  * - @ref pKKT
  * - @ref pInitGuess
@@ -124,21 +126,16 @@
  *      - @ref pDetails 
  *          - @ref pDetMatrices
  *          - @ref pBounds
- * - Interior-point method
- *      - @ref pIP
- *      - @ref pIPSMPC
- *          - @ref pIPSchur
- *      - @ref pIPImplementation
- *          - @ref pIPChol
- * \n\n
  *
- * @section MainSrcDocs Documentation extracted from the sources
+ * \n
+ *
+ * @section MainSrcDocs Internal implementation of the libraries
  * @par
  * - @ref gINTERNALS
  *      - @ref gAS
- *      - @ref gIP
  * - @ref gWMG_INTERNALS
- * \n\n
+ *
+ * \n
  *
  * @section MainNotes Important notes
  * @todo The library is not thoroughly tested with variable height of CoM.
@@ -151,9 +148,6 @@
  * @defgroup gINTERNALS Internal classes, functions and definitions of the solver library
  *
  * @defgroup gAS Active set method
- * @ingroup gINTERNALS
- *
- * @defgroup gIP Interior-point method
  * @ingroup gINTERNALS
  *
  * @defgroup gWMG_API API of the simulation support library
@@ -245,10 +239,10 @@
 \n\n
 
 
-@section pPDVarSub Variable substitutions
+@section pPDVarSub Variable substitution
+    @anchor pX_tilde
 
-@subsection pX_tilde The first substitution
-    After the first variable substitution we get 
+    After the variable substitution we get 
     @f$
     \tilde{\mbm{c}}_{k} = (z_k^x,\dot{c}_k^x,\ddot{c}_k^x,z_k^y,\dot{c}_k^y,\ddot{c}_k^y)
     @f$
@@ -283,31 +277,7 @@
 
     @anchor ph
     Here @f$h = c_k^z/g@f$, i.e. the height of center of mass divided by the 
-    norm of gravitational acceleration;
-
-@subsection pX_bar The second substitution
-    The last substitution rotates the state vector using matrix
-
-    @f$
-    \bar{\mbm{R}}_k =
-    \left[
-      \begin{array}{cccccc} 
-        \cos\theta_k & 0 & 0 & -\sin\theta_k & 0 & 0 \\
-        0 & 1 & 0 & 0 & 0 & 0 \\
-        0 & 0 & 1 & 0 & 0 & 0 \\
-        \sin\theta_k & 0 & 0 & \cos\theta_k & 0 & 0 \\
-        0 & 0 & 0 & 0 & 1 & 0 \\
-        0 & 0 & 0 & 0 & 0 & 1
-      \end{array}
-    \right]. 
-    @f$
-     
-    where @f$\theta_k@f$ is an angle with respect to the world frame.
-
-    @f$
-    \bar{\mbm{c}}_{k} = \bar{\mbm{R}}_k^T \tilde{\mbm{c}}_{k} = 
-    (\bar{z}_k^x,\dot{c}_k^x,\ddot{c}_k^x,\bar{z}_k^y,\dot{c}_k^y,\ddot{c}_k^y)
-    @f$
+    norm of gravitational acceleration.
 \n\n
 
 
@@ -332,18 +302,18 @@
 
 
     @f$
-    \bar{f}(\bar{\mbm{v}}) =
-    \left[\hspace{-0.1cm}\begin{array}{c} \bar{\mbm{v}}_c \\ \mbm{v}_u \end{array}\hspace{-0.1cm}\right]^T
+    \tilde{f}(\tilde{\mbm{v}}) =
+    \left[\hspace{-0.1cm}\begin{array}{c} \tilde{\mbm{v}}_c \\ \mbm{v}_u \end{array}\hspace{-0.1cm}\right]^T
     \left[\hspace{-0.1cm}\begin{array}{cc} \tilde{\mbm{H}}_c & \mbm{0} \\ \mbm{0} & \mbm{H}_u \end{array}\hspace{-0.1cm}\hspace{-0.1cm}\right]
-    \left[\hspace{-0.1cm}\begin{array}{c} \bar{\mbm{v}}_c \\ \mbm{v}_u \end{array}\hspace{-0.1cm}\right] + 
-    \left[\hspace{-0.1cm}\begin{array}{c} \bar{\mbm{v}}_c \\ \mbm{v}_u \end{array}\hspace{-0.1cm}\right]^T
-    \left[\hspace{-0.1cm}\begin{array}{c} \bar{\mbm{g}}_c \\ \mbm{0} \end{array}\hspace{-0.1cm}\right] 
+    \left[\hspace{-0.1cm}\begin{array}{c} \tilde{\mbm{v}}_c \\ \mbm{v}_u \end{array}\hspace{-0.1cm}\right] + 
+    \left[\hspace{-0.1cm}\begin{array}{c} \tilde{\mbm{v}}_c \\ \mbm{v}_u \end{array}\hspace{-0.1cm}\right]^T
+    \left[\hspace{-0.1cm}\begin{array}{c} \tilde{\mbm{g}}_c \\ \mbm{0} \end{array}\hspace{-0.1cm}\right] 
     @f$
 
     where 
 
-    @f$\bar{\mbm{v}}_c @f$ is a column vector containing state vectors and
-    @f$\bar{\mbm{v}}_u @f$ is a column vector containing control inputs.
+    @f$\tilde{\mbm{v}}_c @f$ is a column vector containing state vectors and
+    @f${\mbm{v}}_u @f$ is a column vector containing control inputs.
 
     or
 
@@ -360,14 +330,14 @@
     @f$
     \frac{\beta}{2}\mbm{z}_k^T\mbm{z}_k - \beta\mbm{z}_k^T\mbm{z}^{\mbox{ref}}_k =
 
-    \bar{\mbm{c}}_k^T\frac{\beta}{2}\mbm{C}_p^T\mbm{C}_p\bar{\mbm{c}}_k -
-    \bar{\mbm{c}}_k^T\underbrace{\bar{\mbm{R}}^T_k\beta\mbm{C}_p^T\mbm{z}^{\mbox{ref}}_k}_{\bar{\mbm{q}}_k},  \\
+    \tilde{\mbm{c}}_k^T\frac{\beta}{2}\mbm{C}_p^T\mbm{C}_p\tilde{\mbm{c}}_k -
+    \tilde{\mbm{c}}_k^T\underbrace{\beta\mbm{C}_p^T\mbm{z}^{\mbox{ref}}_k}_{\tilde{\mbm{q}}_k},  \\
 
-    \bar{\mbm{v}}_c = \left[\begin{array}{c} \bar{\mbm{c}}_1 \\ \vdots \\ \bar{\mbm{c}}_N \end{array} \right], \quad
+    \tilde{\mbm{v}}_c = \left[\begin{array}{c} \tilde{\mbm{c}}_1 \\ \vdots \\ \tilde{\mbm{c}}_N \end{array} \right], \quad
 
-    \bar{\mbm{g}}_c = \left[\begin{array}{c} -\bar{\mbm{q}}_1 \\ \vdots \\ -\bar{\mbm{q}}_N \end{array} \right], \quad
+    \tilde{\mbm{g}}_c = \left[\begin{array}{c} -\tilde{\mbm{q}}_1 \\ \vdots \\ -\tilde{\mbm{q}}_N \end{array} \right], \quad
 
-    \bar{\mbm{v}} = \left[\begin{array}{c} \bar{\mbm{v}}_c \\ \mbm{v}_u \end{array} \right]
+    \tilde{\mbm{v}} = \left[\begin{array}{c} \tilde{\mbm{v}}_c \\ \mbm{v}_u \end{array} \right]
     @f$
 
 
@@ -417,49 +387,71 @@
 
 
 @section pPD_EC Equality constraints
-    @f$
-    \bar{\mbm{E}}_c\bar{\mbm{v}}_c + \tilde{\mbm{E}}_u\mbm{v}_u = \bar{\mbm{e}}, 
+
+    The states of the system can be found using equations
+
+    @f$\\
+    \tilde{\mbm{c}}_1 = \tilde{\mbm{A}}_0\tilde{\mbm{c}}_0 + \tilde{\mbm{B}}_0\mbm{u}_0  \\
+    \tilde{\mbm{c}}_2 = \tilde{\mbm{A}}_1\tilde{\mbm{c}}_1 + \tilde{\mbm{B}}_1\mbm{u}_1  \\
+    \dots
     @f$
 
-    where @f$\bar{\mbm{e}} = (-\mbm{A}\bar{\mbm{R}}_0\bar{\mbm{c}}_0, \mbm{0}, \dots, \mbm{0})@f$,
+    From these equations we can build equality constraints
 
     @f$
-      \bar{\mbm{E}}_c =
+    \tilde{\mbm{E}}_c\tilde{\mbm{v}}_c + \tilde{\mbm{E}}_u\mbm{v}_u = \tilde{\mbm{e}}, 
+    @f$
+
+    Where
+
+    @f$\tilde{\mbm{e}} = (-\tilde{\mbm{A}}_0\tilde{\mbm{c}}_0, \mbm{0}, \dots, \mbm{0})@f$,
+
+    @f$
+      \tilde{\mbm{E}}_c =
       \left[
         \begin{array}{cccccc} 
-          -\bar{\mbm{R}}_1    &  \mbm{0}            &  \mbm{0}         & \dots  & \mbm{0}               & \mbm{0}  \\
-           \mbm{A}\bar{\mbm{R}}_1 & -\bar{\mbm{R}}_2    &  \mbm{0}         & \dots  & \mbm{0}               & \mbm{0}  \\
-           \mbm{0}            &  \mbm{A}\bar{\mbm{R}}_2 & -\bar{\mbm{R}}_3 & \dots  & \mbm{0}               & \mbm{0}  \\
-           \vdots             &  \vdots             &  \vdots          & \ddots & \vdots                & \vdots   \\
-           \mbm{0}            &  \mbm{0}            &  \mbm{0}         & \dots  & \mbm{A}\bar{\mbm{R}}_{N-1} & -\bar{\mbm{R}}_N \\
+          -\mbm{I}           &  \mbm{0} &  \mbm{0} & \dots  & \mbm{0}               & \mbm{0}  \\
+           \tilde{\mbm{A}}_0 & -\mbm{I} &  \mbm{0} & \dots  & \mbm{0}               & \mbm{0}  \\
+           \vdots            &  \vdots  &  \vdots  & \ddots & \vdots                & \vdots   \\
+           \mbm{0}           &  \mbm{0} &  \mbm{0} & \dots  & \tilde{\mbm{A}}_{N-1} & -\mbm{I} \\
         \end{array}
       \right], \quad
 
       \tilde{\mbm{E}}_u =
       \left[
         \begin{array}{cccc} 
-          \tilde{\mbm{B}} & \dots  & \mbm{0} \\
+          \tilde{\mbm{B}}_0 & \dots  & \mbm{0} \\
           \vdots     & \ddots & \vdots  \\
-          \mbm{0}    & \dots  & \tilde{\mbm{B}} \\
+          \mbm{0}    & \dots  & \tilde{\mbm{B}}_{N-1} \\
         \end{array}
       \right]. 
     @f$
-
-    See page '@ref pExampleEC' for example.
 \n\n
 
 
 @section pPD_IC Inequality constraints
     @f$
     \left[
-      \begin{array}{cccccc} 
-        -1 & 0 & 0 & 0 & 0 & 0 \\
-        0 & 0 & 0 & -1 & 0 & 0 \\
-        1 & 0 & 0 & 0 & 0 & 0 \\
-        0 & 0 & 0 & 1 & 0 & 0
+      \begin{array}{cc} 
+        -1 & 0  \\
+        0  & -1 \\
+        1  & 0  \\
+        0  & 1  
       \end{array}
-    \right]\bar{\mbm{c}}_k + \mbm{d}_{k} \geq \mbm{0},
+    \right]\mbm{R}^T_k \mbm{C}_p \tilde{\mbm{c}}_k + \mbm{d}_{k} \geq \mbm{0},
     @f$
+
+    Where 
+    @f$
+    \mbm{R}_k =
+    \left[
+      \begin{array}{cc} 
+        \cos\theta_k & -\sin\theta_k \\
+        \sin\theta_k & \cos\theta_k
+      \end{array}
+    \right] 
+    @f$
+    is a rotation matrix for the corresponding rectangular support.
  */
 
 
@@ -533,98 +525,7 @@
     -# since the coordinates of the current and the next ZMP positions are 
     known, we can compute control inputs necessary to change position;
     -# given control inputs and current state we can find the next state;
-    -# if there are more ZMP positions in ZMP profile go to step 1;
-    -# perform variable substitution (rotation) to convert the feasible point
-    to @ref pX_bar "X_bar form".
- */
-
-
-
-/**
- * @page pExampleEC Derivation of the matrix of equality constraints
-    @f$N = 4@f$
-
-    @f$\\
-    \tilde{\mbm{c}}_1 = \mbm{A}\tilde{\mbm{c}}_0 + \tilde{\mbm{B}}\mbm{u}_0,  \\
-    \tilde{\mbm{c}}_2 = \mbm{A}\tilde{\mbm{c}}_1 + \tilde{\mbm{B}}\mbm{u}_1,  \\
-    \tilde{\mbm{c}}_3 = \mbm{A}\tilde{\mbm{c}}_2 + \tilde{\mbm{B}}\mbm{u}_2,  \\
-    \tilde{\mbm{c}}_4 = \mbm{A}\tilde{\mbm{c}}_3 + \tilde{\mbm{B}}\mbm{u}_3,  \\
-    \tilde{\mbm{c}}_5 = \mbm{A}\tilde{\mbm{c}}_4 + \tilde{\mbm{B}}\mbm{u}_4.  
-    @f$
-
-    @f$
-      \mbm{E}_c = 
-      \left[
-        \begin{array}{ccccc} 
-          -\mbm{I}    &  \mbm{0}    &  \mbm{0}  & \mbm{0}    & \mbm{0}  \\
-           \mbm{A} & -\mbm{I}    &  \mbm{0}  & \mbm{0}    & \mbm{0}  \\
-           \mbm{0}    &  \mbm{A} & -\mbm{I}  & \mbm{0}    & \mbm{0}  \\
-           \mbm{0}    &  \mbm{0}    &  \mbm{A}  & -\mbm{I}    & \mbm{0}  \\
-           \mbm{0}    &  \mbm{0}    &  \mbm{0}  & \mbm{A} & -\mbm{I} \\
-        \end{array}
-      \right], \quad
-        
-      \tilde{\mbm{E}}_u = 
-      \left[
-        \begin{array}{ccccc} 
-          \tilde{\mbm{B}} & \mbm{0}    & \mbm{0}    & \mbm{0}   & \mbm{0} \\
-          \mbm{0}    & \tilde{\mbm{B}} & \mbm{0}    & \mbm{0}   & \mbm{0} \\
-          \mbm{0}    & \mbm{0}    & \tilde{\mbm{B}} & \mbm{0}   & \mbm{0} \\
-          \mbm{0}    & \mbm{0}    & \mbm{0}    & \tilde{\mbm{B}} & \mbm{0} \\
-          \mbm{0}    & \mbm{0}    & \mbm{0}    & \mbm{0}  & \tilde{\mbm{B}}\\
-        \end{array}
-      \right], \quad 
-    @f$
-
-    @f$
-      \mbm{e} = 
-      \left[
-        \begin{array}{c}
-          -\mbm{A}\tilde{\mbm{c}}_0 \\ \mbm{0} \\ \mbm{0} \\ \vdots \\ \mbm{0} 
-        \end{array}
-      \right]. 
-    @f$
-
-    @f$\\
-    \bar{\mbm{R}}_1\bar{\mbm{c}}_1 = \mbm{A}\bar{\mbm{R}}_0\bar{\mbm{c}}_0 + \tilde{\mbm{B}}\mbm{u}_0,  \\
-    \bar{\mbm{R}}_2\bar{\mbm{c}}_2 = \mbm{A}\bar{\mbm{R}}_1\bar{\mbm{c}}_1 + \tilde{\mbm{B}}\mbm{u}_1,  \\
-    \bar{\mbm{R}}_3\bar{\mbm{c}}_3 = \mbm{A}\bar{\mbm{R}}_2\bar{\mbm{c}}_2 + \tilde{\mbm{B}}\mbm{u}_2,  \\
-    \bar{\mbm{R}}_4\bar{\mbm{c}}_4 = \mbm{A}\bar{\mbm{R}}_3\bar{\mbm{c}}_3 + \tilde{\mbm{B}}\mbm{u}_3,  \\
-    \bar{\mbm{R}}_5\bar{\mbm{c}}_5 = \mbm{A}\bar{\mbm{R}}_4\bar{\mbm{c}}_4 + \tilde{\mbm{B}}\mbm{u}_4. 
-    @f$
-
-    @f$
-      \bar{\mbm{E}}_c = 
-      \left[
-        \begin{array}{ccccc} 
-          -\bar{\mbm{R}}_1    &  \mbm{0}    &  \mbm{0}  & \mbm{0}    & \mbm{0}  \\
-           \mbm{A}\bar{\mbm{R}}_1 & -\bar{\mbm{R}}_2    &  \mbm{0}  & \mbm{0}    & \mbm{0}  \\
-           \mbm{0}    &  \mbm{A}\bar{\mbm{R}}_2 & -\bar{\mbm{R}}_3  & \mbm{0}    & \mbm{0}  \\
-           \mbm{0}    &  \mbm{0}    &  \mbm{A}\bar{\mbm{R}}_3  & -\bar{\mbm{R}}_4    & \mbm{0}  \\
-           \mbm{0}    &  \mbm{0}    &  \mbm{0}  & \mbm{A}\bar{\mbm{R}}_4 & -\bar{\mbm{R}}_5 \\
-        \end{array}
-      \right], \quad
-        
-      \tilde{\mbm{E}}_u = 
-      \left[
-        \begin{array}{ccccc} 
-          \tilde{\mbm{B}} & \mbm{0}    & \mbm{0}    & \mbm{0}   & \mbm{0} \\
-          \mbm{0}    & \tilde{\mbm{B}} & \mbm{0}    & \mbm{0}   & \mbm{0} \\
-          \mbm{0}    & \mbm{0}    & \tilde{\mbm{B}} & \mbm{0}   & \mbm{0} \\
-          \mbm{0}    & \mbm{0}    & \mbm{0}    & \tilde{\mbm{B}} & \mbm{0} \\
-          \mbm{0}    & \mbm{0}    & \mbm{0}    & \mbm{0}  & \tilde{\mbm{B}}\\
-        \end{array}
-      \right], \quad 
-    @f$
-
-    @f$
-      \mbm{e} = 
-      \left[
-        \begin{array}{c}
-          -\mbm{A}\bar{\mbm{R}}_0\bar{\mbm{c}}_0 \\ \mbm{0} \\ \mbm{0} \\ \vdots \\ \mbm{0} 
-        \end{array}
-      \right]. 
-    @f$
+    -# if there are more ZMP positions in ZMP profile go to step 1.
  */
 
 
@@ -641,7 +542,7 @@
     = \frac{1}{2}\bar{\mbm{E}}_c\tilde{\mbm{H}}_c^{-1}\bar{\mbm{E}}_c^T + \frac{1}{2}\tilde{\mbm{E}}_u\mbm{H}_u^{-1}\tilde{\mbm{E}}_u^T. 
     @f$
 
-    For @f$N = 4@f$ we have.
+    For @f$N = 4@f$ we have
 
     @f$\\
     \tilde{\mbm{H}}_c^{-1}\bar{\mbm{E}}_c^T = 
@@ -657,21 +558,21 @@
       
     \left[
         \begin{array}{ccccc} 
-          -\bar{\mbm{R}}_1^T    &  \bar{\mbm{R}}_1^T\mbm{A}^T    &  \mbm{0}  & \mbm{0}    & \mbm{0}  \\
-           \mbm{0} & -\bar{\mbm{R}}_2^T    &  \bar{\mbm{R}}_2^T\mbm{A}^T  & \mbm{0}    & \mbm{0}  \\
-           \mbm{0}    &  \mbm{0} & -\bar{\mbm{R}}_3^T  & \bar{\mbm{R}}_3^T\mbm{A}^T    & \mbm{0}  \\
-           \mbm{0}    &  \mbm{0}    &  \mbm{0} & -\bar{\mbm{R}}_4^T    & \bar{\mbm{R}}_4^T\mbm{A}^T  \\
-           \mbm{0}    &  \mbm{0}    &  \mbm{0}  & \mbm{0} & -\bar{\mbm{R}}_5^T \\
+          -\mbm{I} &  \tilde{\mbm{A}}^T_1 &  \mbm{0}             & \mbm{0}             & \mbm{0}  \\
+           \mbm{0} & -\mbm{I}             &  \tilde{\mbm{A}}^T_2 & \mbm{0}             & \mbm{0}  \\
+           \mbm{0} &  \mbm{0}             & -\mbm{I}             & \tilde{\mbm{A}}^T_3 & \mbm{0}  \\
+           \mbm{0} &  \mbm{0}             &  \mbm{0}             & -\mbm{I}            & \tilde{\mbm{A}}^T_4  \\
+           \mbm{0} &  \mbm{0}             &  \mbm{0}             & \mbm{0}             & -\mbm{I} \\
         \end{array}
       \right]  \\
 
     = \left[
       \begin{array}{ccccc} 
-        -\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_1^T & \tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_1^T\mbm{A}^T  & \mbm{0}    & \mbm{0}   & \mbm{0} \\
-        \mbm{0}    & -\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_2^T & \tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_2^T\mbm{A}^T    & \mbm{0}   & \mbm{0} \\
-        \mbm{0}    & \mbm{0}    & -\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_3^T & \tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_3^T\mbm{A}^T   & \mbm{0} \\
-        \mbm{0}    & \mbm{0}    & \mbm{0}    & -\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_4^T & \tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_4^T\mbm{A}^T \\
-        \mbm{0}    & \mbm{0}    & \mbm{0}    & \mbm{0}  & -\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_5^T
+        -\tilde{\mbm{Q}}^{-1} & \tilde{\mbm{Q}}^{-1}\tilde{\mbm{A}}^T_1  & \mbm{0}    & \mbm{0}   & \mbm{0} \\
+        \mbm{0}    & -\tilde{\mbm{Q}}^{-1} & \tilde{\mbm{Q}}^{-1}\tilde{\mbm{A}}^T_2    & \mbm{0}   & \mbm{0} \\
+        \mbm{0}    & \mbm{0}    & -\tilde{\mbm{Q}}^{-1} & \tilde{\mbm{Q}}^{-1}\tilde{\mbm{A}}^T_3   & \mbm{0} \\
+        \mbm{0}    & \mbm{0}    & \mbm{0}    & -\tilde{\mbm{Q}}^{-1} & \tilde{\mbm{Q}}^{-1}\tilde{\mbm{A}}^T_4 \\
+        \mbm{0}    & \mbm{0}    & \mbm{0}    & \mbm{0}  & -\tilde{\mbm{Q}}^{-1}
       \end{array}
       \right]
     @f$
@@ -680,63 +581,45 @@
     \bar{\mbm{E}}_c\tilde{\mbm{H}}_c^{-1}\bar{\mbm{E}}_c^T =  \\
     = \left[
         \begin{array}{ccccc} 
-          -\bar{\mbm{R}}_1    &  \mbm{0}    &  \mbm{0}  & \mbm{0}    & \mbm{0}  \\
-           \mbm{A}\bar{\mbm{R}}_1 & -\bar{\mbm{R}}_2    &  \mbm{0}  & \mbm{0}    & \mbm{0}  \\
-           \mbm{0}    &  \mbm{A}\bar{\mbm{R}}_2 & -\bar{\mbm{R}}_3  & \mbm{0}    & \mbm{0}  \\
-           \mbm{0}    &  \mbm{0}    &  \mbm{A}\bar{\mbm{R}}_3  & -\bar{\mbm{R}}_4    & \mbm{0}  \\
-           \mbm{0}    &  \mbm{0}    &  \mbm{0}  & \mbm{A}\bar{\mbm{R}}_4 & -\bar{\mbm{R}}_5 \\
+          -\mbm{I}    &  \mbm{0}    &  \mbm{0}  & \mbm{0}    & \mbm{0}  \\
+           \tilde{\mbm{A}}_1 & -\mbm{I}    &  \mbm{0}  & \mbm{0}    & \mbm{0}  \\
+           \mbm{0}    &  \tilde{\mbm{A}}_2 & -\mbm{I}  & \mbm{0}    & \mbm{0}  \\
+           \mbm{0}    &  \mbm{0}    &  \tilde{\mbm{A}}_3  & -\mbm{I}    & \mbm{0}  \\
+           \mbm{0}    &  \mbm{0}    &  \mbm{0}  & \tilde{\mbm{A}}_4 & -\mbm{I} \\
         \end{array}
       \right]
 
     \left[
       \begin{array}{ccccc} 
-        -\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_1^T & \tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_1^T\mbm{A}^T  & \mbm{0}    & \mbm{0}   & \mbm{0} \\
-        \mbm{0}    & -\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_2^T & \tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_2^T\mbm{A}^T    & \mbm{0}   & \mbm{0} \\
-        \mbm{0}    & \mbm{0}    & -\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_3^T & \tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_3^T\mbm{A}^T   & \mbm{0} \\
-        \mbm{0}    & \mbm{0}    & \mbm{0}    & -\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_4^T & \tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_4^T\mbm{A}^T \\
-        \mbm{0}    & \mbm{0}    & \mbm{0}    & \mbm{0}  & -\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_5^T
+        -\tilde{\mbm{Q}}^{-1} & \tilde{\mbm{Q}}^{-1}\tilde{\mbm{A}}^T_1  & \mbm{0}    & \mbm{0}   & \mbm{0} \\
+        \mbm{0}    & -\tilde{\mbm{Q}}^{-1} & \tilde{\mbm{Q}}^{-1}\tilde{\mbm{A}}^T_2    & \mbm{0}   & \mbm{0} \\
+        \mbm{0}    & \mbm{0}    & -\tilde{\mbm{Q}}^{-1} & \tilde{\mbm{Q}}^{-1}\tilde{\mbm{A}}^T_3   & \mbm{0} \\
+        \mbm{0}    & \mbm{0}    & \mbm{0}    & -\tilde{\mbm{Q}}^{-1} & \tilde{\mbm{Q}}^{-1}\tilde{\mbm{A}}^T_4 \\
+        \mbm{0}    & \mbm{0}    & \mbm{0}    & \mbm{0}  & -\tilde{\mbm{Q}}^{-1}
       \end{array}
-      \right]\\
+      \right]
 
     = \left[
       \begin{array}{ccccc} 
-        \bar{\mbm{R}}_1\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_1^T    &  -\bar{\mbm{R}}_1\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_1^T\mbm{A}^T    &  \mbm{0}  & \mbm{0}    & \mbm{0}  \\
-        -\mbm{A}\bar{\mbm{R}}_1\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_1^T & \mbm{A}\bar{\mbm{R}}_1\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_1^T\mbm{A}^T + \bar{\mbm{R}}_2\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_2^T   &  -\bar{\mbm{R}}_2\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_2^T\mbm{A}^T  & \mbm{0}    & \mbm{0}  \\
-        \mbm{0}    &  -\mbm{A}\bar{\mbm{R}}_2\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_2^T & \mbm{A}\bar{\mbm{R}}_2\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_2^T\mbm{A}^T + \bar{\mbm{R}}_3\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_3^T  & -\bar{\mbm{R}}_3\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_3^T\mbm{A}^T    & \mbm{0}  \\
-        \mbm{0}    &  \mbm{0}    &  -\mbm{A}\bar{\mbm{R}}_3\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_3^T  & \mbm{A}\bar{\mbm{R}}_3\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_3^T\mbm{A}^T + \bar{\mbm{R}}_4\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_4^T  & -\bar{\mbm{R}}_4\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_4^T\mbm{A}^T  \\
-        \mbm{0}    &  \mbm{0}    &  \mbm{0}  & -\mbm{A}\bar{\mbm{R}}_4\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_4^T & \mbm{A}\bar{\mbm{R}}_4\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_4^T\mbm{A}^T + \bar{\mbm{R}}_5\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_5^T
+        \tilde{\mbm{Q}}^{-1}    &  -\tilde{\mbm{Q}}^{-1}\tilde{\mbm{A}}^T_1    &  \mbm{0}  & \mbm{0}    & \mbm{0}  \\
+        -\tilde{\mbm{A}}_1\tilde{\mbm{Q}}^{-1} & \tilde{\mbm{A}}_1\tilde{\mbm{Q}}^{-1}\tilde{\mbm{A}}^T_1 + \tilde{\mbm{Q}}^{-1}   &  -\tilde{\mbm{Q}}^{-1}\tilde{\mbm{A}}^T_2  & \mbm{0}    & \mbm{0}  \\
+        \mbm{0}    &  -\tilde{\mbm{A}}_2\tilde{\mbm{Q}}^{-1} & \tilde{\mbm{A}}_2\tilde{\mbm{Q}}^{-1}\tilde{\mbm{A}}^T_2 + \tilde{\mbm{Q}}^{-1}  & -\tilde{\mbm{Q}}^{-1}\tilde{\mbm{A}}^T_3    & \mbm{0}  \\
+        \mbm{0}    &  \mbm{0}    &  -\tilde{\mbm{A}}_3\tilde{\mbm{Q}}^{-1}  & \tilde{\mbm{A}}_3\tilde{\mbm{Q}}^{-1}\tilde{\mbm{A}}^T_3 + \tilde{\mbm{Q}}^{-1}  & -\tilde{\mbm{Q}}^{-1}\tilde{\mbm{A}}^T_4  \\
+        \mbm{0}    &  \mbm{0}    &  \mbm{0}  & -\tilde{\mbm{A}}_4\tilde{\mbm{Q}}^{-1} & \tilde{\mbm{A}}_4\tilde{\mbm{Q}}^{-1}\tilde{\mbm{A}}^T_4 + \tilde{\mbm{Q}}^{-1}
       \end{array}
-      \right]  \\
-
-    = \left[
-      \begin{array}{ccccc} 
-        \mbm{M}_{11}    &  -\mbm{M}_{11}\mbm{A}^T    &  \mbm{0}  & \mbm{0}    & \mbm{0}  \\
-        -\mbm{A}\mbm{M}_{11} & \mbm{A}\mbm{M}_{11}\mbm{A}^T + \mbm{M}_{22}   &  -\mbm{M}_{22}\mbm{A}^T  & \mbm{0}    & \mbm{0}  \\
-        \mbm{0}    &  -\mbm{A}\mbm{M}_{22} & \mbm{A}\mbm{M}_{22}\mbm{A}^T + \mbm{M}_{33}  & -\mbm{M}_{33}\mbm{A}^T    & \mbm{0}  \\
-        \mbm{0}    &  \mbm{0}    &  -\mbm{A}\mbm{M}_{33}  & \mbm{A}\mbm{M}_{33}\mbm{A}^T + \mbm{M}_{44}  & -\mbm{M}_{44}\mbm{A}^T  \\
-        \mbm{0}    &  \mbm{0}    &  \mbm{0}  & -\mbm{A}\mbm{M}_{44} & \mbm{A}\mbm{M}_{44}\mbm{A}^T + \mbm{M}_{55}
-      \end{array}
-      \right], 
+      \right]
     @f$
 
-    where 
-    @f$ \mbm{M}_{ii} = 
-    \bar{\mbm{R}}_i\tilde{\mbm{Q}}^{-1}\bar{\mbm{R}}_i^T = 
-    \tilde{\mbm{Q}}^{-1}@f$ 
-    (due to the special structure of 
-    @f$ \tilde{\mbm{Q}}^{-1} @f$ and 
-    @f$ \bar{\mbm{R}}_i @f$), 
-    this is not true if logarithmic barrier is added to the objective see "@ref pSchurIP".
 
     @f$\\
       \tilde{\mbm{E}}_u\mbm{H}_u^{-1}\tilde{\mbm{E}}_u^T =
       \left[
         \begin{array}{ccccc} 
-          \tilde{\mbm{B}} & \mbm{0}    & \mbm{0}    & \mbm{0}   & \mbm{0} \\
-          \mbm{0}    & \tilde{\mbm{B}} & \mbm{0}    & \mbm{0}   & \mbm{0} \\
-          \mbm{0}    & \mbm{0}    & \tilde{\mbm{B}} & \mbm{0}   & \mbm{0} \\
-          \mbm{0}    & \mbm{0}    & \mbm{0}    & \tilde{\mbm{B}} & \mbm{0} \\
-          \mbm{0}    & \mbm{0}    & \mbm{0}    & \mbm{0}  & \tilde{\mbm{B}}\\
+          \tilde{\mbm{B}}_0 & \mbm{0}    & \mbm{0}    & \mbm{0}   & \mbm{0} \\
+          \mbm{0}    & \tilde{\mbm{B}}_1 & \mbm{0}    & \mbm{0}   & \mbm{0} \\
+          \mbm{0}    & \mbm{0}    & \tilde{\mbm{B}}_2 & \mbm{0}   & \mbm{0} \\
+          \mbm{0}    & \mbm{0}    & \mbm{0}    & \tilde{\mbm{B}}_3 & \mbm{0} \\
+          \mbm{0}    & \mbm{0}    & \mbm{0}    & \mbm{0}  & \tilde{\mbm{B}}_4\\
         \end{array}
       \right]
       
@@ -752,50 +635,39 @@
         
         \left[
           \begin{array}{ccccc} 
-            \tilde{\mbm{B}}^T & \mbm{0}    & \mbm{0}    & \mbm{0}   & \mbm{0} \\
-            \mbm{0}    & \tilde{\mbm{B}}^T & \mbm{0}    & \mbm{0}   & \mbm{0} \\
-            \mbm{0}    & \mbm{0}    & \tilde{\mbm{B}}^T & \mbm{0}   & \mbm{0} \\
-            \mbm{0}    & \mbm{0}    & \mbm{0}    & \tilde{\mbm{B}}^T & \mbm{0} \\
-            \mbm{0}    & \mbm{0}    & \mbm{0}    & \mbm{0}  & \tilde{\mbm{B}}^T\\
+            \tilde{\mbm{B}}^T_0 & \mbm{0}    & \mbm{0}    & \mbm{0}   & \mbm{0} \\
+            \mbm{0}    & \tilde{\mbm{B}}^T_1 & \mbm{0}    & \mbm{0}   & \mbm{0} \\
+            \mbm{0}    & \mbm{0}    & \tilde{\mbm{B}}^T_2 & \mbm{0}   & \mbm{0} \\
+            \mbm{0}    & \mbm{0}    & \mbm{0}    & \tilde{\mbm{B}}^T_3 & \mbm{0} \\
+            \mbm{0}    & \mbm{0}    & \mbm{0}    & \mbm{0}  & \tilde{\mbm{B}}^T_4\\
           \end{array}
           \right]  \\
         
         =\left[
           \begin{array}{ccccc} 
-            \tilde{\mbm{P}} & \mbm{0}    & \mbm{0}    & \mbm{0}   & \mbm{0} \\
-            \mbm{0}    & \tilde{\mbm{P}} & \mbm{0}    & \mbm{0}   & \mbm{0} \\
-            \mbm{0}    & \mbm{0}    & \tilde{\mbm{P}}  & \mbm{0}   & \mbm{0} \\
-            \mbm{0}    & \mbm{0}    & \mbm{0}    & \tilde{\mbm{P}}  & \mbm{0} \\
-            \mbm{0}    & \mbm{0}    & \mbm{0}    & \mbm{0}  & \tilde{\mbm{P}}\\
+            \tilde{\mbm{P}}_0 & \mbm{0}    & \mbm{0}    & \mbm{0}   & \mbm{0} \\
+            \mbm{0}    & \tilde{\mbm{P}}_1 & \mbm{0}    & \mbm{0}   & \mbm{0} \\
+            \mbm{0}    & \mbm{0}    & \tilde{\mbm{P}}_2  & \mbm{0}   & \mbm{0} \\
+            \mbm{0}    & \mbm{0}    & \mbm{0}    & \tilde{\mbm{P}}_3  & \mbm{0} \\
+            \mbm{0}    & \mbm{0}    & \mbm{0}    & \mbm{0}  & \tilde{\mbm{P}}_4\\
           \end{array}
           \right], 
     @f$
 
     where 
-    @f$\tilde{\mbm{P}} = \tilde{\mbm{B}}\mbm{P}^{-1}\tilde{\mbm{B}}^T@f$.
+    @f$\tilde{\mbm{P}}_k = \tilde{\mbm{B}}_k\mbm{P}^{-1}\tilde{\mbm{B}}^T_k@f$.
 
     @f$\\
-      2\mbm{S}_{11} = \mbm{M}_{11} + \tilde{\mbm{P}},  \\
-      2\mbm{S}_{kk} = \mbm{A}\mbm{M}_{k-1,k-1}\mbm{A}^T + \mbm{M}_{kk} + \tilde{\mbm{P}},  \\
-      2\mbm{S}_{k,k+1} = \mbm{S}_{k+1,k}^T = -\mbm{M}_{kk}\mbm{A}^T. 
+      2\mbm{S}_{11} = \tilde{\mbm{Q}}^{-1} + \tilde{\mbm{P}}_0,  \\
+      2\mbm{S}_{kk} = \mbm{A}_{k-1}\tilde{\mbm{Q}}^{-1}\mbm{A}^T_{k-1} + \tilde{\mbm{Q}}^{-1} + \tilde{\mbm{P}}_{k-1},  \\
+      2\mbm{S}_{k,k+1} = \mbm{S}_{k+1,k}^T = -\tilde{\mbm{Q}}^{-1}\mbm{A}^T_{k}. 
     @f$
-
-    @f$\\
-      2\mbm{S}_{11} = \tilde{\mbm{Q}}^{-1} + \tilde{\mbm{P}},  \\
-      2\mbm{S}_{kk} = \mbm{A}\tilde{\mbm{Q}}^{-1}\mbm{A}^T + \tilde{\mbm{Q}}^{-1} + \tilde{\mbm{P}},  \\
-      2\mbm{S}_{k,k+1} = \mbm{S}_{k+1,k}^T = -\tilde{\mbm{Q}}^{-1}\mbm{A}^T. 
-    @f$
-
-    Hence, the matrix 
-    @f$\mbm{S}@f$ is constant (if 
-    @f$\mbm{A}@f$ and 
-    @f$\mbm{B}@f$ 
-    do not change). 
 */
 
 
 /**
  * @page pCholesky Cholesky decomposition of Schur complement
+ 
     Once Schur complement is formed we can use Cholesky decomposition
     @f$\mbm{S} = \mbm{L}\mbm{L}^T@f$.
     to obtain Langrange multipliers.

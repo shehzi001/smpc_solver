@@ -13,6 +13,7 @@
 
 /**
  * @page pAddIC Adding inequality constraints
+ 
     This page describes changes in @ref pKKT "KKT system" after addition of
     inequality constraint to the active set.
 
@@ -21,7 +22,8 @@
     Let 
     @f$\mbm{a}_i^T@f$ 
     be the normal to the i-th
-    inequality constraint (assumed to be a simple bound). Define the matrix 
+    inequality constraint. It contains two nonzero elements from a row in
+    the respective rotation matrix. Define the matrix 
 
     @f$
     \mbm{C} = \left[\begin{array}{c} \mbm{E} \\ \mbm{A}_{W}\end{array}\right]
@@ -51,13 +53,13 @@
     \right]
     @f$
 
-    In general the last line is
+    In a general case the last line is
 
     @f$
     \mbm{s_a}^T = 
     \frac{1}{2}
     \left[
-        \mbm{a}^T \mbm{H}^{-1} \mbm{C}^T \quad
+        \mbm{a}^T \mbm{H}^{-1} \mbm{E}^T \quad
         \mbm{a}^T \mbm{H}^{-1} \mbm{A}_W^T \quad
         \mbm{a}^T \mbm{H}^{-1} \mbm{a}
     \right]
@@ -68,7 +70,7 @@
     \frac{1}{2}
     \mbm{a}^T \mbm{H}^{-1} \mbm{A}_W^T
     @f$
-    is a vector of zeros.
+    is a vector of zeros since all normals are orthogonal.
     While 
     @f$
     \frac{1}{2}
@@ -76,12 +78,12 @@
     @f$
     is a scalar.
 
+    The last part 
     @f$
     \frac{1}{2}
-    \mbm{a}^T \mbm{H}^{-1} \mbm{C}^T 
+    \mbm{a}^T \mbm{H}^{-1} \mbm{E}^T 
     @f$
-    selects and scales one column of E, this column corresponds to
-    ZMP coordinates and can have at most 4 non-zero elements.
+    has at most 4 non-zero elements.
 
     The total number of non-zero elements in the new row of Schur complement
     is 5 or 3 (for the last state in the preview window).
@@ -152,12 +154,7 @@ Output:
     because 
     @f$\Delta\mbm{x}@f$ 
     is in the null space of the normals to the active constraints (stored in 
-    @f$\mbm{C}@f$). 
-    Hence, given 
-    @f$\mbm{s}@f$, 
-    computing
-    @f$\mbm{s}^{+}@f$ 
-    amounts to performing two multiplications plus one addition (note that
+    @f$\mbm{C}@f$), 
     @f$\mbm{H}^{-1}\mbm{g}@f$ 
     is constant, and 
     @f$\mbm{x}+\alpha\Delta\mbm{x}@f$ 
@@ -194,9 +191,10 @@ Output:
 
 /**
  * @page pRemoveIC Removing inequality constraints
-    This page describes changes in @ref pKKT "KKT system" after removal of
-    inequality constraint from the active set.
-    \n\n
+ *
+ *  This page describes changes in @ref pKKT "KKT system" after removal of
+ *  inequality constraint from the active set.
+ *  \n\n
 
 @section pCholDown Downdate of Cholesky factor
     Imagine, that we have selected an inequality constraint for removal,
@@ -359,36 +357,20 @@ Output:
     \mbm{x} = \left[\begin{array}{c} x_1 \\ x_2 \\ x_3 \\ x_4 \\ x_5 \\ x_6 \end{array}\right].
     @f$
      
-    Suppose that variables @f$x_1@f$ and @f$x_4@f$ have simple bounds (and the rest of the variables are are
+    Suppose that variables @f$x_1@f$ and @f$x_4@f$ are constrained (and the rest of the variables are are
     not subject to inequality constraints), i.e., 
 
     @f$\\
-      lb_1 \leq x_1 \leq ub_1  \\
-      lb_2 \leq x_2 \leq ub_2  
-    @f$
-
-    The above four inequality constraints can be written as
-
-    @f$\\
-    \mbm{a}_1^T\mbm{x} \leq ub_1  \\
-    \mbm{a}_1^T\mbm{x} \geq lb_1  \\
-    \mbm{a}_2^T\mbm{x} \leq ub_2  \\
-    \mbm{a}_2^T\mbm{x} \geq lb_1, 
-    @f$
-
-    where
-
-    @f$\\
-      \mbm{a}_1^T = \left[\begin{array}{cccccc} 1 & 0 & 0 & 0 & 0 & 0 \end{array}\right]  \\
-      \mbm{a}_2^T = \left[\begin{array}{cccccc} 0 & 0 & 0 & 1 & 0 & 0 \end{array}\right]. 
+      lb_1 \leq a_1 x_1 + b_1 x_2 \leq ub_1  \\
+      lb_2 \leq a_2 x_1 + b_2 x_2 \leq ub_2  
     @f$
 
     Note that both 
-    @f$\mbm{a}_1^T\mbm{x} \leq ub_1@f$ 
+    @f$a_1 x_1 + b_1 x_2 \leq ub_1@f$ 
     and 
-    @f$\mbm{a}_1^T\mbm{x} \geq lb_1@f$ 
-    can not be in the working set at the same time (because if we are on one of the bounds we 
-    can not be on the other one).
+    @f$a_1 x_1 + b_1 x_2 \geq lb_1@f$ 
+    cannot be in the working set at the same time (because if we are on one of the bounds we 
+    cannot be on the other one).
 
     @attention Note, that if we do not distinguish lower and upper bounds, Lagrange 
     multipliers can be negative.

@@ -50,12 +50,12 @@ class chol_solve_as
 
     private:
         void update (const problem_parameters&, const constraint&, const int, const int);
-        void update_z (const problem_parameters&, const double *, const constraint&, const int, const int, const double *);
+        void update_z (const problem_parameters&, const double *, const constraint&, const int, const double *);
         void downdate(const problem_parameters&, const int, const int, const double *);
 
         void resolve (const problem_parameters&, const double *, const std::vector<constraint>&, const int, const int *, const double *, double *);
 
-        void form_sa_row(const problem_parameters&, const constraint&, const int, const int, double *);
+        void form_sa_row(const problem_parameters&, const constraint&, const int, double *);
 
 
 // ----------------------------------------------

@@ -20,7 +20,7 @@
 /// @addtogroup gAS
 /// @{
 
-/** \brief Defines simple bounds associated with variables. */
+/** \brief Defines constraints associated with states of the system. */
 class constraint
 {
     public:

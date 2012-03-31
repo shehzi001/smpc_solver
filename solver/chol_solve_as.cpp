@@ -64,15 +64,14 @@ chol_solve_as::~chol_solve_as()
  * @brief Forms row vector 's_a' (@ref pCholUp).
  *
  * @param[in] ppar parameters
- * @param[in] ic_num number of constraint, for example 5 if 4 are already added 
- * @param[in] state_num number of constrained state
+ * @param[in] c activated constraint
+ * @param[in] ic_len the length of new row in L
  * @param[out] row 's_a' row
  */
 void chol_solve_as::form_sa_row(
         const problem_parameters& ppar, 
         const constraint& c,
         const int ic_len, 
-        const int ic_ind,
         double *row)
 {
     double i2H = ppar.i2Q[0]; // a'*inv(H) = a'*inv(H)*a
@@ -87,7 +86,7 @@ void chol_solve_as::form_sa_row(
     row[first_num] = -i2H * c.coef_x;
     row[first_num + 3] = -i2H * c.coef_y;
 
-    if (ic_ind/2 != ppar.N-1)
+    if (first_num/SMPC_NUM_STATE_VAR != ppar.N-1)
     {
         // a * iH * A'
         row[first_num + 6] = i2H * c.coef_x;
@@ -105,7 +104,7 @@ void chol_solve_as::form_sa_row(
  * @brief Determines feasible descent direction.
  *
  * @param[in] ppar   parameters.
- * @param[in] iHg   inverted hessian * g.
+ * @param[in] i2Hg   inverted hessian * g.
  * @param[in] x    initial guess.
  * @param[out] dx   feasible descent direction, must be allocated.
  */
@@ -174,6 +173,7 @@ void chol_solve_as::solve(
  *
  * @param[in] ppar   parameters.
  * @param[in] iHg   inverted hessian * g.
+ * @param[in] constraints the set of constraints
  * @param[in] nW    number of added constrains.
  * @param[in] W     indicies of added constraints.
  * @param[in] x     initial guess.
@@ -192,8 +192,8 @@ void chol_solve_as::up_resolve(
     int ic_ind = W[ic_num];
     constraint c = constraints[ic_ind];
 
-    update (ppar, c, ic_num, ic_ind);
-    update_z (ppar, iHg, c, ic_num, ic_ind, x);
+    update (ppar, c, ic_num, ic_ind/2);
+    update_z (ppar, iHg, c, ic_num, x);
     resolve (ppar, iHg, constraints, nW, W, x, dx);
 }
 
@@ -203,14 +203,15 @@ void chol_solve_as::up_resolve(
  * '@ref pCholUpAlg'.
  *
  * @param[in] ppar parameters.
+ * @param[in] c activated constraint
  * @param[in] ic_num index of added constraint in W
- * @param[in] W indexes of added inequality constraints + one index to be added.
+ * @param[in] state_num number of the state corresponding to the actived constraint
  */
 void chol_solve_as::update (
         const problem_parameters& ppar, 
         const constraint& c,
         const int ic_num, 
-        const int ic_ind)
+        const int state_num)
 {
     int i, j, k;
 
@@ -222,7 +223,7 @@ void chol_solve_as::update (
 
 
     // form row 'a' in the current row of icL
-    form_sa_row(ppar, c, last_num, ic_ind, new_row);
+    form_sa_row(ppar, c, last_num, new_row);
 
 
     // update elements starting from the first non-zero
@@ -231,7 +232,7 @@ void chol_solve_as::update (
     // in a separate loop
     // each number in row 'a' causes update of only 3 elements following
     // it, they can be 1,2,6; 1,5,6; 4,5,6
-    for(i = ic_ind/2; i < ppar.N; i++)
+    for(i = state_num; i < ppar.N; i++)
     {                                  
         // variables corresponding to x and y are computed using the same matrices
         for (k = 0; k < 2; k++)
@@ -305,10 +306,10 @@ void chol_solve_as::update (
 /**
  * @brief Adjust vector '@ref pz "z"' after update.
  *
- * @param[in] ppar   parameters.
- * @param[in] iHg   inverted hessian * g.
- * @param[in] nW    number of added constraints.
- * @param[in] W     indicies of added constraints.
+ * @param[in] ppar  parameters.
+ * @param[in] i2Hg  inverted hessian * g.
+ * @param[in] c     activated constraint
+ * @param[in] ic_num number of added constraint in the active set
  * @param[in] x     initial guess.
  */
 void chol_solve_as::update_z (
@@ -316,7 +317,6 @@ void chol_solve_as::update_z (
         const double *i2Hg,
         const constraint& c,
         const int ic_num, 
-        const int ic_ind, 
         const double *x)
 {
     // update lagrange multipliers
@@ -352,6 +352,7 @@ void chol_solve_as::update_z (
  *
  * @param[in] ppar   parameters.
  * @param[in] iHg   inverted hessian * g.
+ * @param[in] constraints the set of constraints
  * @param[in] nW    number of added constrains.
  * @param[in] W     indicies of added constraints.
  * @param[in] x     initial guess.
@@ -427,7 +428,8 @@ void chol_solve_as::resolve (
  *
  * @param[in] ppar   parameters.
  * @param[in] iHg   inverted hessian * g.
- * @param[in] nW    number of added constrains (without removed constraint).
+ * @param[in] constraints the set of constraints
+ * @param[in] nW    number of added constraints (without removed constraint).
  * @param[in] W     indicies of added constraints (without removed constraint).
  * @param[in] ind_exclude index of excluded constraint.
  * @param[in] x     initial guess.
