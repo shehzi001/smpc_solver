@@ -34,8 +34,8 @@ clean:
 
 copydoc: clean
 	doxygen
-	rm ../smpc_solver_docs/*
-	cp docs/*.html docs/*.png docs/*.css ../smpc_solver_docs/
+	rm -f ../smpc_solver_docs/v1/*
+	cp docs/*.html docs/*.png docs/*.css ../smpc_solver_docs/v1/
 
 # dummy targets
 .PHONY: clean

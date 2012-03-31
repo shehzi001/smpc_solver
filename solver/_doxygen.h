@@ -29,14 +29,13 @@
  * - @ref MainSrcDocs
  * - @ref MainNotes
  * @par
- * - Sources: http://github.com/asherikov/smpc_solver
- * - Documentation: http://asherikov.github.com/smpc_solver/index.html
+ * - <a href="https://github.com/asherikov/smpc_solver/tree/Version_1.x">Sources on GitHub</a>
  *
  * \n
  *
  *
  * @section MainIntro Introduction
- * @verbinclude "README"
+ * @verbinclude "README.md"
  * \n
  *
  *
