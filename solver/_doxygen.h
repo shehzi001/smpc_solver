@@ -17,7 +17,7 @@
 #define DOXYGEN_H
 
 /**
- * @mainpage A sparse MPC solver for walking motion generation.
+ * @mainpage A sparse MPC solver for walking motion generation (old version).
  *
  * @par Contents & links
  * - @ref MainIntro
