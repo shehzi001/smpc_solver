@@ -1677,3 +1677,6 @@ GENERATE_LEGEND        = YES
 # the various graphs.
 
 DOT_CLEANUP            = YES
+
+
+MARKDOWN_SUPPORT       = NO

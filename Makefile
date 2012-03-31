@@ -27,6 +27,7 @@ clean:
 	rm -f docs/*.html
 	rm -f docs/*.png
 	rm -f docs/*.css
+	rm -f docs/*.js
 	rm -f docs/formula.repository
 	rm -Rf build/*
 	rm -f lib/*.a
