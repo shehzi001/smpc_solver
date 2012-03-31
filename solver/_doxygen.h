@@ -19,6 +19,9 @@
 /**
  * @mainpage A sparse MPC solver for walking motion generation (old version).
  *
+ * @attention The development of this version of the solver is frozen, 
+ * documentation for the current version is available <a href="../index.html">here</a>.
+ *
  * @par Contents & links
  * - @ref MainIntro
  * - @ref MainLicense
