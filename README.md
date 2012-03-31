@@ -19,12 +19,10 @@ Tests and demos are placed in 'test' subfolder.
 ## The libraries can be compiled in two ways:
 1. (Recommended) Using cmake:
     * Compilation:
-
-    >    `make cmake`
+    `make cmake`
 
     * Toolchain can be specified in the folowing way:
-
-    >    `make cmake TOOLCHAIN=< path to a toolchain >`
+    `make cmake TOOLCHAIN=< path to a toolchain >`
 
 2. (Does not work on MAC) Using only GNU make:
     * compilation of the libraries: `make`
