@@ -64,8 +64,6 @@ class qp_as : public qp_solver
     private:
 
 // functions        
-        void form_iHg(const double *, const double *);
-        void form_constraints(const double *, const double *, const double *);
         int check_blocking_constraints();
 
         int choose_excl_constr (const double *);
@@ -79,11 +77,11 @@ class qp_as : public qp_solver
 
 
     // active set        
-        /** Working set (contains the indexes of only inequality constraints). */
-        std::vector<active_constraint> active_set;
+        /// A set of active constraints.
+        vector <constraint> active_set;
 
         /// Vector of constraints.
-        std::vector <constraint> constraints;
+        vector <constraint> constraints;
 };
 
 ///@}

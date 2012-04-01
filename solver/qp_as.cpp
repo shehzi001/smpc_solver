@@ -77,55 +77,25 @@ void qp_as::set_parameters(
 {
     h_initial = h_initial_;
     set_state_parameters (T_, h_, h_initial_);
-    form_iHg (zref_x, zref_y);
-    form_constraints(lb, ub, angle);
-}
 
 
-
-/**
- * @brief Forms inv(2*H) * g.
- *
- * @param[in] zref_x reference values of z_x
- * @param[in] zref_y reference values of z_y
- */
-void qp_as::form_iHg(const double *zref_x, const double *zref_y)
-{
-    for (int i = 0; i < N; i++)
-    {
-        // inv (2*H) * Cp' * zref
-        iHg[i*2] =     -i2Q[0] * zref_x[i] * gain_beta;
-        iHg[i*2 + 1] = -i2Q[0] * zref_y[i] * gain_beta; 
-    }
-}
-
-
-
-/**
- * @brief Forms the upper and lower constraints.
- *
- * @param[in] lb array of lower constraints for z
- * @param[in] ub array of upper constraints for z
- * @param[in] angle Rotation angle for each state in the preview window
- */
-void qp_as::form_constraints(const double *lb, const double *ub, const double *angle)
-{
     active_set.clear();
-    for (int i=0; i < N; i++)
+    int cind = 0;
+
+    // form inv(2*H) *g and initialize constraints
+    // inv(2*H) * g  =  inv (2*(beta/2)) * beta * Cp' * zref  =  zref
+    for (int i = 0; i < N; ++i)
     {
         double cosR = cos(angle[i]);
         double sinR = sin(angle[i]);
 
-        constraints[i*2].set(
-                SMPC_NUM_STATE_VAR*i, 
-                cosR, sinR, 
-                lb[i*2], ub[i*2], 
-                false);
-        constraints[i*2+1].set(
-                SMPC_NUM_STATE_VAR*i, 
-                -sinR, cosR, 
-                lb[i*2+1], ub[i*2+1], 
-                false);
+        constraints[cind].set(cind, cosR, sinR, lb[cind], ub[cind], false);
+        iHg[cind] = -zref_x[i];
+        ++cind;
+
+        constraints[cind].set(cind, -sinR, cosR, lb[cind], ub[cind], false);
+        iHg[cind] = -zref_y[i]; 
+        ++cind;
     }
 }
 
@@ -181,8 +151,9 @@ int qp_as::check_blocking_constraints()
     }
     if (activated_var_num != -1)
     {
-        active_set.push_back(active_constraint(activated_var_num, sign));
+        constraints[activated_var_num].sign = sign;
         constraints[activated_var_num].isActive = true;
+        active_set.push_back(constraints[activated_var_num]);
     }
 
     return (activated_var_num);
@@ -219,8 +190,8 @@ int qp_as::choose_excl_constr (const double *lambda)
 
     if (ind_exclude != -1)
     {
-        constraints[active_set[ind_exclude].ind].isActive = false;
         active_set.erase(active_set.begin()+ind_exclude);
+        constraints[ind_exclude].isActive = false;
     }
 
     return (ind_exclude);
@@ -253,7 +224,7 @@ int qp_as::solve ()
             int ind_exclude = choose_excl_constr (chol.get_lambda(*this));
             if (ind_exclude != -1)
             {
-                chol.down_resolve (*this, iHg, constraints, active_set, ind_exclude, X, dX);
+                chol.down_resolve (*this, iHg, active_set, ind_exclude, X, dX);
             }
             else
             {
@@ -263,7 +234,7 @@ int qp_as::solve ()
         else
         {
             // add row to the L matrix and find new dX
-            chol.up_resolve (*this, iHg, constraints, active_set, X, dX);
+            chol.up_resolve (*this, iHg, active_set, X, dX);
         }
     }
 

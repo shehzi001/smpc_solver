@@ -173,25 +173,22 @@ void chol_solve_as::solve(
  *
  * @param[in] ppar   parameters.
  * @param[in] iHg   inverted hessian * g.
- * @param[in] constraints the set of constraints
  * @param[in] x     initial guess.
  * @param[out] dx   feasible descent direction, must be allocated.
  */
 void chol_solve_as::up_resolve(
         const problem_parameters& ppar, 
         const double *iHg,
-        const vector <constraint>& constraints,
-        const vector <active_constraint>& active_set, 
+        const vector <constraint>& active_set, 
         const double *x, 
         double *dx)
 {
     int ic_num = active_set.size()-1;
-    int ic_ind = active_set.back().ind;
-    constraint c = constraints[ic_ind];
+    constraint c = active_set.back();
 
-    update (ppar, c, ic_num, ic_ind/2);
+    update (ppar, c, ic_num);
     update_z (ppar, iHg, c, ic_num, x);
-    resolve (ppar, iHg, constraints, active_set, x, dx);
+    resolve (ppar, iHg, active_set, x, dx);
 }
 
 
@@ -202,13 +199,11 @@ void chol_solve_as::up_resolve(
  * @param[in] ppar parameters.
  * @param[in] c activated constraint
  * @param[in] ic_num index of added constraint in W
- * @param[in] state_num number of the state corresponding to the actived constraint
  */
 void chol_solve_as::update (
         const problem_parameters& ppar, 
         const constraint& c,
-        const int ic_num, 
-        const int state_num)
+        const int ic_num) 
 {
     int i, j, k;
 
@@ -229,7 +224,7 @@ void chol_solve_as::update (
     // in a separate loop
     // each number in row 'a' causes update of only 3 elements following
     // it, they can be 1,2,6; 1,5,6; 4,5,6
-    for(i = state_num; i < ppar.N; i++)
+    for(i = c.cind/2; i < ppar.N; i++)
     {                                  
         // variables corresponding to x and y are computed using the same matrices
         for (k = 0; k < 2; k++)
@@ -349,15 +344,13 @@ void chol_solve_as::update_z (
  *
  * @param[in] ppar   parameters.
  * @param[in] iHg   inverted hessian * g.
- * @param[in] constraints the set of constraints
  * @param[in] x     initial guess.
  * @param[out] dx   feasible descent direction, must be allocated.
  */
 void chol_solve_as::resolve (
         const problem_parameters& ppar, 
         const double *iHg,
-        const vector <constraint>& constraints,
-        const vector <active_constraint>& active_set, 
+        const vector <constraint>& active_set, 
         const double *x, 
         double *dx)
 {
@@ -368,7 +361,7 @@ void chol_solve_as::resolve (
     for (i = nW-1; i >= 0; --i)
     {
         const int last_el_num = i + ppar.N*SMPC_NUM_STATE_VAR;
-        const int ind = active_set[i].ind/2 * SMPC_NUM_STATE_VAR;
+        const int ind = active_set[i].cind/2 * SMPC_NUM_STATE_VAR;
         nu[last_el_num] /= icL[i][last_el_num];
 
         for (int j = ind; j < last_el_num; ++j)
@@ -410,7 +403,7 @@ void chol_solve_as::resolve (
     const double *lambda = get_lambda(ppar);
     for (i = 0; i < nW; ++i)
     {
-        constraint c = constraints[active_set[i].ind];
+        constraint c = active_set[i];
         dx[c.ind]   -= i2Q[0] * c.coef_x * lambda[i];
         dx[c.ind+3] -= i2Q[0] * c.coef_y * lambda[i];
     }
@@ -424,7 +417,6 @@ void chol_solve_as::resolve (
  *
  * @param[in] ppar   parameters.
  * @param[in] iHg   inverted hessian * g.
- * @param[in] constraints the set of constraints
  * @param[in] ind_exclude index of excluded constraint.
  * @param[in] x     initial guess.
  * @param[out] dx   feasible descent direction, must be allocated.
@@ -434,8 +426,7 @@ void chol_solve_as::resolve (
 void chol_solve_as::down_resolve(
         const problem_parameters& ppar, 
         const double *iHg,
-        const vector <constraint>& constraints,
-        const vector <active_constraint>& active_set,
+        const vector <constraint>& active_set,
         const int ind_exclude, 
         const double *x, 
         double *dx)
@@ -485,8 +476,7 @@ void chol_solve_as::down_resolve(
         nu[i] = z[i];
     }
 
-
-    resolve (ppar, iHg, constraints, active_set, x, dx);
+    resolve (ppar, iHg, active_set, x, dx);
 }
 
 
