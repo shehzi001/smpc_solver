@@ -42,10 +42,10 @@ class chol_solve_as
 
         void solve(const problem_parameters&, const double *, const double *, double *);
 
-        void up_resolve(const problem_parameters&, const double *, const std::vector<constraint>&, const int, const int *, const double *, double *);
+        void up_resolve(const problem_parameters&, const double *, const vector<constraint>&, const vector<active_constraint>&, const double *, double *);
 
         double * get_lambda(const problem_parameters&);
-        void down_resolve(const problem_parameters&, const double *, const std::vector<constraint>&, const int, const int *, const int, const double *, double *);
+        void down_resolve(const problem_parameters&, const double *, const vector<constraint>&, const vector<active_constraint>&, const int, const double *, double *);
 
 
     private:
@@ -53,7 +53,7 @@ class chol_solve_as
         void update_z (const problem_parameters&, const double *, const constraint&, const int, const double *);
         void downdate(const problem_parameters&, const int, const int, const double *);
 
-        void resolve (const problem_parameters&, const double *, const std::vector<constraint>&, const int, const int *, const double *, double *);
+        void resolve (const problem_parameters&, const double *, const vector<constraint>&, const vector<active_constraint>&, const double *, double *);
 
         void form_sa_row(const problem_parameters&, const constraint&, const int, double *);
 

@@ -174,27 +174,24 @@ void chol_solve_as::solve(
  * @param[in] ppar   parameters.
  * @param[in] iHg   inverted hessian * g.
  * @param[in] constraints the set of constraints
- * @param[in] nW    number of added constrains.
- * @param[in] W     indicies of added constraints.
  * @param[in] x     initial guess.
  * @param[out] dx   feasible descent direction, must be allocated.
  */
 void chol_solve_as::up_resolve(
         const problem_parameters& ppar, 
         const double *iHg,
-        const std::vector <constraint>& constraints,
-        const int nW, 
-        const int *W, 
+        const vector <constraint>& constraints,
+        const vector <active_constraint>& active_set, 
         const double *x, 
         double *dx)
 {
-    int ic_num = nW-1;
-    int ic_ind = W[ic_num];
+    int ic_num = active_set.size()-1;
+    int ic_ind = active_set.back().ind;
     constraint c = constraints[ic_ind];
 
     update (ppar, c, ic_num, ic_ind/2);
     update_z (ppar, iHg, c, ic_num, x);
-    resolve (ppar, iHg, constraints, nW, W, x, dx);
+    resolve (ppar, iHg, constraints, active_set, x, dx);
 }
 
 
@@ -353,29 +350,28 @@ void chol_solve_as::update_z (
  * @param[in] ppar   parameters.
  * @param[in] iHg   inverted hessian * g.
  * @param[in] constraints the set of constraints
- * @param[in] nW    number of added constrains.
- * @param[in] W     indicies of added constraints.
  * @param[in] x     initial guess.
  * @param[out] dx   feasible descent direction, must be allocated.
  */
 void chol_solve_as::resolve (
         const problem_parameters& ppar, 
         const double *iHg,
-        const std::vector <constraint>& constraints,
-        const int nW, 
-        const int *W, 
+        const vector <constraint>& constraints,
+        const vector <active_constraint>& active_set, 
         const double *x, 
         double *dx)
 {
     int i;
+    const int nW = active_set.size();
 
     // backward substitution for icL
-    for (i = nW-1; i >= 0; i--)
+    for (i = nW-1; i >= 0; --i)
     {
-        int last_el_num = i + ppar.N*SMPC_NUM_STATE_VAR;
+        const int last_el_num = i + ppar.N*SMPC_NUM_STATE_VAR;
+        const int ind = active_set[i].ind/2 * SMPC_NUM_STATE_VAR;
         nu[last_el_num] /= icL[i][last_el_num];
 
-        for (int j = last_el_num - 1; j >= W[i]/2 * SMPC_NUM_STATE_VAR; j--)
+        for (int j = ind; j < last_el_num; ++j)
         {
             nu[j] -= nu[last_el_num] * icL[i][j];
         }
@@ -392,31 +388,31 @@ void chol_solve_as::resolve (
     // dx = -(x + inv(H) * g + inv(H) * E' * nu)
     //            ~~~~~~~~~~            ~~~~~~~
     // dx   -(x +  iHg       + inv(H) *   dx   ) 
-    double i2Q[3] = {ppar.i2Q[0], ppar.i2Q[1], ppar.i2Q[2]};
+    const double i2Q[3] = {ppar.i2Q[0], ppar.i2Q[1], ppar.i2Q[2]};
 
-    for (i = 0; i < ppar.N*SMPC_NUM_STATE_VAR; i++)
+    for (i = 0; i < ppar.N*SMPC_NUM_STATE_VAR; ++i)
     {
         // dx for state variables
         dx[i] = -x[i] - i2Q[i%3] * dx[i];
     }
-    for (; i < ppar.N*SMPC_NUM_VAR; i++)
+    for (; i < ppar.N*SMPC_NUM_VAR; ++i)
     {
         // dx for control variables
         dx[i] = -x[i] - ppar.i2P * dx[i];
     }
-    for (i = 0; i < 2*ppar.N; i++)
+    for (i = 0; i < 2*ppar.N; ++i)
     {
         // dx for state variables
         dx[i*3] -= iHg[i];
     }
 
     // -iH * A(W,:)' * lambda
-    double *lambda = &nu[ppar.N*SMPC_NUM_STATE_VAR];
-    for (i = 0; i < nW; i++)
+    const double *lambda = get_lambda(ppar);
+    for (i = 0; i < nW; ++i)
     {
-        int first_num = constraints[W[i]].ind;
-        dx[first_num]   -= i2Q[0] * constraints[W[i]].coef_x * lambda[i];
-        dx[first_num+3] -= i2Q[0] * constraints[W[i]].coef_y * lambda[i];
+        constraint c = constraints[active_set[i].ind];
+        dx[c.ind]   -= i2Q[0] * c.coef_x * lambda[i];
+        dx[c.ind+3] -= i2Q[0] * c.coef_y * lambda[i];
     }
 }
 
@@ -429,8 +425,6 @@ void chol_solve_as::resolve (
  * @param[in] ppar   parameters.
  * @param[in] iHg   inverted hessian * g.
  * @param[in] constraints the set of constraints
- * @param[in] nW    number of added constraints (without removed constraint).
- * @param[in] W     indicies of added constraints (without removed constraint).
  * @param[in] ind_exclude index of excluded constraint.
  * @param[in] x     initial guess.
  * @param[out] dx   feasible descent direction, must be allocated.
@@ -440,13 +434,14 @@ void chol_solve_as::resolve (
 void chol_solve_as::down_resolve(
         const problem_parameters& ppar, 
         const double *iHg,
-        const std::vector <constraint>& constraints,
-        const int nW, 
-        const int *W, 
+        const vector <constraint>& constraints,
+        const vector <active_constraint>& active_set,
         const int ind_exclude, 
         const double *x, 
         double *dx)
 {
+    const int nW = active_set.size();
+
     // for each element of z affected by removed constraint
     // find a base that stays the same
     double z_tmp = 0;
@@ -491,7 +486,7 @@ void chol_solve_as::down_resolve(
     }
 
 
-    resolve (ppar, iHg, constraints, nW, W, x, dx);
+    resolve (ppar, iHg, constraints, active_set, x, dx);
 }
 
 

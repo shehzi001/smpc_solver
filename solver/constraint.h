@@ -20,6 +20,20 @@
 /// @addtogroup gAS
 /// @{
 
+class active_constraint
+{
+    public:
+        active_constraint (int ind_, int sign_)
+        {
+            ind = ind_;
+            sign = sign_;
+        }
+
+        int ind;
+        int sign;
+};
+
+
 /** \brief Defines constraints associated with states of the system. */
 class constraint
 {

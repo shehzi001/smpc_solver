@@ -80,18 +80,7 @@ class qp_as : public qp_solver
 
     // active set        
         /** Working set (contains the indexes of only inequality constraints). */
-        int *W;
-
-        /** 
-         * Since we do not distinguish lower/upper bounds of active constraints (<= and => 
-         * inequlities are treated in the same way), we have to adjust signs of lagrange 
-         * multipliers before downdate. See also '@ref pBounds'.
-         */
-        int *W_sign;
-
-        /** Number of inequality constraints already included in #W. #W(#nW-1) is the
-            index of the last inequality constraint added to #W. */
-        int nW;
+        std::vector<active_constraint> active_set;
 
         /// Vector of constraints.
         std::vector <constraint> constraints;

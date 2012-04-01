@@ -41,8 +41,6 @@ qp_as::qp_as(
     iHg = new double[2*N];
 
     // there are no inequality constraints in the initial working set (no hot-starting for the moment)
-    W = new int[2*N];
-    W_sign = new int[2*N];
 
     constraints.resize(2*N);
 }
@@ -51,14 +49,8 @@ qp_as::qp_as(
 /** Destructor */
 qp_as::~qp_as()
 {
-    if (W  != NULL)
-        delete W;
-
     if (iHg != NULL)
         delete iHg;
-
-    if (W_sign != NULL)
-        delete W_sign;
 }
 
 
@@ -83,8 +75,6 @@ void qp_as::set_parameters(
         const double* lb,
         const double* ub)
 {
-    nW = 0;
-
     h_initial = h_initial_;
     set_state_parameters (T_, h_, h_initial_);
     form_iHg (zref_x, zref_y);
@@ -120,6 +110,7 @@ void qp_as::form_iHg(const double *zref_x, const double *zref_y)
  */
 void qp_as::form_constraints(const double *lb, const double *ub, const double *angle)
 {
+    active_set.clear();
     for (int i=0; i < N; i++)
     {
         double cosR = cos(angle[i]);
@@ -151,6 +142,7 @@ int qp_as::check_blocking_constraints()
 
     /* Index to include in the working set, -1 if no constraint have to be included. */
     int activated_var_num = -1;
+    int sign = 0;
 
 
     for (int i = 0; i < 2*N; i++)
@@ -160,39 +152,36 @@ int qp_as::check_blocking_constraints()
         // the depth of descent
         if (!constraints[i].isActive)
         {
-            int ind = constraints[i].ind;
+            constraint c = constraints[i];
 
-            double coef_x = constraints[i].coef_x;
-            double coef_y = constraints[i].coef_y;
-            double constr = X[ind]*coef_x + X[ind+3]*coef_y;
-            double d_constr = dX[ind]*coef_x + dX[ind+3]*coef_y;
+            double constr = X[c.ind]*c.coef_x + X[c.ind+3]*c.coef_y;
+            double d_constr = dX[c.ind]*c.coef_x + dX[c.ind+3]*c.coef_y;
 
             if ( d_constr < -tol )
             {
-                double t = (constraints[i].lb - constr)/d_constr;
+                double t = (c.lb - constr)/d_constr;
                 if (t < alpha)
                 {
                     alpha = t;
                     activated_var_num = i;
-                    W_sign[nW] = -1;
+                    sign = -1;
                 }
             }
             else if ( d_constr > tol )
             {
-                double t = (constraints[i].ub - constr)/d_constr;
+                double t = (c.ub - constr)/d_constr;
                 if (t < alpha)
                 {
                     alpha = t;
                     activated_var_num = i;
-                    W_sign[nW] = 1;
+                    sign = 1;
                 }
             }
         }
     }
     if (activated_var_num != -1)
     {
-        W[nW] = activated_var_num;    
-        nW++;
+        active_set.push_back(active_constraint(activated_var_num, sign));
         constraints[activated_var_num].isActive = true;
     }
 
@@ -219,24 +208,19 @@ int qp_as::choose_excl_constr (const double *lambda)
     int ind_exclude = -1;
 
     // find the constraint with the smallest lambda
-    for (int i = 0; i < nW; i++)
+    for (unsigned int i = 0; i < active_set.size(); i++)
     {
-        if (lambda[i] * W_sign[i] < min_lambda)
+        if (lambda[i] * active_set[i].sign < min_lambda)
         {
-            min_lambda = lambda[i] * W_sign[i];
+            min_lambda = lambda[i] * active_set[i].sign;
             ind_exclude = i;
         }
     }
 
     if (ind_exclude != -1)
     {
-        constraints[W[ind_exclude]].isActive = false;
-        for (int i = ind_exclude; i < nW-1; i++)
-        {
-            W[i] = W[i + 1];
-            W_sign[i] = W_sign[i + 1];
-        }
-        nW--;
+        constraints[active_set[ind_exclude].ind].isActive = false;
+        active_set.erase(active_set.begin()+ind_exclude);
     }
 
     return (ind_exclude);
@@ -269,7 +253,7 @@ int qp_as::solve ()
             int ind_exclude = choose_excl_constr (chol.get_lambda(*this));
             if (ind_exclude != -1)
             {
-                chol.down_resolve (*this, iHg, constraints, nW, W, ind_exclude, X, dX);
+                chol.down_resolve (*this, iHg, constraints, active_set, ind_exclude, X, dX);
             }
             else
             {
@@ -279,9 +263,9 @@ int qp_as::solve ()
         else
         {
             // add row to the L matrix and find new dX
-            chol.up_resolve (*this, iHg, constraints, nW, W, X, dX);
+            chol.up_resolve (*this, iHg, constraints, active_set, X, dX);
         }
     }
 
-    return (nW);
+    return (active_set.size());
 }
