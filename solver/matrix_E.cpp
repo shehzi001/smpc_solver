@@ -68,14 +68,15 @@ void matrix_E::form_Ex (const problem_parameters& ppar, const double *x, double 
 
 
 /**
- * @brief Forms E' * x
+ * @brief Forms i2H * E' * x
  *
  * @param[in] ppar parameters.
  * @param[in] x vector x (#SMPC_NUM_STATE_VAR * N).
  * @param[out] result vector E' * nu (#SMPC_NUM_VAR * N)
  */
-void matrix_E::form_ETx (const problem_parameters& ppar, const double *x, double *result)
+void matrix_E::form_i2HETx (const problem_parameters& ppar, const double *x, double *result)
 {
+    double i2Q[3] = {ppar.i2Q[0], ppar.i2Q[1], ppar.i2Q[2]};
     int i;
 
     // a pointer to 6 current elements of result
@@ -91,19 +92,19 @@ void matrix_E::form_ETx (const problem_parameters& ppar, const double *x, double
         double A6 = ppar.spar[i+1].A6;
 
 
-        // result = -I' * nu + A' * x
-        res[0] = -xc[0] +      xcn[0];
-        res[1] = -xc[1] + A3 * xcn[0] +      xcn[1];
-        res[2] = -xc[2] + A6 * xcn[0] + A3 * xcn[1] + xcn[2];
-        res[3] = -xc[3] +      xcn[3];                                                             
-        res[4] = -xc[4] + A3 * xcn[3] +      xcn[4];
-        res[5] = -xc[5] + A6 * xcn[3] + A3 * xcn[4] + xcn[5];
+        // result = i2H * [-I'  A'] * x
+        res[0] = i2Q[0] * (-xc[0] +      xcn[0]);
+        res[1] = i2Q[1] * (-xc[1] + A3 * xcn[0] +      xcn[1]);
+        res[2] = i2Q[2] * (-xc[2] + A6 * xcn[0] + A3 * xcn[1] + xcn[2]);
+        res[3] = i2Q[0] * (-xc[3] +      xcn[3]);
+        res[4] = i2Q[1] * (-xc[4] + A3 * xcn[3] +      xcn[4]);
+        res[5] = i2Q[2] * (-xc[5] + A6 * xcn[3] + A3 * xcn[4] + xcn[5]);
                        
 
-        // result = B' * x
+        // result = i2H * B' * x
         state_parameters stp = ppar.spar[i];
-        control_res[0] = stp.B[0] * xc[0] + stp.B[1] * xc[1] + stp.B[2] * xc[2];
-        control_res[1] = stp.B[0] * xc[3] + stp.B[1] * xc[4] + stp.B[2] * xc[5];
+        control_res[0] = ppar.i2P * (stp.B[0] * xc[0] + stp.B[1] * xc[1] + stp.B[2] * xc[2]);
+        control_res[1] = ppar.i2P * (stp.B[0] * xc[3] + stp.B[1] * xc[4] + stp.B[2] * xc[5]);
 
 
         res = &res[SMPC_NUM_STATE_VAR];
@@ -113,17 +114,17 @@ void matrix_E::form_ETx (const problem_parameters& ppar, const double *x, double
     }
 
 
-    // result = -I' * nu
-    res[0] = -xc[0];
-    res[1] = -xc[1];
-    res[2] = -xc[2];
-    res[3] = -xc[3];
-    res[4] = -xc[4];
-    res[5] = -xc[5];
+    // result = i2H * [-I'  A'] * x
+    res[0] = -i2Q[0] * xc[0];
+    res[1] = -i2Q[1] * xc[1];
+    res[2] = -i2Q[2] * xc[2];
+    res[3] = -i2Q[0] * xc[3];
+    res[4] = -i2Q[1] * xc[4];
+    res[5] = -i2Q[2] * xc[5];
 
 
-    // result = B' * x
+    // result = i2H * B' * x
     state_parameters stp = ppar.spar[i];
-    control_res[0] = stp.B[0] * xc[0] + stp.B[1] * xc[1] + stp.B[2] * xc[2];
-    control_res[1] = stp.B[0] * xc[3] + stp.B[1] * xc[4] + stp.B[2] * xc[5];
+    control_res[0] = ppar.i2P * (stp.B[0] * xc[0] + stp.B[1] * xc[1] + stp.B[2] * xc[2]);
+    control_res[1] = ppar.i2P * (stp.B[0] * xc[3] + stp.B[1] * xc[4] + stp.B[2] * xc[5]);
 }

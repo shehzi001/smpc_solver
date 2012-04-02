@@ -116,7 +116,6 @@ void chol_solve_as::solve(
 {
     double *s_nu = nu;
     int i;
-    double i2Q[3] = {ppar.i2Q[0], ppar.i2Q[1], ppar.i2Q[2]};
 
 
     // generate L
@@ -146,23 +145,18 @@ void chol_solve_as::solve(
     ecL.solve_backward(ppar.N, s_nu);
 
     // E' * nu
-    E.form_ETx (ppar, s_nu, dx);
+    E.form_i2HETx (ppar, s_nu, dx);
 
     
     // dx = -iH*(grad + E'*nu)
     //
     // dx = -(x + inv(H) * g + inv(H) * E' * nu)
-    //        ~~~~~~~~~~~~~~            ~~~~~~~
-    // dx   -(   -XiHg       + inv(H) *   dx   ) 
-    for (i = 0; i < ppar.N*SMPC_NUM_STATE_VAR; i++)
+    //        ~~~~~~~~~~~~~~   ~~~~~~~~~~~~~~~~
+    // dx   -(   -XiHg       +       dx        ) 
+    for (i = 0; i < ppar.N*SMPC_NUM_VAR; i++)
     {
         // dx for state variables
-        dx[i] = XiHg[i] - i2Q[i%3] * dx[i];
-    }
-    for (; i < ppar.N*SMPC_NUM_VAR; i++)
-    {
-        // dx for control variables
-        dx[i] = XiHg[i] - ppar.i2P * dx[i];
+        dx[i] = XiHg[i] - dx[i];
     }
 }
 
@@ -374,24 +368,18 @@ void chol_solve_as::resolve (
 
 
     // E' * nu
-    E.form_ETx (ppar, nu, dx);
+    E.form_i2HETx (ppar, nu, dx);
 
     // dx = -iH*(grad + E'*nu  + A(W,:)'*lambda)
     //
     // dx = -(x + inv(H) * g + inv(H) * E' * nu)
-    //            ~~~~~~~~~~            ~~~~~~~
-    // dx   -(x +  iHg       + inv(H) *   dx   ) 
-    const double i2Q[3] = {ppar.i2Q[0], ppar.i2Q[1], ppar.i2Q[2]};
+    //            ~~~~~~~~~~   ~~~~~~~~~~~~~~~~
+    // dx   -(x +  iHg       +        dx       ) 
 
-    for (i = 0; i < ppar.N*SMPC_NUM_STATE_VAR; ++i)
+    for (i = 0; i < ppar.N*SMPC_NUM_VAR; ++i)
     {
         // dx for state variables
-        dx[i] = -x[i] - i2Q[i%3] * dx[i];
-    }
-    for (; i < ppar.N*SMPC_NUM_VAR; ++i)
-    {
-        // dx for control variables
-        dx[i] = -x[i] - ppar.i2P * dx[i];
+        dx[i] = -x[i] - dx[i];
     }
     for (i = 0; i < 2*ppar.N; ++i)
     {
@@ -401,11 +389,12 @@ void chol_solve_as::resolve (
 
     // -iH * A(W,:)' * lambda
     const double *lambda = get_lambda(ppar);
+    const double i2Q0 = ppar.i2Q[0];
     for (i = 0; i < nW; ++i)
     {
         constraint c = active_set[i];
-        dx[c.ind]   -= i2Q[0] * c.coef_x * lambda[i];
-        dx[c.ind+3] -= i2Q[0] * c.coef_y * lambda[i];
+        dx[c.ind]   -= i2Q0 * c.coef_x * lambda[i];
+        dx[c.ind+3] -= i2Q0 * c.coef_y * lambda[i];
     }
 }
 
