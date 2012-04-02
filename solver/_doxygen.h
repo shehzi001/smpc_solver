@@ -82,7 +82,7 @@
  * - Reference foot -- even when a robot is in double support, we use one foot 
  *   as the reference.
  * - Reference ZMP coordinates -- the objective function contains term, that
- *   tries to minimize the difference between the solution an reference points.
+ *   tries to minimize the difference between the solution and reference points.
  *   This is allows tuning of the solution.
  * 
  * For more information refer to the papers listed in '@ref MainRef'. Also, the

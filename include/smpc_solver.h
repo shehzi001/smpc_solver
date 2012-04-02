@@ -266,37 +266,6 @@ namespace smpc
                     const double tol = 1e-7);
 
 
-            /** @brief Constructor: initialize an interior-point method solver.
-             *
-             * @param[in] N Number of sampling times in a preview window
-             * @param[in] max_iter maximum number of internal loop iterations
-             * @param[in] Alpha Velocity gain
-             * @param[in] Beta Position gain
-             * @param[in] Gamma Jerk gain
-             * @param[in] regularization regularization
-             * @param[in] tol tolerance (internal loop)
-             * @param[in] tol_out tolerance of the outer loop, which resolves
-             *                    the problem with new t (kappa) parameter.
-             * @param[in] t logarithmic barrier parameter
-             * @param[in] mu multiplier of t, >1.
-             * @param[in] bs_alpha backtracking search parameter 0 < alpha < 0.5
-             * @param[in] bs_beta  backtracking search parameter 0 < beta < 1
-             */
-            solver (
-                    const int N, 
-                    const int max_iter, // no default to avoid ambiguity
-                    const double Alpha = 150.0, 
-                    const double Beta = 2000.0, 
-                    const double Gamma = 1.0,
-                    const double regularization = 0.01,
-                    const double tol = 1e-3,
-                    const double tol_out = 1e-2,
-                    const double t = 100,
-                    const double mu = 15,
-                    const double bs_alpha = 0.01,
-                    const double bs_beta = 0.5);
-
-
             ~solver();
 
             // -------------------------------
@@ -304,7 +273,7 @@ namespace smpc
             
             /**
              * @brief Enable floating point exceptions: die rather than processing 
-             *  incorrect data). SIGFPE is sent to the program, when an error occurs.
+             * incorrect data). SIGFPE is sent to the program, when an error occurs.
              * @note If feenableexcept() is not present on the system, the function 
              * does nothing.
              */
@@ -354,7 +323,7 @@ namespace smpc
              * @brief Solve QP problem.
              *
              * @return A negative number on error. Number of activated constraints 
-             *         for active set method and 0 for interior-point method on success.
+             *         for active set method.
              */
             int solve ();
        
