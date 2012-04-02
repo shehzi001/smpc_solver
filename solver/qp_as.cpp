@@ -170,8 +170,7 @@ int qp_as::check_blocking_constraints()
  *  can be removed.
  *
  * @attention If a constraint for removal is selected, then it is 
- * removed from the active set (#W) and the number of constraints
- * in active set (#nW) is decremented.
+ * removed from the active set (#active_set). 
  */
 int qp_as::choose_excl_constr (const double *lambda)
 {

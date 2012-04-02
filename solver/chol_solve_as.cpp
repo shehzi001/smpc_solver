@@ -167,6 +167,7 @@ void chol_solve_as::solve(
  *
  * @param[in] ppar   parameters.
  * @param[in] iHg   inverted hessian * g.
+ * @param[in] active_set a vector of active constraints.
  * @param[in] x     initial guess.
  * @param[out] dx   feasible descent direction, must be allocated.
  */
@@ -338,6 +339,7 @@ void chol_solve_as::update_z (
  *
  * @param[in] ppar   parameters.
  * @param[in] iHg   inverted hessian * g.
+ * @param[in] active_set a vector of active constraints.
  * @param[in] x     initial guess.
  * @param[out] dx   feasible descent direction, must be allocated.
  */
@@ -406,6 +408,7 @@ void chol_solve_as::resolve (
  *
  * @param[in] ppar   parameters.
  * @param[in] iHg   inverted hessian * g.
+ * @param[in] active_set a vector of active constraints.
  * @param[in] ind_exclude index of excluded constraint.
  * @param[in] x     initial guess.
  * @param[out] dx   feasible descent direction, must be allocated.
