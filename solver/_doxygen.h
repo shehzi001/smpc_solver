@@ -411,7 +411,7 @@
       \left[
         \begin{array}{cccccc} 
           -\mbm{I}           &  \mbm{0} &  \mbm{0} & \dots  & \mbm{0}               & \mbm{0}  \\
-           \tilde{\mbm{A}}_0 & -\mbm{I} &  \mbm{0} & \dots  & \mbm{0}               & \mbm{0}  \\
+           \tilde{\mbm{A}}_1 & -\mbm{I} &  \mbm{0} & \dots  & \mbm{0}               & \mbm{0}  \\
            \vdots            &  \vdots  &  \vdots  & \ddots & \vdots                & \vdots   \\
            \mbm{0}           &  \mbm{0} &  \mbm{0} & \dots  & \tilde{\mbm{A}}_{N-1} & -\mbm{I} \\
         \end{array}
