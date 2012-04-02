@@ -436,12 +436,12 @@
     @f$
     \left[
       \begin{array}{cc} 
-        -1 & 0  \\
-        0  & -1 \\
-        1  & 0  \\
-        0  & 1  
+        1  &  0  \\
+        0  &  1 \\
+       -1  &  0  \\
+        0  & -1  
       \end{array}
-    \right]\mbm{R}^T_k \mbm{C}_p \tilde{\mbm{c}}_k + \mbm{d}_{k} \geq \mbm{0},
+    \right]\mbm{R}^T_k \mbm{C}_p \tilde{\mbm{c}}_k \leq \mbm{d}_{k},
     @f$
 
     Where 
