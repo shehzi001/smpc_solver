@@ -355,7 +355,7 @@ void chol_solve_as::resolve (
     for (i = nW-1; i >= 0; --i)
     {
         const int last_el_num = i + ppar.N*SMPC_NUM_STATE_VAR;
-        const int ind = active_set[i].cind/2 * SMPC_NUM_STATE_VAR;
+        const int ind = active_set[i].ind;
         nu[last_el_num] /= icL[i][last_el_num];
 
         for (int j = ind; j < last_el_num; ++j)
