@@ -473,14 +473,14 @@
       \left[
         \begin{array}{c} 
             -\mbm{g} \\ 
-            \mbm{\bar{e}} 
+            \mbm{\tilde{e}} 
         \end{array}
       \right]. 
     @f$
 
     Section '@ref pProblemDef' discusses formation of matrices
     @f$
-    \mbm{H}, \mbm{E}^T, \mbm{g}, \mbm{\bar{e}} 
+    \mbm{H}, \mbm{E}^T, \mbm{g}, \mbm{\tilde{e}} 
     @f$.
 
     We assume, that an initial guess satisfying all constraints is given
@@ -535,17 +535,17 @@
     In order to solve @ref pKKT we have to form Schur complement:
 
     @f$\\
-    \mbm{S} = \frac{1}{2}\mbm{E}\mbm{H}^{-1}\mbm{E}^T = \frac{1}{2}\left[\begin{array}{cc}\bar{\mbm{E}}_c  \tilde{\mbm{E}}_u\end{array}\right]
+    \mbm{S} = \frac{1}{2}\mbm{E}\mbm{H}^{-1}\mbm{E}^T = \frac{1}{2}\left[\begin{array}{cc}\tilde{\mbm{E}}_c  \tilde{\mbm{E}}_u\end{array}\right]
     \left[\begin{array}{cc}\tilde{\mbm{H}}_c & \mbm{0} \\ \mbm{0} & \mbm{H}_u\end{array}\right]
-    \left[\begin{array}{c}\bar{\mbm{E}}_c^T \\ \tilde{\mbm{E}}_u^T \end{array}\right] 
+    \left[\begin{array}{c}\tilde{\mbm{E}}_c^T \\ \tilde{\mbm{E}}_u^T \end{array}\right] 
 
-    = \frac{1}{2}\bar{\mbm{E}}_c\tilde{\mbm{H}}_c^{-1}\bar{\mbm{E}}_c^T + \frac{1}{2}\tilde{\mbm{E}}_u\mbm{H}_u^{-1}\tilde{\mbm{E}}_u^T. 
+    = \frac{1}{2}\tilde{\mbm{E}}_c\tilde{\mbm{H}}_c^{-1}\tilde{\mbm{E}}_c^T + \frac{1}{2}\tilde{\mbm{E}}_u\mbm{H}_u^{-1}\tilde{\mbm{E}}_u^T. 
     @f$
 
     For @f$N = 4@f$ we have
 
     @f$\\
-    \tilde{\mbm{H}}_c^{-1}\bar{\mbm{E}}_c^T = 
+    \tilde{\mbm{H}}_c^{-1}\tilde{\mbm{E}}_c^T = 
       \left[
         \begin{array}{ccccc} 
           \tilde{\mbm{Q}}^{-1} & \mbm{0}    & \mbm{0}    & \mbm{0}   & \mbm{0} \\
@@ -578,7 +578,7 @@
     @f$
 
     @f$
-    \bar{\mbm{E}}_c\tilde{\mbm{H}}_c^{-1}\bar{\mbm{E}}_c^T =  \\
+    \tilde{\mbm{E}}_c\tilde{\mbm{H}}_c^{-1}\tilde{\mbm{E}}_c^T =  \\
     = \left[
         \begin{array}{ccccc} 
           -\mbm{I}    &  \mbm{0}    &  \mbm{0}  & \mbm{0}    & \mbm{0}  \\
