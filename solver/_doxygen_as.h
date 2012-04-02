@@ -13,7 +13,9 @@
 
 /**
  * @page pAddIC Adding inequality constraints
- 
+
+@tableofcontents
+
     This page describes changes in @ref pKKT "KKT system" after addition of
     inequality constraint to the active set.
 
@@ -191,6 +193,7 @@ Output:
 
 /**
  * @page pRemoveIC Removing inequality constraints
+@tableofcontents
  *
  *  This page describes changes in @ref pKKT "KKT system" after removal of
  *  inequality constraint from the active set.
@@ -298,6 +301,7 @@ Output:
 
 /**
  * @page pDetails Notes on implementation
+@tableofcontents
 
 @section pDetMatrices Representation of matrices
     Note, that parts of state and control matrices (@ref pPDModel) corresponding to x 

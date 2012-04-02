@@ -22,15 +22,16 @@
  * @par Contents & links
  * - @ref MainIntro
  * - @ref MainLicense
- * - @ref MainRef
  * - @ref MainOverview
  * - @ref MainHowTo
  * - @ref MainFormulas
  * - @ref MainSrcDocs
  * - @ref MainNotes
+ * - @ref MainRef
  * @par
  * - <a href="http://github.com/asherikov/smpc_solver/">Sources on GitHub</a>
  * - <a href="./v1/index.html">Old version of the solver</a>
+ * - <a href="http://asherikov.github.com/Projects/naowalk.html">A walking module for Nao using this solver</a>
  *
  * \n
  *
@@ -43,16 +44,6 @@
  * @section MainLicense License
  * @verbinclude "LICENSE"
  * \n
- *
- *
- * @section MainRef References
- *
- * Dimitar Nikolaev Dimitrov, Alexander Sherikov, and Pierre-Brice Wieber\n
- * <a href="http://www.aass.oru.se/Research/Learning/drdv_dir/publications/iros11/iros11_1.html">
- * A sparse model predictive control formulation for walking motion generation</a>\n
- * IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS),\n
- * September 25-30, 2011, San Francisco, California
- * \n\n
  *
  *
  * @section MainOverview Purpose of the library
@@ -139,6 +130,16 @@
  *
  * @section MainNotes Important notes
  * @todo The library is not thoroughly tested with variable height of CoM.
+ *
+ * \n
+ *
+ * @section MainRef References
+ *
+ * Dimitar Nikolaev Dimitrov, Alexander Sherikov, and Pierre-Brice Wieber\n
+ * <a href="http://www.aass.oru.se/Research/Learning/drdv_dir/publications/iros11/iros11_1.html">
+ * A sparse model predictive control formulation for walking motion generation</a>\n
+ * IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS),\n
+ * September 25-30, 2011, San Francisco, California
  */
 
 
@@ -195,6 +196,8 @@
 
 /**
 @page pProblemDef Problem definition
+
+@tableofcontents
 
 @section pPDModel Model of the system
     3D linear inverted pendulum is used as an approximate model

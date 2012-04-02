@@ -272,8 +272,8 @@ namespace smpc
 
             
             /**
-             * @brief Enable floating point exceptions: die rather than processing 
-             * incorrect data). SIGFPE is sent to the program, when an error occurs.
+             * @brief Enable floating point exceptions: die rather than process 
+             * incorrect data. SIGFPE is sent to the program, when an error occurs.
              * @note If feenableexcept() is not present on the system, the function 
              * does nothing.
              */
