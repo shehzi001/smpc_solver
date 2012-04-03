@@ -209,60 +209,24 @@ void chol_solve_as::update (
     // form row 'a' in the current row of icL
     form_sa_row(ppar, c, last_num, new_row);
 
+    // Forward substitution using L for equality constraints
+    ecL.solve_forward(ppar.N, new_row, c.cind/2);
 
-    // update elements starting from the first non-zero
-    // element in the row to SMPC_NUM_STATE_VAR * N (size of ecL)
-    // the calculation of the last elements is completed
-    // in a separate loop
-    // each number in row 'a' causes update of only 3 elements following
-    // it, they can be 1,2,6; 1,5,6; 4,5,6
+
+    // update the trailing elements of new_row using the
+    // elements computed using forward substitution above
     for(i = c.cind/2; i < ppar.N; ++i)
-    {                                  
-        // variables corresponding to x and y are computed using the same matrices
-        double* cur_pos = &new_row[i*SMPC_NUM_STATE_VAR];
-
-        // ----------------------------------------------------------------
-        cur_pos[0] /= ecL.ecL_diag[i][0];
-        cur_pos[3] /= ecL.ecL_diag[i][0];
-
-        cur_pos[1] -= cur_pos[0] * ecL.ecL_diag[i][1];
-        cur_pos[1] /= ecL.ecL_diag[i][4];
-
-        cur_pos[4] -= cur_pos[3] * ecL.ecL_diag[i][1];
-        cur_pos[4] /= ecL.ecL_diag[i][4];
-
-        cur_pos[2] -= cur_pos[0] * ecL.ecL_diag[i][2] + cur_pos[1] * ecL.ecL_diag[i][5];
-        cur_pos[2] /= ecL.ecL_diag[i][8];
-
-        cur_pos[5] -= cur_pos[3] * ecL.ecL_diag[i][2] + cur_pos[4] * ecL.ecL_diag[i][5];
-        cur_pos[5] /= ecL.ecL_diag[i][8];
-
+    {
+        const int ind = i*SMPC_NUM_STATE_VAR;
 
         // make a copy for faster computations
-        double tmp_copy_el[6] = {cur_pos[0], cur_pos[1], cur_pos[2], 
-                                 cur_pos[3], cur_pos[4], cur_pos[5]};
+        double tmp_copy_el[6] = {new_row[ind], 
+                                 new_row[ind+1], 
+                                 new_row[ind+2], 
+                                 new_row[ind+3], 
+                                 new_row[ind+4], 
+                                 new_row[ind+5]};
 
-        // ----------------------------------------------------------------
-        if (i < ppar.N - 1) // non-diagonal matrix of ecL cannot be
-        {                   // used when the last state is processed
-            cur_pos[6] -= tmp_copy_el[0] * ecL.ecL_ndiag[i][0] 
-                        + tmp_copy_el[1] * ecL.ecL_ndiag[i][3]
-                        + tmp_copy_el[2] * ecL.ecL_ndiag[i][6];
-
-            cur_pos[7] -= tmp_copy_el[1] * ecL.ecL_ndiag[i][4]
-                        + tmp_copy_el[2] * ecL.ecL_ndiag[i][7];
-
-            cur_pos[8] -= tmp_copy_el[2] * ecL.ecL_ndiag[i][8];
-
-            cur_pos[9] -= tmp_copy_el[3] * ecL.ecL_ndiag[i][0] 
-                        + tmp_copy_el[4] * ecL.ecL_ndiag[i][3]
-                        + tmp_copy_el[5] * ecL.ecL_ndiag[i][6];
-
-            cur_pos[10] -= tmp_copy_el[4] * ecL.ecL_ndiag[i][4]
-                         + tmp_copy_el[5] * ecL.ecL_ndiag[i][7];
-
-            cur_pos[11] -= tmp_copy_el[5] * ecL.ecL_ndiag[i][8];
-        }
         // update the last (diagonal) number in the row
         new_row[last_num] -= tmp_copy_el[0] * tmp_copy_el[0] 
                            + tmp_copy_el[1] * tmp_copy_el[1] 
@@ -275,15 +239,15 @@ void chol_solve_as::update (
         // in icL
         for (j = 0; j < ic_num; ++j)
         {
-            double *ic_row_pos = &icL[j][i*SMPC_NUM_STATE_VAR];
-            new_row_end[j] -= tmp_copy_el[0] * ic_row_pos[0]
-                            + tmp_copy_el[1] * ic_row_pos[1]
-                            + tmp_copy_el[2] * ic_row_pos[2] 
-                            + tmp_copy_el[3] * ic_row_pos[3]
-                            + tmp_copy_el[4] * ic_row_pos[4]
-                            + tmp_copy_el[5] * ic_row_pos[5];
+            new_row_end[j] -= tmp_copy_el[0] * icL[j][ind]
+                            + tmp_copy_el[1] * icL[j][ind+1]
+                            + tmp_copy_el[2] * icL[j][ind+2] 
+                            + tmp_copy_el[3] * icL[j][ind+3]
+                            + tmp_copy_el[4] * icL[j][ind+4]
+                            + tmp_copy_el[5] * icL[j][ind+5];
         }
     }
+
 
     // update elements in the end of icL
     for(i = SMPC_NUM_STATE_VAR * ppar.N, k = 0; i < last_num; ++i, ++k)

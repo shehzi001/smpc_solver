@@ -265,34 +265,35 @@ void matrix_ecL_as::form (const problem_parameters& ppar)
  * @param[in,out] x vector "b" as input, vector "x" as output
  *                  (N * #SMPC_NUM_STATE_VAR)
  */
-void matrix_ecL_as::solve_forward(const int N, double *x)
+void matrix_ecL_as::solve_forward(const int N, double *x, const int start_ind)
 {
-    int i, j;
-    double *xc = x; // 6 current elements of x
-    double *xp; // 6 elements of x computed on the previous iteration
+    int i = start_ind, j = start_ind;
+    double *xc = &x[SMPC_NUM_STATE_VAR * start_ind]; // 6 current elements of x
 
 
     // compute the first 6 elements using forward substitution
-    xc[0] /= ecL_diag[0][0];
-    xc[3] /= ecL_diag[0][0];
+    xc[0] /= ecL_diag[i][0];
+    xc[3] /= ecL_diag[i][0];
 
-    xc[1] -= xc[0] * ecL_diag[0][1];
-    xc[1] /= ecL_diag[0][4];
+    xc[1] -= xc[0] * ecL_diag[i][1];
+    xc[1] /= ecL_diag[i][4];
 
-    xc[4] -= xc[3] * ecL_diag[0][1];
-    xc[4] /= ecL_diag[0][4];
+    xc[4] -= xc[3] * ecL_diag[i][1];
+    xc[4] /= ecL_diag[i][4];
 
-    xc[2] -= xc[0] * ecL_diag[0][2] + xc[1] * ecL_diag[0][5];
-    xc[2] /= ecL_diag[0][8];
+    xc[2] -= xc[0] * ecL_diag[i][2] + xc[1] * ecL_diag[i][5];
+    xc[2] /= ecL_diag[i][8];
 
-    xc[5] -= xc[3] * ecL_diag[0][2] + xc[4] * ecL_diag[0][5];
-    xc[5] /= ecL_diag[0][8];
+    xc[5] -= xc[3] * ecL_diag[i][2] + xc[4] * ecL_diag[i][5];
+    xc[5] /= ecL_diag[i][8];
 
+    ++i;
 
-    for (i = 1, j = 0; i < N; i++,j++)
+    for (; i < N; ++i, ++j)
     {
+        // 6 elements of x computed on the previous iteration
+        double *xp = xc;
         // switch to the next level of L / next 6 elements
-        xp = xc;
         xc = &xc[SMPC_NUM_STATE_VAR];
 
 
