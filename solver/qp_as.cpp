@@ -80,11 +80,10 @@ void qp_as::set_parameters(
 
 
     active_set.clear();
-    int cind = 0;
 
     // form inv(2*H) *g and initialize constraints
     // inv(2*H) * g  =  inv (2*(beta/2)) * beta * Cp' * zref  =  zref
-    for (int i = 0; i < N; ++i)
+    for (int i = 0, cind = 0; i < N; ++i)
     {
         double cosR = cos(angle[i]);
         double sinR = sin(angle[i]);
@@ -115,21 +114,21 @@ int qp_as::check_blocking_constraints()
     int sign = 0;
 
 
-    for (int i = 0; i < 2*N; i++)
+    for (unsigned int i = 0; i < constraints.size(); ++i)
     {
         // Check only inactive constraints for violation. 
         // The constraints in the working set will not be violated regardless of 
         // the depth of descent
         if (!constraints[i].isActive)
         {
-            constraint c = constraints[i];
+            const constraint c = constraints[i];
 
-            double constr = X[c.ind]*c.coef_x + X[c.ind+3]*c.coef_y;
-            double d_constr = dX[c.ind]*c.coef_x + dX[c.ind+3]*c.coef_y;
+            const double constr = X[c.ind]*c.coef_x + X[c.ind+3]*c.coef_y;
+            const double d_constr = dX[c.ind]*c.coef_x + dX[c.ind+3]*c.coef_y;
 
             if ( d_constr < -tol )
             {
-                double t = (c.lb - constr)/d_constr;
+                const double t = (c.lb - constr)/d_constr;
                 if (t < alpha)
                 {
                     alpha = t;
@@ -139,7 +138,7 @@ int qp_as::check_blocking_constraints()
             }
             else if ( d_constr > tol )
             {
-                double t = (c.ub - constr)/d_constr;
+                const double t = (c.ub - constr)/d_constr;
                 if (t < alpha)
                 {
                     alpha = t;
@@ -178,7 +177,7 @@ int qp_as::choose_excl_constr (const double *lambda)
     int ind_exclude = -1;
 
     // find the constraint with the smallest lambda
-    for (unsigned int i = 0; i < active_set.size(); i++)
+    for (unsigned int i = 0; i < active_set.size(); ++i)
     {
         if (lambda[i] * active_set[i].sign < min_lambda)
         {
@@ -212,9 +211,17 @@ int qp_as::solve ()
         int activated_var_num = check_blocking_constraints();
 
         // Move in the feasible descent direction
-        for (int i = 0; i < N*SMPC_NUM_VAR ; i++)
+        for (int i = 0; i < N; ++i)
         {
-            X[i] += alpha * dX[i];
+            const int ind = i*SMPC_NUM_VAR;
+            X[ind]   += alpha * dX[ind];
+            X[ind+1] += alpha * dX[ind+1];
+            X[ind+2] += alpha * dX[ind+2];
+            X[ind+3] += alpha * dX[ind+3];
+            X[ind+4] += alpha * dX[ind+4];
+            X[ind+5] += alpha * dX[ind+5];
+            X[ind+6] += alpha * dX[ind+6];
+            X[ind+7] += alpha * dX[ind+7];
         }
 
         // no new inequality constraints
