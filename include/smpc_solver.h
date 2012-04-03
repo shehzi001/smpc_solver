@@ -10,7 +10,7 @@
 #ifndef SMPC_SOLVER_H
 #define SMPC_SOLVER_H
 
-class qp_solver;
+class qp_as;
 
 
 /// @addtogroup gAPI 
@@ -333,7 +333,7 @@ namespace smpc
             /**
              * @brief Internal representation.
              */
-            qp_solver *qp_sol;
+            qp_as *qp_sol;
     };
 }
 /// @}

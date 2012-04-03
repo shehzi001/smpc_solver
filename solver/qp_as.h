@@ -14,8 +14,8 @@
  ****************************************/
 #include "smpc_common.h"
 #include "chol_solve_as.h"
-#include "qp_solver.h"
 #include "constraint.h"
+#include "problem_param.h"
 
 #include <vector>
 
@@ -34,7 +34,7 @@ using namespace std;
  * @brief Solve a quadratic program with a specific structure. 
  * qp_as = Quadratic Programming / Active Set
  */
-class qp_as : public qp_solver
+class qp_as : public problem_parameters
 {
     public:
 // functions        
@@ -60,6 +60,14 @@ class qp_as : public qp_solver
 
         int solve ();
 
+        void form_init_fp(const double *, const double *, const double *, double *);
+
+
+        /** Variables for the QP (contain the states + control variables).
+            Initial feasible point with respect to the equality and inequality 
+            constraints. */
+        double *X;
+
 
     private:
 
@@ -82,6 +90,23 @@ class qp_as : public qp_solver
 
         /// Vector of constraints.
         vector <constraint> constraints;
+
+
+
+        /// tolerance
+        double tol;
+
+    // variables and descent direction
+     
+        /** Feasible descent direction (to be used for updating #X). */
+        double *dX;
+
+        /** A number from 0 to 1, which controls depth of descent #X = #X + #alpha*#dX. */
+        double alpha;
+
+        /// Height of the CoM at initial state divided by the gravity, this initial state
+        /// precede the first state in the preview window.
+        double h_initial;
 };
 
 ///@}

@@ -18,7 +18,6 @@
 #include <fenv.h> // feenableexcept()
 #endif
 
-#include "qp_solver.h"
 #include "qp_as.h"
 #include "smpc_solver.h"
 #include "state_handling.h"
