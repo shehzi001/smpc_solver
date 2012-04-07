@@ -264,6 +264,13 @@ void matrix_ecL_as::form (const problem_parameters& ppar)
  * @param[in] N number of states in the preview window
  * @param[in,out] x vector "b" as input, vector "x" as output
  *                  (N * #SMPC_NUM_STATE_VAR)
+ * @param[in] start_ind an index of a state, from which substitution 
+ *                      should start
+ *
+ * @note This function can perform partial forward substitution
+ * starting from a given state, and ignoring all preceding states.
+ * This is useful when it is known, that all variables in the 
+ * preceding states are 0.
  */
 void matrix_ecL_as::solve_forward(const int N, double *x, const int start_ind)
 {

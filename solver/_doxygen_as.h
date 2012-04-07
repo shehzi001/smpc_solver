@@ -76,7 +76,7 @@
     While 
     @f$
     \frac{1}{2}
-    \mbm{a}^T \mbm{H}^{-1} \mbm{a} = \frac{1}{2\beta}
+    \mbm{a}^T \mbm{H}^{-1} \mbm{a} = \frac{1}{\beta}
     @f$
     is a scalar.
 

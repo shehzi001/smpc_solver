@@ -204,8 +204,7 @@
     of a humanoid robot.
 
     @f$
-    \tilde{\mbm{c}}_{k+1} = \tilde{\mbm{A}}_k\tilde{\mbm{c}}_{k}+\tilde{\mbm{B}}_k\dddot{\mbm{c}}_{k}, \quad
-    \dddot{\mbm{c}}_{k} = (\dddot{c}_k^x, \dddot{c}_k^y)
+    \hat{\mbm{c}}_{k+1} = \mbm{A}_k\hat{\mbm{c}}_{k}+\mbm{B}_k\dddot{\mbm{c}}_{k}
     @f$
 
     @f$
@@ -239,6 +238,10 @@
     \hat{\mbm{c}}_{k} = (c_k^x,\dot{c}_k^x,\ddot{c}_k^x,c_k^y,\dot{c}_k^y,\ddot{c}_k^y)
     @f$
     where @f$c^x_k, c^y_k@f$ are coordintes of the center of mass.
+    The control vector is 
+    @f$
+    \dddot{\mbm{c}}_{k} = (\dddot{c}_k^x, \dddot{c}_k^y)
+    @f$
 \n\n
 
 
@@ -539,7 +542,7 @@
 
     @f$\\
     \mbm{S} = \frac{1}{2}\mbm{E}\mbm{H}^{-1}\mbm{E}^T = \frac{1}{2}\left[\begin{array}{cc}\tilde{\mbm{E}}_c  \tilde{\mbm{E}}_u\end{array}\right]
-    \left[\begin{array}{cc}\tilde{\mbm{H}}_c & \mbm{0} \\ \mbm{0} & \mbm{H}_u\end{array}\right]
+    \left[\begin{array}{cc}\tilde{\mbm{H}}_c & \mbm{0} \\ \mbm{0} & \mbm{H}_u\end{array}\right]^{-1}
     \left[\begin{array}{c}\tilde{\mbm{E}}_c^T \\ \tilde{\mbm{E}}_u^T \end{array}\right] 
 
     = \frac{1}{2}\tilde{\mbm{E}}_c\tilde{\mbm{H}}_c^{-1}\tilde{\mbm{E}}_c^T + \frac{1}{2}\tilde{\mbm{E}}_u\mbm{H}_u^{-1}\tilde{\mbm{E}}_u^T. 
