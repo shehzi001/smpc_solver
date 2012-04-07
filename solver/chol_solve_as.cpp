@@ -448,10 +448,7 @@ void chol_solve_as::down_resolve(
     }
 
     // copy z to nu
-    for (int i = 0; i < ppar.N*SMPC_NUM_STATE_VAR + nW; i++)
-    {
-        nu[i] = z[i];
-    }
+    memmove(nu, z, sizeof(double) * (ppar.N*SMPC_NUM_STATE_VAR + nW));
 
     resolve (ppar, iHg, active_set, x, dx);
 }
