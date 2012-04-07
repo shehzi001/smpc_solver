@@ -40,20 +40,20 @@ class chol_solve_as
         chol_solve_as (const int);
         ~chol_solve_as();
 
-        void solve(const problem_parameters&, const double *, const double *, double *);
+        void solve(const problem_parameters&, const double *, double *);
 
-        void up_resolve(const problem_parameters&, const double *, const vector<constraint>&, const double *, double *);
+        void up_resolve(const problem_parameters&, const vector<constraint>&, const double *, double *);
 
         double * get_lambda(const problem_parameters&);
-        void down_resolve(const problem_parameters&, const double *, const vector<constraint>&, const int, const double *, double *);
+        void down_resolve(const problem_parameters&, const vector<constraint>&, const int, const double *, double *);
 
 
     private:
         void update (const problem_parameters&, const constraint&, const int);
-        void update_z (const problem_parameters&, const double *, const constraint&, const int, const double *);
+        void update_z (const problem_parameters&, const constraint&, const int, const double *);
         void downdate(const problem_parameters&, const int, const int, const double *);
 
-        void resolve (const problem_parameters&, const double *, const vector<constraint>&, const double *, double *);
+        void resolve (const problem_parameters&, const vector<constraint>&, const double *, double *);
 
         void form_sa_row(const problem_parameters&, const constraint&, const int, double *);
 
@@ -62,9 +62,6 @@ class chol_solve_as
 // variables
         /// Vector of Lagrange multipliers
         double *nu;
-
-        /// - (X + problem_parameters#iHg)
-        double *XiHg;
 
         /// matrix of equality constraints
         matrix_E E;

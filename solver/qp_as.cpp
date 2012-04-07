@@ -41,7 +41,6 @@ qp_as::qp_as(
     tol = tol_;
 
     dX = new double[SMPC_NUM_VAR*N]();
-    iHg = new double[2*N];
 
     // there are no inequality constraints in the initial working set (no hot-starting for the moment)
 
@@ -52,9 +51,6 @@ qp_as::qp_as(
 /** Destructor */
 qp_as::~qp_as()
 {
-    if (iHg != NULL)
-        delete iHg;
-
     if (dX != NULL)
         delete dX;
 }
@@ -76,14 +72,16 @@ void qp_as::set_parameters(
         const double* h_, 
         const double h_initial_,
         const double* angle,
-        const double* zref_x,
-        const double* zref_y,
+        const double* zref_x_,
+        const double* zref_y_,
         const double* lb,
         const double* ub)
 {
     h_initial = h_initial_;
     set_state_parameters (T_, h_, h_initial_);
 
+    zref_x = (double *) zref_x_;
+    zref_y = (double *) zref_y_;
 
     active_set.clear();
 
@@ -93,13 +91,21 @@ void qp_as::set_parameters(
     {
         double cosR = cos(angle[i]);
         double sinR = sin(angle[i]);
+        double RTzref_x = (cosR*zref_x[i] + sinR*zref_y[i]);
+        double RTzref_y = (-sinR*zref_x[i] + cosR*zref_y[i]);
 
-        constraints[cind].set(cind, cosR, sinR, lb[cind], ub[cind], false);
-        iHg[cind] = -zref_x[i];
+        constraints[cind].set(
+                cind, cosR, sinR, 
+                lb[cind] - RTzref_x, 
+                ub[cind] - RTzref_x, 
+                false);
         ++cind;
 
-        constraints[cind].set(cind, -sinR, cosR, lb[cind], ub[cind], false);
-        iHg[cind] = -zref_y[i]; 
+        constraints[cind].set(
+                cind, -sinR, cosR, 
+                lb[cind] - RTzref_y, 
+                ub[cind] - RTzref_y, 
+                false);
         ++cind;
     }
 }
@@ -209,25 +215,31 @@ int qp_as::choose_excl_constr (const double *lambda)
  */
 int qp_as::solve ()
 {
+    for (int i = 0; i < N; ++i)
+    {
+        const int ind = i*SMPC_NUM_STATE_VAR;
+        X[ind]   -= zref_x[i];
+        X[ind+3] -= zref_y[i];
+    }
+
     // obtain dX
-    chol.solve(*this, iHg, X, dX);
+    chol.solve(*this, X, dX);
 
     for (;;)
     {
         int activated_var_num = check_blocking_constraints();
 
         // Move in the feasible descent direction
-        for (int i = 0; i < N; ++i)
+        for (int i = 0; i < N*SMPC_NUM_VAR; i += SMPC_NUM_VAR)
         {
-            const int ind = i*SMPC_NUM_VAR;
-            X[ind]   += alpha * dX[ind];
-            X[ind+1] += alpha * dX[ind+1];
-            X[ind+2] += alpha * dX[ind+2];
-            X[ind+3] += alpha * dX[ind+3];
-            X[ind+4] += alpha * dX[ind+4];
-            X[ind+5] += alpha * dX[ind+5];
-            X[ind+6] += alpha * dX[ind+6];
-            X[ind+7] += alpha * dX[ind+7];
+            X[i]   += alpha * dX[i];
+            X[i+1] += alpha * dX[i+1];
+            X[i+2] += alpha * dX[i+2];
+            X[i+3] += alpha * dX[i+3];
+            X[i+4] += alpha * dX[i+4];
+            X[i+5] += alpha * dX[i+5];
+            X[i+6] += alpha * dX[i+6];
+            X[i+7] += alpha * dX[i+7];
         }
 
         // no new inequality constraints
@@ -236,7 +248,7 @@ int qp_as::solve ()
             int ind_exclude = choose_excl_constr (chol.get_lambda(*this));
             if (ind_exclude != -1)
             {
-                chol.down_resolve (*this, iHg, active_set, ind_exclude, X, dX);
+                chol.down_resolve (*this, active_set, ind_exclude, X, dX);
             }
             else
             {
@@ -246,8 +258,15 @@ int qp_as::solve ()
         else
         {
             // add row to the L matrix and find new dX
-            chol.up_resolve (*this, iHg, active_set, X, dX);
+            chol.up_resolve (*this, active_set, X, dX);
         }
+    }
+
+    for (int i = 0; i < N; ++i)
+    {
+        const int ind = i*SMPC_NUM_STATE_VAR;
+        X[ind]   += zref_x[i];
+        X[ind+3] += zref_y[i];
     }
 
     return (active_set.size());
@@ -272,15 +291,11 @@ void qp_as::form_init_fp (
 {
     X = X_;
 
+    double X_tilde[6] = {
+        init_state[0], init_state[1], init_state[2],
+        init_state[3], init_state[4], init_state[5]};
     double *control = &X[SMPC_NUM_STATE_VAR*N];
     double *cur_state = X;
-    double X_tilde[6];
-    X_tilde[0] = init_state[0];
-    X_tilde[1] = init_state[1];
-    X_tilde[2] = init_state[2];
-    X_tilde[3] = init_state[3];
-    X_tilde[4] = init_state[4];
-    X_tilde[5] = init_state[5];
     state_handling::orig_to_tilde (h_initial, X_tilde);
     const double *prev_state = X_tilde;
 
