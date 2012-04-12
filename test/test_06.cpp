@@ -43,7 +43,7 @@ int main(int argc, char **argv)
         }
 
 
-        smpc::solver solver(test_06->wmg->N);
+        smpc::solver_as solver(test_06->wmg->N);
 
 
         fs_out.open(test_06->fs_out_filename.c_str(), fstream::app);

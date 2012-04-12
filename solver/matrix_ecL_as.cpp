@@ -272,7 +272,7 @@ void matrix_ecL_as::form (const problem_parameters& ppar)
  * This is useful when it is known, that all variables in the 
  * preceding states are 0.
  */
-void matrix_ecL_as::solve_forward(const int N, double *x, const int start_ind)
+void matrix_ecL_as::solve_forward(const int N, double *x, const int start_ind) const
 {
     int i = start_ind, j = start_ind;
     double *xc = &x[SMPC_NUM_STATE_VAR * start_ind]; // 6 current elements of x
@@ -334,7 +334,7 @@ void matrix_ecL_as::solve_forward(const int N, double *x, const int start_ind)
  * @param[in] N number of states in the preview window
  * @param[in,out] x vector "b" as input, vector "x" as output.
  */
-void matrix_ecL_as::solve_backward (const int N, double *x)
+void matrix_ecL_as::solve_backward (const int N, double *x) const
 {
     int i;
     double *xc = & x[(N-1)*SMPC_NUM_STATE_VAR]; // current 6 elements of result

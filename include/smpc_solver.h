@@ -25,7 +25,7 @@ class qp_as;
 
 namespace smpc
 {
-    class solver;
+    class solver_as;
 
 
 
@@ -91,7 +91,7 @@ namespace smpc
              *  
              * @param[in] smpc_solver initialized solver
              */
-            virtual void get_next_state (const solver &smpc_solver) = 0;
+            virtual void get_next_state (const solver_as &smpc_solver) = 0;
 
 
             /**
@@ -101,7 +101,7 @@ namespace smpc
              * @param[in] smpc_solver initialized solver
              * @param[in] ind index of a state [0 : N-1].
              */
-            virtual void get_state (const solver &smpc_solver, const int ind) = 0;
+            virtual void get_state (const solver_as &smpc_solver, const int ind) = 0;
 
 
             // -------------------------------
@@ -150,8 +150,8 @@ namespace smpc
 
             /// @{
             /// Refer to the base class state for description.
-            void get_next_state (const solver &smpc_solver);
-            void get_state (const solver &smpc_solver, const int ind);
+            void get_next_state (const solver_as &smpc_solver);
+            void get_state (const solver_as &smpc_solver, const int ind);
             /// @}
     };
 
@@ -175,8 +175,8 @@ namespace smpc
 
             /// @{
             /// Refer to the base class state for description.
-            void get_next_state (const solver &smpc_solver);
-            void get_state (const solver &smpc_solver, const int ind);
+            void get_next_state (const solver_as &smpc_solver);
+            void get_state (const solver_as &smpc_solver, const int ind);
             /// @}
     };
 
@@ -220,7 +220,7 @@ namespace smpc
              *
              * @param[in] smpc_solver initialized solver
              */
-            void get_first_controls (const solver &smpc_solver);
+            void get_first_controls (const solver_as &smpc_solver);
 
 
             /**
@@ -231,7 +231,7 @@ namespace smpc
              * @param[in] smpc_solver initialized solver
              * @param[in] ind index of control inputs [0 : N-1].
              */
-            void get_controls (const solver &smpc_solver, const int ind);
+            void get_controls (const solver_as &smpc_solver, const int ind);
     };
 
 
@@ -240,13 +240,9 @@ namespace smpc
     /**
      * @brief API of the sparse MPC solver.
      */
-    class solver
+    class solver_as
     {
         public:
-
-
-            // -------------------------------
-
 
             /** @brief Constructor: initialize an active set method solver.
              *
@@ -257,7 +253,7 @@ namespace smpc
                 @param[in] regularization regularization
                 @param[in] tol tolerance
             */
-            solver (
+            solver_as (
                     const int N, 
                     const double Alpha = 150.0, 
                     const double Beta = 2000.0, 
@@ -266,7 +262,8 @@ namespace smpc
                     const double tol = 1e-7);
 
 
-            ~solver();
+            ~solver_as();
+
 
             // -------------------------------
 
@@ -305,6 +302,23 @@ namespace smpc
                     const double* ub);
 
 
+            /**
+             * @brief Changes parameters which control the logic of the solver.
+             *
+             * @param[in] max_added_constraints_num limit the number of added constraints 
+             *                                      (NOT the size of active set).
+             * @param[in] constraint_removal_enabled enable/disable removal of activated constraints.
+             *
+             * @note These parameters affect the time required for solution. If the number
+             * of added constraints is less than (length of preview window)*2 or constraint 
+             * removal is disabled, the solution is approximate. How good is this approximation 
+             * depends on the problem.
+             */
+            void set_limits (
+                    const unsigned int max_added_constraints_num,
+                    const bool constraint_removal_enabled);
+
+
             /** @brief Generates an initial feasible point. 
 
                 @param[in] x_coord x coordinates of points satisfying constraints
@@ -321,14 +335,34 @@ namespace smpc
 
             /**
              * @brief Solve QP problem.
-             *
-             * @return A negative number on error. Number of activated constraints 
-             *         for active set method.
              */
-            int solve ();
+            void solve ();
        
 
             // -------------------------------
+
+            /**
+             * @brief Number of added constraints (the constraints, that were
+             * removed are also counted).
+             *
+             * @note Updated by #solve function.
+             */
+            unsigned int added_constraints_num;
+
+            /**
+             * @brief Number of removed constraints.
+             *
+             * @note Updated by #solve function.
+             */
+            unsigned int removed_constraints_num;
+
+            /**
+             * @brief The final size of the active set.
+             *
+             * @note Updated by #solve function.
+             */
+            unsigned int active_set_size;
+            
 
             /**
              * @brief Internal representation.

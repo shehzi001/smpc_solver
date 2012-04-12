@@ -47,8 +47,8 @@ class matrix_ecL_as
 
         void form (const problem_parameters&);
 
-        void solve_backward (const int, double *);
-        void solve_forward (const int, double *, const int start_ind = 0);
+        void solve_backward (const int, double *) const;
+        void solve_forward (const int, double *, const int start_ind = 0) const;
 
         double *ecL;
         double **ecL_diag;

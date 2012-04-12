@@ -44,7 +44,7 @@ int main(int argc, char **argv)
     fs_out << "CoM_ZMP = [";
 
 
-    smpc::solver solver(test_04.wmg->N);
+    smpc::solver_as solver(test_04.wmg->N);
 
 
     for(;;)

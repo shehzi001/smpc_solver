@@ -23,7 +23,7 @@ int main(int argc, char **argv)
     //-----------------------------------------------------------
  
 
-    smpc::solver solver(test_02.wmg->N);
+    smpc::solver_as solver(test_02.wmg->N);
     for(int counter = 0 ;; counter++)
     {
         //------------------------------------------------------
@@ -37,19 +37,18 @@ int main(int argc, char **argv)
 
 
         int NN = 1000;
-        int nW;
         gettimeofday(&start,0);
         for(int kk=0; kk<NN ;kk++)
         {
             solver.set_parameters (test_02.par->T, test_02.par->h, test_02.par->h0, test_02.par->angle, test_02.par->fp_x, test_02.par->fp_y, test_02.par->lb, test_02.par->ub);
             solver.form_init_fp (test_02.par->fp_x, test_02.par->fp_y, test_02.par->init_state, test_02.par->X);
-            nW = solver.solve();
+            solver.solve();
         }
         test_02.par->init_state.get_next_state (solver);
         gettimeofday(&end,0);             
         CurrentCPUTime = end.tv_sec - start.tv_sec + 0.000001 * (end.tv_usec - start.tv_usec);
         double TT = CurrentCPUTime/NN;
-        printf("(%i) time = % f (%i)\n", counter, TT, nW);
+        printf("(%i) time = % f (%i)\n", counter, TT, solver.active_set_size);
         //------------------------------------------------------
     }
 

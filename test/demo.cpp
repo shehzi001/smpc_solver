@@ -62,7 +62,7 @@ int main(int argc, char **argv)
     //-----------------------------------------------------------
 
 
-    smpc::solver solver(
+    smpc::solver_as solver(
             wmg.N); // size of the preview window
                     // other parameters are optional
     //-----------------------------------------------------------

@@ -66,7 +66,9 @@ class problem_parameters
 
         state_parameters *spar;
 
-        bool variable_th_on;
+        /// Height of the CoM at initial state divided by the gravity, this initial state
+        /// precede the first state in the preview window.
+        double h_initial;
 };
 
 /****************************************

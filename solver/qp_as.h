@@ -58,15 +58,23 @@ class qp_as : public problem_parameters
                 const double*);
 
 
-        int solve ();
-
-        void form_init_fp(const double *, const double *, const double *, double *);
+        void solve ();
+        void formInitialFP(const double *, const double *, const double *, double *);
 
 
         /** Variables for the QP (contain the states + control variables).
             Initial feasible point with respect to the equality and inequality 
             constraints. */
         double *X;
+
+
+    // counters
+        unsigned int added_constraints_num;
+        unsigned int removed_constraints_num;
+        unsigned int active_set_size;
+    // limits
+        bool constraint_removal_enabled;
+        unsigned int max_added_constraints_num;
 
 
     private:
@@ -80,9 +88,11 @@ class qp_as : public problem_parameters
         chol_solve_as chol;
 
 
-        double *zref_x;
-        double *zref_y;
+        const double *zref_x;
+        const double *zref_y;
 
+        /// tolerance
+        double tol;
 
     // active set        
         /// A set of active constraints.
@@ -92,21 +102,12 @@ class qp_as : public problem_parameters
         vector <constraint> constraints;
 
 
-
-        /// tolerance
-        double tol;
-
-    // variables and descent direction
-     
+    // descent direction
         /** Feasible descent direction (to be used for updating #X). */
         double *dX;
 
         /** A number from 0 to 1, which controls depth of descent #X = #X + #alpha*#dX. */
         double alpha;
-
-        /// Height of the CoM at initial state divided by the gravity, this initial state
-        /// precede the first state in the preview window.
-        double h_initial;
 };
 
 ///@}

@@ -25,7 +25,7 @@ int main(int argc, char **argv)
 
 
     //-----------------------------------------------------------
-    smpc::solver solver(
+    smpc::solver_as solver(
             test_08.wmg->N, // size of the preview window
             400.0,  // Alpha
             4000.0,  // Beta

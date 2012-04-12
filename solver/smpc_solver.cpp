@@ -29,7 +29,7 @@
 
 
 
-smpc::solver::solver (
+smpc::solver_as::solver_as (
                 const int N,
                 const double Alpha, const double Beta, const double Gamma,
                 const double regularization, const double tol)
@@ -38,7 +38,7 @@ smpc::solver::solver (
 }
 
 
-smpc::solver::~solver()
+smpc::solver_as::~solver_as()
 {
     if (qp_sol != NULL)
     {
@@ -47,7 +47,7 @@ smpc::solver::~solver()
 }
 
 
-void smpc::solver::enable_fexceptions()
+void smpc::solver_as::enable_fexceptions()
 {
 #ifdef HAVE_FEENABLEEXCEPT
     feenableexcept(
@@ -58,7 +58,7 @@ void smpc::solver::enable_fexceptions()
 }
 
 
-void smpc::solver::set_parameters(
+void smpc::solver_as::set_parameters(
         const double* T, const double* h, const double h_initial,
         const double* angle,
         const double* zref_x, const double* zref_y,
@@ -71,8 +71,21 @@ void smpc::solver::set_parameters(
 }
 
 
+void smpc::solver_as::set_limits (
+        const unsigned int max_added_constraints_num,
+        const bool constraint_removal_enabled)
+{
+    if (qp_sol != NULL)
+    {
+        qp_sol->max_added_constraints_num = max_added_constraints_num;
+        qp_sol->constraint_removal_enabled = constraint_removal_enabled;
+    }
+}
 
-void smpc::solver::form_init_fp (
+
+
+
+void smpc::solver_as::form_init_fp (
         const double *x_coord,
         const double *y_coord,
         const state_orig &init_state,
@@ -80,19 +93,22 @@ void smpc::solver::form_init_fp (
 {
     if (qp_sol != NULL)
     {
-        qp_sol->form_init_fp (x_coord, y_coord, init_state.state_vector, X);
+        qp_sol->formInitialFP (x_coord, y_coord, init_state.state_vector, X);
     }
 }
 
 
 
-int smpc::solver::solve()
+void smpc::solver_as::solve()
 {
     if (qp_sol != NULL)
     {
-        return (qp_sol->solve ());
+        qp_sol->solve ();
+        
+        added_constraints_num   = qp_sol->added_constraints_num;
+        removed_constraints_num = qp_sol->removed_constraints_num;
+        active_set_size         = qp_sol->active_set_size;
     }
-    return (-1);
 }
 
 
@@ -101,12 +117,7 @@ int smpc::solver::solve()
 
 smpc::state::state()
 {
-    state_vector[0] = 0.0;
-    state_vector[1] = 0.0;
-    state_vector[2] = 0.0;
-    state_vector[3] = 0.0;
-    state_vector[4] = 0.0;
-    state_vector[5] = 0.0;
+    set (0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
 }
 
 
@@ -132,13 +143,13 @@ void smpc::state::set (
 //************************************************************
 
 
-void smpc::state_tilde::get_next_state (const smpc::solver &smpc_solver)
+void smpc::state_tilde::get_next_state (const smpc::solver_as &smpc_solver)
 {
     get_state (smpc_solver, 0);
 }
 
 
-void smpc::state_tilde::get_state (const smpc::solver &smpc_solver, const int ind)
+void smpc::state_tilde::get_state (const smpc::solver_as &smpc_solver, const int ind)
 {
     if (smpc_solver.qp_sol != NULL)
     {
@@ -154,13 +165,13 @@ void smpc::state_tilde::get_state (const smpc::solver &smpc_solver, const int in
 //************************************************************
 
 
-void smpc::state_orig::get_next_state (const smpc::solver &smpc_solver)
+void smpc::state_orig::get_next_state (const smpc::solver_as &smpc_solver)
 {
     get_state (smpc_solver, 0);
 }
 
 
-void smpc::state_orig::get_state (const smpc::solver &smpc_solver, const int ind)
+void smpc::state_orig::get_state (const smpc::solver_as &smpc_solver, const int ind)
 {
     if (smpc_solver.qp_sol != NULL)
     {
@@ -182,13 +193,13 @@ smpc::control::control()
 }
 
 
-void smpc::control::get_first_controls (const smpc::solver &smpc_solver)
+void smpc::control::get_first_controls (const smpc::solver_as &smpc_solver)
 {
     get_controls (smpc_solver, 0);
 }
 
 
-void smpc::control::get_controls (const smpc::solver &smpc_solver, const int ind)
+void smpc::control::get_controls (const smpc::solver_as &smpc_solver, const int ind)
 {
     if (smpc_solver.qp_sol != NULL)
     {

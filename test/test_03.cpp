@@ -19,8 +19,7 @@ int main(int argc, char **argv)
     //-----------------------------------------------------------
   
 
-    smpc::solver solver(test_03.wmg->N);
-    int nW;
+    smpc::solver_as solver(test_03.wmg->N);
 
     unsigned int j=0;
     for(;;)
@@ -61,13 +60,13 @@ int main(int argc, char **argv)
         //------------------------------------------------------
         solver.set_parameters (test_03.par->T, test_03.par->h, test_03.par->h0, test_03.par->angle, test_03.par->fp_x, test_03.par->fp_y, test_03.par->lb, test_03.par->ub);
         solver.form_init_fp (test_03.par->fp_x, test_03.par->fp_y, test_03.par->init_state, test_03.par->X);
-        nW = solver.solve();
+        solver.solve();
         test_03.par->init_state.get_next_state (solver);
         //------------------------------------------------------
 
 
         //------------------------------------------------------
-        printf("Num. of activated constraints: %d\n", nW);
+        printf("Num. of activated constraints: %d\n", solver.active_set_size);
         for (int i = 0; i < 6; i++)
         {
             printf("value: % 8e\n", test_03.par->X[i]);

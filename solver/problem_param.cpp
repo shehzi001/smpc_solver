@@ -47,13 +47,15 @@ problem_parameters::~problem_parameters()
 /** @brief Initializes quadratic problem.
     @param[in] T_ Sampling time (for the moment it is assumed to be constant) [sec.]
     @param[in] h_ Height of the Center of Mass divided by gravity
-    @param[in] h_initial current h
+    @param[in] h_initial_ current h
  */
 void problem_parameters::set_state_parameters (
     const double* T_,
     const double* h_,
-    const double h_initial)
+    const double h_initial_)
 {
+    h_initial = h_initial_;
+
     for (int i = 0; i < N; i++)
     {
         if (i == 0)

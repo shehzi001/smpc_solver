@@ -42,9 +42,10 @@ qp_as::qp_as(
 
     dX = new double[SMPC_NUM_VAR*N]();
 
-    // there are no inequality constraints in the initial working set (no hot-starting for the moment)
-
     constraints.resize(2*N);
+
+    max_added_constraints_num = N*2;
+    constraint_removal_enabled = true;
 }
 
 
@@ -77,13 +78,16 @@ void qp_as::set_parameters(
         const double* lb,
         const double* ub)
 {
-    h_initial = h_initial_;
     set_state_parameters (T_, h_, h_initial_);
 
-    zref_x = (double *) zref_x_;
-    zref_y = (double *) zref_y_;
+    zref_x = zref_x_;
+    zref_y = zref_y_;
 
     active_set.clear();
+
+    added_constraints_num = 0;
+    removed_constraints_num = 0;
+
 
     // form inv(2*H) *g and initialize constraints
     // inv(2*H) * g  =  inv (2*(beta/2)) * beta * Cp' * zref  =  zref
@@ -107,6 +111,75 @@ void qp_as::set_parameters(
                 ub[cind] - RTzref_y, 
                 false);
         ++cind;
+    }
+}
+
+
+
+/**
+ * @brief Generates an initial feasible point. 
+ * First we perform a change of variable to @ref pX_tilde "X_tilde"
+ * and then generate a feasible point.
+ *
+ * @param[in] x_coord x coordinates of points satisfying constraints
+ * @param[in] y_coord y coordinates of points satisfying constraints
+ * @param[in] init_state current state
+ * @param[in,out] X_ initial guess / solution of optimization problem
+ */
+void qp_as::formInitialFP (
+        const double *x_coord, 
+        const double *y_coord, 
+        const double *init_state,
+        double* X_)
+{
+    X = X_;
+
+    double X_tilde[6] = {
+        init_state[0], init_state[1], init_state[2],
+        init_state[3], init_state[4], init_state[5]};
+    double *control = &X[SMPC_NUM_STATE_VAR*N];
+    double *cur_state = X;
+    state_handling::orig_to_tilde (h_initial, X_tilde);
+    const double *prev_state = X_tilde;
+
+    
+    for (int i=0; i<N; ++i)
+    {
+        //------------------------------------
+        /* inv(Cp*B). This is a [2 x 2] diagonal matrix (which is invertible if T^3/6-h*T is
+         * not equal to zero). The two elements on the main diagonal are equal, and only one of them 
+         * is stored, which is equal to
+            1/(T^3/6 - h*T)
+         */
+        const double iCpB = 1/(spar[i].B[0]);
+
+        /* inv(Cp*B)*Cp*A. This is a [2 x 6] matrix with the following structure
+            iCpB_CpA = [a b c 0 0 0;
+                        0 0 0 a b c];
+
+            a = iCpB
+            b = iCpB*T
+            c = iCpB*T^2/2
+         * Only a,b and c are stored.
+         */
+        const double iCpB_CpA[3] = {iCpB, iCpB*spar[i].A3, iCpB*spar[i].A6};
+        //------------------------------------
+
+
+        control[0] = -iCpB_CpA[0]*prev_state[0] - iCpB_CpA[1]*prev_state[1] - iCpB_CpA[2]*prev_state[2] + iCpB*x_coord[i];
+        control[1] = -iCpB_CpA[0]*prev_state[3] - iCpB_CpA[1]*prev_state[4] - iCpB_CpA[2]*prev_state[5] + iCpB*y_coord[i];
+
+        cur_state[0] = prev_state[0] + spar[i].A3*prev_state[1] + spar[i].A6*prev_state[2] + spar[i].B[0]*control[0];
+        cur_state[1] =                            prev_state[1] + spar[i].A3*prev_state[2] + spar[i].B[1]*control[0];
+        cur_state[2] =                                                       prev_state[2] + spar[i].B[2]*control[0];
+        cur_state[3] = prev_state[3] + spar[i].A3*prev_state[4] + spar[i].A6*prev_state[5] + spar[i].B[0]*control[1];
+        cur_state[4] =                            prev_state[4] + spar[i].A3*prev_state[5] + spar[i].B[1]*control[1];
+        cur_state[5] =                                                       prev_state[5] + spar[i].B[2]*control[1];
+
+
+        prev_state = &X[SMPC_NUM_STATE_VAR*i];
+        cur_state = &X[SMPC_NUM_STATE_VAR*(i+1)];
+        control = &control[SMPC_NUM_CONTROL_VAR];
     }
 }
 
@@ -171,6 +244,7 @@ int qp_as::check_blocking_constraints()
 }  
 
 
+
 /**
  * @brief Selects a constraint for removal from active set.
  *
@@ -213,7 +287,7 @@ int qp_as::choose_excl_constr (const double *lambda)
  *
  * @return number of activated constraints
  */
-int qp_as::solve ()
+void qp_as::solve ()
 {
     for (int i = 0; i < N; ++i)
     {
@@ -241,24 +315,32 @@ int qp_as::solve ()
             X[i+6] += alpha * dX[i+6];
             X[i+7] += alpha * dX[i+7];
         }
-
-        // no new inequality constraints
-        if (activated_var_num == -1)
+        if (added_constraints_num == max_added_constraints_num)
         {
-            int ind_exclude = choose_excl_constr (chol.get_lambda(*this));
-            if (ind_exclude != -1)
-            {
-                chol.down_resolve (*this, active_set, ind_exclude, X, dX);
-            }
-            else
-            {
-                break;
-            }
+            break;
         }
-        else
+
+        if (activated_var_num != -1)
         {
             // add row to the L matrix and find new dX
             chol.up_resolve (*this, active_set, X, dX);
+            ++added_constraints_num;
+        }
+        else if (constraint_removal_enabled)
+        {
+            // no new inequality constraints
+            int ind_exclude = choose_excl_constr (chol.get_lambda(*this));
+            if (ind_exclude == -1)
+            {
+                break;
+            }
+
+            chol.down_resolve (*this, active_set, ind_exclude, X, dX);
+            ++removed_constraints_num;
+        }
+        else
+        {
+            break;
         }
     }
 
@@ -269,73 +351,5 @@ int qp_as::solve ()
         X[ind+3] += zref_y[i];
     }
 
-    return (active_set.size());
-}
-
-
-/**
- * @brief Generates an initial feasible point. 
- * First we perform a change of variable to @ref pX_tilde "X_tilde"
- * and then generate a feasible point.
- *
- * @param[in] x_coord x coordinates of points satisfying constraints
- * @param[in] y_coord y coordinates of points satisfying constraints
- * @param[in] init_state current state
- * @param[in,out] X_ initial guess / solution of optimization problem
- */
-void qp_as::form_init_fp (
-        const double *x_coord, 
-        const double *y_coord, 
-        const double *init_state,
-        double* X_)
-{
-    X = X_;
-
-    double X_tilde[6] = {
-        init_state[0], init_state[1], init_state[2],
-        init_state[3], init_state[4], init_state[5]};
-    double *control = &X[SMPC_NUM_STATE_VAR*N];
-    double *cur_state = X;
-    state_handling::orig_to_tilde (h_initial, X_tilde);
-    const double *prev_state = X_tilde;
-
-    
-    for (int i=0; i<N; i++)
-    {
-        //------------------------------------
-        /* inv(Cp*B). This is a [2 x 2] diagonal matrix (which is invertible if T^3/6-h*T is
-         * not equal to zero). The two elements on the main diagonal are equal, and only one of them 
-         * is stored, which is equal to
-            1/(T^3/6 - h*T)
-         */
-        double iCpB = 1/(spar[i].B[0]);
-
-        /* inv(Cp*B)*Cp*A. This is a [2 x 6] matrix with the following structure
-            iCpB_CpA = [a b c 0 0 0;
-                        0 0 0 a b c];
-
-            a = iCpB
-            b = iCpB*T
-            c = iCpB*T^2/2
-         * Only a,b and c are stored.
-         */
-        double iCpB_CpA[3] = {iCpB, iCpB*spar[i].A3, iCpB*spar[i].A6};
-        //------------------------------------
-
-
-        control[0] = -iCpB_CpA[0]*prev_state[0] - iCpB_CpA[1]*prev_state[1] - iCpB_CpA[2]*prev_state[2] + iCpB*x_coord[i];
-        control[1] = -iCpB_CpA[0]*prev_state[3] - iCpB_CpA[1]*prev_state[4] - iCpB_CpA[2]*prev_state[5] + iCpB*y_coord[i];
-
-        cur_state[0] = prev_state[0] + spar[i].A3*prev_state[1] + spar[i].A6*prev_state[2] + spar[i].B[0]*control[0];
-        cur_state[1] =                            prev_state[1] + spar[i].A3*prev_state[2] + spar[i].B[1]*control[0];
-        cur_state[2] =                                                       prev_state[2] + spar[i].B[2]*control[0];
-        cur_state[3] = prev_state[3] + spar[i].A3*prev_state[4] + spar[i].A6*prev_state[5] + spar[i].B[0]*control[1];
-        cur_state[4] =                            prev_state[4] + spar[i].A3*prev_state[5] + spar[i].B[1]*control[1];
-        cur_state[5] =                                                       prev_state[5] + spar[i].B[2]*control[1];
-
-
-        prev_state = &X[SMPC_NUM_STATE_VAR*i];
-        cur_state = &X[SMPC_NUM_STATE_VAR*(i+1)];
-        control = &control[SMPC_NUM_CONTROL_VAR];
-    }
+    active_set_size = active_set.size();
 }
