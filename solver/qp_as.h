@@ -80,8 +80,8 @@ class qp_as : public problem_parameters
         chol_solve_as chol;
 
 
-        /// @ref piHg "inv(H) * g"
-        double *iHg;
+        double *zref_x;
+        double *zref_y;
 
 
     // active set        
