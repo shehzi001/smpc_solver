@@ -548,7 +548,7 @@
     = \frac{1}{2}\tilde{\mbm{E}}_c\tilde{\mbm{H}}_c^{-1}\tilde{\mbm{E}}_c^T + \frac{1}{2}\tilde{\mbm{E}}_u\mbm{H}_u^{-1}\tilde{\mbm{E}}_u^T. 
     @f$
 
-    For @f$N = 4@f$ we have
+    For @f$N = 5@f$ we have
 
     @f$\\
     \tilde{\mbm{H}}_c^{-1}\tilde{\mbm{E}}_c^T = 
