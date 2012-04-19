@@ -114,7 +114,7 @@ int main(int argc, char **argv)
         //------------------------------------------------------
 
         // obtain the next state
-        param.init_state.get_next_state (solver);
+        solver.get_next_state(param.init_state);
     }
 
     return 0;

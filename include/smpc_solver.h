@@ -66,6 +66,7 @@ namespace smpc
              */
             state();
 
+
             // -------------------------------
 
 
@@ -99,27 +100,6 @@ namespace smpc
             // -------------------------------
             
            
-            /**
-             * @brief Returns the next state.
-             *  
-             * @param[in] smpc_solver initialized solver
-             */
-            virtual void get_next_state (const solver_as &smpc_solver) = 0;
-
-
-            /**
-             * @brief The same as #get_next_state, but takes an additional 
-             * parameter - index of the desired state in the state vector.
-             *  
-             * @param[in] smpc_solver initialized solver
-             * @param[in] ind index of a state [0 : N-1].
-             */
-            virtual void get_state (const solver_as &smpc_solver, const int ind) = 0;
-
-
-            // -------------------------------
-
-
             /**
              * @brief Set coordinates, velocities and accelerations 
              * are assumed to be zero.
@@ -160,12 +140,6 @@ namespace smpc
     {
         public:
             state_orig () : state () {};
-
-            /// @{
-            /// Refer to the base class state for description.
-            void get_next_state (const solver_as &smpc_solver);
-            void get_state (const solver_as &smpc_solver, const int ind);
-            /// @}
     };
 
     
@@ -185,12 +159,6 @@ namespace smpc
     {
         public:
             state_tilde () : state () {};
-
-            /// @{
-            /// Refer to the base class state for description.
-            void get_next_state (const solver_as &smpc_solver);
-            void get_state (const solver_as &smpc_solver, const int ind);
-            /// @}
     };
 
 
@@ -341,6 +309,32 @@ namespace smpc
        
 
             // -------------------------------
+
+
+            /// @{
+            /**
+             * @brief Returns the next state.
+             *  
+             * @param[in,out] s an output state.
+             */
+            void get_next_state (state_orig &s);
+            void get_next_state (state_tilde &s);
+            /// @}
+            
+            /// @{
+            /**
+             * @brief Returns a state with given index.
+             *  
+             * @param[in,out] s an output state.
+             * @param[in] ind index of a state [0 : N-1].
+             */
+            void get_state (state_orig &s, const int ind);
+            void get_state (state_tilde &s, const int ind);
+            /// @}
+
+
+            // -------------------------------
+
 
             /**
              * @brief Number of added constraints (the constraints, that were

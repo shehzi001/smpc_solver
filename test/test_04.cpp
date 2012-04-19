@@ -65,10 +65,10 @@ int main(int argc, char **argv)
         solver.set_parameters (test_04.par->T, test_04.par->h, test_04.par->h0, test_04.par->angle, test_04.par->fp_x, test_04.par->fp_y, test_04.par->lb, test_04.par->ub);
         solver.form_init_fp (test_04.par->fp_x, test_04.par->fp_y, test_04.par->init_state, test_04.par->X);
         solver.solve();
-        test_04.par->init_state.get_next_state (solver);
+        solver.get_next_state(test_04.par->init_state);
         //------------------------------------------------------
 
-        test_04.X_tilde.get_next_state (solver);
+        solver.get_next_state(test_04.X_tilde);
         fs_out << endl << test_04.par->init_state.x() << " " << test_04.par->init_state.y() << " " << test_04.X_tilde.x() << " " << test_04.X_tilde.y() << ";";
     
         if (dump_to_stdout)

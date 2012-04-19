@@ -44,7 +44,7 @@ int main(int argc, char **argv)
             solver.form_init_fp (test_02.par->fp_x, test_02.par->fp_y, test_02.par->init_state, test_02.par->X);
             solver.solve();
         }
-        test_02.par->init_state.get_next_state (solver);
+        solver.get_next_state(test_02.par->init_state);
         gettimeofday(&end,0);             
         CurrentCPUTime = end.tv_sec - start.tv_sec + 0.000001 * (end.tv_usec - start.tv_usec);
         double TT = CurrentCPUTime/NN;

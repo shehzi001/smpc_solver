@@ -73,7 +73,7 @@ int main(int argc, char **argv)
         solver.set_parameters (test_10.par->T, test_10.par->h, test_10.par->h0, test_10.par->angle, test_10.par->fp_x, test_10.par->fp_y, test_10.par->lb, test_10.par->ub);
         solver.form_init_fp (test_10.par->fp_x, test_10.par->fp_y, test_10.par->init_state, test_10.par->X);
         solver.solve();
-        test_10.par->init_state.get_next_state (solver);
+        solver.get_next_state(test_10.par->init_state);
         //------------------------------------------------------
     }
 

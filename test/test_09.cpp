@@ -84,7 +84,7 @@ int main(int argc, char **argv)
         solver.solve();
         //------------------------------------------------------
         // update state
-        test_09.par->init_state.get_next_state(solver);
+        solver.get_next_state(test_09.par->init_state);
         //-----------------------------------------------------------
 
 
@@ -96,7 +96,7 @@ int main(int argc, char **argv)
             // better solution - more frequent sampling.
             ZMP_x.push_back(test_09.X_tilde.x());
             ZMP_y.push_back(test_09.X_tilde.y());
-            test_09.X_tilde.get_next_state (solver);
+            solver.get_next_state(test_09.X_tilde);
         }
         next_preview_len_ms -= control_sampling_time_ms;
 

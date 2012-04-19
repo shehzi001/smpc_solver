@@ -100,7 +100,7 @@ int main(int argc, char **argv)
             // better solution - more frequent sampling.
             ZMP_x.push_back(test_07.X_tilde.x());
             ZMP_y.push_back(test_07.X_tilde.y());
-            test_07.X_tilde.get_next_state (solver);
+            solver.get_next_state(test_07.X_tilde);
         }
         CoM_x.push_back(test_07.par->init_state.x());
         CoM_y.push_back(test_07.par->init_state.y());

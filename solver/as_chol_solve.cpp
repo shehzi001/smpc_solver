@@ -15,8 +15,6 @@
 #include <cmath> // sqrt
 #include <cstring> // memset, memmove
 
-using namespace AS;
-
 
 /****************************************
  * FUNCTIONS 
