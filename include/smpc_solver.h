@@ -27,6 +27,19 @@ namespace smpc
 {
     class solver_as;
 
+    // -------------------------------
+
+    
+    /**
+     * @brief Enable floating point exceptions: die rather than process 
+     * incorrect data. SIGFPE is sent to the program, when an error occurs.
+     * @note If feenableexcept() is not present on the system, the function 
+     * does nothing.
+     */
+    void enable_fexceptions();
+
+
+    // -------------------------------
 
 
     /**
@@ -263,18 +276,6 @@ namespace smpc
 
 
             ~solver_as();
-
-
-            // -------------------------------
-
-            
-            /**
-             * @brief Enable floating point exceptions: die rather than process 
-             * incorrect data. SIGFPE is sent to the program, when an error occurs.
-             * @note If feenableexcept() is not present on the system, the function 
-             * does nothing.
-             */
-            void enable_fexceptions();
 
 
             // -------------------------------

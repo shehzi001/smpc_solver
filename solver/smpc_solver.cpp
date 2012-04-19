@@ -27,6 +27,15 @@
  * FUNCTIONS 
  ****************************************/
 
+void smpc::enable_fexceptions()
+{
+#ifdef HAVE_FEENABLEEXCEPT
+    feenableexcept(
+            FE_ALL_EXCEPT &
+            // ignore precision loss due to rounding
+            ~FE_INEXACT);
+#endif
+}
 
 
 smpc::solver_as::solver_as (
@@ -47,15 +56,6 @@ smpc::solver_as::~solver_as()
 }
 
 
-void smpc::solver_as::enable_fexceptions()
-{
-#ifdef HAVE_FEENABLEEXCEPT
-    feenableexcept(
-            FE_ALL_EXCEPT &
-            // ignore precision loss due to rounding
-            ~FE_INEXACT);
-#endif
-}
 
 
 void smpc::solver_as::set_parameters(
@@ -81,8 +81,6 @@ void smpc::solver_as::set_limits (
         qp_sol->constraint_removal_enabled = constraint_removal_enabled;
     }
 }
-
-
 
 
 void smpc::solver_as::form_init_fp (

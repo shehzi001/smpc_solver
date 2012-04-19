@@ -14,6 +14,7 @@
 #include <cmath> //cos,sin
 
 
+using namespace AS;
 
 /****************************************
  * FUNCTIONS

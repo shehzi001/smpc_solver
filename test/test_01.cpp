@@ -41,7 +41,7 @@ int main(int argc, char **argv)
     init_01 test_01 (test_name);
 
     smpc::solver_as solver(test_01.wmg->N);
-    solver.enable_fexceptions();
+    smpc::enable_fexceptions();
 
 
     double err = 0;

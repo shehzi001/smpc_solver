@@ -13,9 +13,9 @@
  * INCLUDES 
  ****************************************/
 #include "smpc_common.h"
-#include "chol_solve_as.h"
-#include "constraint.h"
-#include "problem_param.h"
+#include "as_chol_solve.h"
+#include "as_constraint.h"
+#include "as_problem_param.h"
 
 #include <vector>
 
@@ -34,7 +34,7 @@ using namespace std;
  * @brief Solve a quadratic program with a specific structure. 
  * qp_as = Quadratic Programming / Active Set
  */
-class qp_as : public problem_parameters
+class qp_as : public AS::problem_parameters
 {
     public:
 // functions        
@@ -84,8 +84,8 @@ class qp_as : public problem_parameters
 
         int choose_excl_constr (const double *);
 
-        /// An instance of #chol_solve_as class.
-        chol_solve_as chol;
+        /// An instance of #as_chol_solve class.
+        AS::chol_solve chol;
 
 
         const double *zref_x;
@@ -96,10 +96,10 @@ class qp_as : public problem_parameters
 
     // active set        
         /// A set of active constraints.
-        vector <constraint> active_set;
+        vector <AS::constraint> active_set;
 
         /// Vector of constraints.
-        vector <constraint> constraints;
+        vector <AS::constraint> constraints;
 
 
     // descent direction
