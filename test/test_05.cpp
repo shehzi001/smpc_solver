@@ -45,10 +45,10 @@ int main(int argc, char **argv)
     smpc::solver_ip solver(
             test_05.wmg->N, 
             100,
-            150, 
             2000, 
+            150, 
+            0.02, 
             1, 
-            0.01, 
             1e-3,
             1e-2,
             100, 

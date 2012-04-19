@@ -43,9 +43,9 @@ namespace smpc
     solver_as::solver_as (
                     const int N,
                     const double Alpha, const double Beta, const double Gamma,
-                    const double regularization, const double tol)
+                    const double Eta, const double tol)
     {
-        qp_sol = new qp_as (N, Alpha, Beta, Gamma, regularization, tol);
+        qp_sol = new qp_as (N, Alpha, Beta, Gamma, Eta, tol);
     }
 
 
@@ -206,13 +206,13 @@ namespace smpc
                     const int N,
                     const int max_iter,
                     const double Alpha, const double Beta, const double Gamma,
-                    const double regularization, 
+                    const double Eta, 
                     const double tol, const double tol_out,
                     const double t,
                     const double mu,
                     const double bs_alpha, const double bs_beta)
     {
-        qp_ip * qpip_solver = new qp_ip (N, Alpha, Beta, Gamma, regularization, tol);
+        qp_ip * qpip_solver = new qp_ip (N, Alpha, Beta, Gamma, Eta, tol);
         qpip_solver->set_ip_parameters (t, mu, bs_alpha, bs_beta, max_iter, tol_out);
         qp_sol = qpip_solver;
     }

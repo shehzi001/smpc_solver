@@ -28,10 +28,10 @@ int main(int argc, char **argv)
     //-----------------------------------------------------------
     smpc::solver_as solver(
             test_07.wmg->N, // size of the preview window
-            300.0,  // Alpha
-            800.0,  // Beta
-            1.0,    // Gamma
-            0.01,   // regularization
+            800.0,  // Alpha
+            300.0,  // Beta
+            0.02,   // Gamma
+            1.0,    // Eta
             1e-7);  // tolerance
     smpc::enable_fexceptions();
     //-----------------------------------------------------------

@@ -22,15 +22,15 @@ namespace AS
         const double Alpha,
         const double Beta,
         const double Gamma,
-        const double regularization)
+        const double Eta)
     {
         N = N_;
 
-        i2Q[0] = 1/(2*(Beta/2));
-        i2Q[1] = 1/(2*(Alpha/2));
-        i2Q[2] = 1/(2*regularization);
+        i2Q[0] = 1/(2*(Alpha/2));
+        i2Q[1] = 1/(2*(Beta/2));
+        i2Q[2] = 1/(2*(Gamma/2));
 
-        i2P = 1/(2 * (Gamma/2));
+        i2P = 1/(2 * (Eta/2));
 
         spar = new state_parameters[N];
     }

@@ -204,18 +204,18 @@ namespace smpc
             /** @brief Constructor: initialize an active set method solver.
              *
                 @param[in] N Number of sampling times in a preview window
-                @param[in] Alpha Velocity gain
-                @param[in] Beta Position gain
-                @param[in] Gamma Jerk gain
-                @param[in] regularization regularization
+                @param[in] Alpha Position gain
+                @param[in] Beta Velocity gain
+                @param[in] Gamma Acceleration gain
+                @param[in] Eta Jerk gain
                 @param[in] tol tolerance
             */
             solver_as (
                     const int N, 
-                    const double Alpha = 150.0, 
-                    const double Beta = 2000.0, 
-                    const double Gamma = 1.0,
-                    const double regularization = 0.01,
+                    const double Alpha = 2000.0, 
+                    const double Beta = 150.0, 
+                    const double Gamma = 0.02,
+                    const double Eta = 1.0,
                     const double tol = 1e-7);
 
 
@@ -379,10 +379,10 @@ namespace smpc
              *
              * @param[in] N Number of sampling times in a preview window
              * @param[in] max_iter maximum number of internal loop iterations
-             * @param[in] Alpha Velocity gain
-             * @param[in] Beta Position gain
-             * @param[in] Gamma Jerk gain
-             * @param[in] regularization regularization
+             * @param[in] Alpha Position gain
+             * @param[in] Beta Velocity gain
+             * @param[in] Gamma Acceleration gain
+             * @param[in] Eta Jerk gain
              * @param[in] tol tolerance (internal loop)
              * @param[in] tol_out tolerance of the outer loop, which resolves
              *                    the problem with new t (kappa) parameter.
@@ -393,11 +393,11 @@ namespace smpc
              */
             solver_ip (
                     const int N, 
-                    const int max_iter, // no default to avoid ambiguity
-                    const double Alpha = 150.0, 
-                    const double Beta = 2000.0, 
-                    const double Gamma = 1.0,
-                    const double regularization = 0.01,
+                    const int max_iter,
+                    const double Alpha = 2000.0, 
+                    const double Beta = 150.0, 
+                    const double Gamma = 0.01,
+                    const double Eta = 1.0,
                     const double tol = 1e-3,
                     const double tol_out = 1e-2,
                     const double t = 100,

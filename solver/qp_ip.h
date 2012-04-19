@@ -80,8 +80,6 @@ class qp_ip : public IP::problem_parameters
     ///@{
     /// Gains used in @ref pPDObj "objective function".
         double gain_alpha;
-        double gain_beta;
-        double gain_gamma;
     ///@}
 
         /// tolerance

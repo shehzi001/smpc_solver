@@ -26,10 +26,10 @@ using namespace IP;
 /** @brief Constructor: initialization of the constant parameters
 
     @param[in] N_ Number of sampling times in a preview window
-    @param[in] Alpha Velocity gain
-    @param[in] Beta Position gain
-    @param[in] Gamma Jerk gain
-    @param[in] regularization regularization
+    @param[in] Alpha Position gain
+    @param[in] Beta Velocity gain
+    @param[in] Gamma Acceleration gain
+    @param[in] Eta Jerk gain
     @param[in] tol_ tolerance
 */
 qp_ip::qp_ip(
@@ -37,16 +37,14 @@ qp_ip::qp_ip(
         const double Alpha, 
         const double Beta, 
         const double Gamma, 
-        const double regularization, 
+        const double Eta, 
         const double tol_) : 
-    problem_parameters (N_, Alpha, Beta, Gamma, regularization),
+    problem_parameters (N_, Alpha, Beta, Gamma, Eta),
     chol (N_)
 {
     tol = tol_;
 
     gain_alpha = Alpha;
-    gain_beta  = Beta;
-    gain_gamma = Gamma;
 
     dX = new double[SMPC_NUM_VAR*N]();
     g = new double[2*N];
@@ -54,10 +52,10 @@ qp_ip::qp_ip(
     i2hess_grad = new double[N*SMPC_NUM_VAR];
     grad = new double[N*SMPC_NUM_VAR];
 
-    Q[0] = Beta/2;
-    Q[1] = Alpha/2;
-    Q[2] = regularization;
-    P = Gamma/2;
+    Q[0] = Alpha/2;
+    Q[1] = Beta/2;
+    Q[2] = Gamma/2;
+    P = Eta/2;
 }
 
 
@@ -130,8 +128,8 @@ void qp_ip::form_g (const double *zref_x, const double *zref_y)
         p1 = zref_y[i];
 
         // inv (2*H) * R' * Cp' * zref
-        g[i*2] = -(cosA*p0 + sinA*p1)*gain_beta;
-        g[i*2 + 1] = -(-sinA*p0 + cosA*p1)*gain_beta; 
+        g[i*2] = -(cosA*p0 + sinA*p1)*gain_alpha;
+        g[i*2 + 1] = -(-sinA*p0 + cosA*p1)*gain_alpha; 
     }
 }
 
