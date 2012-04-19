@@ -19,6 +19,7 @@
 #endif
 
 #include "qp_as.h"
+#include "qp_ip.h"
 #include "smpc_solver.h"
 #include "state_handling.h"
 
@@ -196,7 +197,170 @@ namespace smpc
     }
 
 
+//************************************************************
+//************************************************************
+//************************************************************
+
+
+    solver_ip::solver_ip (
+                    const int N,
+                    const int max_iter,
+                    const double Alpha, const double Beta, const double Gamma,
+                    const double regularization, 
+                    const double tol, const double tol_out,
+                    const double t,
+                    const double mu,
+                    const double bs_alpha, const double bs_beta)
+    {
+        qp_ip * qpip_solver = new qp_ip (N, Alpha, Beta, Gamma, regularization, tol);
+        qpip_solver->set_ip_parameters (t, mu, bs_alpha, bs_beta, max_iter, tol_out);
+        qp_sol = qpip_solver;
+    }
+
+
+    solver_ip::~solver_ip()
+    {
+        if (qp_sol != NULL)
+        {
+            delete qp_sol;
+        }
+    }
+
+
+    void solver_ip::set_parameters(
+            const double* T, const double* h, const double h_initial,
+            const double* angle,
+            const double* zref_x, const double* zref_y,
+            const double* lb, const double* ub)
+    {
+        if (qp_sol != NULL)
+        {
+            qp_sol->set_parameters(T, h, h_initial, angle, zref_x, zref_y, lb, ub);
+        }
+    }
+
+
+
+    void solver_ip::form_init_fp (
+            const double *x_coord,
+            const double *y_coord,
+            const state_orig &init_state,
+            double* X)
+    {
+        if (qp_sol != NULL)
+        {
+            qp_sol->form_init_fp (x_coord, y_coord, init_state.state_vector, X);
+        }
+    }
+
+
+
+    int solver_ip::solve()
+    {
+        if (qp_sol != NULL)
+        {
+            return (qp_sol->solve ());
+        }
+        return (-1);
+    }
+
+
     //************************************************************
+
+
+    void solver_ip::get_next_state (state_tilde &s)
+    {
+        get_state (s, 0);
+    }
+
+
+    void solver_ip::get_state (state_tilde &s, const int ind)
+    {
+        if (qp_sol != NULL)
+        {
+            int index;
+            if (ind >= qp_sol->N)
+            {
+                index = qp_sol->N - 1;
+            }
+            else
+            {
+                index = ind;
+            }
+
+            for (int i = 0; i < SMPC_NUM_STATE_VAR; i++)
+            {
+                s.state_vector[i] = qp_sol->X[index*SMPC_NUM_STATE_VAR + i];
+            }
+            state_handling::bar_to_tilde (
+                    qp_sol->spar[index].sin, 
+                    qp_sol->spar[index].cos, 
+                    s.state_vector);
+        }
+    }
+
+
+    //************************************************************
+
+
+    void solver_ip::get_next_state (state_orig &s)
+    {
+        get_state (s, 0);
+    }
+
+
+    void solver_ip::get_state (state_orig &s, const int ind)
+    {
+        if (qp_sol != NULL)
+        {
+            int index;
+            if (ind >= qp_sol->N)
+            {
+                index = qp_sol->N - 1;
+            }
+            else
+            {
+                index = ind;
+            }
+
+            for (int i = 0; i < SMPC_NUM_STATE_VAR; i++)
+            {
+                s.state_vector[i] = qp_sol->X[index*SMPC_NUM_STATE_VAR + i];
+            }
+            state_handling::bar_to_tilde (
+                    qp_sol->spar[index].sin, 
+                    qp_sol->spar[index].cos, 
+                    s.state_vector);
+            state_handling::tilde_to_orig (qp_sol->spar[index].h, s.state_vector);
+        }
+    }
+
+
+    //************************************************************
+
+
+    void solver_ip::get_first_controls (control &c)
+    {
+        get_controls (c, 0);
+    }
+
+
+    void solver_ip::get_controls (control &c, const int ind)
+    {
+        if (qp_sol != NULL)
+        {
+            state_handling::get_controls (
+                    qp_sol->N,
+                    qp_sol->X,
+                    ind,
+                    c.control_vector);
+        }
+    }
+
+
+//************************************************************
+//************************************************************
+//************************************************************
 
 
     control::control()
@@ -229,6 +393,4 @@ namespace smpc
         state_vector[4] = vy_;
         state_vector[5] = ay_;
     }
-
-
 }

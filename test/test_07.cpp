@@ -89,7 +89,7 @@ int main(int argc, char **argv)
         solver.solve();
         //------------------------------------------------------
         // update state
-        ipm.control_vector.get_first_controls (solver);
+        solver.get_first_controls(ipm.control_vector);
         ipm.calculateNextState(ipm.control_vector, test_07.par->init_state);
         //-----------------------------------------------------------
 

@@ -8,3 +8,8 @@ States:
     - as_states_inv_downdate.dat
         active set method
         matrix inverse
+
+    - ip_states_inv.dat
+        interior-point method
+        matrix inverse
+

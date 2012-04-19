@@ -25,6 +25,8 @@
  */
 namespace state_handling
 {
+    void tilde_to_bar (const double, const double, double *);
+    void bar_to_tilde (const double, const double, double *);
     void tilde_to_orig (const double, double *);
     void orig_to_tilde (const double, double *);
 

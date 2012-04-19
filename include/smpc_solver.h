@@ -11,6 +11,7 @@
 #define SMPC_SOLVER_H
 
 class qp_as;
+class qp_ip;
 
 
 /// @addtogroup gAPI 
@@ -25,8 +26,6 @@ class qp_as;
 
 namespace smpc
 {
-    class solver_as;
-
     // -------------------------------
 
     
@@ -363,6 +362,154 @@ namespace smpc
              * @brief Internal representation.
              */
             qp_as *qp_sol;
+    };
+
+
+    /**
+     * @brief API of the sparse MPC solver.
+     */
+    class solver_ip
+    {
+        public:
+
+
+            // -------------------------------
+
+            /** @brief Constructor: initialize an interior-point method solver.
+             *
+             * @param[in] N Number of sampling times in a preview window
+             * @param[in] max_iter maximum number of internal loop iterations
+             * @param[in] Alpha Velocity gain
+             * @param[in] Beta Position gain
+             * @param[in] Gamma Jerk gain
+             * @param[in] regularization regularization
+             * @param[in] tol tolerance (internal loop)
+             * @param[in] tol_out tolerance of the outer loop, which resolves
+             *                    the problem with new t (kappa) parameter.
+             * @param[in] t logarithmic barrier parameter
+             * @param[in] mu multiplier of t, >1.
+             * @param[in] bs_alpha backtracking search parameter 0 < alpha < 0.5
+             * @param[in] bs_beta  backtracking search parameter 0 < beta < 1
+             */
+            solver_ip (
+                    const int N, 
+                    const int max_iter, // no default to avoid ambiguity
+                    const double Alpha = 150.0, 
+                    const double Beta = 2000.0, 
+                    const double Gamma = 1.0,
+                    const double regularization = 0.01,
+                    const double tol = 1e-3,
+                    const double tol_out = 1e-2,
+                    const double t = 100,
+                    const double mu = 15,
+                    const double bs_alpha = 0.01,
+                    const double bs_beta = 0.5);
+
+
+            ~solver_ip();
+
+
+            // -------------------------------
+
+
+            /** @brief Initializes quadratic problem.
+
+                @param[in] T sampling time for each time step [sec.]
+                @param[in] h height of the center of mass divided by gravity for each time step
+                @param[in] h_initial initial value of height of the center of mass divided by gravity
+                @param[in] angle rotation angle for each state relative to the world frame
+                @param[in] zref_x reference values of x coordinate of ZMP
+                @param[in] zref_y reference values of y coordinate of ZMP
+                @param[in] lb array of lower bounds for coordinates of ZMP
+                @param[in] ub array of upper bounds for coordinates of ZMP
+            */
+            void set_parameters (
+                    const double* T,
+                    const double* h,
+                    const double h_initial,
+                    const double* angle,
+                    const double* zref_x,
+                    const double* zref_y,
+                    const double* lb,
+                    const double* ub);
+
+
+            /** @brief Generates an initial feasible point. 
+
+                @param[in] x_coord x coordinates of points satisfying constraints
+                @param[in] y_coord y coordinates of points satisfying constraints
+                @param[in] init_state initial state
+                @param[in,out] X solution of optimization problem
+             */
+            void form_init_fp (
+                    const double *x_coord,
+                    const double *y_coord,
+                    const state_orig &init_state,
+                    double* X);
+
+
+            /**
+             * @brief Solve QP problem.
+             */
+            int solve ();
+
+
+            // -------------------------------
+
+
+            /// @{
+            /**
+             * @brief Returns the next state.
+             *  
+             * @param[out] s an output state.
+             */
+            void get_next_state (state_orig &s);
+            void get_next_state (state_tilde &s);
+            /// @}
+
+
+            /// @{
+            /**
+             * @brief Returns a state with given index.
+             *  
+             * @param[out] s an output state.
+             * @param[in] ind index of a state [0 : N-1].
+             */
+            void get_state (state_orig &s, const int ind);
+            void get_state (state_tilde &s, const int ind);
+            /// @}
+
+
+            // -------------------------------
+
+            
+            /**
+             * @brief Returns the controls that must be applied to reach the 
+             *  next state.
+             *
+             * @param[out] c an output control vector
+             */
+            void get_first_controls (control &c);
+
+
+            /**
+             * @brief The same as #get_first_controls, but takes an additional 
+             * parameter - the index of the control inputs. Control[ind] is 
+             * applied to State[ind-1] to reach State[ind].
+             *
+             * @param[out] c an output control vector
+             * @param[in] ind index of control inputs [0 : N-1].
+             */
+            void get_controls (control &c, const int ind);
+
+
+            // -------------------------------
+
+
+            /**
+             * @brief Internal representation.
+             */
+            qp_ip *qp_sol;
     };
 }
 /// @}

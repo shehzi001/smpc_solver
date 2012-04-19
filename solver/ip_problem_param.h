@@ -5,8 +5,8 @@
  */
 
 
-#ifndef AS_PROBLEM_PARAM_H
-#define AS_PROBLEM_PARAM_H
+#ifndef IP_PROBLEM_PARAM_H
+#define IP_PROBLEM_PARAM_H
 
 /****************************************
  * INCLUDES 
@@ -21,11 +21,14 @@
 /****************************************
  * TYPEDEFS 
  ****************************************/
-namespace AS
+namespace IP
 {
     class state_parameters
     {
         public:
+            double cos;
+            double sin;
+
             // parameters used in generation of A and B matrices
             /** Preview sampling time  */
             double T;
@@ -48,7 +51,7 @@ namespace AS
             problem_parameters (const int, const double, const double, const double, const double);
             ~problem_parameters();
 
-            void set_state_parameters (const double*, const double*, const double);
+            void set_state_parameters (const double*, const double*, const double, const double*);
 
 
             /** Number of iterations in a preview window. */
@@ -66,12 +69,8 @@ namespace AS
             ///@}
 
             state_parameters *spar;
-
-            /// Height of the CoM at initial state divided by the gravity, this initial state
-            /// precede the first state in the preview window.
-            double h_initial;
     };
 }
 ///@}
-#endif /*AS_PROBLEM_PARAM_H*/
+#endif /*IP_PROBLEM_PARAM_H*/
 
