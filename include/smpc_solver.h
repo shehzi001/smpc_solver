@@ -190,29 +190,6 @@ namespace smpc
              * @brief Jerk along Y axis.
              */
             double &jy () {return control_vector[1];};
-
-
-            // -------------------------------
-
-
-            /**
-             * @brief Returns the controls that must be applied to reach the 
-             *  next state.
-             *
-             * @param[in] smpc_solver initialized solver
-             */
-            void get_first_controls (const solver_as &smpc_solver);
-
-
-            /**
-             * @brief The same as #get_first_controls, but takes an additional 
-             * parameter - the index of the control inputs. Control[ind] is 
-             * applied to State[ind-1] to reach State[ind].
-             *
-             * @param[in] smpc_solver initialized solver
-             * @param[in] ind index of control inputs [0 : N-1].
-             */
-            void get_controls (const solver_as &smpc_solver, const int ind);
     };
 
 
@@ -315,7 +292,7 @@ namespace smpc
             /**
              * @brief Returns the next state.
              *  
-             * @param[in,out] s an output state.
+             * @param[out] s an output state.
              */
             void get_next_state (state_orig &s);
             void get_next_state (state_tilde &s);
@@ -325,12 +302,35 @@ namespace smpc
             /**
              * @brief Returns a state with given index.
              *  
-             * @param[in,out] s an output state.
+             * @param[out] s an output state.
              * @param[in] ind index of a state [0 : N-1].
              */
             void get_state (state_orig &s, const int ind);
             void get_state (state_tilde &s, const int ind);
             /// @}
+
+
+            // -------------------------------
+
+
+            /**
+             * @brief Returns the controls that must be applied to reach the 
+             *  next state.
+             *
+             * @param[out] c an output control vector
+             */
+            void get_first_controls (control &c);
+
+
+            /**
+             * @brief The same as #get_first_controls, but takes an additional 
+             * parameter - the index of the control inputs. Control[ind] is 
+             * applied to State[ind-1] to reach State[ind].
+             *
+             * @param[out] c an output control vector
+             * @param[in] ind index of control inputs [0 : N-1].
+             */
+            void get_controls (control &c, const int ind);
 
 
             // -------------------------------

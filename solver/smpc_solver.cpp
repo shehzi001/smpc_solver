@@ -114,34 +114,6 @@ namespace smpc
     //************************************************************
 
 
-    state::state()
-    {
-        set (0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
-    }
-
-
-    void state::set (double x_, double y_)
-    {
-        set (x_, 0.0, 0.0, y_, 0.0, 0.0);
-    }
-
-
-    void state::set (
-            double x_, double vx_, double ax_,
-            double y_, double vy_, double ay_)
-    {
-        state_vector[0] = x_;
-        state_vector[1] = vx_;
-        state_vector[2] = ax_;
-        state_vector[3] = y_;
-        state_vector[4] = vy_;
-        state_vector[5] = ay_;
-    }
-
-
-    //************************************************************
-
-
     void solver_as::get_next_state (state_tilde &s)
     {
         get_state (s, 0);
@@ -204,6 +176,29 @@ namespace smpc
 
     //************************************************************
 
+
+    void solver_as::get_first_controls (control &c)
+    {
+        get_controls (c, 0);
+    }
+
+
+    void solver_as::get_controls (control &c, const int ind)
+    {
+        if (qp_sol != NULL)
+        {
+            state_handling::get_controls (
+                    qp_sol->N, 
+                    qp_sol->X, 
+                    ind, 
+                    c.control_vector);
+        }
+    }
+
+
+    //************************************************************
+
+
     control::control()
     {
         control_vector[0] = 0.0;
@@ -211,21 +206,29 @@ namespace smpc
     }
 
 
-    void control::get_first_controls (const solver_as &smpc_solver)
+    state::state()
     {
-        get_controls (smpc_solver, 0);
+        set (0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
     }
 
 
-    void control::get_controls (const solver_as &smpc_solver, const int ind)
+    void state::set (double x_, double y_)
     {
-        if (smpc_solver.qp_sol != NULL)
-        {
-            state_handling::get_controls (
-                    smpc_solver.qp_sol->N, 
-                    smpc_solver.qp_sol->X, 
-                    ind, 
-                    control_vector);
-        }
+        set (x_, 0.0, 0.0, y_, 0.0, 0.0);
     }
+
+
+    void state::set (
+            double x_, double vx_, double ax_,
+            double y_, double vy_, double ay_)
+    {
+        state_vector[0] = x_;
+        state_vector[1] = vx_;
+        state_vector[2] = ax_;
+        state_vector[3] = y_;
+        state_vector[4] = vy_;
+        state_vector[5] = ay_;
+    }
+
+
 }
