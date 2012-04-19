@@ -93,10 +93,6 @@ class qp_ip : public IP::problem_parameters
         /** A number from 0 to 1, which controls depth of descent #X = #X + #alpha*#dX. */
         double alpha;
 
-        /// Height of the CoM at initial state divided by the gravity, this initial state
-        /// precede the first state in the preview window.
-        double h_initial;
-
         /// 2*#N non-zero elements of vector @ref pg "g".
         double *g;
 

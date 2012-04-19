@@ -68,6 +68,10 @@ namespace IP
             double i2P;
             ///@}
 
+            /// Height of the CoM at initial state divided by the gravity, this initial state
+            /// precede the first state in the preview window.
+            double h_initial;
+
             state_parameters *spar;
     };
 }

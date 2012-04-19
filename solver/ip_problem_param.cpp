@@ -51,15 +51,17 @@ namespace IP
     /** @brief Initializes quadratic problem.
         @param[in] T_ Sampling time (for the moment it is assumed to be constant) [sec.]
         @param[in] h_ Height of the Center of Mass divided by gravity
-        @param[in] h_initial current h
+        @param[in] h_initial_ current h
         @param[in] angle Rotation angle for each state in the preview window
      */
     void problem_parameters::set_state_parameters (
         const double* T_,
         const double* h_,
-        const double h_initial,
+        const double h_initial_,
         const double* angle)
     {
+        h_initial = h_initial_;
+
         for (int i = 0; i < N; i++)
         {
             spar[i].cos = cos(angle[i]);
