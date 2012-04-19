@@ -142,7 +142,7 @@ void qp_ip::form_g (const double *zref_x, const double *zref_y)
  */
 void qp_ip::form_grad_i2hess_logbar (const double kappa)
 {
-    phi_X = 0;
+    phi_X = 1.0;
     int i,j;
 
 
@@ -172,7 +172,7 @@ void qp_ip::form_grad_i2hess_logbar (const double kappa)
         double ub_diff =  ub[i] - X[j];
 
         // logarithmic barrier
-        phi_X -= log(lb_diff * ub_diff);
+        phi_X *= lb_diff * ub_diff;
 
         lb_diff = 1/lb_diff;
         ub_diff = 1/ub_diff;
@@ -185,7 +185,7 @@ void qp_ip::form_grad_i2hess_logbar (const double kappa)
         // hess = H + kappa * (ub_diff^2 - lb_diff^2)
         i2hess[i] = 1/(2*Q[0] + kappa * (ub_diff*ub_diff + lb_diff*lb_diff));
     }
-    phi_X *= kappa;
+    phi_X = -kappa * log(phi_X);
 }
 
 
@@ -329,36 +329,48 @@ double qp_ip::form_phi_X_tmp (const double kappa)
 {
     int i,j;
     double res = 0;
-    double X_tmp;
+    double log_barrier = 1.0;
 
 
     // phi_X += X'*H*X
-    for (i = 0,j = 0; i < 2*N; i++, j += 3)
+    for (i = 0,j = 0; i < 2*N; i+=2, j += SMPC_NUM_STATE_VAR)
     {
-        X_tmp = X[j] + alpha * dX[j];
+        double X_tmp[6] = {
+            X[j]   + alpha * dX[j],
+            X[j+1] + alpha * dX[j+1],
+            X[j+2] + alpha * dX[j+2],
+            X[j+3] + alpha * dX[j+3],
+            X[j+4] + alpha * dX[j+4],
+            X[j+5] + alpha * dX[j+5],
+        };
 
         // logarithmic barrier
-        res -= kappa * (log((-lb[i] + X_tmp) * (ub[i] - X_tmp)));
+        log_barrier *= (-lb[i]   + X_tmp[0]) * (ub[i]   - X_tmp[0])
+                     * (-lb[i+1] + X_tmp[3]) * (ub[i+1] - X_tmp[3]);
 
         // phi_X += g'*X
-        res += g[i] * X_tmp;
-
+        res += g[i] * X_tmp[0] + g[i+1] * X_tmp[3];
 
         // phi_X += X'*H*X // states
-        res += Q[0] * X_tmp*X_tmp;
-
-        X_tmp = X[j+1] + alpha * dX[j+1];
-        res += Q[1] * X_tmp*X_tmp;
-
-        X_tmp = X[j+2] + alpha * dX[j+2];
-        res += Q[2] * X_tmp*X_tmp;
+        res += Q[0] * X_tmp[0]*X_tmp[0]
+             + Q[1] * X_tmp[1]*X_tmp[1]
+             + Q[2] * X_tmp[2]*X_tmp[2]
+             + Q[0] * X_tmp[3]*X_tmp[3]
+             + Q[1] * X_tmp[4]*X_tmp[4]
+             + Q[2] * X_tmp[5]*X_tmp[5];
     }
     // phi_X += X'*H*X // controls
-    for (i = N*SMPC_NUM_STATE_VAR; i < N*SMPC_NUM_VAR; i++)
+    for (i = N*SMPC_NUM_STATE_VAR; i < N*SMPC_NUM_VAR; i += SMPC_NUM_CONTROL_VAR)
     {
-        X_tmp = X[i] + alpha * dX[i];
-        res += P * X_tmp * X_tmp;
+        double X_tmp[2] = {
+            X[i]   + alpha * dX[i],
+            X[i+1] + alpha * dX[i+1]
+        };
+
+        res += P * (X_tmp[0] * X_tmp[0] + X_tmp[1] * X_tmp[1]);
     }
+
+    res -= kappa * log(log_barrier);
 
     return (res);
 }
@@ -441,18 +453,19 @@ bool qp_ip::solve_onestep (const double kappa)
 
     // stopping criterion (decrement)
     double decrement = 0;
-    for (i = 0, j = 0; i < N*2; i++)
+    for (i = 0, j = 0; i < N*2; i += 2, j += SMPC_NUM_STATE_VAR)
     {
-        decrement += dX[j] * dX[j] / i2hess[i];
-        j++;
-        decrement += dX[j] * dX[j] / i2Q[1];
-        j++;
-        decrement += dX[j] * dX[j] / i2Q[2];
-        j++;
+        decrement += dX[j]   * dX[j]   / i2hess[i]
+                   + dX[j+1] * dX[j+1] / i2Q[1]
+                   + dX[j+2] * dX[j+2] / i2Q[2]
+                   + dX[j+3] * dX[j+3] / i2hess[i+1]
+                   + dX[j+4] * dX[j+4] / i2Q[1]
+                   + dX[j+5] * dX[j+5] / i2Q[2];
     }
-    for (i = N*SMPC_NUM_STATE_VAR; i < N*SMPC_NUM_VAR; i++)
+    for (i = N*SMPC_NUM_STATE_VAR; i < N*SMPC_NUM_VAR; i += SMPC_NUM_CONTROL_VAR)
     {
-        decrement += dX[i] * dX[i] / i2P;
+        decrement += dX[i]   * dX[i]   / i2P
+                  +  dX[i+1] * dX[i+1] / i2P;
     }
     if (decrement < tol)
     {
