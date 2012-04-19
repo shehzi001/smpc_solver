@@ -12,8 +12,6 @@
 
 #include "state_handling.h"
 
-using namespace AS;
-
 /****************************************
  * FUNCTIONS 
  ****************************************/

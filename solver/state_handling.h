@@ -12,7 +12,6 @@
  * INCLUDES
  ****************************************/
 #include "smpc_common.h"
-#include "as_problem_param.h"
 
 
 /****************************************
