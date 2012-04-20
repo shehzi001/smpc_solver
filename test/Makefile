@@ -26,7 +26,7 @@ demo:
 	${CXX} -o $@.a $@.o ${LDFLAGS}
 
 clean:
-	rm -f *.a *.o test_*.m test_*.out
+	rm -f *.a *.o test_*.m test_*.out test_*.a.gmon
 
 # dummy targets
 .PHONY: clean

@@ -65,14 +65,13 @@ namespace IP
             const double *i2Q,
             const double* i2hess)
     {
-        /*
-         * Numbers mark identical elements of M
-         * 1  5
-         *  2 
-         *   3
-         * 5  4
-         *     2
-         *      3
+        /*      R        *       Q        *       R'      =      M
+         * |c    -s    |   |a1          |   |c     s    |   |a1cc+a2ss     a1cs-a2cs    |
+         * |  1        |   |   b        |   |  1        |   |          b                |
+         * |    1      |   |     g      |   |    1      |   |            g              |
+         * |s     c    |   |      a2    |   |-s    c    |   |a1cs-a2cs     a1ss+a2cc    |
+         * |        1  |   |         b  |   |        1  |   |                        b  |
+         * |          1|   |           g|   |          1|   |                          g|
          */
         // diagonal elements
         M[0] = i2hess[0]*cosA*cosA + i2hess[1]*sinA*sinA;
@@ -97,30 +96,32 @@ namespace IP
      */
     void matrix_ecL::chol_dec (double *mx)
     {
-        double *curel;
+        mx[0] = sqrt(mx[0]);
+        mx[1] /= mx[0];
+        mx[2] /= mx[0];
+        mx[3] /= mx[0];
+        mx[4] /= mx[0];
+        mx[5] /= mx[0];
 
-        for (int i = 0; i < MATRIX_SIDE_6x6; i++) // row
-        {
-            // non-diagonal elements
-            for (int j = 0; j < i; j++) // column
-            {
-                curel = &mx[j*MATRIX_SIDE_6x6 + i];
-                for (int k = 0; k < j; k++) // column
-                {
-                    *curel -= mx[k*MATRIX_SIDE_6x6 + i] * mx[k*MATRIX_SIDE_6x6 + j];
-                }
+        mx[7]  = sqrt(mx[7] - mx[1]*mx[1]);
+        mx[8]  = (mx[8]  - mx[1]*mx[2])/mx[7];
+        mx[9]  = (mx[9]  - mx[1]*mx[3])/mx[7];
+        mx[10] = (mx[10] - mx[1]*mx[4])/mx[7];
+        mx[11] = (mx[11] - mx[1]*mx[5])/mx[7];
 
-                *curel /= mx[j*MATRIX_SIDE_6x6 + j];
-            }
+        mx[14] = sqrt(mx[14] - mx[2]*mx[2] - mx[8]*mx[8]);
+        mx[15] = (mx[15] - mx[2]*mx[3] - mx[8]*mx[9])/mx[14];
+        mx[16] = (mx[16] - mx[2]*mx[4] - mx[8]*mx[10])/mx[14];
+        mx[17] = (mx[17] - mx[2]*mx[5] - mx[8]*mx[11])/mx[14];
 
-            // diagonal element
-            curel = &mx[i*MATRIX_SIDE_6x6 + i];
-            for (int k = 0; k < i; k++) // column
-            {
-                *curel -= mx[k*MATRIX_SIDE_6x6 + i] * mx[k*MATRIX_SIDE_6x6 + i];
-            }
-            *curel = sqrt(*curel);
-        }
+        mx[21] = sqrt(mx[21] - mx[3]*mx[3] - mx[9]*mx[9] - mx[15]*mx[15]);
+        mx[22] = (mx[22] - mx[3]*mx[4] - mx[9]*mx[10] - mx[15]*mx[16])/mx[21];
+        mx[23] = (mx[23] - mx[3]*mx[5] - mx[9]*mx[11] - mx[15]*mx[17])/mx[21];
+
+        mx[28] = sqrt(mx[28] - mx[4]*mx[4] - mx[10]*mx[10] - mx[16]*mx[16] - mx[22]*mx[22]);
+        mx[29] = (mx[29] - mx[4]*mx[5] - mx[10]*mx[11] - mx[16]*mx[17] - mx[22]*mx[23])/mx[28];
+
+        mx[35] = sqrt(mx[35] - mx[5]*mx[5] - mx[11]*mx[11] - mx[17]*mx[17] - mx[23]*mx[23] - mx[29]*mx[29]);
     }
 
 
@@ -208,39 +209,47 @@ namespace IP
          * xxxxxx    xxxxxx        xxx
          */
 
+        ecLc[0] = -MAT[0]/ecLp[0];
+        ecLc[1] = 0;
+        ecLc[2] = 0;
+        ecLc[3] = -MAT[3]/ecLp[0]; // MAT[3] = MAT[18]
+        ecLc[4] = 0;
+        ecLc[5] = 0;
 
-        // copy (MAT)' to ecLc
-        ecLc[0]  = -MAT[0];
-        ecLc[27] = ecLc[6]  = -MAT[1];
-        ecLc[33] = ecLc[12] = -MAT[2];
+        ecLc[6]  = (-MAT[1] - ecLc[0] * ecLp[1]) / ecLp[7];
+        ecLc[7]  = -MAT[7] / ecLp[7];
+        ecLc[8]  = 0;
+        ecLc[9]  = (0 - ecLc[3] * ecLp[1]) / ecLp[7];
+        ecLc[10] = 0;
+        ecLc[11] = 0;
 
-        ecLc[3]  = ecLc[18] = -MAT[3];
+        ecLc[12] = (-MAT[2] - ecLc[0] * ecLp[2] - ecLc[6] * ecLp[8]) / ecLp[14];
+        ecLc[13] = (-MAT[8] - ecLc[7] * ecLp[8]) / ecLp[14]; 
+        ecLc[14] = -MAT[14] / ecLp[14];
+        ecLc[15] = (0 - ecLc[3] * ecLp[2] - ecLc[9] * ecLp[8]) / ecLp[14];
+        ecLc[16] = 0;
+        ecLc[17] = 0;
 
-        ecLc[28] = ecLc[7]  = -MAT[7];
-        ecLc[34] = ecLc[13] = -MAT[8];
+        ecLc[18] = (-MAT[3] - ecLc[0]*ecLp[3] - ecLc[6]*ecLp[9] - ecLc[12]*ecLp[15]) / ecLp[21];
+        ecLc[19] = (0 - ecLc[7]*ecLp[9] - ecLc[13]*ecLp[15])/ecLp[21];
+        ecLc[20] = (0 - ecLc[14]*ecLp[15]) / ecLp[21];
+        ecLc[21] = (-MAT[21] - ecLc[3]*ecLp[3] - ecLc[9]*ecLp[9] - ecLc[15]*ecLp[15]) / ecLp[21];
+        ecLc[22] = 0;
+        ecLc[23] = 0;
 
-        ecLc[35] = ecLc[14] = -MAT[14];
+        ecLc[24] = (0 - ecLc[0]*ecLp[4] - ecLc[6]*ecLp[10] - ecLc[12]*ecLp[16] - ecLc[18]*ecLp[22]) / ecLp[28];
+        ecLc[25] = (0 - ecLc[7]*ecLp[10] - ecLc[13]*ecLp[16] - ecLc[19]*ecLp[22]) / ecLp[28];
+        ecLc[26] = (0 - ecLc[14]*ecLp[16] - ecLc[20]*ecLp[22]) / ecLp[28];
+        ecLc[27] = (-MAT[22] - ecLc[3]*ecLp[4] - ecLc[9]*ecLp[10] - ecLc[15]*ecLp[16] - ecLc[21]*ecLp[22]) / ecLp[28];
+        ecLc[28] = -MAT[28] / ecLp[28];
+        ecLc[29] = 0;
 
-        ecLc[21] = -MAT[21];
-
-        // reset elements
-        ecLc[9]  = ecLc[15] = ecLc[19] = ecLc[20] = ecLc[24] = ecLc[25] =
-            ecLc[26] = ecLc[30] = ecLc[31] = ecLc[32] = 0;
-
-
-        for (int i = 0; i < MATRIX_SIDE_6x6; i++) // row of L(k+1,k)
-        {
-            for (int j = 0; j < MATRIX_SIDE_6x6; j++) // element in the row of L(k+1,k)
-            {
-                double *curel = &ecLc[j*MATRIX_SIDE_6x6 + i];
-                for (int k = 0; k < j; k++) // elements in a row of L(k,k)
-                {
-                    *curel -= ecLc[k*MATRIX_SIDE_6x6 + i] * ecLp[k*MATRIX_SIDE_6x6 + j];
-                }
-
-                *curel /= ecLp[j*MATRIX_SIDE_6x6 + j];
-            }
-        }
+        ecLc[30] = (0 - ecLc[0]*ecLp[5] - ecLc[6]*ecLp[11] - ecLc[12]*ecLp[17] - ecLc[18]*ecLp[23] - ecLc[24]*ecLp[29]) / ecLp[35];
+        ecLc[31] = (0 - ecLc[7]*ecLp[11] - ecLc[13]*ecLp[17] - ecLc[19]*ecLp[23] - ecLc[25]*ecLp[29]) / ecLp[35];
+        ecLc[32] = (0 - ecLc[14]*ecLp[17] - ecLc[20]*ecLp[23] - ecLc[26]*ecLp[29]) / ecLp[35];
+        ecLc[33] = (-MAT[23] - ecLc[3]*ecLp[5] - ecLc[9]*ecLp[11] - ecLc[15]*ecLp[17] - ecLc[21]*ecLp[23] - ecLc[27]*ecLp[29]) / ecLp[35];
+        ecLc[34] = (-MAT[29] - ecLc[28]*ecLp[29])/ ecLp[35];
+        ecLc[35] = -MAT[35] / ecLp[35];
     }
 
 
