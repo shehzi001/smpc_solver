@@ -344,47 +344,32 @@ namespace IP
          *      x   xxxxxx
          */
 
-        ecLc[0]  -=  p[0] *p[0]  + p[6] *p[6]  + p[12]*p[12] + p[18]*p[18] + p[24]*p[24] + p[30]*p[30];
-        ecLc[1]  -=                p[6] *p[7]  + p[12]*p[13] + p[18]*p[19] + p[24]*p[25] + p[30]*p[31]; 
-        ecLc[2]  -=                              p[12]*p[14] + p[18]*p[20] + p[24]*p[26] + p[30]*p[32];
-        ecLc[3]  -=  p[0] *p[3]  + p[6] *p[9]  + p[12]*p[15] + p[18]*p[21] + p[24]*p[27] + p[30]*p[33];
-        ecLc[4]   =-(                                                        p[24]*p[28] + p[30]*p[34]);
-        ecLc[5]   =-(                                                                      p[30]*p[35]);
+        ecLc[0]  += - p[0] *p[0]  - p[6] *p[6]  - p[12]*p[12] - p[18]*p[18] - p[24]*p[24] - p[30]*p[30];
+        ecLc[1]  +=               - p[6] *p[7]  - p[12]*p[13] - p[18]*p[19] - p[24]*p[25] - p[30]*p[31]; 
+        ecLc[2]  +=                             - p[12]*p[14] - p[18]*p[20] - p[24]*p[26] - p[30]*p[32];
+        ecLc[3]  += - p[0] *p[3]  - p[6] *p[9]  - p[12]*p[15] - p[18]*p[21] - p[24]*p[27] - p[30]*p[33];
+        ecLc[4]   =                                                         - p[24]*p[28] - p[30]*p[34];
+        ecLc[5]   =                                                                       - p[30]*p[35];
                    
-//        ecLc[6]  -=                 p[7] *p[6]  + p[13]*p[12] + p[19]*p[18] + p[25]*p[24] + p[31]*p[30];
-        ecLc[7]  -=                 p[7] *p[7]  + p[13]*p[13] + p[19]*p[19] + p[25]*p[25] + p[31]*p[31];
-        ecLc[8]  -=                               p[13]*p[14] + p[19]*p[20] + p[25]*p[26] + p[31]*p[32];
-        ecLc[9]   =-(               p[7] *p[9]  + p[13]*p[15] + p[19]*p[21] + p[25]*p[27] + p[31]*p[33]);
-        ecLc[10]  =-(                                                         p[25]*p[28] + p[31]*p[34]);
-        ecLc[11]  =-(                                                                       p[31]*p[35]);
+        ecLc[7]  +=               - p[7] *p[7]  - p[13]*p[13] - p[19]*p[19] - p[25]*p[25] - p[31]*p[31];
+        ecLc[8]  +=                             - p[13]*p[14] - p[19]*p[20] - p[25]*p[26] - p[31]*p[32];
+        ecLc[9]   =               - p[7] *p[9]  - p[13]*p[15] - p[19]*p[21] - p[25]*p[27] - p[31]*p[33];
+        ecLc[10]  =                                                         - p[25]*p[28] - p[31]*p[34];
+        ecLc[11]  =                                                                       - p[31]*p[35];
                    
-//        ecLc[12] -=                               p[14]*p[12] + p[20]*p[18] + p[26]*p[24] + p[32]*p[30];
-//        ecLc[13] -=                               p[14]*p[13] + p[20]*p[19] + p[26]*p[25] + p[32]*p[31];
-        ecLc[14] -=                               p[14]*p[14] + p[20]*p[20] + p[26]*p[26] + p[32]*p[32];
-        ecLc[15]  =-(                             p[14]*p[15] + p[20]*p[21] + p[26]*p[27] + p[32]*p[33]);
-        ecLc[16]  =-(                                                         p[26]*p[28] + p[32]*p[34]);
-        ecLc[17]  =-(                                                                       p[32]*p[35]);
+        ecLc[14] +=                             - p[14]*p[14] - p[20]*p[20] - p[26]*p[26] - p[32]*p[32];
+        ecLc[15]  =                             - p[14]*p[15] - p[20]*p[21] - p[26]*p[27] - p[32]*p[33];
+        ecLc[16]  =                                                         - p[26]*p[28] - p[32]*p[34];
+        ecLc[17]  =                                                                       - p[32]*p[35];
                    
-//        ecLc[18] -= p[3] *p[0]  + p[9] *p[6]  + p[15]*p[12] + p[21]*p[18] + p[27]*p[24] + p[33]*p[30]; 
-//        ecLc[19] -=               p[9] *p[7]  + p[15]*p[13] + p[21]*p[19] + p[27]*p[25] + p[33]*p[31]; 
-//        ecLc[20] -=                             p[15]*p[14] + p[21]*p[20] + p[27]*p[26] + p[33]*p[32]; 
-        ecLc[21] -= p[3] *p[3]  + p[9] *p[9]  + p[15]*p[15] + p[21]*p[21] + p[27]*p[27] + p[33]*p[33]; 
-        ecLc[22] -=                                                         p[27]*p[28] + p[33]*p[34]; 
-        ecLc[23] -=                                                                       p[33]*p[35]; 
+        ecLc[21] += - p[3] *p[3]  - p[9] *p[9]  - p[15]*p[15] - p[21]*p[21] - p[27]*p[27] - p[33]*p[33]; 
+        ecLc[22] +=                                                         - p[27]*p[28] - p[33]*p[34]; 
+        ecLc[23] +=                                                                       - p[33]*p[35]; 
                    
-//        ecLc[24] -=                                                         p[28]*p[24] + p[34]*p[30]; 
-//        ecLc[25] -=                                                         p[28]*p[25] + p[34]*p[31]; 
-//        ecLc[26] -=                                                         p[28]*p[26] + p[34]*p[32]; 
-//        ecLc[27] -=                                                         p[28]*p[27] + p[34]*p[33]; 
-        ecLc[28] -=                                                         p[28]*p[28] + p[34]*p[34]; 
-        ecLc[29] -=                                                                       p[34]*p[35]; 
+        ecLc[28] +=                                                         - p[28]*p[28] - p[34]*p[34]; 
+        ecLc[29] +=                                                                       - p[34]*p[35]; 
                    
-//        ecLc[30] -=                                                                       p[35]*p[30];  
-//        ecLc[31] -=                                                                       p[35]*p[31];  
-//        ecLc[32] -=                                                                       p[35]*p[32];  
-//        ecLc[33] -=                                                                       p[35]*p[33];  
-//        ecLc[34] -=                                                                       p[35]*p[34];  
-        ecLc[35] -=                                                                       p[35]*p[35];  
+        ecLc[35] +=                                                                       - p[35]*p[35];  
 
 
         // chol (L(k+1,k+1))
@@ -450,7 +435,6 @@ namespace IP
      */
     void matrix_ecL::solve_forward(const int N, double *x)
     {
-        int i,j,k;
         double *xc = x; // 6 current elements of x
         double *xp; // 6 elements of x computed on the previous iteration
         double *ecL_cur = &ecL[0];  // lower triangular matrix lying on the 
@@ -460,17 +444,15 @@ namespace IP
 
 
         // compute the first 6 elements using forward substitution
-        for (j = 0; j < MATRIX_SIDE_6x6; j++) // row
-        {
-            for (k = 0; k < j; k++) // column
-            {
-                xc[j] -= xc[k]*ecL_cur[j+k*MATRIX_SIDE_6x6];
-            }
-            xc[j] /= ecL_cur[j+j*MATRIX_SIDE_6x6];
-        }
+        xc[0] /= ecL_cur[0];
+        xc[1] = (xc[1] - xc[0]*ecL_cur[1]) / ecL_cur[7];
+        xc[2] = (xc[2] - xc[0]*ecL_cur[2] - xc[1]*ecL_cur[8]) / ecL_cur[14];
+        xc[3] = (xc[3] - xc[0]*ecL_cur[3] - xc[1]*ecL_cur[9]  - xc[2]*ecL_cur[15]) / ecL_cur[21];
+        xc[4] = (xc[4] - xc[0]*ecL_cur[4] - xc[1]*ecL_cur[10] - xc[2]*ecL_cur[16] - xc[3]*ecL_cur[22]) / ecL_cur[28];
+        xc[5] = (xc[5] - xc[0]*ecL_cur[5] - xc[1]*ecL_cur[11] - xc[2]*ecL_cur[17] - xc[3]*ecL_cur[23] - xc[4]*ecL_cur[29]) / ecL_cur[35];
 
 
-        for (i = 1; i < N; i++)
+        for (int i = 1; i < N; i++)
         {
             // switch to the next level of L / next 6 elements
             xp = xc;
@@ -481,23 +463,28 @@ namespace IP
 
             
             // update the right part of the equation
-            for (j = 0; j < MATRIX_SIDE_6x6; j++) // column
-            {
-                for (k = 0; k < MATRIX_SIDE_6x6; k++) // row
-                {
-                    xc[k] -= xp[j]*ecL_prev[j*MATRIX_SIDE_6x6 + k];
-                }
-            }
+            /*
+             * xxxxxx
+             *  xxxxx
+             *   xxxx
+             * xxxxxx
+             *     xx
+             *      x
+             */
+            xc[0] -= xp[0]*ecL_prev[0] + xp[1]*ecL_prev[6] + xp[2]*ecL_prev[12] + xp[3]*ecL_prev[18] + xp[4]*ecL_prev[24] + xp[5]*ecL_prev[30];
+            xc[1] -=                     xp[1]*ecL_prev[7] + xp[2]*ecL_prev[13] + xp[3]*ecL_prev[19] + xp[4]*ecL_prev[25] + xp[5]*ecL_prev[31];
+            xc[2] -=                                         xp[2]*ecL_prev[14] + xp[3]*ecL_prev[20] + xp[4]*ecL_prev[26] + xp[5]*ecL_prev[32];
+            xc[3] -= xp[0]*ecL_prev[3] + xp[1]*ecL_prev[9] + xp[2]*ecL_prev[15] + xp[3]*ecL_prev[21] + xp[4]*ecL_prev[27] + xp[5]*ecL_prev[33];
+            xc[4] -=                                                                                   xp[4]*ecL_prev[28] + xp[5]*ecL_prev[34];
+            xc[5] -=                                                                                                        xp[5]*ecL_prev[35];
 
             // forward substitution
-            for (j = 0; j < MATRIX_SIDE_6x6; j++) // row
-            {
-                for (k = 0; k < j; k++) // column
-                {
-                    xc[j] -= xc[k]*ecL_cur[j+k*MATRIX_SIDE_6x6];
-                }
-                xc[j] /= ecL_cur[j+j*MATRIX_SIDE_6x6];
-            }
+            xc[0] /= ecL_cur[0];
+            xc[1] = (xc[1] - xc[0]*ecL_cur[1]) / ecL_cur[7];
+            xc[2] = (xc[2] - xc[0]*ecL_cur[2] - xc[1]*ecL_cur[8]) / ecL_cur[14];
+            xc[3] = (xc[3] - xc[0]*ecL_cur[3] - xc[1]*ecL_cur[9]  - xc[2]*ecL_cur[15]) / ecL_cur[21];
+            xc[4] = (xc[4] - xc[0]*ecL_cur[4] - xc[1]*ecL_cur[10] - xc[2]*ecL_cur[16] - xc[3]*ecL_cur[22]) / ecL_cur[28];
+            xc[5] = (xc[5] - xc[0]*ecL_cur[5] - xc[1]*ecL_cur[11] - xc[2]*ecL_cur[17] - xc[3]*ecL_cur[23] - xc[4]*ecL_cur[29]) / ecL_cur[35];
         }
     }
 
@@ -510,7 +497,6 @@ namespace IP
      */
     void matrix_ecL::solve_backward (const int N, double *x)
     {
-        int i,j,k;
         double *xc = & x[(N-1)*SMPC_NUM_STATE_VAR]; // current 6 elements of result
         double *xp; // 6 elements computed on the previous iteration
         
@@ -522,17 +508,14 @@ namespace IP
 
 
         // compute the last 6 elements using backward substitution
-        for (j = MATRIX_SIDE_6x6-1; j >= 0; j--) // row
-        {
-            for (k = MATRIX_SIDE_6x6-1; k > j; k--) // column
-            {
-                xc[j] -= xc[k]*ecL_cur[k+j*MATRIX_SIDE_6x6];
-            }
-            xc[j] /= ecL_cur[j+j*MATRIX_SIDE_6x6];
-        }
+        xc[5] /= ecL_cur[35];
+        xc[4] = (xc[4] - xc[5]*ecL_cur[29]) / ecL_cur[28];
+        xc[3] = (xc[3] - xc[5]*ecL_cur[23] - xc[4]*ecL_cur[22]) / ecL_cur[21];
+        xc[2] = (xc[2] - xc[5]*ecL_cur[17] - xc[4]*ecL_cur[16] - xc[3]*ecL_cur[15]) / ecL_cur[14];
+        xc[1] = (xc[1] - xc[5]*ecL_cur[11] - xc[4]*ecL_cur[10] - xc[3]*ecL_cur[9] - xc[2]*ecL_cur[8]) / ecL_cur[7];
+        xc[0] = (xc[0] - xc[5]*ecL_cur[5]  - xc[4]*ecL_cur[4]  - xc[3]*ecL_cur[3] - xc[2]*ecL_cur[2] - xc[1]*ecL_cur[1]) / ecL_cur[0];
 
-
-        for (i = N-2; i >= 0 ; i--)
+        for (int i = N-2; i >= 0 ; i--)
         {
             xp = xc;
             xc = & x[i*SMPC_NUM_STATE_VAR];
@@ -542,23 +525,28 @@ namespace IP
 
 
             // update the right part of the equation
-            for (j = 0; j < MATRIX_SIDE_6x6; j++) // row
-            {
-                for (k = 0; k < MATRIX_SIDE_6x6; k++) // column
-                {
-                    xc[j] -= xp[k]*ecL_prev[j*MATRIX_SIDE_6x6 + k];
-                }
-            }
+            /*
+             * x  x
+             * xx x
+             * xxxx
+             * xxxx
+             * xxxxx
+             * xxxxxx
+             */
+            xc[0] -= xp[0]*ecL_prev[0]                                            + xp[3]*ecL_prev[3];
+            xc[1] -= xp[0]*ecL_prev[6]  + xp[1]*ecL_prev[7]                       + xp[3]*ecL_prev[9]; 
+            xc[2] -= xp[0]*ecL_prev[12] + xp[1]*ecL_prev[13] + xp[2]*ecL_prev[14] + xp[3]*ecL_prev[15];
+            xc[3] -= xp[0]*ecL_prev[18] + xp[1]*ecL_prev[19] + xp[2]*ecL_prev[20] + xp[3]*ecL_prev[21];
+            xc[4] -= xp[0]*ecL_prev[24] + xp[1]*ecL_prev[25] + xp[2]*ecL_prev[26] + xp[3]*ecL_prev[27] + xp[4]*ecL_prev[28];
+            xc[5] -= xp[0]*ecL_prev[30] + xp[1]*ecL_prev[31] + xp[2]*ecL_prev[32] + xp[3]*ecL_prev[33] + xp[4]*ecL_prev[34] + xp[5]*ecL_prev[35];
 
             // backward substitution
-            for (j = MATRIX_SIDE_6x6-1; j >= 0; j--) // row
-            {
-                for (k = MATRIX_SIDE_6x6-1; k > j; k--) // column
-                {
-                    xc[j] -= xc[k]*ecL_cur[k+j*MATRIX_SIDE_6x6];
-                }
-                xc[j] /= ecL_cur[j+j*MATRIX_SIDE_6x6];
-            }
+            xc[5] /= ecL_cur[35];
+            xc[4] = (xc[4] - xc[5]*ecL_cur[29]) / ecL_cur[28];
+            xc[3] = (xc[3] - xc[5]*ecL_cur[23] - xc[4]*ecL_cur[22]) / ecL_cur[21];
+            xc[2] = (xc[2] - xc[5]*ecL_cur[17] - xc[4]*ecL_cur[16] - xc[3]*ecL_cur[15]) / ecL_cur[14];
+            xc[1] = (xc[1] - xc[5]*ecL_cur[11] - xc[4]*ecL_cur[10] - xc[3]*ecL_cur[9] - xc[2]*ecL_cur[8]) / ecL_cur[7];
+            xc[0] = (xc[0] - xc[5]*ecL_cur[5]  - xc[4]*ecL_cur[4]  - xc[3]*ecL_cur[3] - xc[2]*ecL_cur[2] - xc[1]*ecL_cur[1]) / ecL_cur[0];
         }
     }
 }
