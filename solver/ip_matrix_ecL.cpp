@@ -319,10 +319,6 @@ namespace IP
 
         // 6th column
         result[35] = result[14];
-
-        // reset elements
-        result[4] = result[5] = result[9] = result[10] = result[11] = 
-            result[15] = result[16] = result[17] = 0;
     }
 
 
@@ -331,13 +327,13 @@ namespace IP
      * @brief Forms a 6x6 matrix L(k+1, k+1), which lies on the main
      *  diagonal of L.
      *
-     * @param[in] ecLp a 6x6 matrix lying to the left from ecLc on the same 
+     * @param[in] p a 6x6 matrix lying to the left from ecLc on the same 
      *                 level of L
      * @param[in,out] ecLc AMATMBiPB as input / the result is stored here
      *
      * @attention Only the elements below the main diagonal are initialized.
      */
-    void matrix_ecL::form_L_diag (const double *ecLp, double *ecLc)
+    void matrix_ecL::form_L_diag (const double *p, double *ecLc)
     {
         /* - L(k+1,k) * L(k+1,k)' + A*M*A' + MBiPB
          * xxxxxx   x  x
@@ -347,18 +343,49 @@ namespace IP
          *     xx   xxxxx
          *      x   xxxxxx
          */
-        // - L(k+1,k) * L(k+1,k)'
-        for (int i = 0; i < MATRIX_SIDE_6x6; i++) // row
-        {
-            for (int j = 0; j <= i; j++) // column
-            {
-                double *curel = &ecLc[i + MATRIX_SIDE_6x6*j];
-                for (int k = 0; k < MATRIX_SIDE_6x6; k++) // elements in a row
-                {
-                    *curel -= ecLp[i + MATRIX_SIDE_6x6*k] * ecLp[j + MATRIX_SIDE_6x6*k];
-                }
-            }
-        }
+
+        ecLc[0]  -=  p[0] *p[0]  + p[6] *p[6]  + p[12]*p[12] + p[18]*p[18] + p[24]*p[24] + p[30]*p[30];
+        ecLc[1]  -=                p[6] *p[7]  + p[12]*p[13] + p[18]*p[19] + p[24]*p[25] + p[30]*p[31]; 
+        ecLc[2]  -=                              p[12]*p[14] + p[18]*p[20] + p[24]*p[26] + p[30]*p[32];
+        ecLc[3]  -=  p[0] *p[3]  + p[6] *p[9]  + p[12]*p[15] + p[18]*p[21] + p[24]*p[27] + p[30]*p[33];
+        ecLc[4]   =-(                                                        p[24]*p[28] + p[30]*p[34]);
+        ecLc[5]   =-(                                                                      p[30]*p[35]);
+                   
+//        ecLc[6]  -=                 p[7] *p[6]  + p[13]*p[12] + p[19]*p[18] + p[25]*p[24] + p[31]*p[30];
+        ecLc[7]  -=                 p[7] *p[7]  + p[13]*p[13] + p[19]*p[19] + p[25]*p[25] + p[31]*p[31];
+        ecLc[8]  -=                               p[13]*p[14] + p[19]*p[20] + p[25]*p[26] + p[31]*p[32];
+        ecLc[9]   =-(               p[7] *p[9]  + p[13]*p[15] + p[19]*p[21] + p[25]*p[27] + p[31]*p[33]);
+        ecLc[10]  =-(                                                         p[25]*p[28] + p[31]*p[34]);
+        ecLc[11]  =-(                                                                       p[31]*p[35]);
+                   
+//        ecLc[12] -=                               p[14]*p[12] + p[20]*p[18] + p[26]*p[24] + p[32]*p[30];
+//        ecLc[13] -=                               p[14]*p[13] + p[20]*p[19] + p[26]*p[25] + p[32]*p[31];
+        ecLc[14] -=                               p[14]*p[14] + p[20]*p[20] + p[26]*p[26] + p[32]*p[32];
+        ecLc[15]  =-(                             p[14]*p[15] + p[20]*p[21] + p[26]*p[27] + p[32]*p[33]);
+        ecLc[16]  =-(                                                         p[26]*p[28] + p[32]*p[34]);
+        ecLc[17]  =-(                                                                       p[32]*p[35]);
+                   
+//        ecLc[18] -= p[3] *p[0]  + p[9] *p[6]  + p[15]*p[12] + p[21]*p[18] + p[27]*p[24] + p[33]*p[30]; 
+//        ecLc[19] -=               p[9] *p[7]  + p[15]*p[13] + p[21]*p[19] + p[27]*p[25] + p[33]*p[31]; 
+//        ecLc[20] -=                             p[15]*p[14] + p[21]*p[20] + p[27]*p[26] + p[33]*p[32]; 
+        ecLc[21] -= p[3] *p[3]  + p[9] *p[9]  + p[15]*p[15] + p[21]*p[21] + p[27]*p[27] + p[33]*p[33]; 
+        ecLc[22] -=                                                         p[27]*p[28] + p[33]*p[34]; 
+        ecLc[23] -=                                                                       p[33]*p[35]; 
+                   
+//        ecLc[24] -=                                                         p[28]*p[24] + p[34]*p[30]; 
+//        ecLc[25] -=                                                         p[28]*p[25] + p[34]*p[31]; 
+//        ecLc[26] -=                                                         p[28]*p[26] + p[34]*p[32]; 
+//        ecLc[27] -=                                                         p[28]*p[27] + p[34]*p[33]; 
+        ecLc[28] -=                                                         p[28]*p[28] + p[34]*p[34]; 
+        ecLc[29] -=                                                                       p[34]*p[35]; 
+                   
+//        ecLc[30] -=                                                                       p[35]*p[30];  
+//        ecLc[31] -=                                                                       p[35]*p[31];  
+//        ecLc[32] -=                                                                       p[35]*p[32];  
+//        ecLc[33] -=                                                                       p[35]*p[33];  
+//        ecLc[34] -=                                                                       p[35]*p[34];  
+        ecLc[35] -=                                                                       p[35]*p[35];  
+
 
         // chol (L(k+1,k+1))
         chol_dec (ecLc);
