@@ -63,6 +63,7 @@ int main(int argc, char **argv)
         double TT = CurrentCPUTime/NN;
         printf("(%i) time = % f (-)\n", counter, TT);
         //------------------------------------------------------
+        return 0;
     }
 
     return 0;
