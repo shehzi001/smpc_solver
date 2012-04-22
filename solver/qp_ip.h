@@ -103,11 +103,10 @@ class qp_ip : public IP::problem_parameters
         /// Inverted hessian * gradient (#N*#SMPC_NUM_VAR vector)
         double *i2hess_grad;
 
-        /// #N*#SMPC_NUM_VAR gradient vector
+        /// 2*#N gradient vector, only the elements that correspond to the ZMP
+        /// positions are computed, it is faster to compute the others on the fly.
+        /// Hint: the computed terms are affected by the logarithmic barrier.
         double *grad;
-
-        /// Value of phi(X), where phi is the cost function + log barrier.
-        double phi_X; 
 
 
         ///@{
@@ -142,9 +141,10 @@ class qp_ip : public IP::problem_parameters
         double form_phi_X_tmp (const double);
         bool solve_onestep (const double);
         void form_g (const double *, const double *);
-        void form_grad_i2hess_logbar (const double);
+        double form_grad_i2hess_logbar (const double);
         void form_i2hess_grad ();
-        void form_phi_X ();
+        double form_phi_X ();
+        double form_decrement();
 };
 
 ///@}

@@ -37,7 +37,7 @@ int main(int argc, char **argv)
             0.01,
             0.5);
     
-    for(int counter = 0 ;; counter++)
+    for(int counter = 0; counter < 2; counter++)
     {
         //------------------------------------------------------
         if (test_11.wmg->formPreviewWindow(*test_11.par) == WMG_HALT)
@@ -63,7 +63,6 @@ int main(int argc, char **argv)
         double TT = CurrentCPUTime/NN;
         printf("(%i) time = % f (-)\n", counter, TT);
         //------------------------------------------------------
-        return 0;
     }
 
     return 0;

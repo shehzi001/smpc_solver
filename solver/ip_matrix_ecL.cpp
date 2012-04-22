@@ -26,9 +26,6 @@ namespace IP
     matrix_ecL::matrix_ecL (const int N)
     {
         ecL = new double[MATRIX_SIZE_6x6*N + MATRIX_SIZE_6x6*(N-1)]();
-
-        M = new double[MATRIX_SIZE_6x6];
-        MAT = new double[MATRIX_SIZE_6x6];
     }
 
 
@@ -36,11 +33,6 @@ namespace IP
     {
         if (ecL != NULL)
             delete ecL;
-
-        if (M != NULL)
-            delete M;
-        if (MAT != NULL)
-            delete MAT;
     }
 
     //==============================================
@@ -210,46 +202,38 @@ namespace IP
          */
 
         ecLc[0] = -MAT[0]/ecLp[0];
-        ecLc[1] = 0;
-        ecLc[2] = 0;
         ecLc[3] = -MAT[3]/ecLp[0]; // MAT[3] = MAT[18]
-        ecLc[4] = 0;
-        ecLc[5] = 0;
 
         ecLc[6]  = (-MAT[1] - ecLc[0] * ecLp[1]) / ecLp[7];
         ecLc[7]  = -MAT[7] / ecLp[7];
-        ecLc[8]  = 0;
-        ecLc[9]  = (0 - ecLc[3] * ecLp[1]) / ecLp[7];
-        ecLc[10] = 0;
-        ecLc[11] = 0;
+        ecLc[9]  = (/*0*/ - ecLc[3] * ecLp[1]) / ecLp[7];
 
         ecLc[12] = (-MAT[2] - ecLc[0] * ecLp[2] - ecLc[6] * ecLp[8]) / ecLp[14];
         ecLc[13] = (-MAT[8] - ecLc[7] * ecLp[8]) / ecLp[14]; 
         ecLc[14] = -MAT[14] / ecLp[14];
-        ecLc[15] = (0 - ecLc[3] * ecLp[2] - ecLc[9] * ecLp[8]) / ecLp[14];
-        ecLc[16] = 0;
-        ecLc[17] = 0;
+        ecLc[15] = (/*0*/ - ecLc[3] * ecLp[2] - ecLc[9] * ecLp[8]) / ecLp[14];
 
         ecLc[18] = (-MAT[3] - ecLc[0]*ecLp[3] - ecLc[6]*ecLp[9] - ecLc[12]*ecLp[15]) / ecLp[21];
-        ecLc[19] = (0 - ecLc[7]*ecLp[9] - ecLc[13]*ecLp[15])/ecLp[21];
-        ecLc[20] = (0 - ecLc[14]*ecLp[15]) / ecLp[21];
+        ecLc[19] = (/*0*/ - ecLc[7]*ecLp[9] - ecLc[13]*ecLp[15])/ecLp[21];
+        ecLc[20] = (/*0*/ - ecLc[14]*ecLp[15]) / ecLp[21];
         ecLc[21] = (-MAT[21] - ecLc[3]*ecLp[3] - ecLc[9]*ecLp[9] - ecLc[15]*ecLp[15]) / ecLp[21];
-        ecLc[22] = 0;
-        ecLc[23] = 0;
 
-        ecLc[24] = (0 - ecLc[0]*ecLp[4] - ecLc[6]*ecLp[10] - ecLc[12]*ecLp[16] - ecLc[18]*ecLp[22]) / ecLp[28];
-        ecLc[25] = (0 - ecLc[7]*ecLp[10] - ecLc[13]*ecLp[16] - ecLc[19]*ecLp[22]) / ecLp[28];
-        ecLc[26] = (0 - ecLc[14]*ecLp[16] - ecLc[20]*ecLp[22]) / ecLp[28];
+        ecLc[24] = (/*0*/ - ecLc[0]*ecLp[4] - ecLc[6]*ecLp[10] - ecLc[12]*ecLp[16] - ecLc[18]*ecLp[22]) / ecLp[28];
+        ecLc[25] = (/*0*/ - ecLc[7]*ecLp[10] - ecLc[13]*ecLp[16] - ecLc[19]*ecLp[22]) / ecLp[28];
+        ecLc[26] = (/*0*/ - ecLc[14]*ecLp[16] - ecLc[20]*ecLp[22]) / ecLp[28];
         ecLc[27] = (-MAT[22] - ecLc[3]*ecLp[4] - ecLc[9]*ecLp[10] - ecLc[15]*ecLp[16] - ecLc[21]*ecLp[22]) / ecLp[28];
         ecLc[28] = -MAT[28] / ecLp[28];
-        ecLc[29] = 0;
 
-        ecLc[30] = (0 - ecLc[0]*ecLp[5] - ecLc[6]*ecLp[11] - ecLc[12]*ecLp[17] - ecLc[18]*ecLp[23] - ecLc[24]*ecLp[29]) / ecLp[35];
-        ecLc[31] = (0 - ecLc[7]*ecLp[11] - ecLc[13]*ecLp[17] - ecLc[19]*ecLp[23] - ecLc[25]*ecLp[29]) / ecLp[35];
-        ecLc[32] = (0 - ecLc[14]*ecLp[17] - ecLc[20]*ecLp[23] - ecLc[26]*ecLp[29]) / ecLp[35];
+        ecLc[30] = (/*0*/ - ecLc[0]*ecLp[5] - ecLc[6]*ecLp[11] - ecLc[12]*ecLp[17] - ecLc[18]*ecLp[23] - ecLc[24]*ecLp[29]) / ecLp[35];
+        ecLc[31] = (/*0*/ - ecLc[7]*ecLp[11] - ecLc[13]*ecLp[17] - ecLc[19]*ecLp[23] - ecLc[25]*ecLp[29]) / ecLp[35];
+        ecLc[32] = (/*0*/ - ecLc[14]*ecLp[17] - ecLc[20]*ecLp[23] - ecLc[26]*ecLp[29]) / ecLp[35];
         ecLc[33] = (-MAT[23] - ecLc[3]*ecLp[5] - ecLc[9]*ecLp[11] - ecLc[15]*ecLp[17] - ecLc[21]*ecLp[23] - ecLc[27]*ecLp[29]) / ecLp[35];
         ecLc[34] = (-MAT[29] - ecLc[28]*ecLp[29])/ ecLp[35];
         ecLc[35] = -MAT[35] / ecLp[35];
+
+
+        // ecLc[1] = ecLc[2] = ecLc[4] = ecLc[5] = ecLc[8] = ecLc[10] = 
+        // = ecLc[11] = ecLc[16] = ecLc[17] = ecLc[22] = ecLc[23] = ecLc[29] = 0
     }
 
 

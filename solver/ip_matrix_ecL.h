@@ -30,7 +30,6 @@ namespace IP
 
 /// The number of elements in 6x6 matrix.
 #define MATRIX_SIZE_6x6 36
-#define MATRIX_SIDE_6x6 6
 
 
 /****************************************
@@ -69,8 +68,8 @@ namespace IP
 
 
             // intermediate results used in computation of L
-            double *M;         /// R * inv(Q) * R'
-            double *MAT;       /// M * A'
+            double M[MATRIX_SIZE_6x6];         /// R * inv(Q) * R'
+            double MAT[MATRIX_SIZE_6x6];       /// M * A'
     };
 }
 /// @}
