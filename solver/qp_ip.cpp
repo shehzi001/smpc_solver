@@ -412,7 +412,7 @@ int qp_ip::solve()
         for (i = 0; (i < max_iter) && solve_onestep(kappa); i++);
         if (i == max_iter)
         {
-            return (-1);
+            return (0);
         }
 
         kappa /= mu;
