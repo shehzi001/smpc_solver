@@ -119,18 +119,18 @@ void qp_as::set_parameters(
 
 /**
  * @brief Generates an initial feasible point. 
- * First we perform a change of variable to @ref pX_tilde "X_tilde"
- * and then generate a feasible point.
  *
  * @param[in] x_coord x coordinates of points satisfying constraints
  * @param[in] y_coord y coordinates of points satisfying constraints
  * @param[in] init_state current state
+ * @param[in] state_tilde if true the state is interpreted as @ref pX_tilde "X_tilde".
  * @param[in,out] X_ initial guess / solution of optimization problem
  */
 void qp_as::formInitialFP (
         const double *x_coord, 
         const double *y_coord, 
         const double *init_state,
+        const bool state_tilde,
         double* X_)
 {
     X = X_;
@@ -140,7 +140,10 @@ void qp_as::formInitialFP (
         init_state[3], init_state[4], init_state[5]};
     double *control = &X[SMPC_NUM_STATE_VAR*N];
     double *cur_state = X;
-    state_handling::orig_to_tilde (h_initial, X_tilde);
+    if (!state_tilde)
+    {
+        state_handling::orig_to_tilde (h_initial, X_tilde);
+    }
     const double *prev_state = X_tilde;
 
     

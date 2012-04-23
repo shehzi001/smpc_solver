@@ -93,10 +93,22 @@ namespace smpc
     {
         if (qp_sol != NULL)
         {
-            qp_sol->formInitialFP (x_coord, y_coord, init_state.state_vector, X);
+            qp_sol->formInitialFP (x_coord, y_coord, init_state.state_vector, false, X);
         }
     }
 
+
+    void solver_as::form_init_fp (
+            const double *x_coord,
+            const double *y_coord,
+            const state_tilde &init_state,
+            double* X)
+    {
+        if (qp_sol != NULL)
+        {
+            qp_sol->formInitialFP (x_coord, y_coord, init_state.state_vector, true, X);
+        }
+    }
 
 
     void solver_as::solve()
@@ -249,7 +261,19 @@ namespace smpc
     {
         if (qp_sol != NULL)
         {
-            qp_sol->form_init_fp (x_coord, y_coord, init_state.state_vector, X);
+            qp_sol->form_init_fp (x_coord, y_coord, init_state.state_vector, false, X);
+        }
+    }
+
+    void solver_ip::form_init_fp (
+            const double *x_coord,
+            const double *y_coord,
+            const state_tilde &init_state,
+            double* X)
+    {
+        if (qp_sol != NULL)
+        {
+            qp_sol->form_init_fp (x_coord, y_coord, init_state.state_vector, true, X);
         }
     }
 

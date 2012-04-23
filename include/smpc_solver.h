@@ -263,12 +263,12 @@ namespace smpc
                     const unsigned int max_added_constraints_num,
                     const bool constraint_removal_enabled);
 
-
+            ///@{
             /** @brief Generates an initial feasible point. 
 
                 @param[in] x_coord x coordinates of points satisfying constraints
                 @param[in] y_coord y coordinates of points satisfying constraints
-                @param[in] init_state initial state
+                @param[in] init_state initial state (#state_orig or #state_tilde)
                 @param[in,out] X solution of optimization problem
              */
             void form_init_fp (
@@ -276,6 +276,13 @@ namespace smpc
                     const double *y_coord,
                     const state_orig &init_state,
                     double* X);
+
+            void form_init_fp (
+                    const double *x_coord,
+                    const double *y_coord,
+                    const state_tilde &init_state,
+                    double* X);
+            ///@}
 
 
             /**
@@ -434,11 +441,12 @@ namespace smpc
                     const double* ub);
 
 
+            ///@{
             /** @brief Generates an initial feasible point. 
 
                 @param[in] x_coord x coordinates of points satisfying constraints
                 @param[in] y_coord y coordinates of points satisfying constraints
-                @param[in] init_state initial state
+                @param[in] init_state initial state (#state_orig or #state_tilde)
                 @param[in,out] X solution of optimization problem
              */
             void form_init_fp (
@@ -446,6 +454,13 @@ namespace smpc
                     const double *y_coord,
                     const state_orig &init_state,
                     double* X);
+
+            void form_init_fp (
+                    const double *x_coord,
+                    const double *y_coord,
+                    const state_tilde &init_state,
+                    double* X);
+            ///@}
 
 
             /**

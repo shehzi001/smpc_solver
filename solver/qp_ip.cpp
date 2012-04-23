@@ -531,26 +531,27 @@ bool qp_ip::solve_onestep (const double kappa)
  * @param[in] x_coord x coordinates of points satisfying constraints
  * @param[in] y_coord y coordinates of points satisfying constraints
  * @param[in] init_state current state
+ * @param[in] state_tilde if true the state is assumed to be in @ref pX_tilde "X_tilde" form
  * @param[in,out] X_ initial guess / solution of optimization problem
  */
 void qp_ip::form_init_fp (
         const double *x_coord, 
         const double *y_coord, 
         const double *init_state,
+        const bool tilde_state,
         double* X_)
 {
     X = X_;
 
     double *control = &X[SMPC_NUM_STATE_VAR*N];
     double *cur_state = X;
-    double X_tilde[6];
-    X_tilde[0] = init_state[0];
-    X_tilde[1] = init_state[1];
-    X_tilde[2] = init_state[2];
-    X_tilde[3] = init_state[3];
-    X_tilde[4] = init_state[4];
-    X_tilde[5] = init_state[5];
-    state_handling::orig_to_tilde (h_initial, X_tilde);
+    double X_tilde[6] = {
+        init_state[0], init_state[1], init_state[2],
+        init_state[3], init_state[4], init_state[5]};
+    if (!tilde_state)
+    {
+        state_handling::orig_to_tilde (h_initial, X_tilde);
+    }
     const double *prev_state = X_tilde;
 
     

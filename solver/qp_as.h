@@ -59,7 +59,12 @@ class qp_as : public AS::problem_parameters
 
 
         void solve ();
-        void formInitialFP(const double *, const double *, const double *, double *);
+        void formInitialFP (
+                const double *, 
+                const double *, 
+                const double *, 
+                const bool, 
+                double *);
 
 
         /** Variables for the QP (contain the states + control variables).

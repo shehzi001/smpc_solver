@@ -56,7 +56,12 @@ class qp_ip : public IP::problem_parameters
                 const double*, 
                 const double*);
 
-        void form_init_fp(const double *, const double *, const double *, double *);
+        void form_init_fp (
+                const double *, 
+                const double *, 
+                const double *, 
+                const bool,
+                double *);
 
 
         void set_ip_parameters (
