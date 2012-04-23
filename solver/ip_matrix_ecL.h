@@ -58,12 +58,11 @@ namespace IP
         private:
             void chol_dec (double *);
             void form_M (const double, const double, const double*, const double*);
-            void form_MBiPB (const double *, const double, double *);
             void form_MAT (const double, const double);
-            void form_AMATMBiPB(const double, const double, double *);
+            void form_AMATMBiPB(const double, const double, const double *, const double, double *);
 
             void form_L_non_diag(const double *, double *);
-            void form_L_diag(double *);
+            void form_L_diag(const double *, const double, double *);
             void form_L_diag(const double *, double *);
 
 

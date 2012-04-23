@@ -119,33 +119,6 @@ namespace IP
 
 
     /**
-     * @brief Forms matrix MBiPB = M + B * inv(2*P) * B.
-     *
-     * @param[in] B a vector of 3 elements.
-     * @param[in] i2P 0.5 * inv(P) (only one number)
-     * @param[out] result result.
-     *
-     * @attention Only elements lying below the main diagonal of 4x4 matrix
-     *            are initialized (other elements are not unique).
-     */
-    void matrix_ecL::form_MBiPB (const double *B, const double i2P, double *result)
-    {
-        // diagonal elements
-        result[0]  = i2P * B[0]*B[0] + M[0];
-        /*result[28] =*/ result[7]  = i2P * B[1]*B[1] + M[7];
-        /*result[35] =*/ result[14] = i2P * B[2]*B[2] + M[14];
-        result[21] = i2P * B[0]*B[0] + M[21];
-
-        // symmetric elements (no need to initialize all of them)
-        /*result[22] =*/ result[1] = i2P * B[0]*B[1];
-        /*result[23] =*/ result[2] = i2P * B[0]*B[2];
-        /*result[29] =*/ result[8] = i2P * B[1]*B[2];
-        result[3] = M[3];
-    }
-
-
-
-    /**
      * @brief Forms matrix MAT = M * A'
      *
      * @param[in] A3 4th and 7th elements of A.
@@ -153,30 +126,17 @@ namespace IP
      */
     void matrix_ecL::form_MAT (const double A3, const double A6)
     {
-        // 1st column
-        MAT[0] = M[0];
-        MAT[1] = A3 * M[7];
-        MAT[2] = A6 * M[14];
-        MAT[3] = M[3];
+        MAT[0]  =           M[0];
+        MAT[22] = MAT[1]  = A3 * M[7];
+        MAT[23] = MAT[2]  = A6 * M[14];
+        MAT[3]  =           M[3];
 
-        // 2nd column
-        MAT[7] = M[7];
-        MAT[8] = A3 * M[14];
+        MAT[28] = MAT[7]  = M[7];
+        MAT[29] = MAT[8]  = A3 * M[14];
 
-        // 3rd column
-        MAT[14] = M[14];
+        MAT[35] = MAT[14] = M[14];
 
-        // 4th column
-        MAT[21] = M[21];
-        MAT[22] = MAT[1];
-        MAT[23] = MAT[2];
-
-        // 5th column
-        MAT[28] = MAT[7];
-        MAT[29] = MAT[8];
-
-        // 6th column
-        MAT[35] = MAT[14];
+        MAT[21] =           M[21];
     }
 
 
@@ -238,22 +198,28 @@ namespace IP
 
 
     /**
-     * @brief Forms a 6x6 matrix L(k+1, k+1), which lies below the 
-     *  diagonal of L.
+     * @brief Forms a 6x6 matrix L(0, 0) = chol (M + B * inv(2*P) * B).
      *
-     * @param[in,out] ecLc MBiPB as input / result
+     * @param[in] B a vector of 3 elements.
+     * @param[in] i2P 0.5 * inv(P) (only one number)
+     * @param[out] ecLc result
      *
      * @attention Only the elements below the main diagonal are initialized.
      */
-    void matrix_ecL::form_L_diag(double *ecLc)
+    void matrix_ecL::form_L_diag(const double *B, const double i2P, double *ecLc)
     {
-        // finish initialization of MBiPB
-        ecLc[28] = ecLc[7];
-        ecLc[35] = ecLc[14];
+        // diagonal elements
+        ecLc[0]  =            i2P * B[0]*B[0] + M[0];
+        ecLc[28] = ecLc[7]  = i2P * B[1]*B[1] + M[7];
+        ecLc[35] = ecLc[14] = i2P * B[2]*B[2] + M[14];
+        ecLc[21] =            i2P * B[0]*B[0] + M[21];
+
         // symmetric elements (no need to initialize all of them)
-        ecLc[22] = ecLc[1];
-        ecLc[23] = ecLc[2];
-        ecLc[29] = ecLc[8];
+        ecLc[22] = ecLc[1] =  i2P * B[0]*B[1];
+        ecLc[23] = ecLc[2] =  i2P * B[0]*B[2];
+        ecLc[29] = ecLc[8] =  i2P * B[1]*B[2];
+        ecLc[3]  =            M[3];
+
         // reset elements
         ecLc[4] = ecLc[5] = ecLc[9] = ecLc[10] = ecLc[11] = 
             ecLc[15] = ecLc[16] = ecLc[17] = 0;
@@ -267,42 +233,31 @@ namespace IP
 
     /**
      * @brief Forms matrix AMATMBiPB = 
-     *  A * M * A' + 0.5 * M + 0.5 * B * inv(P) * B
+     *  A * M1 * A' + 0.5 * M2 + 0.5 * B * inv(P) * B
      *
      * @param[in] A3 4th and 7th elements of A (A is represented by two identical 3x3 matrices).
      * @param[in] A6 6th element of A (A is represented by two identical 3x3 matrices).
-     * @param[in,out] result MBiPB as input / result
+     * @param[in] B a vector of 3 elements.
+     * @param[in] i2P 0.5 * inv(P) (only one number)
+     * @param[in,out] result result
      *
      * @attention Only the elements below the main diagonal are initialized.
      */
-    void matrix_ecL::form_AMATMBiPB(const double A3, const double A6, double *result)
+    void matrix_ecL::form_AMATMBiPB(const double A3, const double A6, const double *B, const double i2P, double *result)
     {
-        // 1st,4th column
-        result[0] += MAT[0] + A3*MAT[1] + A6*MAT[2];
-        result[1] +=             MAT[1] + A3*MAT[2];
-        result[2] +=                         MAT[2];
-        result[3] +=                         MAT[3];
+        const double tmpvar = A3*MAT[1] + A6*MAT[2] + i2P * B[0]*B[0];
 
-        // 2nd column
-        // symmetric elements are not initialized
-        result[7] += MAT[7] +  A3*MAT[8];
-        result[8] +=              MAT[8];
+        result[0]  =              tmpvar + M[0] + MAT[0];
+        result[22] = result[1]  = i2P * B[0]*B[1]        +             MAT[1] + A3*MAT[2];
+        result[23] = result[2]  = i2P * B[0]*B[2]        +                         MAT[2];
+        result[3]  =              M[3]                   +                         MAT[3];
+                               
+        result[28] = result[7]  = i2P * B[1]*B[1] + M[7] + MAT[7] +  A3*MAT[8];
+        result[29] = result[8]  = i2P * B[1]*B[2]        +              MAT[8];
 
-        // 6th column
-        result[14] += MAT[14];
-        result[35] = result[14];
+        result[35] = result[14] = i2P * B[2]*B[2] + M[14] + MAT[14];
 
-        // 4th column
-        result[21] += MAT[21] + A3*MAT[1] + A6*MAT[2];
-        result[22] = result[1];
-        result[23] = result[2];
-
-        // 5th column
-        result[28] = result[7];
-        result[29] = result[8];
-
-        // 6th column
-        result[35] = result[14];
+        result[21] =              tmpvar + M[21] + MAT[21];
     }
 
 
@@ -377,8 +332,7 @@ namespace IP
 
         // the first matrix on diagonal
         form_M (stp.sin, stp.cos, ppar.i2Q, i2hess);
-        form_MBiPB (stp.B, ppar.i2P, ecL);
-        form_L_diag (ecL);
+        form_L_diag (stp.B, ppar.i2P, ecL);
 
         // offsets
         double *ecL_cur = &ecL[MATRIX_SIZE_6x6];
@@ -398,8 +352,7 @@ namespace IP
 
             i2hess = &i2hess[2];
             form_M (stp.sin, stp.cos, ppar.i2Q, i2hess);
-            form_MBiPB (stp.B, ppar.i2P, ecL_cur);
-            form_AMATMBiPB(stp.A3, stp.A6, ecL_cur);
+            form_AMATMBiPB(stp.A3, stp.A6, stp.B, ppar.i2P, ecL_cur);
             form_L_diag(ecL_prev, ecL_cur);
 
             // update offsets

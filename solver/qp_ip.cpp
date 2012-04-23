@@ -51,6 +51,7 @@ qp_ip::qp_ip(
     i2hess = new double[2*N];
     i2hess_grad = new double[N*SMPC_NUM_VAR];
     grad = new double[2*N];
+    bound_diff = new double[4*N];
 
     Q[0] = Alpha/2;
     Q[1] = Beta/2;
@@ -72,6 +73,8 @@ qp_ip::~qp_ip()
         delete grad;
     if (dX  != NULL)
         delete dX;
+    if (bound_diff  != NULL)
+        delete bound_diff;
 }
 
 
@@ -136,7 +139,7 @@ void qp_ip::form_g (const double *zref_x, const double *zref_y)
 
 /**
  * @brief Compute gradient of phi (partially), varying elements of 
- * i2hess, logarithmic barrier part of phi.
+ * i2hess, logarithmic barrier part of phi, i2hess_grad = -i2hess*grad.
  *
  * @param[in] kappa 1/t, a logarithmic barrier multiplicator.
  *
@@ -149,8 +152,9 @@ double qp_ip::form_grad_i2hess_logbar (const double kappa)
     // grad = H*X + g + kappa * b;
     // initialize inverted hessian
     // initialize logarithmic barrier in the function
-    for (int i = 0, j = 0; i < 2*N; i++, j += 3)
+    for (int i = 0; i < 2*N; i++)
     {
+        const int j = 3*i;
         double lb_diff = -lb[i] + X[j];
         double ub_diff =  ub[i] - X[j];
 
@@ -161,41 +165,27 @@ double qp_ip::form_grad_i2hess_logbar (const double kappa)
         ub_diff = 1/ub_diff;
 
         // grad = H*X + g + kappa * (ub_diff - lb_diff)
-        grad[i] = X[j]*gain_alpha + g[i] + kappa * (ub_diff - lb_diff);
+        const double grad_el = X[j]*gain_alpha + g[i] + kappa * (ub_diff - lb_diff);
+        grad[i] = grad_el;
 
         // only elements 1:3:N*SMPC_NUM_STATE_VAR on the diagonal of hessian 
         // can change
         // hess = 2H + kappa * (ub_diff^2 + lb_diff^2)
-        i2hess[i] = 1/(gain_alpha + kappa * (ub_diff*ub_diff + lb_diff*lb_diff));
-    }
+        const double i2hess_el = 1/(gain_alpha + kappa * (ub_diff*ub_diff + lb_diff*lb_diff));
+        i2hess[i] = i2hess_el;
 
-    return (-kappa * log(phi_X_logbar));
-}
-
-
-
-/**
- * @brief Finish initialization of i2hess_grad = -i2hess*grad.
- */
-void qp_ip::form_i2hess_grad ()
-{
-    int i,j;
-    for (i = 0, j = 0; i < 2*N; i += 2, j += SMPC_NUM_STATE_VAR)
-    {
-        i2hess_grad[j]   = - grad[i]   * i2hess[i]; 
-        i2hess_grad[j+3] = - grad[i+1] * i2hess[i+1]; 
-
+        i2hess_grad[j] = -grad_el * i2hess_el;
         i2hess_grad[j+1] = - X[j+1];  //grad[j+1] * i2Q[1]; 
         i2hess_grad[j+2] = - X[j+2];  //grad[j+2] * i2Q[2]; 
-
-        i2hess_grad[j+4] = - X[j+4];  //grad[j+4] * i2Q[1]; 
-        i2hess_grad[j+5] = - X[j+5];  //grad[j+5] * i2Q[2]; 
     }
-    for (i = N*SMPC_NUM_STATE_VAR; i < N*SMPC_NUM_VAR; i+= SMPC_NUM_CONTROL_VAR)
+
+    for (int i = N*SMPC_NUM_STATE_VAR; i < N*SMPC_NUM_VAR; i+= SMPC_NUM_CONTROL_VAR)
     {
         i2hess_grad[i]   = - X[i];    //grad[i]   * i2P;
         i2hess_grad[i+1] = - X[i+1];  //grad[i+1] * i2P;
     }
+
+    return (-kappa * log(phi_X_logbar));
 }
 
 
@@ -221,8 +211,8 @@ double qp_ip::form_phi_X ()
         const double X_copy[6] = {X[i], X[i+1], X[i+2], X[i+3], X[i+4], X[i+5]};
 
         // X'*H*X
-        phi_X_vel += X_copy[1]*X_copy[1] + X_copy[4]*X_copy[4];
         phi_X_pos += X_copy[0]*X_copy[0] + X_copy[3]*X_copy[3];
+        phi_X_vel += X_copy[1]*X_copy[1] + X_copy[4]*X_copy[4];
         phi_X_acc += X_copy[2]*X_copy[2] + X_copy[5]*X_copy[5];
 
         // g'*X
@@ -468,11 +458,15 @@ double qp_ip::form_decrement()
  */
 bool qp_ip::solve_onestep (const double kappa)
 {
+    for (int i = 0; i < 2*N; i++)
+    {
+        bound_diff[2*i]   = -lb[i] + X[i*3];
+        bound_diff[2*i+1] =  ub[i] - X[i*3];
+    }
     /// Value of phi(X), where phi is the cost function + log barrier.
     double phi_X;
     phi_X = form_grad_i2hess_logbar (kappa);
     phi_X += form_phi_X ();
-    form_i2hess_grad ();
 
     chol.solve (*this, i2hess_grad, i2hess, X, dX);
 
@@ -493,7 +487,7 @@ bool qp_ip::solve_onestep (const double kappa)
 
 
     // backtracking search
-    double bs_alpha_grad_dX = form_bs_alpha_grad_dX ();
+    const double bs_alpha_grad_dX = form_bs_alpha_grad_dX ();
     for (;;)
     {
         if (form_phi_X_tmp (kappa) <= phi_X + alpha * bs_alpha_grad_dX)

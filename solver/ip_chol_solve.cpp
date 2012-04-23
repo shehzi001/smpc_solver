@@ -58,7 +58,6 @@ namespace IP
     {
         double *s_w = w;
         int i,j;
-        double i2Q[2] = {ppar.i2Q[1], ppar.i2Q[2]};
 
 
         // generate L
@@ -78,20 +77,22 @@ namespace IP
         // dx = -iH*(grad + E'*w)
         //
         // dx   -( -i2hess_grad  + inv(H) *   dx   ) 
-        for (i = 0,j = 0; i < ppar.N*2; i++)
+        const double i2H[3] = {ppar.i2Q[1], ppar.i2Q[2], ppar.i2P};
+        for (i = 0, j = 0; i < ppar.N*2; i += 2, j += SMPC_NUM_STATE_VAR)
         {
             // dx for state variables
-            dx[j] = i2hess_grad[j] - i2hess[i] * dx[j]; 
-            j++;
-            dx[j] = i2hess_grad[j] - i2Q[0] * dx[j]; 
-            j++;
-            dx[j] = i2hess_grad[j] - i2Q[1] * dx[j]; 
-            j++;
+            dx[j]   = i2hess_grad[j]   - i2hess[i] * dx[j]; 
+            dx[j+1] = i2hess_grad[j+1] - i2H[0] * dx[j+1]; 
+            dx[j+2] = i2hess_grad[j+2] - i2H[1] * dx[j+2]; 
+            dx[j+3] = i2hess_grad[j+3] - i2hess[i+1] * dx[j+3]; 
+            dx[j+4] = i2hess_grad[j+4] - i2H[0] * dx[j+4]; 
+            dx[j+5] = i2hess_grad[j+5] - i2H[1] * dx[j+5]; 
         }
-        for (i = ppar.N*SMPC_NUM_STATE_VAR; i < ppar.N*SMPC_NUM_VAR; i++)
+        for (i = ppar.N*SMPC_NUM_STATE_VAR; i < ppar.N*SMPC_NUM_VAR; i += 2)
         {
             // dx for control variables
-            dx[i] = i2hess_grad[i] - ppar.i2P * dx[i];
+            dx[i]   = i2hess_grad[i]   - i2H[2] * dx[i];
+            dx[i+1] = i2hess_grad[i+1] - i2H[2] * dx[i+1];
         }
     }
 }

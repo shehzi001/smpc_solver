@@ -108,6 +108,8 @@ class qp_ip : public IP::problem_parameters
         /// Hint: the computed terms are affected by the logarithmic barrier.
         double *grad;
 
+double *bound_diff;
+
 
         ///@{
         /// Diagonal elements of H.
@@ -142,7 +144,6 @@ class qp_ip : public IP::problem_parameters
         bool solve_onestep (const double);
         void form_g (const double *, const double *);
         double form_grad_i2hess_logbar (const double);
-        void form_i2hess_grad ();
         double form_phi_X ();
         double form_decrement();
 };
