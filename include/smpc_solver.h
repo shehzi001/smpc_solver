@@ -204,18 +204,18 @@ namespace smpc
             /** @brief Constructor: initialize an active set method solver.
              *
                 @param[in] N Number of sampling times in a preview window
-                @param[in] Alpha Position gain
-                @param[in] Beta Velocity gain
-                @param[in] Gamma Acceleration gain
-                @param[in] Eta Jerk gain
+                @param[in] gain_position Position gain (Alpha)
+                @param[in] gain_velocity Velocity gain (Beta)
+                @param[in] gain_acceleration Acceleration gain (Gamma)
+                @param[in] gain_jerk Jerk gain (Eta)
                 @param[in] tol tolerance
             */
             solver_as (
                     const int N, 
-                    const double Alpha = 2000.0, 
-                    const double Beta = 150.0, 
-                    const double Gamma = 0.02,
-                    const double Eta = 1.0,
+                    const double gain_position = 2000.0, 
+                    const double gain_velocity = 150.0, 
+                    const double gain_acceleration = 0.02,
+                    const double gain_jerk = 1.0,
                     const double tol = 1e-7);
 
 
@@ -379,10 +379,10 @@ namespace smpc
              *
              * @param[in] N Number of sampling times in a preview window
              * @param[in] max_iter maximum number of internal loop iterations
-             * @param[in] Alpha Position gain
-             * @param[in] Beta Velocity gain
-             * @param[in] Gamma Acceleration gain
-             * @param[in] Eta Jerk gain
+             * @param[in] gain_position Position gain (Alpha)
+             * @param[in] gain_velocity Velocity gain (Beta)
+             * @param[in] gain_acceleration Acceleration gain (Gamma)
+             * @param[in] gain_jerk Jerk gain (Eta)
              * @param[in] tol tolerance (internal loop)
              * @param[in] tol_out tolerance of the outer loop, which resolves
              *                    the problem with new t (kappa) parameter.
@@ -394,10 +394,10 @@ namespace smpc
             solver_ip (
                     const int N, 
                     const int max_iter,
-                    const double Alpha = 2000.0, 
-                    const double Beta = 150.0, 
-                    const double Gamma = 0.01,
-                    const double Eta = 1.0,
+                    const double gain_position = 2000.0, 
+                    const double gain_velocity = 150.0, 
+                    const double gain_acceleration = 0.01,
+                    const double gain_jerk = 1.0,
                     const double tol = 1e-3,
                     const double tol_out = 1e-2,
                     const double t = 100,

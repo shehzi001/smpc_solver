@@ -23,20 +23,20 @@ using namespace AS;
 /** @brief Constructor: initialization of the constant parameters
 
     @param[in] N_ Number of sampling times in a preview window
-    @param[in] Alpha Position gain
-    @param[in] Beta Velocity gain
-    @param[in] Gamma Acceleration gain
-    @param[in] Eta Jerk gain
+    @param[in] gain_position Position gain
+    @param[in] gain_velocity Velocity gain
+    @param[in] gain_acceleration Acceleration gain
+    @param[in] gain_jerk Jerk gain
     @param[in] tol_ tolerance
 */
 qp_as::qp_as(
         const int N_, 
-        const double Alpha, 
-        const double Beta, 
-        const double Gamma, 
-        const double Eta, 
+        const double gain_position, 
+        const double gain_velocity, 
+        const double gain_acceleration, 
+        const double gain_jerk, 
         const double tol_) : 
-    problem_parameters (N_, Alpha, Beta, Gamma, Eta),
+    problem_parameters (N_, gain_position, gain_velocity, gain_acceleration, gain_jerk),
     chol (N_)
 {
     tol = tol_;

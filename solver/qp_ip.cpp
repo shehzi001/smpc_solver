@@ -26,25 +26,25 @@ using namespace IP;
 /** @brief Constructor: initialization of the constant parameters
 
     @param[in] N_ Number of sampling times in a preview window
-    @param[in] Alpha Position gain
-    @param[in] Beta Velocity gain
-    @param[in] Gamma Acceleration gain
-    @param[in] Eta Jerk gain
+    @param[in] gain_position (Alpha) Position gain
+    @param[in] gain_velocity (Beta) Velocity gain
+    @param[in] gain_acceleration (Gamma) Acceleration gain
+    @param[in] gain_jerk (Eta) Jerk gain
     @param[in] tol_ tolerance
 */
 qp_ip::qp_ip(
         const int N_, 
-        const double Alpha, 
-        const double Beta, 
-        const double Gamma, 
-        const double Eta, 
+        const double gain_position_,
+        const double gain_velocity_,
+        const double gain_acceleration_,
+        const double gain_jerk_,
         const double tol_) : 
-    problem_parameters (N_, Alpha, Beta, Gamma, Eta),
+    problem_parameters (N_, gain_position_, gain_velocity_, gain_acceleration_, gain_jerk_),
     chol (N_)
 {
     tol = tol_;
 
-    gain_alpha = Alpha;
+    gain_position = gain_position_;
 
     dX = new double[SMPC_NUM_VAR*N]();
     g = new double[2*N];
@@ -53,10 +53,10 @@ qp_ip::qp_ip(
     grad = new double[2*N];
     bound_diff = new double[4*N];
 
-    Q[0] = Alpha/2;
-    Q[1] = Beta/2;
-    Q[2] = Gamma/2;
-    P = Eta/2;
+    Q[0] = gain_position_/2;
+    Q[1] = gain_velocity_/2;
+    Q[2] = gain_acceleration_/2;
+    P = gain_jerk_/2;
 }
 
 
@@ -130,8 +130,8 @@ void qp_ip::form_g (const double *zref_x, const double *zref_y)
         p1 = zref_y[i];
 
         // inv (2*H) * R' * Cp' * zref
-        g[i*2] = -(cosA*p0 + sinA*p1)*gain_alpha;
-        g[i*2 + 1] = -(-sinA*p0 + cosA*p1)*gain_alpha; 
+        g[i*2] = -(cosA*p0 + sinA*p1)*gain_position;
+        g[i*2 + 1] = -(-sinA*p0 + cosA*p1)*gain_position; 
     }
 }
 
@@ -165,13 +165,13 @@ double qp_ip::form_grad_i2hess_logbar (const double kappa)
         ub_diff = 1/ub_diff;
 
         // grad = H*X + g + kappa * (ub_diff - lb_diff)
-        const double grad_el = X[j]*gain_alpha + g[i] + kappa * (ub_diff - lb_diff);
+        const double grad_el = X[j]*gain_position + g[i] + kappa * (ub_diff - lb_diff);
         grad[i] = grad_el;
 
         // only elements 1:3:N*SMPC_NUM_STATE_VAR on the diagonal of hessian 
         // can change
         // hess = 2H + kappa * (ub_diff^2 + lb_diff^2)
-        const double i2hess_el = 1/(gain_alpha + kappa * (ub_diff*ub_diff + lb_diff*lb_diff));
+        const double i2hess_el = 1/(gain_position + kappa * (ub_diff*ub_diff + lb_diff*lb_diff));
         i2hess[i] = i2hess_el;
 
         i2hess_grad[j] = -grad_el * i2hess_el;

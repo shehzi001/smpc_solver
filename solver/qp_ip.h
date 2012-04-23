@@ -77,10 +77,7 @@ class qp_ip : public IP::problem_parameters
     private:
 // variables
 
-    ///@{
-    /// Gains used in @ref pPDObj "objective function".
-        double gain_alpha;
-    ///@}
+        double gain_position;
 
         /// tolerance
         double tol;
