@@ -12,18 +12,6 @@
 #include "WMG.h"
 #include "footstep.h"
 
-
-/**
- * @brief Initializes a WMG object.
- *
- * @param[in] N_ Number of sampling times in a preview window
- * @param[in] T_ Sampling time [ms.]
- * @param[in] step_height_ step height (for interpolation of feet movements) [meter]
- * @param[in] bezier_weight_1_ see #bezier_weight_1
- * @param[in] bezier_weight_2_ see #bezier_weight_2
- * @param[in] bezier_inclination_1_ see #bezier_inclination_1
- * @param[in] bezier_inclination_2_ see #bezier_inclination_2
- */
 WMG::WMG (
         const unsigned int N_,
         const unsigned int T_, 
@@ -31,7 +19,8 @@ WMG::WMG (
         const double bezier_weight_1_,
         const double bezier_weight_2_,
         const double bezier_inclination_1_,
-        const double bezier_inclination_2_)
+        const double bezier_inclination_2_,
+        const bool use_fsr_constraints)
 {
     step_height = step_height_;
     N = N_;
@@ -48,25 +37,22 @@ WMG::WMG (
     last_time_decrement = 0;
     first_preview_step = current_step_number;
 
+    if (use_fsr_constraints)
+    {
+        def_constraints.init_FSR();
+    }
+    else
+    {
+        def_constraints.init();
+    }
 
-    /// NAO constraint with safety margin.
-    def_ss_constraint[0] = 0.09;
-    def_ss_constraint[1] = 0.025;
-    def_ss_constraint[2] = 0.03;
-    def_ss_constraint[3] = 0.025;
+    setFootstepParameters (4, 0, 0);
 
-    def_auto_ds_constraint[0] = 0.07;
-    def_auto_ds_constraint[1] = 0.025;
-    def_auto_ds_constraint[2] = 0.025;
-    def_auto_ds_constraint[3] = 0.025;
-
-    addstep_constraint[0] = def_ss_constraint[0];
-    addstep_constraint[1] = def_ss_constraint[1];
-    addstep_constraint[2] = def_ss_constraint[2];
-    addstep_constraint[3] = def_ss_constraint[3];
-
-    def_time_ms = 400;
-    ds_time_ms = 0;
+    for (int i = 0; i < 4; ++i)
+    {
+        user_constraints[i] = def_constraints.ss[i];
+        user_constraints_auto_ds[i] = def_constraints.auto_ds[i];
+    }
 
     bezier_weight_1 = bezier_weight_1_;
     bezier_weight_2 = bezier_weight_2_;
@@ -75,7 +61,7 @@ WMG::WMG (
 }
 
 
-/** \brief Default destructor. */
+
 WMG::~WMG()
 {
     if (T_ms != NULL)
@@ -86,92 +72,90 @@ WMG::~WMG()
 
 
 
-/**
- * @brief Set default parameters of footsteps
- *
- * @param[in] def_num_ default time in ms (for SS or DS depending on the type of added footstep)
- * @param[in] ds_num_ number of DS to be generated automatically.
- * @param[in] constraints Vector of the PoS constraints (assumed to be [4 x 1], can be NULL).
- *
- * @note length of one automatically generated DS is assumed to be equal to sampling_period.
- */
-void WMG::setFootstepDefaults(
-        const unsigned int def_num_, 
-        const unsigned int ds_num_,
-        const double *constraints) 
+void WMG::setFootstepParameters(
+        const unsigned int def_periods, 
+        const unsigned int ds_periods, 
+        const unsigned int ds_number,
+        bool use_user_constraints_)
 {
-    if (constraints != NULL)
-    {
-        addstep_constraint[0] = constraints[0];
-        addstep_constraint[1] = constraints[1];
-        addstep_constraint[2] = constraints[2];
-        addstep_constraint[3] = constraints[3];
-    }
-
-    def_time_ms = def_num_ * sampling_period;
-    ds_time_ms  = sampling_period; 
-    ds_num      = ds_num_;
+    setFootstepParametersMS(
+            def_periods * sampling_period,
+            ds_periods * sampling_period,
+            ds_number,
+            use_user_constraints_);
 }
 
 
-
-/**
- * @brief Set default parameters of footsteps
- *
- * @param[in] def_time_ms_ default time in ms (for SS or DS depending on the type of added footstep)
- * @param[in] ds_time_ms_ length of one automatically generated DS [ms.]
- * @param[in] ds_num_ number of DS to be generated automatically.
- * @param[in] constraints Vector of the PoS constraints (assumed to be [4 x 1], can be NULL).
- */
-void WMG::setFootstepDefaults(
+void WMG::setFootstepParametersMS(
         const unsigned int def_time_ms_, 
         const unsigned int ds_time_ms_, 
-        const unsigned int ds_num_,
-        const double *constraints) 
+        const unsigned int ds_number,
+        bool use_user_constraints_)
 {
-    if (constraints != NULL)
-    {
-        addstep_constraint[0] = constraints[0];
-        addstep_constraint[1] = constraints[1];
-        addstep_constraint[2] = constraints[2];
-        addstep_constraint[3] = constraints[3];
-    }
-
     def_time_ms = def_time_ms_;
     ds_time_ms  = ds_time_ms_; 
-    ds_num      = ds_num_;
+    ds_num      = ds_number;
+    use_user_constraints = use_user_constraints_;
 }
 
 
-
-/**
- * @brief Adds a footstep to FS.
- *
- * @param[in] x_relative x_relative X position [meter] relative to the previous footstep.
- * @param[in] y_relative y_relative Y position [meter] relative to the previous footstep.
- * @param[in] angle_relative angle_relative Angle [rad.] relative to the previous footstep.
- * @param[in] type (optional) type of the footstep.
- *
- * @note Coordinates and angle are treated as absolute for the first step in the preview window.
- */
 void WMG::addFootstep(
         const double x_relative, 
         const double y_relative, 
         const double angle_relative, 
         fs_type type)
 {
+    const double *constraints;
+    const double *constraints_auto_ds;
+
+    // determine type of the step
+    if (type == FS_TYPE_AUTO)
+    {
+        if (FS.size() == 0)
+        {
+            type = FS_TYPE_DS;
+        }
+        else
+        {
+            switch (FS[getPrevSS(FS.size())].type)
+            {
+                case FS_TYPE_SS_R:
+                    type = FS_TYPE_SS_L;
+                    break;
+                case FS_TYPE_SS_L:
+                case FS_TYPE_DS:
+                default:
+                    type = FS_TYPE_SS_R;
+                    break;
+            }
+        }
+    }
+
+    if (use_user_constraints)
+    {
+        constraints = user_constraints;
+        constraints_auto_ds = user_constraints_auto_ds;
+    }
+    else
+    {
+        constraints_auto_ds = def_constraints.auto_ds;
+        if (type == FS_TYPE_DS)
+        {
+            constraints = def_constraints.ds;
+        }
+        else
+        {
+            constraints = def_constraints.ss;
+        }
+    }
+
+
     Transform<double, 3>    posture (Translation<double, 3>(x_relative, y_relative, 0.0));
-    Vector3d    zref_offset ((addstep_constraint[0] - addstep_constraint[2])/2, 0.0, 0.0);
+    Vector3d    zref_offset ((constraints[0] - constraints[2])/2, 0.0, 0.0);
 
 
     if (FS.size() == 0)
     {
-        // this is the first ("virtual") step.
-        if (type == FS_TYPE_AUTO)
-        {
-            type = FS_TYPE_DS;
-        }
-
         posture *= AngleAxisd(angle_relative, Vector3d::UnitZ());
         // offset is the absolute position here.
         Vector3d zref_abs = posture * zref_offset;
@@ -183,28 +167,10 @@ void WMG::addFootstep(
                     zref_abs,
                     def_time_ms, 
                     type,
-                    addstep_constraint));
+                    constraints));
     }
     else
     {
-        // determine type of the step
-        if (type == FS_TYPE_AUTO)
-        {
-            switch (FS[getPrevSS(FS.size())].type)
-            {
-                case FS_TYPE_SS_L:
-                    type = FS_TYPE_SS_R;
-                    break;
-                case FS_TYPE_SS_R:
-                    type = FS_TYPE_SS_L;
-                    break;
-                case FS_TYPE_DS:
-                default:
-                    type = FS_TYPE_SS_R;
-                    break;
-            }
-        }
-
         // Position of the next step
         posture = (*FS.back().posture) * posture * AngleAxisd(angle_relative, Vector3d::UnitZ());
 
@@ -238,7 +204,7 @@ void WMG::addFootstep(
                         *ds_zref,
                         ds_time_ms, 
                         FS_TYPE_DS,
-                        def_auto_ds_constraint));
+                        constraints_auto_ds));
         }
 
 
@@ -250,26 +216,12 @@ void WMG::addFootstep(
                     next_zref,
                     def_time_ms, 
                     type,
-                    addstep_constraint));
+                    constraints));
     }    
 }
 
 
 
-/**
- * @brief Determine position and orientation of feet
- *
- * @param[in] shift_from_current_ms a positive shift in time (ms.) from the current time
- *  (allows to get positions for the future supports)
- * @param[out] left_foot_pos 4x4 homogeneous matrix, which represents position and orientation
- * @param[out] right_foot_pos 4x4 homogeneous matrix, which represents position and orientation
- *
- * @attention This function requires the walking pattern to be started and finished
- * by single support.
- *
- * @attention Cannot be called on the first or last SS  =>  must be called after 
- * FormPreviewWindow().
- */
 void WMG::getFeetPositions (
         const unsigned int shift_from_current_ms,
         double *left_foot_pos,
@@ -313,11 +265,6 @@ void WMG::getFeetPositions (
 
 
 
-/**
- * @brief Checks if the support foot switch is needed.
- *
- * @return true if the support foot must be switched. 
- */
 bool WMG::isSupportSwitchNeeded ()
 {
     // current_step_number is the number of step, which will
@@ -345,14 +292,6 @@ bool WMG::isSupportSwitchNeeded ()
 
 
 
-/**
- * @brief Changes position of the next SS.
- *
- * @param[in] posture a 4x4 homogeneous matrix representing new position and orientation
- * @param[in] zero_z_coordinate set z coordinate to 0.0
- *
- * @todo DS must be adjusted as well.
- */
 void WMG::changeNextSSPosition (const double* posture, const bool zero_z_coordinate)
 {
     FS[getNextSS(first_preview_step)].changePosture(posture, zero_z_coordinate);
@@ -360,11 +299,6 @@ void WMG::changeNextSSPosition (const double* posture, const bool zero_z_coordin
 
 
 
-/**
- * @brief Forms a preview window.
- *
- * @return WMG_OK or WMG_HALT (simulation must be stopped)
- */
 WMGret WMG::formPreviewWindow(smpc_parameters & par)
 {
     WMGret retval = WMG_OK;
@@ -457,13 +391,6 @@ WMGret WMG::formPreviewWindow(smpc_parameters & par)
 
 
 
-/**
- * @brief Outputs the footsteps in FS to a file, that can be executed in
- * Matlab/Octave to get a figure of the steps.
- *
- * @param[in] filename output file name.
- * @param[in] plot_ds enable/disable plotting of double supports
- */
 void WMG::FS2file(const std::string filename, const bool plot_ds)
 {
     
@@ -529,14 +456,6 @@ void WMG::FS2file(const std::string filename, const bool plot_ds)
 }
 
 
-/**
- * @brief Return coordinates of footstep reference points and rotation 
- * angles of footsteps (only for SS).
- *
- * @param[out] x_coord x coordinates
- * @param[out] y_coord y coordinates
- * @param[out] angle_rot angles
- */
 void WMG::getFootsteps(
         std::vector<double> & x_coord,
         std::vector<double> & y_coord,

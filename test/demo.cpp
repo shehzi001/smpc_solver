@@ -21,26 +21,20 @@ int main(int argc, char **argv)
             wmg.N,  // size of the preview window
             0.261); // height of the center of mass [meter]
 
-
-    // Initial double support
-    double d[4] = {0.09 , 0.075, 0.03, 0.025};
-    wmg.setFootstepDefaults(2, 1, d);
-    wmg.addFootstep(0.0, 0.0, 0.0, FS_TYPE_DS);
-    // ZMP, CoM are at [0;0]
-
     // each step is defined relatively to the previous step
     double z = 5.0*M_PI/180.0;  // relative angle
     double step_x = 0.035;      // relative X position
-    double step_y = 0.1;        // relative Y position
+    double step_y = wmg.def_constraints.support_distance_y; // relative Y position
+
+
+    // Initial double support
+    // ZMP, CoM are at [0;0]
+    wmg.setFootstepParameters (2, 1, 1);
+    wmg.addFootstep(0.0, 0.0, 0.0, FS_TYPE_DS);
 
     // all subsequent steps have normal feet size
-    d[0] = 0.09;
-    d[1] = 0.025;
-    d[2] = 0.03;
-    d[3] = 0.025;
     // 2 reference ZMP positions in single support 
     // 1 in double support
-    wmg.setFootstepDefaults(2, 1, d);
     wmg.addFootstep(0.0   , -step_y/2, 0.0);
     wmg.addFootstep(step_x,  step_y, z);
     wmg.addFootstep(step_x, -step_y, z);
@@ -53,11 +47,7 @@ int main(int argc, char **argv)
     // here we give many reference points, since otherwise we 
     // would not have enough steps in preview window to reach 
     // the last footsteps
-    d[0] = 0.09;
-    d[1] = 0.025;
-    d[2] = 0.03;
-    d[3] = 0.075;
-    wmg.setFootstepDefaults(30, 0, d);
+    wmg.setFootstepParameters (30, 0, 0);
     wmg.addFootstep(0.0   , -step_y/2, 0.0, FS_TYPE_DS);
     //-----------------------------------------------------------
 

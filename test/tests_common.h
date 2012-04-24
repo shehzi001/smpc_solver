@@ -60,15 +60,24 @@ class init_01 : public test_init_base
             wmg = new WMG (15, 100);
             par = new smpc_parameters (wmg->N, 0.261);
 
-            double d[4] = {0.09 , 0.025, 0.03, 0.075};
-            wmg->setFootstepDefaults (3, 0, d);
-            wmg->addFootstep(0.0, 0.05, 0.0, FS_TYPE_DS);
 
             double z = 5.0*M_PI/180.0;
             double step_x = 0.035;
-            double step_y = 0.1;
+            double step_y = wmg->def_constraints.support_distance_y;
 
-            wmg->setFootstepDefaults (4, 0, wmg->def_ss_constraint);
+
+            // the test data is generated for this rectangular 
+            // constraint which is not properly chosen (though it
+            // is ok for testing purposes)
+            wmg->user_constraints[0] = 0.09;
+            wmg->user_constraints[1] = 0.025;
+            wmg->user_constraints[2] = 0.03;
+            wmg->user_constraints[3] = 0.075;
+
+
+            wmg->setFootstepParameters (3, 0, 0, true);
+            wmg->addFootstep(0.0, 0.05, 0.0, FS_TYPE_DS);
+            wmg->setFootstepParameters (4, 0, 0, false);
             wmg->addFootstep(0.0   , -step_y, 0.0);
             wmg->addFootstep(step_x,  step_y, z);
             wmg->addFootstep(step_x, -step_y, z);
@@ -79,7 +88,7 @@ class init_01 : public test_init_base
             wmg->addFootstep(step_x,  step_y, z);
             wmg->addFootstep(step_x, -step_y, z);
             wmg->addFootstep(step_x,  step_y, 0.0);
-            wmg->setFootstepDefaults (30, 0);
+            wmg->setFootstepParameters (30, 0, 0);
             wmg->addFootstep(0.0   , -step_y, 0.0);
 
             if (!name.empty())
@@ -100,18 +109,28 @@ class init_02 : public test_init_base
             wmg = new WMG (15, 100);
             par = new smpc_parameters (wmg->N, 0.261);
 
-            double d[4] = {0.03 , 0.01, 0.01, 0.11};
-            wmg->setFootstepDefaults (3, 0, d);
-            wmg->addFootstep(0.0, 0.05, 0.0);
-            
+
             double z = 5.0*M_PI/180.0;
             double step_x = 0.035;
-            double step_y = 0.1;
+            double step_y = wmg->def_constraints.support_distance_y;
+
+
+            wmg->user_constraints[0] = 0.03;
+            wmg->user_constraints[1] = 0.01;
+            wmg->user_constraints[2] = 0.01;
+            wmg->user_constraints[3] = 0.11;
+
+            wmg->setFootstepParameters (3, 0, 0, true);
+            wmg->addFootstep(0.0, 0.05, 0.0, FS_TYPE_DS);
+            
 
             // use this for smaller feet (and we will have more active constraints)
-            d[0] = 0.03; d[1] = 0.01; d[2] = 0.01; d[3] = 0.01;
+            wmg->user_constraints[0] = 0.03;
+            wmg->user_constraints[1] = 0.01;
+            wmg->user_constraints[2] = 0.01;
+            wmg->user_constraints[3] = 0.01;
 
-            wmg->setFootstepDefaults (4, 0, d);
+            wmg->setFootstepParameters (4, 0, 0, true);
             wmg->addFootstep(0.0   , -step_y, 0.0);
             wmg->addFootstep(step_x,  step_y, z);
             wmg->addFootstep(step_x, -step_y, z);
@@ -121,7 +140,7 @@ class init_02 : public test_init_base
             wmg->addFootstep(step_x, -step_y, z);
             wmg->addFootstep(step_x,  step_y, z);
             wmg->addFootstep(step_x, -step_y, z);
-            wmg->setFootstepDefaults (30, 0);
+            wmg->setFootstepParameters (30, 0, 0, true);
             wmg->addFootstep(step_x,  step_y, 0.0);
             wmg->addFootstep(0.0   , -step_y, 0.0);
 
@@ -143,21 +162,25 @@ class init_03 : public test_init_base
             wmg = new WMG (15, 100);
             par = new smpc_parameters (wmg->N, 0.261);
 
-            // Initial double support
-            double d[4] = {0.09 , 0.075, 0.03, 0.025};
-            wmg->setFootstepDefaults (2, 1, d);
-            wmg->addFootstep(0.0, 0.0, 0.0, FS_TYPE_DS);
-            // ZMP, CoM are at [0;0]
-
             // each step is defined relatively to the previous step
             double z = 5.0*M_PI/180.0;  // relative angle
             double step_x = 0.035;      // relative X position
-            double step_y = 0.1;        // relative Y position
+            double step_y = wmg->def_constraints.support_distance_y;        // relative Y position
+
+
+            // Initial double support
+            wmg->user_constraints[0] = 0.09;
+            wmg->user_constraints[1] = 0.075;
+            wmg->user_constraints[2] = 0.03;
+            wmg->user_constraints[3] = 0.025;
+            wmg->setFootstepParameters (2, 1, 1, true);
+            wmg->addFootstep(0.0, 0.0, 0.0, FS_TYPE_DS);
+            // ZMP, CoM are at [0;0]
 
             // all subsequent steps have normal feet size
             // 2 reference ZMP positions in single support 
             // 1 in double support
-            wmg->setFootstepDefaults (2, 1, wmg->def_ss_constraint);
+            wmg->setFootstepParameters (2, 1, 1, false);
             wmg->addFootstep(0.0   , -step_y/2, 0.0);
             wmg->addFootstep(step_x,  step_y, z);
             wmg->addFootstep(step_x, -step_y, z);
@@ -170,11 +193,11 @@ class init_03 : public test_init_base
             // here we give many reference points, since otherwise we 
             // would not have enough steps in preview window to reach 
             // the last footsteps
-            d[0] = 0.09;
-            d[1] = 0.025;
-            d[2] = 0.03;
-            d[3] = 0.075;
-            wmg->setFootstepDefaults (30, 0, d);
+            wmg->user_constraints[0] = 0.09;
+            wmg->user_constraints[1] = 0.025;
+            wmg->user_constraints[2] = 0.03;
+            wmg->user_constraints[3] = 0.075;
+            wmg->setFootstepParameters (30, 0, 0, true);
             wmg->addFootstep(0.0   , -step_y/2, 0.0, FS_TYPE_DS);
 
             if (!name.empty())
@@ -200,24 +223,19 @@ class init_04 : public test_init_base
 
             // each step is defined relatively to the previous step
             double step_x = 0.035;      // relative X position
-            double step_y = 0.1;       // relative Y position
-            double d[4];
+            double step_y = wmg->def_constraints.support_distance_y;       // relative Y position
 
-            wmg->setFootstepDefaults (0, 0, wmg->def_ss_constraint);
+            wmg->setFootstepParameters (0, 0, 0);
             wmg->addFootstep(0.0, step_y/2, 0.0, FS_TYPE_SS_L);
 
             // Initial double support
-            d[0] = 0.09;
-            d[1] = 0.075;
-            d[2] = 0.03;
-            d[3] = 0.075;
-            wmg->setFootstepDefaults (2, 0, d);
+            wmg->setFootstepParameters (2, 0, 0);
             wmg->addFootstep(0.0, -step_y/2, 0.0, FS_TYPE_DS);
             // ZMP, CoM are at [0;0]
 
 
             // all subsequent steps have normal feet size
-            wmg->setFootstepDefaults (6, 2, wmg->def_ss_constraint);
+            wmg->setFootstepParameters (6, 1, 2);
             wmg->addFootstep(0.0   , -step_y/2, 0.0);
             wmg->addFootstep(step_x,  step_y, 0.0);
             wmg->addFootstep(step_x, -step_y, 0.0);
@@ -228,13 +246,9 @@ class init_04 : public test_init_base
             // here we give many reference points, since otherwise we 
             // would not have enough steps in preview window to reach 
             // the last footsteps
-            d[0] = 0.09;
-            d[1] = 0.075;
-            d[2] = 0.03;
-            d[3] = 0.075;
-            wmg->setFootstepDefaults (30, 0, d);
+            wmg->setFootstepParameters (30, 0, 0);
             wmg->addFootstep(0.0   , -step_y/2, 0.0, FS_TYPE_DS);
-            wmg->setFootstepDefaults (0, 0, wmg->def_ss_constraint);
+            wmg->setFootstepParameters (0, 0, 0);
             wmg->addFootstep(0.0   , -step_y/2, 0.0, FS_TYPE_SS_R);
 
             if (!name.empty())
@@ -257,21 +271,25 @@ class init_05 : public test_init_base
             wmg = new WMG (15, 100);
             par = new smpc_parameters (wmg->N, 0.261);
 
-            // Initial double support
-            double d[4] = {0.09 , 0.075, 0.03, 0.025};
-            wmg->setFootstepDefaults (2, 1, d);
-            wmg->addFootstep(0.0, 0.0, 0.0, FS_TYPE_DS);
-            // ZMP, CoM are at [0;0]
 
             // each step is defined relatively to the previous step
             double step_x = 0.03;      // relative X position
-            double step_y = 0.1;       // relative Y position
+            double step_y = wmg->def_constraints.support_distance_y;       // relative Y position
             double shift = -0.02;
+
+
+            // Initial double support
+            wmg->user_constraints[0] = 0.09;
+            wmg->user_constraints[1] = 0.075;
+            wmg->user_constraints[2] = 0.03;
+            wmg->user_constraints[3] = 0.025;
+            wmg->setFootstepParameters (2, 1, 1, true);
+            wmg->addFootstep(0.0, 0.0, 0.0, FS_TYPE_DS);
 
             // all subsequent steps have normal feet size
             // 2 reference ZMP positions in single support 
             // 1 in double support
-            wmg->setFootstepDefaults (2, 1, wmg->def_ss_constraint);
+            wmg->setFootstepParameters (2, 1, 1, false);
             wmg->addFootstep(0.0   , -step_y/2, 0.0);
             wmg->addFootstep(step_x,  step_y + shift, 0.0);
             wmg->addFootstep(step_x, -step_y + shift, 0.0);
@@ -286,11 +304,11 @@ class init_05 : public test_init_base
             // here we give many reference points, since otherwise we 
             // would not have enough steps in preview window to reach 
             // the last footsteps
-            d[0] = 0.09;
-            d[1] = 0.025;
-            d[2] = 0.03;
-            d[3] = 0.075;
-            wmg->setFootstepDefaults (30, 0, d);
+            wmg->user_constraints[0] = 0.09;
+            wmg->user_constraints[1] = 0.025;
+            wmg->user_constraints[2] = 0.03;
+            wmg->user_constraints[3] = 0.075;
+            wmg->setFootstepParameters (30, 0, 0, true);
             wmg->addFootstep(0.0   , -step_y/2, 0.0, FS_TYPE_DS);
 
             if (!name.empty())
@@ -314,21 +332,25 @@ class init_06 : public test_init_base
             wmg = new WMG (15, 100);
             par = new smpc_parameters (wmg->N, 0.261);
 
-            // Initial double support
-            double d[4] = {0.09 , 0.075, 0.03, 0.025};
-            wmg->setFootstepDefaults (3, 0, d);
-            wmg->addFootstep(0.0, 0.0, 0.0, FS_TYPE_DS);
-            // ZMP, CoM are at [0;0]
 
             // each step is defined relatively to the previous step
             double step_x = 0.0;      // relative X position
-            double step_y = 0.1;       // relative Y position
+            double step_y = wmg->def_constraints.support_distance_y;       // relative Y position
             double shift = -0.02;
+
+
+            // Initial double support
+            wmg->user_constraints[0] = 0.09;
+            wmg->user_constraints[1] = 0.075;
+            wmg->user_constraints[2] = 0.03;
+            wmg->user_constraints[3] = 0.025;
+            wmg->setFootstepParameters (3, 0, 0, true);
+            wmg->addFootstep(0.0, 0.0, 0.0, FS_TYPE_DS);
 
             // all subsequent steps have normal feet size
             // 3 reference ZMP positions in single support 
             // 0 in double support
-            wmg->setFootstepDefaults (3, 0, wmg->def_ss_constraint);
+            wmg->setFootstepParameters (3, 0, 0, false);
             wmg->addFootstep(0.0   , -step_y/2,       0.0);
             wmg->addFootstep(step_x,  step_y + shift, 0.0);
             wmg->addFootstep(step_x, -step_y + shift, 0.0);
@@ -343,11 +365,11 @@ class init_06 : public test_init_base
             // here we give many reference points, since otherwise we 
             // would not have enough steps in preview window to reach 
             // the last footsteps
-            d[0] = 0.09;
-            d[1] = 0.025;
-            d[2] = 0.03;
-            d[3] = 0.075;
-            wmg->setFootstepDefaults (30, 0, d);
+            wmg->user_constraints[0] = 0.09;
+            wmg->user_constraints[1] = 0.025;
+            wmg->user_constraints[2] = 0.03;
+            wmg->user_constraints[3] = 0.075;
+            wmg->setFootstepParameters (30, 0, 0, true);
             wmg->addFootstep(0.0   , -step_y/2, 0.0, FS_TYPE_DS);
 
             if (!name.empty())
@@ -373,26 +395,20 @@ class init_07 : public test_init_base
 
             // each step is defined relatively to the previous step
             double step_x = 0.035;      // relative X position
-            double step_y = 0.1;       // relative Y position
-
-            double ds_constraint[4] = {
-                wmg->def_ss_constraint[0],
-                wmg->def_ss_constraint[1] + 0.5*step_y,
-                wmg->def_ss_constraint[2],
-                wmg->def_ss_constraint[3] + 0.5*step_y};
+            double step_y = wmg->def_constraints.support_distance_y;       // relative Y position
 
 
-            wmg->setFootstepDefaults (0, 0, wmg->def_ss_constraint);
+            wmg->setFootstepParameters (0, 0, 0);
             wmg->addFootstep(0.0, step_y/2, 0.0, FS_TYPE_SS_L);
 
             // Initial double support
-            wmg->setFootstepDefaults (10, 0, ds_constraint);
+            wmg->setFootstepParameters (10, 0, 0);
             wmg->addFootstep(0.0, -step_y/2, 0.0, FS_TYPE_DS);
             // ZMP, CoM are at [0;0]
 
 
             // all subsequent steps have normal feet size
-            wmg->setFootstepDefaults (10, 3, wmg->def_ss_constraint);
+            wmg->setFootstepParameters (10, 1, 3);
             wmg->addFootstep(0.0   , -step_y/2, 0.0);
             wmg->addFootstep(step_x,  step_y, 0.0);
             wmg->addFootstep(step_x, -step_y, 0.0);
@@ -407,9 +423,9 @@ class init_07 : public test_init_base
             // here we give many reference points, since otherwise we 
             // would not have enough steps in preview window to reach 
             // the last footsteps
-            wmg->setFootstepDefaults (60, 0, ds_constraint);
+            wmg->setFootstepParameters (60, 0, 0);
             wmg->addFootstep(0.0   , -step_y/2, 0.0, FS_TYPE_DS);
-            wmg->setFootstepDefaults (0, 0, wmg->def_ss_constraint);
+            wmg->setFootstepParameters (0, 0, 0);
             wmg->addFootstep(0.0   , -step_y/2, 0.0, FS_TYPE_SS_R);
 
 
@@ -440,29 +456,23 @@ class init_08 : public test_init_base
 
             // each step is defined relatively to the previous step
             double step_x = 0.04;      // relative X position
-            double step_y = 0.1;       // relative Y position
+            double step_y = wmg->def_constraints.support_distance_y;       // relative Y position
 
-            double ds_constraint[4] = {
-                wmg->def_ss_constraint[0],
-                wmg->def_ss_constraint[1] + 0.5*step_y,
-                wmg->def_ss_constraint[2],
-                wmg->def_ss_constraint[3] + 0.5*step_y};
-    
 
-            wmg->setFootstepDefaults (0, 0, 0, wmg->def_ss_constraint);
+            wmg->setFootstepParametersMS (0, 0, 0);
             wmg->addFootstep(0.0, step_y/2, 0.0, FS_TYPE_SS_L);
 
             // Initial double support
-            wmg->setFootstepDefaults (3*ss_time_ms, 0, 0, ds_constraint);
+            wmg->setFootstepParametersMS (3*ss_time_ms, 0, 0);
             wmg->addFootstep(0.0, -step_y/2, 0.0, FS_TYPE_DS);
             // ZMP, CoM are at [0;0]
 
 
             // all subsequent steps have normal feet size
-            wmg->setFootstepDefaults (ss_time_ms, ds_time_ms, ds_number, wmg->def_ss_constraint);
-//            wmg->setFootstepDefaults (ss_time_ms, 0, 0, wmg->def_ss_constraint);
+            wmg->setFootstepParametersMS (ss_time_ms, ds_time_ms, ds_number);
+//            wmg->setFootstepParameters (ss_time_ms, 0, 0);
             wmg->addFootstep(0.0   , -step_y/2, 0.0);
-//            wmg->setFootstepDefaults (ss_time_ms, ds_time_ms, ds_number);
+//            wmg->setFootstepParameters (ss_time_ms, ds_time_ms, ds_number);
             wmg->addFootstep(step_x,  step_y, 0.0);
             wmg->addFootstep(step_x, -step_y, 0.0);
             wmg->addFootstep(step_x,  step_y, 0.0);
@@ -476,9 +486,9 @@ class init_08 : public test_init_base
             // here we give many reference points, since otherwise we 
             // would not have enough steps in preview window to reach 
             // the last footsteps
-            wmg->setFootstepDefaults (5*ss_time_ms, 0, 0, ds_constraint);
+            wmg->setFootstepParametersMS (5*ss_time_ms, 0, 0);
             wmg->addFootstep(0.0   , -step_y/2, 0.0, FS_TYPE_DS);
-            wmg->setFootstepDefaults (0, 0, 0, wmg->def_ss_constraint);
+            wmg->setFootstepParametersMS (0, 0, 0);
             wmg->addFootstep(0.0   , -step_y/2, 0.0, FS_TYPE_SS_R);
 
             if (!name.empty())
