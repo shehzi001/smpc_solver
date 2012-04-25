@@ -50,8 +50,8 @@ WMG::WMG (
 
     for (int i = 0; i < 4; ++i)
     {
-        user_constraints[i] = def_constraints.ss[i];
-        user_constraints_auto_ds[i] = def_constraints.auto_ds[i];
+        // auto_ds constraints are safer
+        user_constraints[i] = user_constraints_auto_ds[i] = def_constraints.auto_ds[i];
     }
 
     bezier_weight_1 = bezier_weight_1_;
@@ -139,13 +139,18 @@ void WMG::addFootstep(
     else
     {
         constraints_auto_ds = def_constraints.auto_ds;
-        if (type == FS_TYPE_DS)
+        switch (type)
         {
-            constraints = def_constraints.ds;
-        }
-        else
-        {
-            constraints = def_constraints.ss;
+            case FS_TYPE_SS_R:
+                constraints = def_constraints.ss_right;
+                break;
+            case FS_TYPE_SS_L:
+                constraints = def_constraints.ss_left;
+                break;
+            case FS_TYPE_DS:
+            default:
+                constraints = def_constraints.ds;
+                break;
         }
     }
 

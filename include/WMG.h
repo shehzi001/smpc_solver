@@ -117,12 +117,26 @@ class smpc_parameters
 
 /**
  * @brief Default footstep constraints.
+ *
+ * Constraints are represented as four (positive) numbers indicating
+ * the distance between the foot reference point (the position of ankle
+ * joint) and edges of support rectangle. The order of these numbers is 
+ * illustrated below:
+ *
+ * left/back   +--------------------------------+  left/front
+ *             |           |d(1)                |
+ *             |  d(2)     |        d(0)        |  
+ *             |---------- p -------------------|
+ *             |           |                    |
+ *             |           |d(3)                |
+ * right/back  +--------------------------------+  right/front
  */
 class defConstraints
 {
     public:
         /// Support constraints with safety margin.
-        double ss[4];
+        double ss_left[4];
+        double ss_right[4];
 
         /// Both feet standing together.
         double ds[4];
@@ -134,16 +148,19 @@ class defConstraints
         double support_distance_y;
 
 
-        void init()
+        defConstraints()
         {
             // 2*HipOffsetY = 2*0.05
             support_distance_y = 0.1;
+        }
 
+        void init()
+        {
             // measured using ruler =)
-            ss[0] = 0.09;
-            ss[1] = 0.025;
-            ss[2] = 0.03;
-            ss[3] = 0.025;
+            ss_left[0] = ss_right[0] = 0.09;
+            ss_left[1] = ss_right[1] = 0.025;
+            ss_left[2] = ss_right[2] = 0.03;
+            ss_left[3] = ss_right[3] = 0.025;
 
             ds[0] = 0.09;
             ds[1] = 0.025 + support_distance_y/2;
@@ -190,37 +207,24 @@ class defConstraints
                 Rectangle:
                 ( 0.07  , 0.019)  ( 0.07  , -0.029)
                 (-0.029 , 0.019)  (-0.029 , -0.029)
-
-              Both can be represented by the same rectangle:
-
-                *-------------*
-                |      ^ 0.07 |    Note that the distance between
-                |      |      |    reference points must be changed
-                |      |      |
-                |      |      |
-                |0.024 | 0.024|
-                |<-----*----->|
-                |      |      |
-                |      V 0.029|
-                *-------------*
              */
 
+            ss_left[0] = 0.07;
+            ss_left[1] = 0.029;
+            ss_left[2] = 0.029;
+            ss_left[3] = 0.019;
 
-            // 2*HipOffsetY + 2*(0.024-0.019) = 2*(0.05+0.005)
-            support_distance_y = 0.11;
+            ss_right[0] = 0.07;
+            ss_right[1] = 0.019;
+            ss_right[2] = 0.029;
+            ss_right[3] = 0.029;
 
-
-            ss[0] = 0.07;
-            ss[1] = 0.024;
-            ss[2] = 0.029;
-            ss[3] = 0.024;
 
             ds[0] = 0.07;
-            ds[1] = 0.024 + support_distance_y/2;
+            ds[1] = 0.029 + support_distance_y/2;
             ds[2] = 0.029;
-            ds[3] = 0.024 + support_distance_y/2;
+            ds[3] = 0.029 + support_distance_y/2;
 
-            // SS constraints with increased safety margin
             auto_ds[0] = 0.065;
             auto_ds[1] = 0.020;
             auto_ds[2] = 0.025;
