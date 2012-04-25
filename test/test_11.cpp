@@ -61,7 +61,12 @@ int main(int argc, char **argv)
         gettimeofday(&end,0);             
         CurrentCPUTime = end.tv_sec - start.tv_sec + 0.000001 * (end.tv_usec - start.tv_usec);
         double TT = CurrentCPUTime/NN;
-        printf("(%i) time = % f (-)\n", counter, TT);
+        printf("(%i) time = % f (ext = %d // int = %d // bs = %d)\n", 
+                counter, 
+                TT, 
+                solver.ext_loop_iterations,
+                solver.int_loop_iterations,
+                solver.bt_search_iterations);
         //------------------------------------------------------
     }
 

@@ -400,7 +400,7 @@ namespace smpc
              */
             solver_ip (
                     const int N, 
-                    const int max_iter,
+                    const int unsigned max_iter,
                     const double gain_position = 2000.0, 
                     const double gain_velocity = 150.0, 
                     const double gain_acceleration = 0.01,
@@ -466,7 +466,7 @@ namespace smpc
             /**
              * @brief Solve QP problem.
              */
-            int solve ();
+            void solve ();
 
 
             // -------------------------------
@@ -516,6 +516,31 @@ namespace smpc
              * @param[in] ind index of control inputs [0 : N-1].
              */
             void get_controls (control &c, const int ind);
+
+
+            // -------------------------------
+
+
+            /**
+             * @brief The number of iterations of the external loop.
+             *
+             * @note Updated by #solve function.
+             */
+            unsigned int ext_loop_iterations;
+
+            /**
+             * @brief The total number of iterations of the internal loop.
+             *
+             * @note Updated by #solve function.
+             */
+            unsigned int int_loop_iterations;
+
+            /**
+             * @brief The total number of iterations of backtracking search.
+             *
+             * @note Updated by #solve function.
+             */
+            unsigned int bt_search_iterations;
 
 
             // -------------------------------

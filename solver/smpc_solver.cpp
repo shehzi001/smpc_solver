@@ -46,6 +46,9 @@ namespace smpc
                     const double gain_jerk, const double tol)
     {
         qp_sol = new qp_as (N, gain_position, gain_velocity, gain_acceleration, gain_jerk, tol);
+        added_constraints_num = 0;
+        removed_constraints_num = 0;
+        active_set_size = 0;
     }
 
 
@@ -216,7 +219,7 @@ namespace smpc
 
     solver_ip::solver_ip (
                     const int N,
-                    const int max_iter,
+                    const unsigned int max_iter,
                     const double gain_position, const double gain_velocity, const double gain_acceleration,
                     const double gain_jerk, 
                     const double tol, const double tol_out,
@@ -224,9 +227,12 @@ namespace smpc
                     const double mu,
                     const double bs_alpha, const double bs_beta)
     {
-        qp_ip * qpip_solver = new qp_ip (N, gain_position, gain_velocity, gain_acceleration, gain_jerk, tol);
-        qpip_solver->set_ip_parameters (t, mu, bs_alpha, bs_beta, max_iter, tol_out);
-        qp_sol = qpip_solver;
+        qp_sol = new qp_ip (N, gain_position, gain_velocity, gain_acceleration, gain_jerk, tol);
+        qp_sol->set_ip_parameters (t, mu, bs_alpha, bs_beta, max_iter, tol_out);
+
+        int_loop_iterations = 0;
+        ext_loop_iterations = 0;
+        bt_search_iterations = 0;
     }
 
 
@@ -279,13 +285,15 @@ namespace smpc
 
 
 
-    int solver_ip::solve()
+    void solver_ip::solve()
     {
         if (qp_sol != NULL)
         {
-            return (qp_sol->solve ());
+            qp_sol->solve ();
+            int_loop_iterations = qp_sol->int_loop_counter;
+            ext_loop_iterations = qp_sol->ext_loop_counter;
+            bt_search_iterations = qp_sol->bs_counter;
         }
-        return (-1);
     }
 
 

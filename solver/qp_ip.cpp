@@ -51,7 +51,6 @@ qp_ip::qp_ip(
     i2hess = new double[2*N];
     i2hess_grad = new double[N*SMPC_NUM_VAR];
     grad = new double[2*N];
-    bound_diff = new double[4*N];
 
     Q[0] = gain_position_/2;
     Q[1] = gain_velocity_/2;
@@ -73,8 +72,6 @@ qp_ip::~qp_ip()
         delete grad;
     if (dX  != NULL)
         delete dX;
-    if (bound_diff  != NULL)
-        delete bound_diff;
 }
 
 
@@ -233,10 +230,10 @@ double qp_ip::form_phi_X ()
  *
  * @note sets alpha to 0, if it is too small.
  */
-void qp_ip::init_alpha()
+double qp_ip::init_alpha()
 {
     double min_alpha = 1;
-    alpha = 1;
+    double alpha = 1;
 
     for (int i = 0; i < 2*N; i++)
     {
@@ -271,6 +268,8 @@ void qp_ip::init_alpha()
     {
         alpha = 0;
     }
+
+    return (alpha);
 }
 
 
@@ -316,7 +315,7 @@ double qp_ip::form_bs_alpha_grad_dX ()
  *
  * @return a value of phi.
  */
-double qp_ip::form_phi_X_tmp (const double kappa)
+double qp_ip::form_phi_X_tmp (const double kappa, const double alpha)
 {
     int i,j;
 
@@ -382,7 +381,7 @@ void qp_ip::set_ip_parameters (
         const double mu_, 
         const double bs_alpha_, 
         const double bs_beta_, 
-        const int max_iter_,
+        const unsigned int max_iter_,
         const double tol_out_)
 {
     t = t_;
@@ -400,25 +399,34 @@ void qp_ip::set_ip_parameters (
  *
  * @return 0 if ok, negative number otherwise.
  */
-int qp_ip::solve()
+void qp_ip::solve()
 {
     double kappa = 1/t;
     double duality_gap = 2*N*kappa;
-    int i;
 
+    int_loop_counter = 0;
+    ext_loop_counter = 0;
+    bs_counter = 0;
 
     while (duality_gap > tol_out)
     {
-        for (i = 0; (i < max_iter) && solve_onestep(kappa); i++);
-        if (i == max_iter)
+        ++ext_loop_counter;
+        while (int_loop_counter < max_iter)
         {
-            return (0);
+            ++int_loop_counter;
+            if(!solve_onestep(kappa))
+            {
+                break;
+            }
+        }
+        if (int_loop_counter == max_iter)
+        {
+            break;
         }
 
         kappa /= mu;
         duality_gap = 2*N*kappa;
     }
-    return (0);
 }
 
 
@@ -458,11 +466,6 @@ double qp_ip::form_decrement()
  */
 bool qp_ip::solve_onestep (const double kappa)
 {
-    for (int i = 0; i < 2*N; i++)
-    {
-        bound_diff[2*i]   = -lb[i] + X[i*3];
-        bound_diff[2*i+1] =  ub[i] - X[i*3];
-    }
     /// Value of phi(X), where phi is the cost function + log barrier.
     double phi_X;
     phi_X = form_grad_i2hess_logbar (kappa);
@@ -478,7 +481,8 @@ bool qp_ip::solve_onestep (const double kappa)
     }
 
 
-    init_alpha ();
+    // A number from 0 to 1, which controls depth of descent #X = #X + #alpha*#dX.
+    double alpha = init_alpha ();
     // stopping criterion (step size)
     if (alpha < tol)
     {
@@ -490,7 +494,8 @@ bool qp_ip::solve_onestep (const double kappa)
     const double bs_alpha_grad_dX = form_bs_alpha_grad_dX ();
     for (;;)
     {
-        if (form_phi_X_tmp (kappa) <= phi_X + alpha * bs_alpha_grad_dX)
+        ++bs_counter;
+        if (form_phi_X_tmp (kappa, alpha) <= phi_X + alpha * bs_alpha_grad_dX)
         {
             break;
         }

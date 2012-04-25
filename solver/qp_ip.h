@@ -69,14 +69,19 @@ class qp_ip : public IP::problem_parameters
                 const double, 
                 const double, 
                 const double, 
-                const int,
+                const unsigned int,
                 const double);
-        int solve();
+        void solve();
 
         /** Variables for the QP (contain the states + control variables).
             Initial feasible point with respect to the equality and inequality 
             constraints. */
         double *X;
+
+        
+        unsigned int int_loop_counter;
+        unsigned int ext_loop_counter;
+        unsigned int bs_counter;
 
 
     private:
@@ -92,9 +97,6 @@ class qp_ip : public IP::problem_parameters
         /** Feasible descent direction (to be used for updating #X). */
         double *dX;
 
-        /** A number from 0 to 1, which controls depth of descent #X = #X + #alpha*#dX. */
-        double alpha;
-
         /// 2*#N non-zero elements of vector @ref pg "g".
         double *g;
 
@@ -109,8 +111,6 @@ class qp_ip : public IP::problem_parameters
         /// positions are computed, it is faster to compute the others on the fly.
         /// Hint: the computed terms are affected by the logarithmic barrier.
         double *grad;
-
-double *bound_diff;
 
 
         ///@{
@@ -135,14 +135,14 @@ double *bound_diff;
         double mu; /// multiplier of t, >1.
         double bs_alpha; /// backtracking search parameter alpha
         double bs_beta; /// backtracking search parameter beta
-        int max_iter; /// maximum number of internal loop iterations
+        unsigned int max_iter; /// maximum number of internal loop iterations (in total)
         double tol_out; /// tolerance of the outer loop
 
 
 // functions        
-        void init_alpha();
+        double init_alpha();
         double form_bs_alpha_grad_dX ();
-        double form_phi_X_tmp (const double);
+        double form_phi_X_tmp (const double, const double);
         bool solve_onestep (const double);
         void form_g (const double *, const double *);
         double form_grad_i2hess_logbar (const double);
