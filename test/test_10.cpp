@@ -1,8 +1,8 @@
 /** 
  * @file
  * @author Alexander Sherikov
- * @brief Performs a full simulation and measures average time
- *  required to solve a QP.
+ * @brief Outputs parameters and results for certain iteration of the
+ * simulation for external use.
  */
 
 

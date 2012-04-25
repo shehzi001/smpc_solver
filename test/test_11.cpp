@@ -2,7 +2,7 @@
  * @file
  * @author Alexander Sherikov
  * @brief Performs a full simulation and measures average time
- *  required to solve a QP.
+ *  required to solve a QP using IP method.
  */
 
 
