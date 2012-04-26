@@ -39,22 +39,23 @@ int main(int argc, char **argv)
     }
     init_01 test_05 (test_name);
 
-/*
+
     smpc::solver_ip solver(
             test_05.wmg->N,  // N
-            100,             // max_iter
+            10,             // max_iter
             2000,            // gain_position
             150,             // gain_velocity
             0.02,            // gain_acceleration
             1,               // gain_jerk
-            1e-2,            // tol
+            1e-5,            // tol
             1e-2,            // tol_out
-            100,             // t
-            15,              // mu
+            1e-4,             // t
+            1.0,              // mu
             0.01,            // bs_alpha
-            0.9);            // bs_beta  
-*/
+            0.9,            // bs_beta  
+            true);          // log objective
 
+/*
     smpc::solver_ip solver(
             test_05.wmg->N, 
             100,
@@ -67,8 +68,9 @@ int main(int argc, char **argv)
             100, 
             15, 
             0.01, 
-            0.5);
-
+            0.5,
+            true);
+*/
 
     double err = 0;
     double max_err = 0;
@@ -115,6 +117,14 @@ int main(int argc, char **argv)
         }
         else
         {
+            printf ("-------------------------------------\nOBJ: ");
+            for (unsigned int i = 0; i < solver.objective_log.size(); ++i)
+            {   
+                printf ("% 8e ", solver.objective_log[i]);
+            }
+            printf ("\n-------------------------------------\n");
+
+
             //------------------------------------------------------
             // compare with reference results
             for (unsigned int i = 0; i < test_05.wmg->N*SMPC_NUM_VAR; i++)
@@ -131,7 +141,7 @@ int main(int argc, char **argv)
                 {
                     max_err = err;
                 }
-                //printf("value: % 8e   ref: % 8e   err: % 8e\n", test_05.par->X[i], dataref, err);
+                printf("value: % 8e   ref: % 8e   err: % 8e\n", test_05.par->X[i], dataref, err);
             }
             cout << "Max. error (first state, all steps): " << max_err_first_state << endl;
             cout << "Max. error (all states, all steps): " << max_err << endl;

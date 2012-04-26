@@ -10,6 +10,7 @@
  ****************************************/
 #include "qp_ip.h"
 #include "state_handling.h"
+#include "qp.h"
 
 
 #include <cmath> // log
@@ -31,6 +32,7 @@ using namespace IP;
     @param[in] gain_acceleration (Gamma) Acceleration gain
     @param[in] gain_jerk (Eta) Jerk gain
     @param[in] tol_ tolerance
+    @param[in] obj_computation_enabled_ enable computation of the objective function
 */
 qp_ip::qp_ip(
         const int N_, 
@@ -38,14 +40,14 @@ qp_ip::qp_ip(
         const double gain_velocity_,
         const double gain_acceleration_,
         const double gain_jerk_,
-        const double tol_) : 
+        const double tol_,
+        const bool obj_computation_enabled_) : 
     problem_parameters (N_, gain_position_, gain_velocity_, gain_acceleration_, gain_jerk_),
+    gain_position (gain_position_),
+    tol (tol_),
+    obj_computation_enabled (obj_computation_enabled_),
     chol (N_)
 {
-    tol = tol_;
-
-    gain_position = gain_position_;
-
     dX = new double[SMPC_NUM_VAR*N]();
     g = new double[2*N];
     i2hess = new double[2*N];
@@ -91,8 +93,8 @@ void qp_ip::set_parameters(
         const double* h, 
         const double h_initial_, 
         const double* angle,
-        const double* zref_x,
-        const double* zref_y,
+        const double* zref_x_,
+        const double* zref_y_,
         const double* lb_,
         const double* ub_)
 {
@@ -100,6 +102,9 @@ void qp_ip::set_parameters(
 
     lb = lb_;
     ub = ub_;
+
+    zref_x = zref_x_;
+    zref_y = zref_y_;
 
     form_g (zref_x, zref_y);
 }
@@ -109,10 +114,10 @@ void qp_ip::set_parameters(
 /**
  * @brief Forms vector @ref pg "g".
  *
- * @param[in] zref_x x coordinates of reference ZMP positions
- * @param[in] zref_y y coordinates of reference ZMP positions
+ * @param[in] zref_x_ x coordinates of reference ZMP positions
+ * @param[in] zref_y_ y coordinates of reference ZMP positions
  */
-void qp_ip::form_g (const double *zref_x, const double *zref_y)
+void qp_ip::form_g (const double *zref_x_, const double *zref_y_)
 {
     double p0, p1;
     double cosA, sinA;
@@ -123,8 +128,8 @@ void qp_ip::form_g (const double *zref_x, const double *zref_y)
         sinA = spar[i].sin;
 
         // zref
-        p0 = zref_x[i];
-        p1 = zref_y[i];
+        p0 = zref_x_[i];
+        p1 = zref_y_[i];
 
         // inv (2*H) * R' * Cp' * zref
         g[i*2] = -(cosA*p0 + sinA*p1)*gain_position;
@@ -232,15 +237,15 @@ double qp_ip::form_phi_X ()
  */
 double qp_ip::init_alpha()
 {
-    double min_alpha = 1;
-    double alpha = 1;
+    double min_alpha = 1.0;
+    double alpha = 1.0;
 
     for (int i = 0; i < 2*N; i++)
     {
         // lower bound may be violated
         if (dX[i*3] < 0)
         {
-            double tmp_alpha = (lb[i]-X[i*3])/dX[i*3];
+            const double tmp_alpha = (lb[i]-X[i*3])/dX[i*3];
             if (tmp_alpha < min_alpha)
             {
                 min_alpha = tmp_alpha;
@@ -249,7 +254,7 @@ double qp_ip::init_alpha()
         // upper bound may be violated
         else if (dX[i*3] > 0)
         {
-            double tmp_alpha = (ub[i]-X[i*3])/dX[i*3];
+            const double tmp_alpha = (ub[i]-X[i*3])/dX[i*3];
             if (tmp_alpha < min_alpha)
             {
                 min_alpha = tmp_alpha;
@@ -397,10 +402,18 @@ void qp_ip::set_ip_parameters (
 /**
  * @brief Solve QP using interior-point method.
  *
+ * @param[in,out] obj_log a vector of objective function values
+ *
  * @return 0 if ok, negative number otherwise.
  */
-void qp_ip::solve()
+void qp_ip::solve(vector<double> &obj_log)
 {
+    if (obj_computation_enabled)
+    {
+        obj_log.clear();
+        obj_log.push_back(compute_obj());
+    }
+
     double kappa = 1/t;
     double duality_gap = 2*N*kappa;
 
@@ -414,7 +427,7 @@ void qp_ip::solve()
         while (int_loop_counter < max_iter)
         {
             ++int_loop_counter;
-            if(!solve_onestep(kappa))
+            if(!solve_onestep(kappa, obj_log))
             {
                 break;
             }
@@ -461,10 +474,11 @@ double qp_ip::form_decrement()
  * @brief One step of interior point method.
  *
  * @param[in] kappa logarithmic barrier multiplier
+ * @param[in,out] obj_log a vector of objective function values
  *
  * @return true if a step was made, false if alpha or dX are too small.
  */
-bool qp_ip::solve_onestep (const double kappa)
+bool qp_ip::solve_onestep (const double kappa, vector<double> &obj_log)
 {
     /// Value of phi(X), where phi is the cost function + log barrier.
     double phi_X;
@@ -522,6 +536,10 @@ bool qp_ip::solve_onestep (const double kappa)
         X[i+6] += alpha * dX[i+6];
         X[i+7] += alpha * dX[i+7];
     }
+    if (obj_computation_enabled)
+    {
+        obj_log.push_back(compute_obj());
+    }
 
     return (true);
 }
@@ -547,64 +565,62 @@ void qp_ip::form_init_fp (
         double* X_)
 {
     X = X_;
-
-    double *control = &X[SMPC_NUM_STATE_VAR*N];
-    double *cur_state = X;
-    double X_tilde[6] = {
-        init_state[0], init_state[1], init_state[2],
-        init_state[3], init_state[4], init_state[5]};
-    if (!tilde_state)
-    {
-        state_handling::orig_to_tilde (h_initial, X_tilde);
-    }
-    const double *prev_state = X_tilde;
-
-    
-    for (int i=0; i<N; i++)
-    {
-        //------------------------------------
-        /* inv(Cp*B). This is a [2 x 2] diagonal matrix (which is invertible if T^3/6-h*T is
-         * not equal to zero). The two elements on the main diagonal are equal, and only one of them 
-         * is stored, which is equal to
-            1/(T^3/6 - h*T)
-         */
-        double iCpB = 1/(spar[i].B[0]);
-
-        /* inv(Cp*B)*Cp*A. This is a [2 x 6] matrix with the following structure
-            iCpB_CpA = [a b c 0 0 0;
-                        0 0 0 a b c];
-
-            a = iCpB
-            b = iCpB*T
-            c = iCpB*T^2/2
-         * Only a,b and c are stored.
-         */
-        double iCpB_CpA[3] = {iCpB, iCpB*spar[i].A3, iCpB*spar[i].A6};
-        //------------------------------------
-
-
-        control[0] = -iCpB_CpA[0]*prev_state[0] - iCpB_CpA[1]*prev_state[1] - iCpB_CpA[2]*prev_state[2] + iCpB*x_coord[i];
-        control[1] = -iCpB_CpA[0]*prev_state[3] - iCpB_CpA[1]*prev_state[4] - iCpB_CpA[2]*prev_state[5] + iCpB*y_coord[i];
-
-        cur_state[0] = prev_state[0] + spar[i].A3*prev_state[1] + spar[i].A6*prev_state[2] + spar[i].B[0]*control[0];
-        cur_state[1] =                            prev_state[1] + spar[i].A3*prev_state[2] + spar[i].B[1]*control[0];
-        cur_state[2] =                                                       prev_state[2] + spar[i].B[2]*control[0];
-        cur_state[3] = prev_state[3] + spar[i].A3*prev_state[4] + spar[i].A6*prev_state[5] + spar[i].B[0]*control[1];
-        cur_state[4] =                            prev_state[4] + spar[i].A3*prev_state[5] + spar[i].B[1]*control[1];
-        cur_state[5] =                                                       prev_state[5] + spar[i].B[2]*control[1];
-
-
-        prev_state = &X[SMPC_NUM_STATE_VAR*i];
-        cur_state = &X[SMPC_NUM_STATE_VAR*(i+1)];
-        control = &control[SMPC_NUM_CONTROL_VAR];
-    }
-
+    form_init_fp_tilde<problem_parameters>(*this, x_coord, y_coord, init_state, tilde_state, X);
 
     // go back to bar states
-    cur_state = X;
+    double *cur_state = X;
     for (int i=0; i<N; i++)
     {
         state_handling::tilde_to_bar (spar[i].sin, spar[i].cos, cur_state);
         cur_state = &cur_state[SMPC_NUM_STATE_VAR];
     }
+}
+
+
+/**
+ * @brief Computes value of the objective function.
+ *
+ * @return value of the objective function.
+ */
+double qp_ip::compute_obj()
+{
+    int i,j;
+    double obj_pos = 0;
+    double obj_vel = 0;
+    double obj_acc = 0;
+    double obj_jerk = 0;
+    double obj_gX = 0;
+    double obj_ref = 0;
+
+    // phi_X = X'*H*X + g'*X
+    for(i = 0, j = 0; 
+        i < N*SMPC_NUM_STATE_VAR; 
+        i += SMPC_NUM_STATE_VAR, j += 2)
+    {
+        int k = i / SMPC_NUM_STATE_VAR;
+        double X_copy[6] = {X[i], X[i+1], X[i+2], X[i+3], X[i+4], X[i+5]};
+        state_handling::bar_to_tilde (spar[k].sin, spar[k].cos, X_copy);
+
+        // X'*H*X
+        obj_pos += X_copy[0]*X_copy[0] + X_copy[3]*X_copy[3];
+        obj_vel += X_copy[1]*X_copy[1] + X_copy[4]*X_copy[4];
+        obj_acc += X_copy[2]*X_copy[2] + X_copy[5]*X_copy[5];
+
+        // g'*X
+        obj_gX  -= zref_x[k]*X_copy[0] + zref_y[k]*X_copy[3];
+
+        obj_ref += zref_x[k]*zref_x[k] + zref_y[k]*zref_y[k];
+    }
+    for (; i < N*SMPC_NUM_VAR; i += SMPC_NUM_CONTROL_VAR)
+    {
+        // X'*H*X
+        obj_jerk += X[i] * X[i] + X[i+1] * X[i+1];
+    }
+
+    return (Q[0]*obj_pos 
+            + Q[1]*obj_vel 
+            + Q[2]*obj_acc 
+            + P*obj_jerk 
+            + gain_position*obj_gX
+            + Q[0]*obj_ref);
 }

@@ -10,6 +10,9 @@
 #ifndef SMPC_SOLVER_H
 #define SMPC_SOLVER_H
 
+#include <vector>
+
+
 class qp_as;
 class qp_ip;
 
@@ -209,6 +212,7 @@ namespace smpc
                 @param[in] gain_acceleration Acceleration gain (Gamma)
                 @param[in] gain_jerk Jerk gain (Eta)
                 @param[in] tol tolerance
+                @param[in] obj_computation_enabled compute and keep values of the objective function
             */
             solver_as (
                     const int N, 
@@ -216,7 +220,8 @@ namespace smpc
                     const double gain_velocity = 150.0, 
                     const double gain_acceleration = 0.02,
                     const double gain_jerk = 1.0,
-                    const double tol = 1e-7);
+                    const double tol = 1e-7,
+                    const bool obj_computation_enabled = false);
 
 
             ~solver_as();
@@ -363,7 +368,20 @@ namespace smpc
              * @note Updated by #solve function.
              */
             unsigned int active_set_size;
-            
+
+
+            /**
+             * @brief Contains values of objective function after each iteration,
+             * the initial value is also included.
+             *
+             * @note Updated by #solve function (only if the respective flag is
+             * set on initialization).
+             */
+            std::vector<double> objective_log;
+           
+
+            // -------------------------------
+
 
             /**
              * @brief Internal representation.
@@ -397,6 +415,7 @@ namespace smpc
              * @param[in] mu multiplier of t, >1.
              * @param[in] bs_alpha backtracking search parameter 0 < alpha < 0.5
              * @param[in] bs_beta  backtracking search parameter 0 < beta < 1
+             * @param[in] obj_computation_enabled compute and keep values of the objective function
              */
             solver_ip (
                     const int N, 
@@ -410,7 +429,8 @@ namespace smpc
                     const double t = 100,
                     const double mu = 15,
                     const double bs_alpha = 0.01,
-                    const double bs_beta = 0.5);
+                    const double bs_beta = 0.5,
+                    const bool obj_computation_enabled = false);
 
 
             ~solver_ip();
@@ -541,6 +561,15 @@ namespace smpc
              * @note Updated by #solve function.
              */
             unsigned int bt_search_iterations;
+
+            /**
+             * @brief Contains values of objective function after each iteration,
+             * the initial value is also included.
+             *
+             * @note Updated by #solve function (only if the respective flag is
+             * set on initialization).
+             */
+            std::vector<double> objective_log;
 
 
             // -------------------------------

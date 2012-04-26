@@ -8,6 +8,7 @@
 /****************************************
  * INCLUDES 
  ****************************************/
+#include "qp.h"
 #include "qp_as.h"
 #include "state_handling.h"
 
@@ -28,6 +29,7 @@ using namespace AS;
     @param[in] gain_acceleration Acceleration gain
     @param[in] gain_jerk Jerk gain
     @param[in] tol_ tolerance
+    @param[in] obj_computation_enabled_ enable computation of the objective function
 */
 qp_as::qp_as(
         const int N_, 
@@ -35,12 +37,13 @@ qp_as::qp_as(
         const double gain_velocity, 
         const double gain_acceleration, 
         const double gain_jerk, 
-        const double tol_) : 
+        const double tol_,
+        const bool obj_computation_enabled_) : 
     problem_parameters (N_, gain_position, gain_velocity, gain_acceleration, gain_jerk),
-    chol (N_)
+    chol (N_),
+    tol (tol_),
+    obj_computation_enabled (obj_computation_enabled_)
 {
-    tol = tol_;
-
     dX = new double[SMPC_NUM_VAR*N]();
 
     constraints.resize(2*N);
@@ -123,68 +126,18 @@ void qp_as::set_parameters(
  * @param[in] x_coord x coordinates of points satisfying constraints
  * @param[in] y_coord y coordinates of points satisfying constraints
  * @param[in] init_state current state
- * @param[in] state_tilde if true the state is interpreted as @ref pX_tilde "X_tilde".
+ * @param[in] tilde_state if true the state is interpreted as @ref pX_tilde "X_tilde".
  * @param[in,out] X_ initial guess / solution of optimization problem
  */
-void qp_as::formInitialFP (
+void qp_as::form_init_fp (
         const double *x_coord, 
         const double *y_coord, 
         const double *init_state,
-        const bool state_tilde,
+        const bool tilde_state,
         double* X_)
 {
     X = X_;
-
-    double X_tilde[6] = {
-        init_state[0], init_state[1], init_state[2],
-        init_state[3], init_state[4], init_state[5]};
-    double *control = &X[SMPC_NUM_STATE_VAR*N];
-    double *cur_state = X;
-    if (!state_tilde)
-    {
-        state_handling::orig_to_tilde (h_initial, X_tilde);
-    }
-    const double *prev_state = X_tilde;
-
-    
-    for (int i=0; i<N; ++i)
-    {
-        //------------------------------------
-        /* inv(Cp*B). This is a [2 x 2] diagonal matrix (which is invertible if T^3/6-h*T is
-         * not equal to zero). The two elements on the main diagonal are equal, and only one of them 
-         * is stored, which is equal to
-            1/(T^3/6 - h*T)
-         */
-        const double iCpB = 1/(spar[i].B[0]);
-
-        /* inv(Cp*B)*Cp*A. This is a [2 x 6] matrix with the following structure
-            iCpB_CpA = [a b c 0 0 0;
-                        0 0 0 a b c];
-
-            a = iCpB
-            b = iCpB*T
-            c = iCpB*T^2/2
-         * Only a,b and c are stored.
-         */
-        const double iCpB_CpA[3] = {iCpB, iCpB*spar[i].A3, iCpB*spar[i].A6};
-        //------------------------------------
-
-
-        control[0] = -iCpB_CpA[0]*prev_state[0] - iCpB_CpA[1]*prev_state[1] - iCpB_CpA[2]*prev_state[2] + iCpB*x_coord[i];
-        control[1] = -iCpB_CpA[0]*prev_state[3] - iCpB_CpA[1]*prev_state[4] - iCpB_CpA[2]*prev_state[5] + iCpB*y_coord[i];
-
-        cur_state[0] = prev_state[0] + spar[i].A3*prev_state[1] + spar[i].A6*prev_state[2] + spar[i].B[0]*control[0];
-        cur_state[1] =                            prev_state[1] + spar[i].A3*prev_state[2] + spar[i].B[1]*control[0];
-        cur_state[2] =                                                       prev_state[2] + spar[i].B[2]*control[0];
-        cur_state[3] = prev_state[3] + spar[i].A3*prev_state[4] + spar[i].A6*prev_state[5] + spar[i].B[0]*control[1];
-        cur_state[4] =                            prev_state[4] + spar[i].A3*prev_state[5] + spar[i].B[1]*control[1];
-        cur_state[5] =                                                       prev_state[5] + spar[i].B[2]*control[1];
-
-
-        prev_state = &X[SMPC_NUM_STATE_VAR*i];
-        cur_state = &X[SMPC_NUM_STATE_VAR*(i+1)];
-        control = &control[SMPC_NUM_CONTROL_VAR];
-    }
+    form_init_fp_tilde<problem_parameters>(*this, x_coord, y_coord, init_state, tilde_state, X);
 }
 
 
@@ -289,15 +242,22 @@ int qp_as::choose_excl_constr (const double *lambda)
 /**
  * @brief Solve QP problem.
  *
+ * @param[in,out] obj_log a vector of objective function values
+ *
  * @return number of activated constraints
  */
-void qp_as::solve ()
+void qp_as::solve (vector<double> &obj_log)
 {
     for (int i = 0; i < N; ++i)
     {
         const int ind = i*SMPC_NUM_STATE_VAR;
         X[ind]   -= zref_x[i];
         X[ind+3] -= zref_y[i];
+    }
+    if (obj_computation_enabled)
+    {
+        obj_log.clear();
+        obj_log.push_back(compute_obj());
     }
 
     // obtain dX
@@ -319,6 +279,12 @@ void qp_as::solve ()
             X[i+6] += alpha * dX[i+6];
             X[i+7] += alpha * dX[i+7];
         }
+
+        if (obj_computation_enabled)
+        {
+            obj_log.push_back(compute_obj());
+        }
+
         if (added_constraints_num == max_added_constraints_num)
         {
             break;
@@ -357,3 +323,40 @@ void qp_as::solve ()
 
     active_set_size = active_set.size();
 }
+
+
+
+/**
+ * @brief Compute value of the objective function.
+ *
+ * @return value of the objective function.
+ */
+double qp_as::compute_obj()
+{
+    int i,j;
+    double obj_pos = 0;
+    double obj_vel = 0;
+    double obj_acc = 0;
+    double obj_jerk = 0;
+
+    // phi_X = X'*H*X + g'*X
+    for(i = 0, j = 0;
+        i < N*SMPC_NUM_STATE_VAR;
+        i += SMPC_NUM_STATE_VAR, j += 2)
+    {
+        const double X_copy[6] = {X[i], X[i+1], X[i+2], X[i+3], X[i+4], X[i+5]};
+
+        // X'*H*X
+        obj_pos += X_copy[0]*X_copy[0] + X_copy[3]*X_copy[3];
+        obj_vel += X_copy[1]*X_copy[1] + X_copy[4]*X_copy[4];
+        obj_acc += X_copy[2]*X_copy[2] + X_copy[5]*X_copy[5];
+    }
+    for (; i < N*SMPC_NUM_VAR; i += SMPC_NUM_CONTROL_VAR)
+    {
+        // X'*H*X
+        obj_jerk += X[i] * X[i] + X[i+1] * X[i+1];
+    }
+
+    return (0.5*obj_pos/i2Q[0] + 0.5*obj_vel/i2Q[1] + 0.5*obj_acc/i2Q[2] + 0.5*obj_jerk/i2P);
+}
+

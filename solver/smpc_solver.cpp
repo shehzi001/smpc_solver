@@ -42,10 +42,14 @@ namespace smpc
 
     solver_as::solver_as (
                     const int N,
-                    const double gain_position, const double gain_velocity, const double gain_acceleration,
-                    const double gain_jerk, const double tol)
+                    const double gain_position, 
+                    const double gain_velocity, 
+                    const double gain_acceleration,
+                    const double gain_jerk, 
+                    const double tol,
+                    const bool obj_computation_enabled)
     {
-        qp_sol = new qp_as (N, gain_position, gain_velocity, gain_acceleration, gain_jerk, tol);
+        qp_sol = new qp_as (N, gain_position, gain_velocity, gain_acceleration, gain_jerk, tol, obj_computation_enabled);
         added_constraints_num = 0;
         removed_constraints_num = 0;
         active_set_size = 0;
@@ -96,7 +100,7 @@ namespace smpc
     {
         if (qp_sol != NULL)
         {
-            qp_sol->formInitialFP (x_coord, y_coord, init_state.state_vector, false, X);
+            qp_sol->form_init_fp (x_coord, y_coord, init_state.state_vector, false, X);
         }
     }
 
@@ -109,7 +113,7 @@ namespace smpc
     {
         if (qp_sol != NULL)
         {
-            qp_sol->formInitialFP (x_coord, y_coord, init_state.state_vector, true, X);
+            qp_sol->form_init_fp (x_coord, y_coord, init_state.state_vector, true, X);
         }
     }
 
@@ -118,7 +122,7 @@ namespace smpc
     {
         if (qp_sol != NULL)
         {
-            qp_sol->solve ();
+            qp_sol->solve (objective_log);
             
             added_constraints_num   = qp_sol->added_constraints_num;
             removed_constraints_num = qp_sol->removed_constraints_num;
@@ -225,9 +229,10 @@ namespace smpc
                     const double tol, const double tol_out,
                     const double t,
                     const double mu,
-                    const double bs_alpha, const double bs_beta)
+                    const double bs_alpha, const double bs_beta,
+                    const bool obj_computation_enabled)
     {
-        qp_sol = new qp_ip (N, gain_position, gain_velocity, gain_acceleration, gain_jerk, tol);
+        qp_sol = new qp_ip (N, gain_position, gain_velocity, gain_acceleration, gain_jerk, tol, obj_computation_enabled);
         qp_sol->set_ip_parameters (t, mu, bs_alpha, bs_beta, max_iter, tol_out);
 
         int_loop_iterations = 0;
@@ -289,7 +294,8 @@ namespace smpc
     {
         if (qp_sol != NULL)
         {
-            qp_sol->solve ();
+            qp_sol->solve (objective_log);
+
             int_loop_iterations = qp_sol->int_loop_counter;
             ext_loop_iterations = qp_sol->ext_loop_counter;
             bt_search_iterations = qp_sol->bs_counter;

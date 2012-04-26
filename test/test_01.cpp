@@ -40,7 +40,14 @@ int main(int argc, char **argv)
 
     init_01 test_01 (test_name);
 
-    smpc::solver_as solver(test_01.wmg->N);
+    smpc::solver_as solver(
+            test_01.wmg->N,
+            2000.0,
+            150.0,
+            0.02,
+            1.0,
+            1e-7,
+            true);
     smpc::enable_fexceptions();
 
 
@@ -88,6 +95,14 @@ int main(int argc, char **argv)
         }
         else
         {
+            printf ("-------------------------------------\nOBJ: ");
+            for (unsigned int i = 0; i < solver.objective_log.size(); ++i)
+            {
+                printf ("% 8e ", solver.objective_log[i]);
+            }
+            printf ("\n-------------------------------------\n");
+
+
             //------------------------------------------------------
             // compare with reference results
             for (unsigned int i = 0; i < test_01.wmg->N*SMPC_NUM_VAR; i++)

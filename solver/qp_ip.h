@@ -43,7 +43,8 @@ class qp_ip : public IP::problem_parameters
                 const double, 
                 const double,
                 const double,
-                const double);
+                const double,
+                const bool);
         ~qp_ip();
 
         void set_parameters(
@@ -71,7 +72,8 @@ class qp_ip : public IP::problem_parameters
                 const double, 
                 const unsigned int,
                 const double);
-        void solve();
+
+        void solve(vector<double> &);
 
         /** Variables for the QP (contain the states + control variables).
             Initial feasible point with respect to the equality and inequality 
@@ -85,12 +87,14 @@ class qp_ip : public IP::problem_parameters
 
 
     private:
-// variables
-
-        double gain_position;
+    // parameters
+        const double gain_position;
 
         /// tolerance
-        double tol;
+        const double tol;
+
+        const bool obj_computation_enabled;
+
 
     // variables and descent direction
      
@@ -129,7 +133,11 @@ class qp_ip : public IP::problem_parameters
         const double *lb;
         const double *ub;
         ///@}
-        
+
+        const double *zref_x;
+        const double *zref_y;
+
+
 // IP parameters
         double t; /// logarithmic barrier parameter
         double mu; /// multiplier of t, >1.
@@ -143,11 +151,12 @@ class qp_ip : public IP::problem_parameters
         double init_alpha();
         double form_bs_alpha_grad_dX ();
         double form_phi_X_tmp (const double, const double);
-        bool solve_onestep (const double);
+        bool solve_onestep (const double, vector<double> &);
         void form_g (const double *, const double *);
         double form_grad_i2hess_logbar (const double);
         double form_phi_X ();
         double form_decrement();
+        double compute_obj();
 };
 
 ///@}

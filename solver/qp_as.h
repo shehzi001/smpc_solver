@@ -44,7 +44,8 @@ class qp_as : public AS::problem_parameters
                 const double, 
                 const double,
                 const double,
-                const double);
+                const double, 
+                const bool);
         ~qp_as();
 
         void set_parameters(
@@ -58,8 +59,8 @@ class qp_as : public AS::problem_parameters
                 const double*);
 
 
-        void solve ();
-        void formInitialFP (
+        void solve (vector<double> &);
+        void form_init_fp (
                 const double *, 
                 const double *, 
                 const double *, 
@@ -86,8 +87,10 @@ class qp_as : public AS::problem_parameters
 
 // functions        
         int check_blocking_constraints();
-
         int choose_excl_constr (const double *);
+        double compute_obj();
+
+// variables        
 
         /// An instance of #as_chol_solve class.
         AS::chol_solve chol;
@@ -97,7 +100,9 @@ class qp_as : public AS::problem_parameters
         const double *zref_y;
 
         /// tolerance
-        double tol;
+        const double tol;
+
+        const bool obj_computation_enabled;
 
     // active set        
         /// A set of active constraints.
@@ -112,7 +117,7 @@ class qp_as : public AS::problem_parameters
         double *dX;
 
         /** A number from 0 to 1, which controls depth of descent #X = #X + #alpha*#dX. */
-        double alpha;
+        double alpha;        
 };
 
 ///@}
