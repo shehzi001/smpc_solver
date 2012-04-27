@@ -357,6 +357,6 @@ double qp_as::compute_obj()
         obj_jerk += X[i] * X[i] + X[i+1] * X[i+1];
     }
 
-    return (0.5*obj_pos/i2Q[0] + 0.5*obj_vel/i2Q[1] + 0.5*obj_acc/i2Q[2] + 0.5*obj_jerk/i2P);
+    return (0.5*(obj_pos/i2Q[0] + obj_vel/i2Q[1] + obj_acc/i2Q[2] + obj_jerk/i2P));
 }
 

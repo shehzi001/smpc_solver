@@ -421,7 +421,7 @@ void qp_ip::solve(vector<double> &obj_log)
     ext_loop_counter = 0;
     bs_counter = 0;
 
-    while (duality_gap > tol_out)
+    for (;;)
     {
         ++ext_loop_counter;
         while (int_loop_counter < max_iter)
@@ -439,6 +439,10 @@ void qp_ip::solve(vector<double> &obj_log)
 
         kappa /= mu;
         duality_gap = 2*N*kappa;
+        if (duality_gap < tol_out)
+        {
+            break;
+        }
     }
 }
 

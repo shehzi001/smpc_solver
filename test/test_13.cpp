@@ -44,8 +44,8 @@ int main(int argc, char **argv)
             1.0,             // gain_velocity
             0.02,            // gain_acceleration
             1.0,             // gain_jerk
-            1e-5,            // tol
-            1e-2,            // tol_out
+            1e-1,            // tol
+            1e+4,            // tol_out | if it is big only one iteration is made.
             1e-1,            // t
             1.0,             // mu
             0.01,            // bs_alpha
@@ -63,7 +63,7 @@ int main(int argc, char **argv)
 
 
 
-    for(int counter = 0; ; counter++)
+    for(int counter = 0; /*counter < 10*/; counter++)
     {
         //------------------------------------------------------
         if (IP_test.wmg->formPreviewWindow(*IP_test.par) == WMG_HALT)
