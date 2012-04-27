@@ -22,8 +22,14 @@ int main(int argc, char **argv)
     ofstream AS_log;
     ofstream IP_log;
 
+    // Circular
+    init_11 AS_test("test_13_as");
+    init_11 IP_test("test_13_ip");
+    /*
+    // Straight
     init_10 AS_test("test_13_as");
     init_10 IP_test("test_13_ip");
+    */
     //-----------------------------------------------------------
 
     AS_log.open(AS_test.fs_out_filename.c_str(), fstream::app);

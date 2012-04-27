@@ -623,4 +623,68 @@ class init_10 : public test_init_base
         }
 };
 
+
+
+/**
+ * @brief Circular walk
+ */
+class init_11 : public test_init_base
+{
+    public:
+        init_11 (const string & test_name, const bool plot_ds_ = true) : 
+            test_init_base (test_name, plot_ds_)
+        {
+            int preview_sampling_time_ms = 40;
+            wmg = new WMG (40, preview_sampling_time_ms, 0.02);
+            par = new smpc_parameters (wmg->N, 0.252007);
+            int ss_time_ms = 400;
+            int ds_time_ms = 40;
+            int ds_number = 3;
+
+
+            // each step is defined relatively to the previous step
+            double step_x_ext = 0.04;      // relative X position
+            double step_y = wmg->def_constraints.support_distance_y;       // relative Y position
+
+
+            double R_ext = 0.55;
+            double R_int = R_ext - step_y;
+
+            // relative angle
+            double a = asin (step_x_ext / R_ext);
+            double step_x_int = step_x_ext * R_int / R_ext;
+
+
+            wmg->setFootstepParametersMS (0, 0, 0);
+            wmg->addFootstep(0.0, step_y/2, 0.0, FS_TYPE_SS_L);
+
+            // Initial double support
+            wmg->setFootstepParametersMS (3*ss_time_ms, 0, 0);
+            wmg->addFootstep(0.0, -step_y/2, 0.0, FS_TYPE_DS);
+
+
+            wmg->setFootstepParametersMS (ss_time_ms, ds_time_ms, ds_number);
+            wmg->addFootstep(0.0   ,     -step_y/2, 0.0);
+            wmg->addFootstep(step_x_int,  step_y, a);
+
+            for (int i = 0; i < 3; i++)
+            {
+                wmg->addFootstep(step_x_ext, -step_y, a);
+                wmg->addFootstep(step_x_int,  step_y, a);
+            }
+
+            // here we give many reference points, since otherwise we 
+            // would not have enough steps in preview window to reach 
+            // the last footsteps
+            wmg->setFootstepParametersMS (ss_time_ms, 0, 0);
+            wmg->addFootstep(0.0   , -step_y/2, 0.0, FS_TYPE_DS);
+            wmg->setFootstepParametersMS (0, 0, 0);
+            wmg->addFootstep(0.0   , -step_y/2, 0.0, FS_TYPE_SS_R);
+
+            if (!name.empty())
+            {
+                wmg->FS2file(fs_out_filename, plot_ds);
+            }
+        }
+};
 ///@}
