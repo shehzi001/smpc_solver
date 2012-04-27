@@ -40,22 +40,7 @@ int main(int argc, char **argv)
     init_01 test_05 (test_name);
 
 
-    smpc::solver_ip solver(
-            test_05.wmg->N,  // N
-            10,             // max_iter
-            2000,            // gain_position
-            150,             // gain_velocity
-            0.02,            // gain_acceleration
-            1,               // gain_jerk
-            1e-5,            // tol
-            1e-2,            // tol_out
-            1e-4,             // t
-            1.0,              // mu
-            0.01,            // bs_alpha
-            0.9,            // bs_beta  
-            true);          // log objective
 
-/*
     smpc::solver_ip solver(
             test_05.wmg->N, 
             100,
@@ -70,7 +55,7 @@ int main(int argc, char **argv)
             0.01, 
             0.5,
             true);
-*/
+
 
     double err = 0;
     double max_err = 0;

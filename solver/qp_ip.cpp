@@ -161,7 +161,7 @@ double qp_ip::form_grad_i2hess_logbar (const double kappa)
         double ub_diff =  ub[i] - X[j];
 
         // logarithmic barrier
-        phi_X_logbar *= lb_diff * ub_diff;
+        phi_X_logbar += log(lb_diff * ub_diff);
 
         lb_diff = 1/lb_diff;
         ub_diff = 1/ub_diff;
@@ -187,7 +187,7 @@ double qp_ip::form_grad_i2hess_logbar (const double kappa)
         i2hess_grad[i+1] = - X[i+1];  //grad[i+1] * i2P;
     }
 
-    return (-kappa * log(phi_X_logbar));
+    return (-kappa * phi_X_logbar);
 }
 
 
@@ -344,8 +344,8 @@ double qp_ip::form_phi_X_tmp (const double kappa, const double alpha)
         };
 
         // logarithmic barrier
-        res_logbar *= (-lb[i]   + X_tmp[0]) * (ub[i]   - X_tmp[0])
-                    * (-lb[i+1] + X_tmp[3]) * (ub[i+1] - X_tmp[3]);
+        res_logbar += log((-lb[i]   + X_tmp[0]) * (ub[i]   - X_tmp[0])
+                    * (-lb[i+1] + X_tmp[3]) * (ub[i+1] - X_tmp[3]));
 
         // phi_X += g'*X
         res_gX  += g[i] * X_tmp[0] + g[i+1] * X_tmp[3];
@@ -366,7 +366,7 @@ double qp_ip::form_phi_X_tmp (const double kappa, const double alpha)
         res_jerk += X_tmp[0] * X_tmp[0] + X_tmp[1] * X_tmp[1];
     }
 
-    return (res_gX + Q[0]*res_pos + Q[1]*res_vel + Q[2]*res_acc + P*res_jerk - kappa * log(res_logbar));
+    return (res_gX + Q[0]*res_pos + Q[1]*res_vel + Q[2]*res_acc + P*res_jerk - kappa * res_logbar);
 }
 
 

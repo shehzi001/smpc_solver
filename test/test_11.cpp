@@ -23,19 +23,20 @@ int main(int argc, char **argv)
     //-----------------------------------------------------------
 
     smpc::solver_ip solver(
-            test_11.wmg->N,  // N
-            10,             // max_iter
-            2000,            // gain_position
-            150,             // gain_velocity
-            0.02,            // gain_acceleration
-            1,               // gain_jerk
-            1e-2,            // tol
-            1e-2,            // tol_out
-            1e-4,              // t
-            1.0,              // mu
-            0.01,            // bs_alpha
-            0.9);            // bs_beta          
-    
+            test_11.wmg->N, 
+            100,
+            2000, 
+            150, 
+            0.02, 
+            1, 
+            1e-3,
+            1e-2,
+            100, 
+            15, 
+            0.01, 
+            0.5,
+            true);
+
     for(int counter = 0; counter < 2; counter++)
     {
         //------------------------------------------------------

@@ -562,4 +562,65 @@ class init_09 : public test_init_base
             }
         }
 };
+
+
+
+/**
+ * @brief Walk straight
+ */
+class init_10 : public test_init_base
+{
+    public:
+        init_10 (const string & test_name, const bool plot_ds_ = true) : 
+            test_init_base (test_name, plot_ds_)
+        {
+            int preview_sampling_time_ms = 40;
+            wmg = new WMG (40, preview_sampling_time_ms, 0.02);
+            par = new smpc_parameters (wmg->N, 0.252007);
+            int ss_time_ms = 400;
+            int ds_time_ms = 40;
+            int ds_number = 3;
+
+
+            // each step is defined relatively to the previous step
+            double step_x = 0.04;      // relative X position
+            double step_y = wmg->def_constraints.support_distance_y;       // relative Y position
+
+
+            wmg->setFootstepParametersMS (0, 0, 0);
+            wmg->addFootstep(0.0, -step_y/2, 0.0, FS_TYPE_SS_R);
+
+            // Initial double support
+            wmg->setFootstepParametersMS (3*ss_time_ms, 0, 0);
+            wmg->addFootstep(0.0, step_y/2, 0.0, FS_TYPE_DS);
+
+
+            // all subsequent steps have normal feet size
+            wmg->setFootstepParametersMS (ss_time_ms, 0, 0);
+            wmg->addFootstep(0.0   ,  step_y/2, 0.0);
+            wmg->setFootstepParametersMS (ss_time_ms, ds_time_ms, ds_number);
+            wmg->addFootstep(step_x, -step_y  , 0.0);
+
+
+            for (int i = 0; i < 3; i++)
+            {
+                wmg->addFootstep(step_x,  step_y, 0.0);
+                wmg->addFootstep(step_x, -step_y, 0.0);
+            }
+
+            // here we give many reference points, since otherwise we 
+            // would not have enough steps in preview window to reach 
+            // the last footsteps
+            wmg->setFootstepParametersMS (5*ss_time_ms, 0, 0);
+            wmg->addFootstep(0.0, step_y/2, 0.0, FS_TYPE_DS);
+            wmg->setFootstepParametersMS (0, 0, 0);
+            wmg->addFootstep(0.0, step_y/2, 0.0, FS_TYPE_SS_L);
+
+            if (!name.empty())
+            {
+                wmg->FS2file(fs_out_filename, plot_ds);
+            }
+        }
+};
+
 ///@}
