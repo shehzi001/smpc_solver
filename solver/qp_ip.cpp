@@ -597,9 +597,7 @@ double qp_ip::compute_obj()
         i < N*SMPC_NUM_STATE_VAR; 
         i += SMPC_NUM_STATE_VAR, j += 2)
     {
-        int k = i / SMPC_NUM_STATE_VAR;
-        double X_copy[6] = {X[i], X[i+1], X[i+2], X[i+3], X[i+4], X[i+5]};
-        state_handling::bar_to_tilde (spar[k].sin, spar[k].cos, X_copy);
+        const double X_copy[6] = {X[i], X[i+1], X[i+2], X[i+3], X[i+4], X[i+5]};
 
         // X'*H*X
         obj_pos += X_copy[0]*X_copy[0] + X_copy[3]*X_copy[3];
@@ -607,8 +605,9 @@ double qp_ip::compute_obj()
         obj_acc += X_copy[2]*X_copy[2] + X_copy[5]*X_copy[5];
 
         // g'*X
-        obj_gX  -= zref_x[k]*X_copy[0] + zref_y[k]*X_copy[3];
+        obj_gX += g[j]*X_copy[0] + g[j+1]*X_copy[3];
 
+        const int k = i / SMPC_NUM_STATE_VAR;
         obj_ref += zref_x[k]*zref_x[k] + zref_y[k]*zref_y[k];
     }
     for (; i < N*SMPC_NUM_VAR; i += SMPC_NUM_CONTROL_VAR)
@@ -621,6 +620,6 @@ double qp_ip::compute_obj()
             + Q[1]*obj_vel 
             + Q[2]*obj_acc 
             + P*obj_jerk 
-            + gain_position*obj_gX
+            + obj_gX
             + Q[0]*obj_ref);
 }
