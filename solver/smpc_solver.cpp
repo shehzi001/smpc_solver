@@ -47,9 +47,16 @@ namespace smpc
                     const double gain_acceleration,
                     const double gain_jerk, 
                     const double tol,
-                    const bool obj_computation_enabled)
+                    const bool obj_computation_on,
+                    const unsigned int max_added_constraints_num,
+                    const bool constraint_removal_on)
     {
-        qp_sol = new qp_as (N, gain_position, gain_velocity, gain_acceleration, gain_jerk, tol, obj_computation_enabled);
+        qp_sol = new qp_as (
+                N, 
+                gain_position, gain_velocity, gain_acceleration, gain_jerk, 
+                tol, 
+                obj_computation_on,
+                max_added_constraints_num, constraint_removal_on);
         added_constraints_num = 0;
         removed_constraints_num = 0;
         active_set_size = 0;
@@ -76,18 +83,6 @@ namespace smpc
         if (qp_sol != NULL)
         {
             qp_sol->set_parameters(T, h, h_initial, angle, zref_x, zref_y, lb, ub);
-        }
-    }
-
-
-    void solver_as::set_limits (
-            const unsigned int max_added_constraints_num,
-            const bool constraint_removal_enabled)
-    {
-        if (qp_sol != NULL)
-        {
-            qp_sol->max_added_constraints_num = max_added_constraints_num;
-            qp_sol->constraint_removal_enabled = constraint_removal_enabled;
         }
     }
 
@@ -230,9 +225,14 @@ namespace smpc
                     const double t,
                     const double mu,
                     const double bs_alpha, const double bs_beta,
-                    const bool obj_computation_enabled)
+                    const bool obj_computation_on,
+                    const bool backtracking_search_on)
     {
-        qp_sol = new qp_ip (N, gain_position, gain_velocity, gain_acceleration, gain_jerk, tol, obj_computation_enabled);
+        qp_sol = new qp_ip (
+                N, 
+                gain_position, gain_velocity, gain_acceleration, gain_jerk, 
+                tol, 
+                obj_computation_on, backtracking_search_on);
         qp_sol->set_ip_parameters (t, mu, bs_alpha, bs_beta, max_iter, tol_out);
 
         int_loop_iterations = 0;

@@ -29,7 +29,7 @@ using namespace AS;
     @param[in] gain_acceleration Acceleration gain
     @param[in] gain_jerk Jerk gain
     @param[in] tol_ tolerance
-    @param[in] obj_computation_enabled_ enable computation of the objective function
+    @param[in] obj_computation_on_ enable computation of the objective function
 */
 qp_as::qp_as(
         const int N_, 
@@ -38,18 +38,25 @@ qp_as::qp_as(
         const double gain_acceleration, 
         const double gain_jerk, 
         const double tol_,
-        const bool obj_computation_enabled_) : 
+        const bool obj_computation_on_,
+        const unsigned int max_added_constraints_num_,
+        const bool constraint_removal_on_) : 
     problem_parameters (N_, gain_position, gain_velocity, gain_acceleration, gain_jerk),
-    chol (N_),
-    tol (tol_),
-    obj_computation_enabled (obj_computation_enabled_)
+    chol (N_)
 {
     dX = new double[SMPC_NUM_VAR*N]();
 
     constraints.resize(2*N);
 
-    max_added_constraints_num = N*2;
-    constraint_removal_enabled = true;
+    tol = tol_,
+    obj_computation_on = obj_computation_on_;
+    constraint_removal_on = constraint_removal_on_;
+
+    max_added_constraints_num = max_added_constraints_num_;
+    if (max_added_constraints_num == 0)
+    {
+        max_added_constraints_num = N*2;
+    }
 }
 
 
@@ -254,7 +261,7 @@ void qp_as::solve (vector<double> &obj_log)
         X[ind]   -= zref_x[i];
         X[ind+3] -= zref_y[i];
     }
-    if (obj_computation_enabled)
+    if (obj_computation_on)
     {
         obj_log.clear();
         obj_log.push_back(compute_obj());
@@ -280,7 +287,7 @@ void qp_as::solve (vector<double> &obj_log)
             X[i+7] += alpha * dX[i+7];
         }
 
-        if (obj_computation_enabled)
+        if (obj_computation_on)
         {
             obj_log.push_back(compute_obj());
         }
@@ -296,7 +303,7 @@ void qp_as::solve (vector<double> &obj_log)
             chol.up_resolve (*this, active_set, X, dX);
             ++added_constraints_num;
         }
-        else if (constraint_removal_enabled)
+        else if (constraint_removal_on)
         {
             // no new inequality constraints
             int ind_exclude = choose_excl_constr (chol.get_lambda(*this));

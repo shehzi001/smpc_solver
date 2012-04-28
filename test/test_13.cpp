@@ -23,13 +23,14 @@ int main(int argc, char **argv)
     ofstream IP_log;
 
     // Circular
+    /*
     init_11 AS_test("test_13_as");
     init_11 IP_test("test_13_ip");
-    /*
+    */
     // Straight
     init_10 AS_test("test_13_as");
     init_10 IP_test("test_13_ip");
-    */
+    
     //-----------------------------------------------------------
 
     AS_log.open(AS_test.fs_out_filename.c_str(), fstream::app);
@@ -56,7 +57,8 @@ int main(int argc, char **argv)
             1.0,             // mu
             0.01,            // bs_alpha
             0.9,             // bs_beta
-            true);           // obj
+            true,            // obj
+            false);          // backtracking search
 
     smpc::solver_as AS_solver(
             AS_test.wmg->N, // size of the preview window

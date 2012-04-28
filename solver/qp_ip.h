@@ -44,6 +44,7 @@ class qp_ip : public IP::problem_parameters
                 const double,
                 const double,
                 const double,
+                const bool,
                 const bool);
         ~qp_ip();
 
@@ -88,12 +89,13 @@ class qp_ip : public IP::problem_parameters
 
     private:
     // parameters
-        const double gain_position;
+        double gain_position;
 
         /// tolerance
-        const double tol;
+        double tol;
 
-        const bool obj_computation_enabled;
+        bool obj_computation_on;
+        bool backtracking_search_on;
 
 
     // variables and descent direction

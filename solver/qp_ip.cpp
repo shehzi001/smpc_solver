@@ -32,7 +32,8 @@ using namespace IP;
     @param[in] gain_acceleration (Gamma) Acceleration gain
     @param[in] gain_jerk (Eta) Jerk gain
     @param[in] tol_ tolerance
-    @param[in] obj_computation_enabled_ enable computation of the objective function
+    @param[in] obj_computation_on_ enable computation of the objective function
+    @param[in] backtracking_search_on_ enable backtracking search
 */
 qp_ip::qp_ip(
         const int N_, 
@@ -41,11 +42,9 @@ qp_ip::qp_ip(
         const double gain_acceleration_,
         const double gain_jerk_,
         const double tol_,
-        const bool obj_computation_enabled_) : 
+        const bool obj_computation_on_,
+        const bool backtracking_search_on_) : 
     problem_parameters (N_, gain_position_, gain_velocity_, gain_acceleration_, gain_jerk_),
-    gain_position (gain_position_),
-    tol (tol_),
-    obj_computation_enabled (obj_computation_enabled_),
     chol (N_)
 {
     dX = new double[SMPC_NUM_VAR*N]();
@@ -53,6 +52,13 @@ qp_ip::qp_ip(
     i2hess = new double[2*N];
     i2hess_grad = new double[N*SMPC_NUM_VAR];
     grad = new double[2*N];
+
+    tol = tol_;
+
+    obj_computation_on = obj_computation_on_;
+    backtracking_search_on = backtracking_search_on_;
+
+    gain_position = gain_position_;
 
     Q[0] = gain_position_/2;
     Q[1] = gain_velocity_/2;
@@ -408,7 +414,7 @@ void qp_ip::set_ip_parameters (
  */
 void qp_ip::solve(vector<double> &obj_log)
 {
-    if (obj_computation_enabled)
+    if (obj_computation_on)
     {
         obj_log.clear();
         obj_log.push_back(compute_obj());
@@ -509,21 +515,24 @@ bool qp_ip::solve_onestep (const double kappa, vector<double> &obj_log)
 
 
     // backtracking search
-    const double bs_alpha_grad_dX = form_bs_alpha_grad_dX ();
-    for (;;)
+    if (backtracking_search_on)
     {
-        ++bs_counter;
-        if (form_phi_X_tmp (kappa, alpha) <= phi_X + alpha * bs_alpha_grad_dX)
+        const double bs_alpha_grad_dX = form_bs_alpha_grad_dX ();
+        for (;;)
         {
-            break;
-        }
+            ++bs_counter;
+            if (form_phi_X_tmp (kappa, alpha) <= phi_X + alpha * bs_alpha_grad_dX)
+            {
+                break;
+            }
 
-        alpha = bs_beta * alpha;
+            alpha = bs_beta * alpha;
 
-        // stopping criterion (step size)
-        if (alpha < tol)
-        {
-            return (false); // done
+            // stopping criterion (step size)
+            if (alpha < tol)
+            {
+                return (false); // done
+            }
         }
     }
 
@@ -540,7 +549,7 @@ bool qp_ip::solve_onestep (const double kappa, vector<double> &obj_log)
         X[i+6] += alpha * dX[i+6];
         X[i+7] += alpha * dX[i+7];
     }
-    if (obj_computation_enabled)
+    if (obj_computation_on)
     {
         obj_log.push_back(compute_obj());
     }

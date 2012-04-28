@@ -45,6 +45,8 @@ class qp_as : public AS::problem_parameters
                 const double,
                 const double,
                 const double, 
+                const bool,
+                const unsigned int,
                 const bool);
         ~qp_as();
 
@@ -79,7 +81,7 @@ class qp_as : public AS::problem_parameters
         unsigned int removed_constraints_num;
         unsigned int active_set_size;
     // limits
-        bool constraint_removal_enabled;
+        bool constraint_removal_on;
         unsigned int max_added_constraints_num;
 
 
@@ -100,9 +102,9 @@ class qp_as : public AS::problem_parameters
         const double *zref_y;
 
         /// tolerance
-        const double tol;
+        double tol;
 
-        const bool obj_computation_enabled;
+        bool obj_computation_on;
 
     // active set        
         /// A set of active constraints.

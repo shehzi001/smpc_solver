@@ -212,8 +212,16 @@ namespace smpc
                 @param[in] gain_acceleration Acceleration gain (Gamma)
                 @param[in] gain_jerk Jerk gain (Eta)
                 @param[in] tol tolerance
-                @param[in] obj_computation_enabled compute and keep values of the objective function
-            */
+                @param[in] obj_computation_on compute and keep values of the objective function
+                @param[in] max_added_constraints_num limit the number of added constraints 
+                        (NOT the size of active set), no limit if set to 0.
+                @param[in] constraint_removal_on enable/disable removal of activated constraints.
+
+              @note #max_added_constraints_num and #constraint_removal_on affect the time required 
+              for solution. If the number of added constraints is less than (length of preview window)*2 
+              or constraint removal is disabled, the solution is approximate. How good is this 
+              approximation depends on the problem.
+             */
             solver_as (
                     const int N, 
                     const double gain_position = 2000.0, 
@@ -221,7 +229,9 @@ namespace smpc
                     const double gain_acceleration = 0.02,
                     const double gain_jerk = 1.0,
                     const double tol = 1e-7,
-                    const bool obj_computation_enabled = false);
+                    const bool obj_computation_on = false,
+                    const unsigned int max_added_constraints_num = 0,
+                    const bool constraint_removal_on = true);
 
 
             ~solver_as();
@@ -252,21 +262,6 @@ namespace smpc
                     const double* ub);
 
 
-            /**
-             * @brief Changes parameters which control the logic of the solver.
-             *
-             * @param[in] max_added_constraints_num limit the number of added constraints 
-             *                                      (NOT the size of active set).
-             * @param[in] constraint_removal_enabled enable/disable removal of activated constraints.
-             *
-             * @note These parameters affect the time required for solution. If the number
-             * of added constraints is less than (length of preview window)*2 or constraint 
-             * removal is disabled, the solution is approximate. How good is this approximation 
-             * depends on the problem.
-             */
-            void set_limits (
-                    const unsigned int max_added_constraints_num,
-                    const bool constraint_removal_enabled);
 
             ///@{
             /** @brief Generates an initial feasible point. 
@@ -410,12 +405,15 @@ namespace smpc
              * @param[in] gain_jerk Jerk gain (Eta)
              * @param[in] tol tolerance (internal loop)
              * @param[in] tol_out tolerance of the outer loop, which resolves
-             *                    the problem with new t (kappa) parameter.
+             *          the problem with new t (kappa) parameter.
              * @param[in] t logarithmic barrier parameter
              * @param[in] mu multiplier of t, >1.
              * @param[in] bs_alpha backtracking search parameter 0 < alpha < 0.5
              * @param[in] bs_beta  backtracking search parameter 0 < beta < 1
-             * @param[in] obj_computation_enabled compute and keep values of the objective function
+             * @param[in] obj_computation_on enable computation of the objective function 
+             *          (the results are kept in #objective_log)
+             * @param[in] backtracking_search_on enable backtracking search, note that even
+             *          if it is disabled, the 'bs_beta' parameter is still used.
              */
             solver_ip (
                     const int N, 
@@ -430,7 +428,8 @@ namespace smpc
                     const double mu = 15,
                     const double bs_alpha = 0.01,
                     const double bs_beta = 0.5,
-                    const bool obj_computation_enabled = false);
+                    const bool obj_computation_on = false,
+                    const bool backtracking_search_on = true);
 
 
             ~solver_ip();
