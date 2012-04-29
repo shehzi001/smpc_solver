@@ -17,7 +17,6 @@ int main(int argc, char **argv)
 {
     struct timeval start, end;
     double CurrentCPUTime;
-    int NN = 1000;
 
     ofstream AS_log;
     ofstream IP_log;
@@ -73,6 +72,7 @@ int main(int argc, char **argv)
 
 //    const int stop_iter = 30;
     const int stop_iter = 40;
+    const int NN = 1000;
     for(int counter = 0; counter < stop_iter; ++counter)
     {
         //------------------------------------------------------
@@ -95,6 +95,8 @@ int main(int argc, char **argv)
 
             AS_test.par->init_state.x() += 0.01;
             AS_test.par->init_state.y() -= 0.03;
+
+            //IP_test.par->init_state = AS_test.par->init_state;
         }
 
         gettimeofday(&start,0);
@@ -163,12 +165,12 @@ int main(int argc, char **argv)
         AS_log << endl << AS_test.par->init_state.x() << " " << AS_test.par->init_state.y() << " " << AS_test.X_tilde.x() << " " << AS_test.X_tilde.y() << ";";
     }
 
-
+/*
     IP_log << "];" << endl;
     IP_log << "plot (CoM_ZMP(:,1), CoM_ZMP(:,2), 'b');" << endl;
     IP_log << "plot (CoM_ZMP(:,3), CoM_ZMP(:,4), 'ks','MarkerSize',5);" << endl;
     IP_log.close();
-
+*/
     AS_log << "];" << endl;
     AS_log << "plot (CoM_ZMP(:,1), CoM_ZMP(:,2), 'b');" << endl;
     AS_log << "plot (CoM_ZMP(:,3), CoM_ZMP(:,4), 'ks','MarkerSize',5);" << endl;

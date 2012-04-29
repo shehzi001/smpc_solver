@@ -238,8 +238,8 @@ int qp_as::choose_excl_constr (const double *lambda)
 
     if (ind_exclude != -1)
     {
+        constraints[active_set[ind_exclude].cind].isActive = false;
         active_set.erase(active_set.begin()+ind_exclude);
-        constraints[ind_exclude].isActive = false;
     }
 
     return (ind_exclude);
