@@ -15,6 +15,10 @@
 
 int main(int argc, char **argv)
 {
+    const int control_sampling_time_ms = 20;
+//    const int preview_sampling_time_ms = 40;
+//    const int next_preview_len_ms = 0;
+
     struct timeval start, end;
     double CurrentCPUTime;
 
@@ -31,6 +35,17 @@ int main(int argc, char **argv)
     init_10 IP_test("test_14_ip");
     
     //-----------------------------------------------------------
+
+    AS_test.par->init_state.set (0.019978839010709938, -6.490507362468014e-05);
+    IP_test.par->init_state.set (0.019978839010709938, -6.490507362468014e-05);
+    AS_test.X_tilde.set (0.019978839010709938, -6.490507362468014e-05);
+    IP_test.X_tilde.set (0.019978839010709938, -6.490507362468014e-05);
+
+    AS_test.wmg->T_ms[0] = control_sampling_time_ms;
+    AS_test.wmg->T_ms[1] = control_sampling_time_ms;
+    IP_test.wmg->T_ms[0] = control_sampling_time_ms;
+    IP_test.wmg->T_ms[1] = control_sampling_time_ms;
+
 
     AS_log.open(AS_test.fs_out_filename.c_str(), fstream::app);
     AS_log.precision (numeric_limits<double>::digits10);
@@ -52,7 +67,7 @@ int main(int argc, char **argv)
             1.0,             // gain_jerk
             1e-1,            // tol
             1e+4,            // tol_out | if it is big only one iteration is made.
-            1e-2,            // t
+            1e-1,            // t
             1.0,             // mu
             0.01,            // bs_alpha
             0.9,             // bs_beta
@@ -66,14 +81,15 @@ int main(int argc, char **argv)
             0.02,           // gain_acceleration
             1.0,            // gain_jerk
             1e-7,           // tolerance
-            true);          // obj
+            true,           // obj
+            20,              // limit number of activated constraints
+            true);          // remove constraints
 
 
 
-//    const int stop_iter = 30;
-    const int stop_iter = 40;
-    const int NN = 1000;
-    for(int counter = 0; counter < stop_iter; ++counter)
+    const int stop_iter = 190;
+    const int NN = 1;
+    for(int counter = 0; /*counter < stop_iter*/; ++counter)
     {
         //------------------------------------------------------
         if (IP_test.wmg->formPreviewWindow(*IP_test.par) == WMG_HALT)
@@ -91,13 +107,12 @@ int main(int argc, char **argv)
         if (counter == stop_iter - 1)
         {
             IP_test.par->init_state.x() += 0.01;
-            IP_test.par->init_state.y() -= 0.02;
+            IP_test.par->init_state.y() -= 0.03;
 
             AS_test.par->init_state.x() += 0.01;
             AS_test.par->init_state.y() -= 0.03;
-
-            //IP_test.par->init_state = AS_test.par->init_state;
         }
+//        IP_test.par->init_state =  AS_test.par->init_state;
 
         gettimeofday(&start,0);
         for(int kk=0; kk<NN ;kk++)
@@ -150,7 +165,7 @@ int main(int argc, char **argv)
         AS_log << endl << AS_test.par->init_state.x() << " " << AS_test.par->init_state.y() << " " << AS_test.X_tilde.x() << " " << AS_test.X_tilde.y() << ";";
         //------------------------------------------------------
     }
-
+/*
     for (unsigned int i = 1; i < IP_test.wmg->N; ++i)
     {
         IP_solver.get_state(IP_test.par->init_state, i);
@@ -164,13 +179,13 @@ int main(int argc, char **argv)
         AS_solver.get_state(AS_test.X_tilde, i);
         AS_log << endl << AS_test.par->init_state.x() << " " << AS_test.par->init_state.y() << " " << AS_test.X_tilde.x() << " " << AS_test.X_tilde.y() << ";";
     }
+*/
 
-/*
     IP_log << "];" << endl;
     IP_log << "plot (CoM_ZMP(:,1), CoM_ZMP(:,2), 'b');" << endl;
     IP_log << "plot (CoM_ZMP(:,3), CoM_ZMP(:,4), 'ks','MarkerSize',5);" << endl;
     IP_log.close();
-*/
+
     AS_log << "];" << endl;
     AS_log << "plot (CoM_ZMP(:,1), CoM_ZMP(:,2), 'b');" << endl;
     AS_log << "plot (CoM_ZMP(:,3), CoM_ZMP(:,4), 'ks','MarkerSize',5);" << endl;
