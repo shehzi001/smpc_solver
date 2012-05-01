@@ -196,11 +196,131 @@ namespace smpc
 
 
 
+    /**
+     * @brief Abstract class providing common interface functions.
+     */
+    class solver
+    {
+        public:
+            /** @brief Initializes quadratic problem.
+
+                @param[in] T sampling time for each time step [sec.]
+                @param[in] h height of the center of mass divided by gravity for each time step
+                @param[in] h_initial initial value of height of the center of mass divided by gravity
+                @param[in] angle rotation angle for each state relative to the world frame
+                @param[in] zref_x reference values of x coordinate of ZMP
+                @param[in] zref_y reference values of y coordinate of ZMP
+                @param[in] lb array of lower bounds for coordinates of ZMP
+                @param[in] ub array of upper bounds for coordinates of ZMP
+            */
+            virtual void set_parameters (
+                    const double* T,
+                    const double* h,
+                    const double h_initial,
+                    const double* angle,
+                    const double* zref_x,
+                    const double* zref_y,
+                    const double* lb,
+                    const double* ub) = 0;
+
+
+            ///@{
+            /** @brief Generates an initial feasible point. 
+
+                @param[in] x_coord x coordinates of points satisfying constraints
+                @param[in] y_coord y coordinates of points satisfying constraints
+                @param[in] init_state initial state (#state_orig or #state_tilde)
+                @param[in,out] X solution of optimization problem
+             */
+            virtual void form_init_fp (
+                    const double *x_coord,
+                    const double *y_coord,
+                    const state_orig &init_state,
+                    double* X) = 0;
+
+            virtual void form_init_fp (
+                    const double *x_coord,
+                    const double *y_coord,
+                    const state_tilde &init_state,
+                    double* X) = 0;
+            ///@}
+
+
+            /**
+             * @brief Solve QP problem.
+             */
+            virtual void solve () = 0;
+
+
+            // -------------------------------
+
+
+            /// @{
+            /**
+             * @brief Returns the next state.
+             *  
+             * @param[out] s an output state.
+             */
+            virtual void get_next_state (state_orig &s) const = 0;
+            virtual void get_next_state (state_tilde &s) const = 0;
+            /// @}
+            
+            /// @{
+            /**
+             * @brief Returns a state with given index.
+             *  
+             * @param[out] s an output state.
+             * @param[in] ind index of a state [0 : N-1].
+             */
+            virtual void get_state (state_orig &s, const int ind) const = 0;
+            virtual void get_state (state_tilde &s, const int ind) const = 0;
+            /// @}
+
+
+            // -------------------------------
+
+
+            /**
+             * @brief Returns the controls that must be applied to reach the 
+             *  next state.
+             *
+             * @param[out] c an output control vector
+             */
+            virtual void get_first_controls (control &c) const = 0;
+
+
+            /**
+             * @brief The same as #get_first_controls, but takes an additional 
+             * parameter - the index of the control inputs. Control[ind] is 
+             * applied to State[ind-1] to reach State[ind].
+             *
+             * @param[out] c an output control vector
+             * @param[in] ind index of control inputs [0 : N-1].
+             */
+            virtual void get_controls (control &c, const int ind) const = 0;
+
+
+            // -------------------------------
+
+
+            /**
+             * @brief Contains values of objective function after each iteration,
+             * the initial value is also included.
+             *
+             * @note Updated by #solve function (only if the respective flag is
+             * set on initialization).
+             */
+            std::vector<double> objective_log;
+    };
+
+
+
+
 
     /**
      * @brief API of the sparse MPC solver.
      */
-    class solver_as
+    class solver_as : public solver
     {
         public:
 
@@ -240,108 +360,27 @@ namespace smpc
             // -------------------------------
 
 
-            /** @brief Initializes quadratic problem.
-
-                @param[in] T sampling time for each time step [sec.]
-                @param[in] h height of the center of mass divided by gravity for each time step
-                @param[in] h_initial initial value of height of the center of mass divided by gravity
-                @param[in] angle rotation angle for each state relative to the world frame
-                @param[in] zref_x reference values of x coordinate of ZMP
-                @param[in] zref_y reference values of y coordinate of ZMP
-                @param[in] lb array of lower bounds for coordinates of ZMP
-                @param[in] ub array of upper bounds for coordinates of ZMP
-            */
-            void set_parameters (
-                    const double* T,
-                    const double* h,
-                    const double h_initial,
-                    const double* angle,
-                    const double* zref_x,
-                    const double* zref_y,
-                    const double* lb,
-                    const double* ub);
-
-
-
             ///@{
-            /** @brief Generates an initial feasible point. 
-
-                @param[in] x_coord x coordinates of points satisfying constraints
-                @param[in] y_coord y coordinates of points satisfying constraints
-                @param[in] init_state initial state (#state_orig or #state_tilde)
-                @param[in,out] X solution of optimization problem
-             */
-            void form_init_fp (
-                    const double *x_coord,
-                    const double *y_coord,
-                    const state_orig &init_state,
-                    double* X);
-
-            void form_init_fp (
-                    const double *x_coord,
-                    const double *y_coord,
-                    const state_tilde &init_state,
-                    double* X);
+            /// These functions are documented in the definition of the base
+            /// abstract class #solver.
+            void set_parameters (
+                    const double*, const double*, const double, const double*, 
+                    const double*, const double*, const double*, const double*);
+            void form_init_fp (const double *, const double *, const state_orig &, double*);
+            void form_init_fp (const double *, const double *, const state_tilde &, double*);
+            void solve ();
+            void get_next_state (state_orig &) const;
+            void get_next_state (state_tilde &) const;
+            void get_state (state_orig &, const int) const;
+            void get_state (state_tilde &, const int) const;
+            void get_first_controls (control &) const;
+            void get_controls (control &, const int) const;
             ///@}
 
 
-            /**
-             * @brief Solve QP problem.
-             */
-            void solve ();
+            // -------------------------------
+
        
-
-            // -------------------------------
-
-
-            /// @{
-            /**
-             * @brief Returns the next state.
-             *  
-             * @param[out] s an output state.
-             */
-            void get_next_state (state_orig &s);
-            void get_next_state (state_tilde &s);
-            /// @}
-            
-            /// @{
-            /**
-             * @brief Returns a state with given index.
-             *  
-             * @param[out] s an output state.
-             * @param[in] ind index of a state [0 : N-1].
-             */
-            void get_state (state_orig &s, const int ind);
-            void get_state (state_tilde &s, const int ind);
-            /// @}
-
-
-            // -------------------------------
-
-
-            /**
-             * @brief Returns the controls that must be applied to reach the 
-             *  next state.
-             *
-             * @param[out] c an output control vector
-             */
-            void get_first_controls (control &c);
-
-
-            /**
-             * @brief The same as #get_first_controls, but takes an additional 
-             * parameter - the index of the control inputs. Control[ind] is 
-             * applied to State[ind-1] to reach State[ind].
-             *
-             * @param[out] c an output control vector
-             * @param[in] ind index of control inputs [0 : N-1].
-             */
-            void get_controls (control &c, const int ind);
-
-
-            // -------------------------------
-
-
             /**
              * @brief Number of added constraints (the constraints, that were
              * removed are also counted).
@@ -365,16 +404,6 @@ namespace smpc
             unsigned int active_set_size;
 
 
-            /**
-             * @brief Contains values of objective function after each iteration,
-             * the initial value is also included.
-             *
-             * @note Updated by #solve function (only if the respective flag is
-             * set on initialization).
-             */
-            std::vector<double> objective_log;
-           
-
             // -------------------------------
 
 
@@ -388,12 +417,9 @@ namespace smpc
     /**
      * @brief API of the sparse MPC solver.
      */
-    class solver_ip
+    class solver_ip : public solver
     {
         public:
-
-
-            // -------------------------------
 
             /** @brief Constructor: initialize an interior-point method solver.
              *
@@ -437,103 +463,22 @@ namespace smpc
             // -------------------------------
 
 
-            /** @brief Initializes quadratic problem.
-
-                @param[in] T sampling time for each time step [sec.]
-                @param[in] h height of the center of mass divided by gravity for each time step
-                @param[in] h_initial initial value of height of the center of mass divided by gravity
-                @param[in] angle rotation angle for each state relative to the world frame
-                @param[in] zref_x reference values of x coordinate of ZMP
-                @param[in] zref_y reference values of y coordinate of ZMP
-                @param[in] lb array of lower bounds for coordinates of ZMP
-                @param[in] ub array of upper bounds for coordinates of ZMP
-            */
-            void set_parameters (
-                    const double* T,
-                    const double* h,
-                    const double h_initial,
-                    const double* angle,
-                    const double* zref_x,
-                    const double* zref_y,
-                    const double* lb,
-                    const double* ub);
-
-
             ///@{
-            /** @brief Generates an initial feasible point. 
-
-                @param[in] x_coord x coordinates of points satisfying constraints
-                @param[in] y_coord y coordinates of points satisfying constraints
-                @param[in] init_state initial state (#state_orig or #state_tilde)
-                @param[in,out] X solution of optimization problem
-             */
-            void form_init_fp (
-                    const double *x_coord,
-                    const double *y_coord,
-                    const state_orig &init_state,
-                    double* X);
-
-            void form_init_fp (
-                    const double *x_coord,
-                    const double *y_coord,
-                    const state_tilde &init_state,
-                    double* X);
-            ///@}
-
-
-            /**
-             * @brief Solve QP problem.
-             */
+            /// These functions are documented in the definition of the base
+            /// abstract class #solver.
+            void set_parameters (
+                    const double*, const double*, const double, const double*, 
+                    const double*, const double*, const double*, const double*);
+            void form_init_fp (const double *, const double *, const state_orig &, double*);
+            void form_init_fp (const double *, const double *, const state_tilde &, double*);
             void solve ();
-
-
-            // -------------------------------
-
-
-            /// @{
-            /**
-             * @brief Returns the next state.
-             *  
-             * @param[out] s an output state.
-             */
-            void get_next_state (state_orig &s);
-            void get_next_state (state_tilde &s);
-            /// @}
-
-
-            /// @{
-            /**
-             * @brief Returns a state with given index.
-             *  
-             * @param[out] s an output state.
-             * @param[in] ind index of a state [0 : N-1].
-             */
-            void get_state (state_orig &s, const int ind);
-            void get_state (state_tilde &s, const int ind);
-            /// @}
-
-
-            // -------------------------------
-
-            
-            /**
-             * @brief Returns the controls that must be applied to reach the 
-             *  next state.
-             *
-             * @param[out] c an output control vector
-             */
-            void get_first_controls (control &c);
-
-
-            /**
-             * @brief The same as #get_first_controls, but takes an additional 
-             * parameter - the index of the control inputs. Control[ind] is 
-             * applied to State[ind-1] to reach State[ind].
-             *
-             * @param[out] c an output control vector
-             * @param[in] ind index of control inputs [0 : N-1].
-             */
-            void get_controls (control &c, const int ind);
+            void get_next_state (state_orig &) const;
+            void get_next_state (state_tilde &) const;
+            void get_state (state_orig &, const int) const;
+            void get_state (state_tilde &, const int) const;
+            void get_first_controls (control &) const;
+            void get_controls (control &, const int) const;
+            ///@}
 
 
             // -------------------------------
@@ -559,15 +504,6 @@ namespace smpc
              * @note Updated by #solve function.
              */
             unsigned int bt_search_iterations;
-
-            /**
-             * @brief Contains values of objective function after each iteration,
-             * the initial value is also included.
-             *
-             * @note Updated by #solve function (only if the respective flag is
-             * set on initialization).
-             */
-            std::vector<double> objective_log;
 
 
             // -------------------------------

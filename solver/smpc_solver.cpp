@@ -129,13 +129,13 @@ namespace smpc
     //************************************************************
 
 
-    void solver_as::get_next_state (state_tilde &s)
+    void solver_as::get_next_state (state_tilde &s) const
     {
         get_state (s, 0);
     }
 
 
-    void solver_as::get_state (state_tilde &s, const int ind)
+    void solver_as::get_state (state_tilde &s, const int ind) const
     {
         if (qp_sol != NULL)
         {
@@ -160,13 +160,13 @@ namespace smpc
     //************************************************************
 
 
-    void solver_as::get_next_state (state_orig &s)
+    void solver_as::get_next_state (state_orig &s) const
     {
         get_state (s, 0);
     }
 
 
-    void solver_as::get_state (state_orig &s, const int ind)
+    void solver_as::get_state (state_orig &s, const int ind) const
     {
         if (qp_sol != NULL)
         {
@@ -192,13 +192,13 @@ namespace smpc
     //************************************************************
 
 
-    void solver_as::get_first_controls (control &c)
+    void solver_as::get_first_controls (control &c) const
     {
         get_controls (c, 0);
     }
 
 
-    void solver_as::get_controls (control &c, const int ind)
+    void solver_as::get_controls (control &c, const int ind) const
     {
         if (qp_sol != NULL)
         {
@@ -306,13 +306,13 @@ namespace smpc
     //************************************************************
 
 
-    void solver_ip::get_next_state (state_tilde &s)
+    void solver_ip::get_next_state (state_tilde &s) const
     {
         get_state (s, 0);
     }
 
 
-    void solver_ip::get_state (state_tilde &s, const int ind)
+    void solver_ip::get_state (state_tilde &s, const int ind) const
     {
         if (qp_sol != NULL)
         {
@@ -341,13 +341,13 @@ namespace smpc
     //************************************************************
 
 
-    void solver_ip::get_next_state (state_orig &s)
+    void solver_ip::get_next_state (state_orig &s) const
     {
         get_state (s, 0);
     }
 
 
-    void solver_ip::get_state (state_orig &s, const int ind)
+    void solver_ip::get_state (state_orig &s, const int ind) const
     {
         if (qp_sol != NULL)
         {
@@ -377,13 +377,13 @@ namespace smpc
     //************************************************************
 
 
-    void solver_ip::get_first_controls (control &c)
+    void solver_ip::get_first_controls (control &c) const
     {
         get_controls (c, 0);
     }
 
 
-    void solver_ip::get_controls (control &c, const int ind)
+    void solver_ip::get_controls (control &c, const int ind) const
     {
         if (qp_sol != NULL)
         {
