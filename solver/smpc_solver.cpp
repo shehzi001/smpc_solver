@@ -90,7 +90,7 @@ namespace smpc
     void solver_as::form_init_fp (
             const double *x_coord,
             const double *y_coord,
-            const state_orig &init_state,
+            const state_com &init_state,
             double* X)
     {
         if (qp_sol != NULL)
@@ -103,7 +103,7 @@ namespace smpc
     void solver_as::form_init_fp (
             const double *x_coord,
             const double *y_coord,
-            const state_tilde &init_state,
+            const state_zmp &init_state,
             double* X)
     {
         if (qp_sol != NULL)
@@ -129,13 +129,13 @@ namespace smpc
     //************************************************************
 
 
-    void solver_as::get_next_state (state_tilde &s) const
+    void solver_as::get_next_state (state_zmp &s) const
     {
         get_state (s, 0);
     }
 
 
-    void solver_as::get_state (state_tilde &s, const int ind) const
+    void solver_as::get_state (state_zmp &s, const int ind) const
     {
         if (qp_sol != NULL)
         {
@@ -160,13 +160,13 @@ namespace smpc
     //************************************************************
 
 
-    void solver_as::get_next_state (state_orig &s) const
+    void solver_as::get_next_state (state_com &s) const
     {
         get_state (s, 0);
     }
 
 
-    void solver_as::get_state (state_orig &s, const int ind) const
+    void solver_as::get_state (state_com &s, const int ind) const
     {
         if (qp_sol != NULL)
         {
@@ -267,7 +267,7 @@ namespace smpc
     void solver_ip::form_init_fp (
             const double *x_coord,
             const double *y_coord,
-            const state_orig &init_state,
+            const state_com &init_state,
             double* X)
     {
         if (qp_sol != NULL)
@@ -279,7 +279,7 @@ namespace smpc
     void solver_ip::form_init_fp (
             const double *x_coord,
             const double *y_coord,
-            const state_tilde &init_state,
+            const state_zmp &init_state,
             double* X)
     {
         if (qp_sol != NULL)
@@ -306,13 +306,13 @@ namespace smpc
     //************************************************************
 
 
-    void solver_ip::get_next_state (state_tilde &s) const
+    void solver_ip::get_next_state (state_zmp &s) const
     {
         get_state (s, 0);
     }
 
 
-    void solver_ip::get_state (state_tilde &s, const int ind) const
+    void solver_ip::get_state (state_zmp &s, const int ind) const
     {
         if (qp_sol != NULL)
         {
@@ -341,13 +341,13 @@ namespace smpc
     //************************************************************
 
 
-    void solver_ip::get_next_state (state_orig &s) const
+    void solver_ip::get_next_state (state_com &s) const
     {
         get_state (s, 0);
     }
 
 
-    void solver_ip::get_state (state_orig &s, const int ind) const
+    void solver_ip::get_state (state_com &s, const int ind) const
     {
         if (qp_sol != NULL)
         {

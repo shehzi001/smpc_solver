@@ -72,31 +72,30 @@ namespace smpc
             // -------------------------------
 
 
-            /**
-             * @brief X coordinate.
-             */
+            ///@{
+            /// X/Y coordinate.
             double &x  () {return state_vector[0];};
-            /**
-             * @brief Velocity along X axis.
-             */
-            double &vx () {return state_vector[1];};
-            /**
-             * @brief Acceleration along X axis.
-             */
-            double &ax () {return state_vector[2];};
-
-            /**
-             * @brief Y coordinate.
-             */
             double &y  () {return state_vector[3];};
-            /**
-             * @brief Velocity along Y axis.
-             */
+            const double &x  () const {return state_vector[0];};
+            const double &y  () const {return state_vector[3];};
+            ///@}
+
+            ///@{
+            /// Velocity along X/Y axis.
+            double &vx () {return state_vector[1];};
             double &vy () {return state_vector[4];};
-            /**
-             * @brief Acceleration along Y axis.
-             */
+            const double &vx () const {return state_vector[1];};
+            const double &vy () const {return state_vector[4];};
+            ///@}
+
+            ///@{
+            /// Acceleration along X/Y axis.
+            double &ax () {return state_vector[2];};
             double &ay () {return state_vector[5];};
+            const double &ax () const {return state_vector[2];};
+            const double &ay () const {return state_vector[5];};
+            ///@}
+
 
 
             // -------------------------------
@@ -138,10 +137,10 @@ namespace smpc
         y CoM acceleration [meter/s^2]
         \endverbatim
      */
-    class state_orig : public state
+    class state_com : public state
     {
         public:
-            state_orig () : state () {};
+            state_com () : state () {};
     };
 
     
@@ -157,10 +156,10 @@ namespace smpc
         y CoM acceleration [meter/s^2]
         \endverbatim
      */
-    class state_tilde : public state
+    class state_zmp : public state
     {
         public:
-            state_tilde () : state () {};
+            state_zmp () : state () {};
     };
 
 
@@ -229,19 +228,19 @@ namespace smpc
 
                 @param[in] x_coord x coordinates of points satisfying constraints
                 @param[in] y_coord y coordinates of points satisfying constraints
-                @param[in] init_state initial state (#state_orig or #state_tilde)
+                @param[in] init_state initial state (#state_com or #state_zmp)
                 @param[in,out] X solution of optimization problem
              */
             virtual void form_init_fp (
                     const double *x_coord,
                     const double *y_coord,
-                    const state_orig &init_state,
+                    const state_com &init_state,
                     double* X) = 0;
 
             virtual void form_init_fp (
                     const double *x_coord,
                     const double *y_coord,
-                    const state_tilde &init_state,
+                    const state_zmp &init_state,
                     double* X) = 0;
             ///@}
 
@@ -261,8 +260,8 @@ namespace smpc
              *  
              * @param[out] s an output state.
              */
-            virtual void get_next_state (state_orig &s) const = 0;
-            virtual void get_next_state (state_tilde &s) const = 0;
+            virtual void get_next_state (state_com &s) const = 0;
+            virtual void get_next_state (state_zmp &s) const = 0;
             /// @}
             
             /// @{
@@ -272,8 +271,8 @@ namespace smpc
              * @param[out] s an output state.
              * @param[in] ind index of a state [0 : N-1].
              */
-            virtual void get_state (state_orig &s, const int ind) const = 0;
-            virtual void get_state (state_tilde &s, const int ind) const = 0;
+            virtual void get_state (state_com &s, const int ind) const = 0;
+            virtual void get_state (state_zmp &s, const int ind) const = 0;
             /// @}
 
 
@@ -366,13 +365,13 @@ namespace smpc
             void set_parameters (
                     const double*, const double*, const double, const double*, 
                     const double*, const double*, const double*, const double*);
-            void form_init_fp (const double *, const double *, const state_orig &, double*);
-            void form_init_fp (const double *, const double *, const state_tilde &, double*);
+            void form_init_fp (const double *, const double *, const state_com &, double*);
+            void form_init_fp (const double *, const double *, const state_zmp &, double*);
             void solve ();
-            void get_next_state (state_orig &) const;
-            void get_next_state (state_tilde &) const;
-            void get_state (state_orig &, const int) const;
-            void get_state (state_tilde &, const int) const;
+            void get_next_state (state_com &) const;
+            void get_next_state (state_zmp &) const;
+            void get_state (state_com &, const int) const;
+            void get_state (state_zmp &, const int) const;
             void get_first_controls (control &) const;
             void get_controls (control &, const int) const;
             ///@}
@@ -469,13 +468,13 @@ namespace smpc
             void set_parameters (
                     const double*, const double*, const double, const double*, 
                     const double*, const double*, const double*, const double*);
-            void form_init_fp (const double *, const double *, const state_orig &, double*);
-            void form_init_fp (const double *, const double *, const state_tilde &, double*);
+            void form_init_fp (const double *, const double *, const state_com &, double*);
+            void form_init_fp (const double *, const double *, const state_zmp &, double*);
             void solve ();
-            void get_next_state (state_orig &) const;
-            void get_next_state (state_tilde &) const;
-            void get_state (state_orig &, const int) const;
-            void get_state (state_tilde &, const int) const;
+            void get_next_state (state_com &) const;
+            void get_next_state (state_zmp &) const;
+            void get_state (state_com &, const int) const;
+            void get_state (state_zmp &, const int) const;
             void get_first_controls (control &) const;
             void get_controls (control &, const int) const;
             ///@}

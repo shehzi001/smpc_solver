@@ -107,7 +107,7 @@ class smpc_parameters
 
 
         /** Initial state. */
-        smpc::state_orig init_state;
+        smpc::state_com init_state;
 
         /// A chunk of memory allocated for solution.
         double *X;

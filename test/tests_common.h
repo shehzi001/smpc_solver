@@ -39,7 +39,7 @@ class test_init_base
 
 
 
-        smpc::state_tilde X_tilde;
+        smpc::state_zmp X_tilde;
         WMG* wmg;
         smpc_parameters* par;
 
