@@ -201,6 +201,11 @@ namespace smpc
     class solver
     {
         public:
+            /**
+             * @brief Virtual destructor.
+             */
+            virtual ~solver() = 0;
+
             /** @brief Initializes quadratic problem.
 
                 @param[in] T sampling time for each time step [sec.]
@@ -297,21 +302,7 @@ namespace smpc
              * @param[in] ind index of control inputs [0 : N-1].
              */
             virtual void get_controls (control &c, const int ind) const = 0;
-
-
-            // -------------------------------
-
-
-            /**
-             * @brief Contains values of objective function after each iteration,
-             * the initial value is also included.
-             *
-             * @note Updated by #solve function (only if the respective flag is
-             * set on initialization).
-             */
-            std::vector<double> objective_log;
     };
-
 
 
 
@@ -401,6 +392,16 @@ namespace smpc
              * @note Updated by #solve function.
              */
             unsigned int active_set_size;
+
+
+            /**
+             * @brief Contains values of objective function after each iteration,
+             * the initial value is also included.
+             *
+             * @note Updated by #solve function (only if the respective flag is
+             * set on initialization).
+             */
+            std::vector<double> objective_log;
 
 
             // -------------------------------
@@ -503,6 +504,16 @@ namespace smpc
              * @note Updated by #solve function.
              */
             unsigned int bt_search_iterations;
+
+
+            /**
+             * @brief Contains values of objective function after each iteration,
+             * the initial value is also included.
+             *
+             * @note Updated by #solve function (only if the respective flag is
+             * set on initialization).
+             */
+            std::vector<double> objective_log;
 
 
             // -------------------------------

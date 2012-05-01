@@ -40,6 +40,9 @@ namespace smpc
     }
 
 
+    solver::~solver() {} // virtual destructor
+
+
     solver_as::solver_as (
                     const int N,
                     const double gain_position, 
