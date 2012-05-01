@@ -47,9 +47,9 @@ namespace smpc
                     const double gain_acceleration,
                     const double gain_jerk, 
                     const double tol,
-                    const bool obj_computation_on,
                     const unsigned int max_added_constraints_num,
-                    const bool constraint_removal_on)
+                    const bool constraint_removal_on,
+                    const bool obj_computation_on)
     {
         qp_sol = new qp_as (
                 N, 
@@ -218,15 +218,15 @@ namespace smpc
 
     solver_ip::solver_ip (
                     const int N,
-                    const unsigned int max_iter,
                     const double gain_position, const double gain_velocity, const double gain_acceleration,
                     const double gain_jerk, 
                     const double tol, const double tol_out,
                     const double t,
                     const double mu,
                     const double bs_alpha, const double bs_beta,
-                    const bool obj_computation_on,
-                    const bool backtracking_search_on)
+                    const unsigned int max_iter,
+                    const bool backtracking_search_on,
+                    const bool obj_computation_on)
     {
         qp_sol = new qp_ip (
                 N, 

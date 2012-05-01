@@ -430,7 +430,7 @@ void qp_ip::solve(vector<double> &obj_log)
     for (;;)
     {
         ++ext_loop_counter;
-        while (int_loop_counter < max_iter)
+        while ((max_iter == 0) || (int_loop_counter < max_iter))
         {
             ++int_loop_counter;
             if(!solve_onestep(kappa, obj_log))
@@ -438,7 +438,7 @@ void qp_ip::solve(vector<double> &obj_log)
                 break;
             }
         }
-        if (int_loop_counter == max_iter)
+        if ((max_iter == 0) && (int_loop_counter == max_iter))
         {
             break;
         }

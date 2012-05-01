@@ -43,7 +43,6 @@ int main(int argc, char **argv)
 
     smpc::solver_ip solver(
             test_05.wmg->N, 
-            100,
             2000, 
             150, 
             0.02, 
@@ -54,6 +53,8 @@ int main(int argc, char **argv)
             15, 
             0.01, 
             0.5,
+            0,
+            true,
             true);
 
 

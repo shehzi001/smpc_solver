@@ -47,6 +47,8 @@ int main(int argc, char **argv)
             0.02,
             1.0,
             1e-7,
+            0,
+            true,
             true);
     smpc::enable_fexceptions();
 

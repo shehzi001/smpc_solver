@@ -46,7 +46,6 @@ int main(int argc, char **argv)
 
     smpc::solver_ip IP_solver(
             IP_test.wmg->N,  // N
-            2,              // max_iter
             8000,            // gain_position
             1.0,             // gain_velocity
             0.02,            // gain_acceleration
@@ -57,8 +56,9 @@ int main(int argc, char **argv)
             1.0,             // mu
             0.01,            // bs_alpha
             0.9,             // bs_beta
-            true,            // obj
-            false);          // backtracking search
+            2,               // max_iter
+            false,           // backtracking search
+            true);           // obj
 
     smpc::solver_as AS_solver(
             AS_test.wmg->N, // size of the preview window
@@ -67,6 +67,8 @@ int main(int argc, char **argv)
             0.02,           // gain_acceleration
             1.0,            // gain_jerk
             1e-7,           // tolerance
+            0,              // no limit on the number of activated constraints
+            true,           // enable constraint removal
             true);          // obj
 
 
