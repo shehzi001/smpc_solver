@@ -292,16 +292,16 @@ void qp_as::solve (vector<double> &obj_log)
             obj_log.push_back(compute_obj());
         }
 
-        if (added_constraints_num == max_added_constraints_num)
-        {
-            break;
-        }
-
         if (activated_var_num != -1)
         {
+            ++added_constraints_num;
+            if (added_constraints_num == max_added_constraints_num)
+            {
+                break;
+            }
+
             // add row to the L matrix and find new dX
             chol.up_resolve (*this, active_set, X, dX);
-            ++added_constraints_num;
         }
         else if (constraint_removal_on)
         {
