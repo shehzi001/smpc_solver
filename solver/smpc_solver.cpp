@@ -228,14 +228,14 @@ namespace smpc
                     const double mu,
                     const double bs_alpha, const double bs_beta,
                     const unsigned int max_iter,
-                    const bool backtracking_search_on,
+                    const backtrackingSearchType bs_type,
                     const bool obj_computation_on)
     {
         qp_sol = new qp_ip (
                 N, 
                 gain_position, gain_velocity, gain_acceleration, gain_jerk, 
                 tol, 
-                obj_computation_on, backtracking_search_on);
+                obj_computation_on, bs_type);
         qp_sol->set_ip_parameters (t, mu, bs_alpha, bs_beta, max_iter, tol_out);
 
         int_loop_iterations = 0;

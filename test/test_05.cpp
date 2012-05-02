@@ -54,7 +54,7 @@ int main(int argc, char **argv)
             0.01, 
             0.5,
             0,
-            true,
+            smpc::SMPC_IP_BS_LOGBAR,
             true);
 
 

@@ -415,6 +415,20 @@ namespace smpc
 
 
     /**
+     * @brief Type of the backtracking search
+     */
+    enum backtrackingSearchType
+    {
+        /// Disable backtracking search
+        SMPC_IP_BS_NONE = 0,
+        /// Use objective function, which includes logarithmic barrier term.
+        SMPC_IP_BS_LOGBAR = 1,
+        /// Use original objective function (no logarithmic barrier term).
+        SMPC_IP_BS_ORIGINAL = 2
+    };
+
+
+    /**
      * @brief API of the sparse MPC solver.
      */
     class solver_ip : public solver
@@ -436,8 +450,8 @@ namespace smpc
              * @param[in] bs_alpha backtracking search parameter 0 < alpha < 0.5
              * @param[in] bs_beta  backtracking search parameter 0 < beta < 1
              * @param[in] max_iter maximum number of internal loop iterations (0 = no limit)
-             * @param[in] backtracking_search_on enable backtracking search, note that even
-             *          if it is disabled, the 'bs_beta' parameter is still used.
+             * @param[in] bs_type type of backtracking search, see #backtrackingSearchType
+             *          note that even when it is disabled, the 'bs_beta' parameter is still used.
              * @param[in] obj_computation_on enable computation of the objective function 
              *          (the results are kept in #objective_log)
              */
@@ -454,7 +468,7 @@ namespace smpc
                     const double bs_alpha = 0.01,
                     const double bs_beta = 0.5,
                     const int unsigned max_iter = 0,
-                    const bool backtracking_search_on = true,
+                    const backtrackingSearchType bs_type = SMPC_IP_BS_LOGBAR,
                     const bool obj_computation_on = false);
 
             ~solver_ip();

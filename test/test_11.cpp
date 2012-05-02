@@ -35,7 +35,7 @@ int main(int argc, char **argv)
             0.01, 
             0.5,
             100,
-            true,
+            smpc::SMPC_IP_BS_LOGBAR,
             true);
 
     for(int counter = 0; counter < 2; counter++)

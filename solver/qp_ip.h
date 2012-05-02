@@ -12,6 +12,7 @@
 /****************************************
  * INCLUDES 
  ****************************************/
+#include "smpc_solver.h"
 #include "smpc_common.h"
 #include "ip_chol_solve.h"
 #include "ip_problem_param.h"
@@ -25,6 +26,7 @@
 
 
 using namespace std;
+using namespace smpc;
 
 /// @addtogroup gIP
 /// @{
@@ -45,7 +47,7 @@ class qp_ip : public IP::problem_parameters
                 const double,
                 const double,
                 const bool,
-                const bool);
+                const backtrackingSearchType);
         ~qp_ip();
 
         void set_parameters(
@@ -95,7 +97,7 @@ class qp_ip : public IP::problem_parameters
         double tol;
 
         bool obj_computation_on;
-        bool backtracking_search_on;
+        backtrackingSearchType bs_type;
 
 
     // variables and descent direction
@@ -151,14 +153,14 @@ class qp_ip : public IP::problem_parameters
 
 // functions        
         double init_alpha();
-        double form_bs_alpha_grad_dX ();
+        double form_bs_alpha_obj_dX ();
         double form_phi_X_tmp (const double, const double);
         bool solve_onestep (const double, vector<double> &);
         void form_g (const double *, const double *);
         double form_grad_i2hess_logbar (const double);
         double form_phi_X ();
         double form_decrement();
-        double compute_obj();
+        double compute_obj(const bool);
 };
 
 ///@}

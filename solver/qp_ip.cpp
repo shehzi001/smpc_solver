@@ -43,7 +43,7 @@ qp_ip::qp_ip(
         const double gain_jerk_,
         const double tol_,
         const bool obj_computation_on_,
-        const bool backtracking_search_on_) : 
+        const backtrackingSearchType bs_type_) :
     problem_parameters (N_, gain_position_, gain_velocity_, gain_acceleration_, gain_jerk_),
     chol (N_)
 {
@@ -56,7 +56,7 @@ qp_ip::qp_ip(
     tol = tol_;
 
     obj_computation_on = obj_computation_on_;
-    backtracking_search_on = backtracking_search_on_;
+    bs_type = bs_type_;
 
     gain_position = gain_position_;
 
@@ -167,7 +167,10 @@ double qp_ip::form_grad_i2hess_logbar (const double kappa)
         double ub_diff =  ub[i] - X[j];
 
         // logarithmic barrier
-        phi_X_logbar += log(lb_diff * ub_diff);
+        if (bs_type == SMPC_IP_BS_LOGBAR)
+        {
+            phi_X_logbar += log(lb_diff * ub_diff);
+        }
 
         lb_diff = 1/lb_diff;
         ub_diff = 1/ub_diff;
@@ -286,11 +289,11 @@ double qp_ip::init_alpha()
 
 
 /**
- * @brief Forms bs_alpha * grad' * dX.
+ * @brief Forms bs_alpha * (objective') * dX.
  *
  * @return result of multiplication.
  */
-double qp_ip::form_bs_alpha_grad_dX ()
+double qp_ip::form_bs_alpha_obj_dX()
 {
     double res_pos = 0;
     double res_vel = 0;
@@ -299,8 +302,16 @@ double qp_ip::form_bs_alpha_grad_dX ()
     
     for (int i = 0, j = 0; i < N*SMPC_NUM_STATE_VAR; i += SMPC_NUM_STATE_VAR, j += 2)
     {
-        res_pos += grad[j]   * dX[i]
-                 + grad[j+1] * dX[i+3];
+        if (bs_type == SMPC_IP_BS_ORIGINAL)
+        {
+            res_pos += (X[i]*gain_position + g[j]) * dX[i]
+                     + (X[i+3]*gain_position + g[j+1]) * dX[i+3];
+        }
+        else
+        {
+            res_pos += grad[j]   * dX[i]
+                     + grad[j+1] * dX[i+3];
+        }
 
         res_vel += X[i+1] * dX[i+1]  //grad[i+1] * dX[i+1]
                  + X[i+4] * dX[i+4]; //grad[i+4] * dX[i+4]
@@ -417,7 +428,7 @@ void qp_ip::solve(vector<double> &obj_log)
     if (obj_computation_on)
     {
         obj_log.clear();
-        obj_log.push_back(compute_obj());
+        obj_log.push_back(compute_obj(true));
     }
 
     double kappa = 1/t;
@@ -491,9 +502,22 @@ double qp_ip::form_decrement()
 bool qp_ip::solve_onestep (const double kappa, vector<double> &obj_log)
 {
     /// Value of phi(X), where phi is the cost function + log barrier.
-    double phi_X;
-    phi_X = form_grad_i2hess_logbar (kappa);
-    phi_X += form_phi_X ();
+    double phi_X = 0.0;
+
+    if (bs_type == SMPC_IP_BS_LOGBAR)
+    {
+        phi_X = form_grad_i2hess_logbar (kappa);
+        phi_X += form_phi_X ();
+    }
+    else
+    {
+        form_grad_i2hess_logbar (kappa);
+        if (bs_type == SMPC_IP_BS_ORIGINAL)
+        {
+            phi_X = compute_obj(false);
+        }
+    }
+
 
     chol.solve (*this, i2hess_grad, i2hess, X, dX);
 
@@ -515,13 +539,18 @@ bool qp_ip::solve_onestep (const double kappa, vector<double> &obj_log)
 
 
     // backtracking search
-    if (backtracking_search_on)
+    if (bs_type != SMPC_IP_BS_NONE)
     {
-        const double bs_alpha_grad_dX = form_bs_alpha_grad_dX ();
+        double bs_kappa = kappa;
+        if (bs_type == SMPC_IP_BS_ORIGINAL)
+        {
+            bs_kappa = 0.0; // eliminates logarithmic barrier
+        }
+        const double bs_alpha_grad_dX = form_bs_alpha_obj_dX ();
         for (;;)
         {
             ++bs_counter;
-            if (form_phi_X_tmp (kappa, alpha) <= phi_X + alpha * bs_alpha_grad_dX)
+            if (form_phi_X_tmp (bs_kappa, alpha) <= phi_X + alpha * bs_alpha_grad_dX)
             {
                 break;
             }
@@ -551,7 +580,7 @@ bool qp_ip::solve_onestep (const double kappa, vector<double> &obj_log)
     }
     if (obj_computation_on)
     {
-        obj_log.push_back(compute_obj());
+        obj_log.push_back(compute_obj(true));
     }
 
     return (true);
@@ -593,17 +622,20 @@ void qp_ip::form_init_fp (
 /**
  * @brief Computes value of the objective function.
  *
+ * @param[in] add_constant_term the objective function contains a constant
+ *          term, that can be dropped in some cases.
+ *
  * @return value of the objective function.
  */
-double qp_ip::compute_obj()
+double qp_ip::compute_obj(const bool add_constant_term)
 {
     int i,j;
-    double obj_pos = 0;
-    double obj_vel = 0;
-    double obj_acc = 0;
-    double obj_jerk = 0;
-    double obj_gX = 0;
-    double obj_ref = 0;
+    double obj_pos = 0.0;
+    double obj_vel = 0.0;
+    double obj_acc = 0.0;
+    double obj_jerk = 0.0;
+    double obj_gX = 0.0;
+    double obj_ref = 0.0;
 
     // phi_X = X'*H*X + g'*X
     for(i = 0, j = 0; 
@@ -620,8 +652,11 @@ double qp_ip::compute_obj()
         // g'*X
         obj_gX += g[j]*X_copy[0] + g[j+1]*X_copy[3];
 
-        const int k = i / SMPC_NUM_STATE_VAR;
-        obj_ref += zref_x[k]*zref_x[k] + zref_y[k]*zref_y[k];
+        if (add_constant_term)
+        {
+            const int k = i / SMPC_NUM_STATE_VAR;
+            obj_ref += zref_x[k]*zref_x[k] + zref_y[k]*zref_y[k];
+        }
     }
     for (; i < N*SMPC_NUM_VAR; i += SMPC_NUM_CONTROL_VAR)
     {
