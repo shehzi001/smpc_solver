@@ -379,6 +379,15 @@ class WMG
         void changeNextSSPosition (const double *posture, const bool zero_z_coordinate);
 
 
+        /**
+         * @brief Reposition all subsequent footsteps that are not fixed at the current moment.
+         *
+         * @param[in] diff_x change in position along x axis
+         * @param[in] diff_y change in position along y axis
+         */
+        void repositionFootsteps (const double diff_x, const double diff_y);
+
+
         // --------------------
 
         /**

@@ -303,6 +303,30 @@ void WMG::changeNextSSPosition (const double* posture, const bool zero_z_coordin
 }
 
 
+void WMG::repositionFootsteps (const double diff_x, const double diff_y)
+{
+    int ind = 0;
+    fs_type fixed_fs_type;
+    
+
+    ind = first_preview_step;
+    if (FS[first_preview_step].type == FS_TYPE_DS)
+    {
+        ind = getNextSS(ind);
+    }
+    fixed_fs_type = FS[ind].type;
+
+    for (; (ind < (int) FS.size()) && (FS[ind].type != fixed_fs_type); ++ind);
+
+    Translation<double, 3>  diff(diff_x, diff_y, 0.0);
+   
+    for (; ind < (int) FS.size(); ++ind)
+    {
+        *FS[ind].posture = diff * (*FS[ind].posture);
+        FS[ind].rotate_translate(FS[ind].ca, FS[ind].sa, FS[ind].x(), FS[ind].y());
+    }
+}
+
 
 WMGret WMG::formPreviewWindow(smpc_parameters & par)
 {
