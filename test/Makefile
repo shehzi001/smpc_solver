@@ -15,7 +15,9 @@ TESTS=\
 	  test_12 \
 	  test_13 \
 	  test_14 \
-	  test_15
+	  test_15 \
+	  test_16 \
+	  test_17
 
 
 

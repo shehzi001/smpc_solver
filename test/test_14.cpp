@@ -64,15 +64,16 @@ int main(int argc, char **argv)
             1.0,                     // gain_velocity
             0.02,                    // gain_acceleration
             1.0,                     // gain_jerk
-            1e-1,                    // tol
-            1e+4,                    // tol_out | if it is big only one iteration is made.
+            1e-3,                    // tol
+            1e-2,                    // tol_out | if it is big only one iteration is made.
             1e-1,                    // t
-            1.0,                     // mu
+            10,                     // mu
             0.01,                    // bs_alpha
-            0.8,                     // bs_beta
-            5,                       // max_iter
-            smpc::SMPC_IP_BS_ORIGINAL, // backtracking search
+            0.95,                     // bs_beta
+            10,                       // max_iter
+            smpc::SMPC_IP_BS_LOGBAR, // backtracking search
             true);                   // obj
+
 
     smpc::solver_as AS_solver(
             AS_test.wmg->N, // size of the preview window
@@ -81,14 +82,14 @@ int main(int argc, char **argv)
             0.02,           // gain_acceleration
             1.0,            // gain_jerk
             1e-7,           // tolerance
-            20,             // limit number of activated constraints
+            30,             // limit number of activated constraints
             true,           // remove constraints
             true);          // obj
 
 
 
-    const int stop_iter = 190;
-    const int NN = 1;
+    const int stop_iter = 59;
+    const int NN = 200;
     for(int counter = 0; /*counter < stop_iter*/; ++counter)
     {
         //------------------------------------------------------
@@ -137,7 +138,14 @@ int main(int argc, char **argv)
         }
         printf ("\n");
         IP_solver.get_next_state(IP_test.X_tilde);
-        IP_log << endl << IP_test.par->init_state.x() << " " << IP_test.par->init_state.y() << " " << IP_test.X_tilde.x() << " " << IP_test.X_tilde.y() << ";";
+        IP_log 
+            << endl 
+            << IP_test.par->init_state.x() 
+            << " " << IP_test.par->init_state.y() 
+            << " " << IP_test.X_tilde.x() 
+            << " " << IP_test.X_tilde.y() 
+            << " " << IP_solver.objective_log.back()
+            << ";";
 
 
         gettimeofday(&start,0);
@@ -162,7 +170,14 @@ int main(int argc, char **argv)
         }
         printf ("\n ---\n");
         AS_solver.get_next_state(AS_test.X_tilde);
-        AS_log << endl << AS_test.par->init_state.x() << " " << AS_test.par->init_state.y() << " " << AS_test.X_tilde.x() << " " << AS_test.X_tilde.y() << ";";
+        AS_log 
+            << endl 
+            << AS_test.par->init_state.x() 
+            << " " << AS_test.par->init_state.y() 
+            << " " << AS_test.X_tilde.x() 
+            << " " << AS_test.X_tilde.y() 
+            << " " << AS_solver.objective_log.back()
+            << ";";
         //------------------------------------------------------
     }
 /*
@@ -184,11 +199,15 @@ int main(int argc, char **argv)
     IP_log << "];" << endl;
     IP_log << "plot (CoM_ZMP(:,1), CoM_ZMP(:,2), 'b');" << endl;
     IP_log << "plot (CoM_ZMP(:,3), CoM_ZMP(:,4), 'ks','MarkerSize',5);" << endl;
+    IP_log << "hold off; figure;" << endl;
+    IP_log << "plot (CoM_ZMP(:,5));" << endl;
     IP_log.close();
 
     AS_log << "];" << endl;
     AS_log << "plot (CoM_ZMP(:,1), CoM_ZMP(:,2), 'b');" << endl;
     AS_log << "plot (CoM_ZMP(:,3), CoM_ZMP(:,4), 'ks','MarkerSize',5);" << endl;
+    AS_log << "hold off; figure;" << endl;
+    AS_log << "plot (CoM_ZMP(:,5));" << endl;
     AS_log.close();
 
     return 0;

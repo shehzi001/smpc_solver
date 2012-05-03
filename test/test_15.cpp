@@ -19,21 +19,36 @@ int main(int argc, char **argv)
 //    const int preview_sampling_time_ms = 40;
 //    const int next_preview_len_ms = 0;
     const int N = 40;
-
-
+/*
     smpc::solver_ip IP_solver(
             N,                       // N
             8000,                    // gain_position
             1.0,                     // gain_velocity
             0.02,                    // gain_acceleration
             1.0,                     // gain_jerk
-            1e-1,                    // tol
-            1e+4,                    // tol_out | if it is big only one iteration is made.
-            1e-1,                    // t
-            1.0,                     // mu
+            1e-3,                    // tol
+            1e-2,                    // tol_out | if it is big only one iteration is made.
+            100,                    // t
+            15,                     // mu
             0.01,                    // bs_alpha
-            0.9,                     // bs_beta
-            5,                       // max_iter
+            0.5,                     // bs_beta
+            0,                        // max_iter
+            smpc::SMPC_IP_BS_LOGBAR, // backtracking search
+            true);                   // obj
+*/
+    smpc::solver_ip IP_solver(
+            N,                       // N
+            8000,                    // gain_position
+            1.0,                     // gain_velocity
+            0.02,                    // gain_acceleration
+            1.0,                     // gain_jerk
+            1e-3,                    // tol
+            1e-2,                    // tol_out | if it is big only one iteration is made.
+            1e-1,                    // t
+            10,                     // mu
+            0.01,                    // bs_alpha
+            0.95,                     // bs_beta
+            10,                       // max_iter
             smpc::SMPC_IP_BS_LOGBAR, // backtracking search
             true);                   // obj
 
@@ -44,7 +59,7 @@ int main(int argc, char **argv)
             0.02,           // gain_acceleration
             1.0,            // gain_jerk
             1e-7,           // tolerance
-            15,             // limit number of activated constraints
+            30,             // limit number of activated constraints
             true,           // remove constraints
             true);          // obj
 
@@ -54,8 +69,8 @@ int main(int argc, char **argv)
     {
         // Circular
         /*
-        init_11 AS_test("test_14_as");
-        init_11 IP_test("test_14_ip");
+        init_11 AS_test("");
+        init_11 IP_test("");
         */
         // Straight
         init_10 AS_test("");
