@@ -27,13 +27,13 @@ using namespace IP;
 /** @brief Constructor: initialization of the constant parameters
 
     @param[in] N_ Number of sampling times in a preview window
-    @param[in] gain_position (Alpha) Position gain
-    @param[in] gain_velocity (Beta) Velocity gain
-    @param[in] gain_acceleration (Gamma) Acceleration gain
-    @param[in] gain_jerk (Eta) Jerk gain
+    @param[in] gain_position_ (Alpha) Position gain
+    @param[in] gain_velocity_ (Beta) Velocity gain
+    @param[in] gain_acceleration_ (Gamma) Acceleration gain
+    @param[in] gain_jerk_ (Eta) Jerk gain
     @param[in] tol_ tolerance
     @param[in] obj_computation_on_ enable computation of the objective function
-    @param[in] backtracking_search_on_ enable backtracking search
+    @param[in] bs_type_ type of backtracking search
 */
 qp_ip::qp_ip(
         const int N_, 
@@ -89,8 +89,8 @@ qp_ip::~qp_ip()
     @param[in] h Height of the Center of Mass divided by gravity
     @param[in] h_initial_ current h
     @param[in] angle Rotation angle for each state in the preview window
-    @param[in] zref_x reference values of z_x
-    @param[in] zref_y reference values of z_y
+    @param[in] zref_x_ reference values of z_x
+    @param[in] zref_y_ reference values of z_y
     @param[in] lb_ array of lower bounds for z_x and z_y
     @param[in] ub_ array of upper bounds for z_x and z_y
 */
@@ -334,6 +334,7 @@ double qp_ip::form_bs_alpha_obj_dX()
  * @brief Forms phi(X+alpha*dX)
  *
  * @param[in] kappa logarithmic barrier multiplicator.
+ * @param[in] alpha step length
  *
  * @return a value of phi.
  */
@@ -596,7 +597,7 @@ bool qp_ip::solve_onestep (const double kappa, vector<double> &obj_log)
  * @param[in] x_coord x coordinates of points satisfying constraints
  * @param[in] y_coord y coordinates of points satisfying constraints
  * @param[in] init_state current state
- * @param[in] state_tilde if true the state is assumed to be in @ref pX_tilde "X_tilde" form
+ * @param[in] tilde_state if true the state is assumed to be in @ref pX_tilde "X_tilde" form
  * @param[in,out] X_ initial guess / solution of optimization problem
  */
 void qp_ip::form_init_fp (

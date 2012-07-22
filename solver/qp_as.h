@@ -94,7 +94,7 @@ class qp_as : public AS::problem_parameters
 
 // variables        
 
-        /// An instance of #as_chol_solve class.
+        /// An instance of AS#chol_solve class.
         AS::chol_solve chol;
 
 

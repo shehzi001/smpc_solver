@@ -30,6 +30,8 @@ using namespace AS;
     @param[in] gain_jerk Jerk gain
     @param[in] tol_ tolerance
     @param[in] obj_computation_on_ enable computation of the objective function
+    @param[in] max_added_constraints_num_ limit on the number of the added constraints
+    @param[in] constraint_removal_on_ enable constraint removal
 */
 qp_as::qp_as(
         const int N_, 
@@ -74,8 +76,8 @@ qp_as::~qp_as()
     @param[in] h_ Height of the Center of Mass divided by gravity
     @param[in] h_initial_ current h
     @param[in] angle Rotation angle for each state in the preview window
-    @param[in] zref_x reference values of z_x
-    @param[in] zref_y reference values of z_y
+    @param[in] zref_x_ reference values of z_x
+    @param[in] zref_y_ reference values of z_y
     @param[in] lb array of lower constraints for z_x and z_y
     @param[in] ub array of upper constraints for z_x and z_y
 */

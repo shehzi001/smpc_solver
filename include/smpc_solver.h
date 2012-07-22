@@ -233,7 +233,7 @@ namespace smpc
 
                 @param[in] x_coord x coordinates of points satisfying constraints
                 @param[in] y_coord y coordinates of points satisfying constraints
-                @param[in] init_state initial state (#state_com or #state_zmp)
+                @param[in] init_state initial state (smpc#state_com or smpc#state_zmp)
                 @param[in,out] X solution of optimization problem
              */
             virtual void form_init_fp (
@@ -327,7 +327,7 @@ namespace smpc
                 @param[in] constraint_removal_on enable/disable removal of activated constraints.
                 @param[in] obj_computation_on compute and keep values of the objective function
 
-              @note #max_added_constraints_num and #constraint_removal_on affect the time required 
+              @note smpc#max_added_constraints_num and smpc#constraint_removal_on affect the time required 
               for solution. If the number of added constraints is less than (length of preview window)*2 
               or constraint removal is disabled, the solution is approximate. How good is this 
               approximation depends on the problem.
@@ -352,7 +352,7 @@ namespace smpc
 
             ///@{
             /// These functions are documented in the definition of the base
-            /// abstract class #solver.
+            /// abstract class smpc#solver.
             void set_parameters (
                     const double*, const double*, const double, const double*, 
                     const double*, const double*, const double*, const double*);
@@ -479,7 +479,7 @@ namespace smpc
 
             ///@{
             /// These functions are documented in the definition of the base
-            /// abstract class #solver.
+            /// abstract class smpc#solver.
             void set_parameters (
                     const double*, const double*, const double, const double*, 
                     const double*, const double*, const double*, const double*);

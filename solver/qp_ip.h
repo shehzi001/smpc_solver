@@ -128,7 +128,7 @@ class qp_ip : public IP::problem_parameters
         ///@}
         
 
-        /// An instance of #chol_solve_ip class.
+        /// An instance of IP#chol_solve class.
         IP::chol_solve chol;
 
 

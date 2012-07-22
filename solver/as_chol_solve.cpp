@@ -43,6 +43,9 @@ namespace AS
     }
 
 
+    /**
+     * @brief Destructor
+     */
     chol_solve::~chol_solve()
     {
         if (icL != NULL)
@@ -51,9 +54,13 @@ namespace AS
             delete icL;
         }
         if (z != NULL)
+        {
             delete z;
+        }
         if (nu != NULL)
+        {
             delete nu;
+        }
     }
     //==============================================
 
@@ -167,8 +174,8 @@ namespace AS
      * @param[out] dx   feasible descent direction, must be allocated.
      */
     void chol_solve::up_resolve(
-            const problem_parameters& ppar, 
-            const vector <constraint>& active_set, 
+            const AS::problem_parameters& ppar, 
+            const vector <AS::constraint>& active_set, 
             const double *x, 
             double *dx)
     {
@@ -313,8 +320,8 @@ namespace AS
      * @param[out] dx   feasible descent direction, must be allocated.
      */
     void chol_solve::resolve (
-            const problem_parameters& ppar, 
-            const vector <constraint>& active_set, 
+            const AS::problem_parameters& ppar, 
+            const vector <AS::constraint>& active_set, 
             const double *x, 
             double *dx)
     {
@@ -382,8 +389,8 @@ namespace AS
      * @note Downdate of vector @ref pz 'z' is described on the page '@ref pRemoveICz'.
      */
     void chol_solve::down_resolve(
-            const problem_parameters& ppar, 
-            const vector <constraint>& active_set,
+            const AS::problem_parameters& ppar, 
+            const vector <AS::constraint>& active_set,
             const int ind_exclude, 
             const double *x, 
             double *dx)

@@ -21,14 +21,13 @@
 
 /**
  * @brief Generates an initial feasible point. 
- * First we perform a change of variable to @ref pX_tilde "X_tilde"
- * generate a feasible point, and then we go back to @ref pX_bar "X_bar".
  *
+ * @param[in] ppar problem parameters
  * @param[in] x_coord x coordinates of points satisfying constraints
  * @param[in] y_coord y coordinates of points satisfying constraints
  * @param[in] init_state current state
- * @param[in] state_tilde if true the state is assumed to be in @ref pX_tilde "X_tilde" form
- * @param[in,out] X_ initial guess / solution of optimization problem
+ * @param[in] tilde_state if true the state is assumed to be in @ref pX_tilde "X_tilde" form
+ * @param[in,out] X initial guess / solution of optimization problem
  */
 template <class PP>
 void form_init_fp_tilde (

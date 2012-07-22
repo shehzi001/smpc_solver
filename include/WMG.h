@@ -289,7 +289,7 @@ class WMG
          *              instead  of the default constraints.
          */
         void setFootstepParameters (
-                const unsigned int def_preiods,
+                const unsigned int def_periods,
                 const unsigned int ds_periods, 
                 const unsigned int ds_number,
                 bool use_user_constraints_ = false);
