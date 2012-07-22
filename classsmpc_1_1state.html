@@ -79,8 +79,8 @@ Inheritance diagram for smpc::state:</div>
  <div class="center">
   <img src="classsmpc_1_1state.png" usemap="#smpc::state_map" alt=""/>
   <map id="smpc::state_map" name="smpc::state_map">
-<area href="classsmpc_1_1state__orig.html" title="A container for a state in the original form:" alt="smpc::state_orig" shape="rect" coords="0,56,103,80"/>
-<area href="classsmpc_1_1state__tilde.html" title="A container for a state in tilde form (after variable substitution):" alt="smpc::state_tilde" shape="rect" coords="113,56,216,80"/>
+<area href="classsmpc_1_1state__com.html" title="A container for a state in the original form:" alt="smpc::state_com" shape="rect" coords="0,56,103,80"/>
+<area href="classsmpc_1_1state__zmp.html" title="A container for a state in tilde form (after variable substitution):" alt="smpc::state_zmp" shape="rect" coords="113,56,216,80"/>
 </map>
  </div></div>
 
@@ -90,26 +90,37 @@ Inheritance diagram for smpc::state:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a6ca407f88091a4d90159ee2efa4d3ce6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc_1_1state.html#a6ca407f88091a4d90159ee2efa4d3ce6">state</a> ()</td></tr>
 <tr class="memdesc:a6ca407f88091a4d90159ee2efa4d3ce6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor (everything set to 0).  <a href="#a6ca407f88091a4d90159ee2efa4d3ce6"></a><br/></td></tr>
-<tr class="memitem:a57485b20aba99d636761a15abf4ca1a3"><td class="memItemLeft" align="right" valign="top">double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc_1_1state.html#a57485b20aba99d636761a15abf4ca1a3">x</a> ()</td></tr>
-<tr class="memdesc:a57485b20aba99d636761a15abf4ca1a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">X coordinate.  <a href="#a57485b20aba99d636761a15abf4ca1a3"></a><br/></td></tr>
-<tr class="memitem:a5e311e982ccadadde129c591cca627d8"><td class="memItemLeft" align="right" valign="top">double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc_1_1state.html#a5e311e982ccadadde129c591cca627d8">vx</a> ()</td></tr>
-<tr class="memdesc:a5e311e982ccadadde129c591cca627d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Velocity along X axis.  <a href="#a5e311e982ccadadde129c591cca627d8"></a><br/></td></tr>
-<tr class="memitem:a92335fb3311513b7727a1bbae99efd45"><td class="memItemLeft" align="right" valign="top">double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc_1_1state.html#a92335fb3311513b7727a1bbae99efd45">ax</a> ()</td></tr>
-<tr class="memdesc:a92335fb3311513b7727a1bbae99efd45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Acceleration along X axis.  <a href="#a92335fb3311513b7727a1bbae99efd45"></a><br/></td></tr>
-<tr class="memitem:afcf198f48d756fbf8646cfa67bacde07"><td class="memItemLeft" align="right" valign="top">double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc_1_1state.html#afcf198f48d756fbf8646cfa67bacde07">y</a> ()</td></tr>
-<tr class="memdesc:afcf198f48d756fbf8646cfa67bacde07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Y coordinate.  <a href="#afcf198f48d756fbf8646cfa67bacde07"></a><br/></td></tr>
-<tr class="memitem:aef3fc2b40c5a41cff975277782129c54"><td class="memItemLeft" align="right" valign="top">double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc_1_1state.html#aef3fc2b40c5a41cff975277782129c54">vy</a> ()</td></tr>
-<tr class="memdesc:aef3fc2b40c5a41cff975277782129c54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Velocity along Y axis.  <a href="#aef3fc2b40c5a41cff975277782129c54"></a><br/></td></tr>
-<tr class="memitem:add5d648d17158d31ffc802c26389cb0e"><td class="memItemLeft" align="right" valign="top">double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc_1_1state.html#add5d648d17158d31ffc802c26389cb0e">ay</a> ()</td></tr>
-<tr class="memdesc:add5d648d17158d31ffc802c26389cb0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Acceleration along Y axis.  <a href="#add5d648d17158d31ffc802c26389cb0e"></a><br/></td></tr>
-<tr class="memitem:a2393e64ebdad23cb43a3d939aec1fbd3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc_1_1state.html#a2393e64ebdad23cb43a3d939aec1fbd3">get_next_state</a> (const <a class="el" href="classsmpc_1_1solver.html">solver</a> &amp;smpc_solver)=0</td></tr>
-<tr class="memdesc:a2393e64ebdad23cb43a3d939aec1fbd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the next state.  <a href="#a2393e64ebdad23cb43a3d939aec1fbd3"></a><br/></td></tr>
-<tr class="memitem:aef8bbd0fa899b21860e3bde433c35a70"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc_1_1state.html#aef8bbd0fa899b21860e3bde433c35a70">get_state</a> (const <a class="el" href="classsmpc_1_1solver.html">solver</a> &amp;smpc_solver, const int ind)=0</td></tr>
-<tr class="memdesc:aef8bbd0fa899b21860e3bde433c35a70"><td class="mdescLeft">&#160;</td><td class="mdescRight">The same as <a class="el" href="classsmpc_1_1state.html#a2393e64ebdad23cb43a3d939aec1fbd3" title="Returns the next state.">get_next_state</a>, but takes an additional parameter - index of the desired state in the state vector.  <a href="#aef8bbd0fa899b21860e3bde433c35a70"></a><br/></td></tr>
 <tr class="memitem:a5b8ba9bff16869e7dfdda0165992b2c3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc_1_1state.html#a5b8ba9bff16869e7dfdda0165992b2c3">set</a> (double x_, double y_)</td></tr>
 <tr class="memdesc:a5b8ba9bff16869e7dfdda0165992b2c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set coordinates, velocities and accelerations are assumed to be zero.  <a href="#a5b8ba9bff16869e7dfdda0165992b2c3"></a><br/></td></tr>
 <tr class="memitem:a4daf85e2bf4f26034081e068a0f8e59b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc_1_1state.html#a4daf85e2bf4f26034081e068a0f8e59b">set</a> (double x_, double vx_, double ax_, double y_, double vy_, double ay_)</td></tr>
 <tr class="memdesc:a4daf85e2bf4f26034081e068a0f8e59b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set state to given values.  <a href="#a4daf85e2bf4f26034081e068a0f8e59b"></a><br/></td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:a57485b20aba99d636761a15abf4ca1a3"><td class="memItemLeft" align="right" valign="top">double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc_1_1state.html#a57485b20aba99d636761a15abf4ca1a3">x</a> ()</td></tr>
+<tr class="memdesc:a57485b20aba99d636761a15abf4ca1a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">X/Y coordinate.  <a href="#a57485b20aba99d636761a15abf4ca1a3"></a><br/></td></tr>
+<tr class="memitem:afcf198f48d756fbf8646cfa67bacde07"><td class="memItemLeft" align="right" valign="top">double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc_1_1state.html#afcf198f48d756fbf8646cfa67bacde07">y</a> ()</td></tr>
+<tr class="memdesc:afcf198f48d756fbf8646cfa67bacde07"><td class="mdescLeft">&#160;</td><td class="mdescRight">X/Y coordinate.  <a href="#afcf198f48d756fbf8646cfa67bacde07"></a><br/></td></tr>
+<tr class="memitem:a2712c60bd7b66dd466f475ce28df3ce6"><td class="memItemLeft" align="right" valign="top">const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc_1_1state.html#a2712c60bd7b66dd466f475ce28df3ce6">x</a> () const </td></tr>
+<tr class="memdesc:a2712c60bd7b66dd466f475ce28df3ce6"><td class="mdescLeft">&#160;</td><td class="mdescRight">X/Y coordinate.  <a href="#a2712c60bd7b66dd466f475ce28df3ce6"></a><br/></td></tr>
+<tr class="memitem:a328648362b4f3b0833002b71513e1345"><td class="memItemLeft" align="right" valign="top">const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc_1_1state.html#a328648362b4f3b0833002b71513e1345">y</a> () const </td></tr>
+<tr class="memdesc:a328648362b4f3b0833002b71513e1345"><td class="mdescLeft">&#160;</td><td class="mdescRight">X/Y coordinate.  <a href="#a328648362b4f3b0833002b71513e1345"></a><br/></td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:a5e311e982ccadadde129c591cca627d8"><td class="memItemLeft" align="right" valign="top">double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc_1_1state.html#a5e311e982ccadadde129c591cca627d8">vx</a> ()</td></tr>
+<tr class="memdesc:a5e311e982ccadadde129c591cca627d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Velocity along X/Y axis.  <a href="#a5e311e982ccadadde129c591cca627d8"></a><br/></td></tr>
+<tr class="memitem:aef3fc2b40c5a41cff975277782129c54"><td class="memItemLeft" align="right" valign="top">double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc_1_1state.html#aef3fc2b40c5a41cff975277782129c54">vy</a> ()</td></tr>
+<tr class="memdesc:aef3fc2b40c5a41cff975277782129c54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Velocity along X/Y axis.  <a href="#aef3fc2b40c5a41cff975277782129c54"></a><br/></td></tr>
+<tr class="memitem:ad0f051c6f5e5b57dd643bd003b8e9dad"><td class="memItemLeft" align="right" valign="top">const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc_1_1state.html#ad0f051c6f5e5b57dd643bd003b8e9dad">vx</a> () const </td></tr>
+<tr class="memdesc:ad0f051c6f5e5b57dd643bd003b8e9dad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Velocity along X/Y axis.  <a href="#ad0f051c6f5e5b57dd643bd003b8e9dad"></a><br/></td></tr>
+<tr class="memitem:a710bf6528f2bae0be6af1b6b371ca449"><td class="memItemLeft" align="right" valign="top">const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc_1_1state.html#a710bf6528f2bae0be6af1b6b371ca449">vy</a> () const </td></tr>
+<tr class="memdesc:a710bf6528f2bae0be6af1b6b371ca449"><td class="mdescLeft">&#160;</td><td class="mdescRight">Velocity along X/Y axis.  <a href="#a710bf6528f2bae0be6af1b6b371ca449"></a><br/></td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:a92335fb3311513b7727a1bbae99efd45"><td class="memItemLeft" align="right" valign="top">double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc_1_1state.html#a92335fb3311513b7727a1bbae99efd45">ax</a> ()</td></tr>
+<tr class="memdesc:a92335fb3311513b7727a1bbae99efd45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Acceleration along X/Y axis.  <a href="#a92335fb3311513b7727a1bbae99efd45"></a><br/></td></tr>
+<tr class="memitem:add5d648d17158d31ffc802c26389cb0e"><td class="memItemLeft" align="right" valign="top">double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc_1_1state.html#add5d648d17158d31ffc802c26389cb0e">ay</a> ()</td></tr>
+<tr class="memdesc:add5d648d17158d31ffc802c26389cb0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Acceleration along X/Y axis.  <a href="#add5d648d17158d31ffc802c26389cb0e"></a><br/></td></tr>
+<tr class="memitem:ab62d96da60b7d1ed4dce9e1b689e9dcb"><td class="memItemLeft" align="right" valign="top">const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc_1_1state.html#ab62d96da60b7d1ed4dce9e1b689e9dcb">ax</a> () const </td></tr>
+<tr class="memdesc:ab62d96da60b7d1ed4dce9e1b689e9dcb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Acceleration along X/Y axis.  <a href="#ab62d96da60b7d1ed4dce9e1b689e9dcb"></a><br/></td></tr>
+<tr class="memitem:af1d92e025787d4e0881759c61853577c"><td class="memItemLeft" align="right" valign="top">const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc_1_1state.html#af1d92e025787d4e0881759c61853577c">ay</a> () const </td></tr>
+<tr class="memdesc:af1d92e025787d4e0881759c61853577c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Acceleration along X/Y axis.  <a href="#af1d92e025787d4e0881759c61853577c"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a4e520ee4c5b0dfc163032daeb81ddabe"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc_1_1state.html#a4e520ee4c5b0dfc163032daeb81ddabe">state_vector</a> [<a class="el" href="group__gAPI.html#gab7984838b079762f5087b37a731e0b79">SMPC_NUM_STATE_VAR</a>]</td></tr>
@@ -117,7 +128,7 @@ Public Attributes</h2></td></tr>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>An abstract class representing state. </p>
 
-<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00035">35</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
+<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00050">50</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a6ca407f88091a4d90159ee2efa4d3ce6"></a>
 <div class="memitem">
@@ -135,7 +146,7 @@ Public Attributes</h2></td></tr>
 
 <p>Default constructor (everything set to 0). </p>
 
-<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00103">103</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
+<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00414">414</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
 
 </div>
 </div>
@@ -154,9 +165,29 @@ Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Acceleration along X axis. </p>
+<p>Acceleration along X/Y axis. </p>
 
-<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00070">70</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
+<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00093">93</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab62d96da60b7d1ed4dce9e1b689e9dcb"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const double&amp; <a class="el" href="classsmpc_1_1state.html#a92335fb3311513b7727a1bbae99efd45">smpc::state::ax</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const<code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Acceleration along X/Y axis. </p>
+
+<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00095">95</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
 
 </div>
 </div>
@@ -174,74 +205,29 @@ Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Acceleration along Y axis. </p>
+<p>Acceleration along X/Y axis. </p>
 
-<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00083">83</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
+<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00094">94</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a2393e64ebdad23cb43a3d939aec1fbd3"></a>
+<a class="anchor" id="af1d92e025787d4e0881759c61853577c"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void <a class="el" href="classsmpc_1_1state.html#a2393e64ebdad23cb43a3d939aec1fbd3">smpc::state::get_next_state</a> </td>
+          <td class="memname">const double&amp; <a class="el" href="classsmpc_1_1state.html#add5d648d17158d31ffc802c26389cb0e">smpc::state::ay</a> </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classsmpc_1_1solver.html">solver</a> &amp;&#160;</td>
-          <td class="paramname"><em>smpc_solver</em></td><td>)</td>
-          <td><code> [pure virtual]</code></td>
+          <td class="paramname"></td><td>)</td>
+          <td> const<code> [inline]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Returns the next state. </p>
-<dl class="params"><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">smpc_solver</td><td>initialized solver </td></tr>
-  </table>
-  </dd>
-</dl>
+<p>Acceleration along X/Y axis. </p>
 
-<p>Implemented in <a class="el" href="classsmpc_1_1state__tilde.html#a6aac22bb538a2a1c87bde00756533f1a">smpc::state_tilde</a>, and <a class="el" href="classsmpc_1_1state__orig.html#ab193990da1fe69324e26980274672969">smpc::state_orig</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aef8bbd0fa899b21860e3bde433c35a70"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void <a class="el" href="classsmpc_1_1state.html#aef8bbd0fa899b21860e3bde433c35a70">smpc::state::get_state</a> </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classsmpc_1_1solver.html">solver</a> &amp;&#160;</td>
-          <td class="paramname"><em>smpc_solver</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const int&#160;</td>
-          <td class="paramname"><em>ind</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td><code> [pure virtual]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>The same as <a class="el" href="classsmpc_1_1state.html#a2393e64ebdad23cb43a3d939aec1fbd3" title="Returns the next state.">get_next_state</a>, but takes an additional parameter - index of the desired state in the state vector. </p>
-<dl class="params"><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">smpc_solver</td><td>initialized solver </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">ind</td><td>index of a state [0 : N-1]. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Implemented in <a class="el" href="classsmpc_1_1state__tilde.html#ab5b8e847e3c954f3dee4537206581635">smpc::state_tilde</a>, and <a class="el" href="classsmpc_1_1state__orig.html#ab863db8282e6b3fa5a38d562d1e1c82b">smpc::state_orig</a>.</p>
+<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00096">96</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
 
 </div>
 </div>
@@ -279,7 +265,7 @@ Public Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00114">114</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
+<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00420">420</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
 
 </div>
 </div>
@@ -345,7 +331,7 @@ Public Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00120">120</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
+<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00426">426</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
 
 </div>
 </div>
@@ -363,9 +349,29 @@ Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Velocity along X axis. </p>
+<p>Velocity along X/Y axis. </p>
 
-<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00066">66</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
+<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00085">85</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad0f051c6f5e5b57dd643bd003b8e9dad"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const double&amp; <a class="el" href="classsmpc_1_1state.html#a5e311e982ccadadde129c591cca627d8">smpc::state::vx</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const<code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Velocity along X/Y axis. </p>
+
+<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00087">87</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
 
 </div>
 </div>
@@ -383,9 +389,29 @@ Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Velocity along Y axis. </p>
+<p>Velocity along X/Y axis. </p>
 
-<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00079">79</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
+<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00086">86</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a710bf6528f2bae0be6af1b6b371ca449"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const double&amp; <a class="el" href="classsmpc_1_1state.html#aef3fc2b40c5a41cff975277782129c54">smpc::state::vy</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const<code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Velocity along X/Y axis. </p>
+
+<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00088">88</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
 
 </div>
 </div>
@@ -403,9 +429,29 @@ Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>X coordinate. </p>
+<p>X/Y coordinate. </p>
 
-<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00062">62</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
+<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00077">77</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2712c60bd7b66dd466f475ce28df3ce6"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const double&amp; <a class="el" href="classsmpc_1_1state.html#a57485b20aba99d636761a15abf4ca1a3">smpc::state::x</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const<code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>X/Y coordinate. </p>
+
+<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00079">79</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
 
 </div>
 </div>
@@ -423,9 +469,29 @@ Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Y coordinate. </p>
+<p>X/Y coordinate. </p>
 
-<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00075">75</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
+<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00078">78</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a328648362b4f3b0833002b71513e1345"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const double&amp; <a class="el" href="classsmpc_1_1state.html#afcf198f48d756fbf8646cfa67bacde07">smpc::state::y</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const<code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>X/Y coordinate. </p>
+
+<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00080">80</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
 
 </div>
 </div>
@@ -446,7 +512,7 @@ Public Attributes</h2></td></tr>
                 state[3] - y CoM or ZMP position [meter]
                 state[4] - y CoM velocity [meter/s]
                 state[5] - y CoM acceleration [meter/s^2]</pre></div> 
-<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00048">48</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
+<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00063">63</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
 
 </div>
 </div>

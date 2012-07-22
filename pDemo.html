@@ -78,26 +78,20 @@ Define footsteps:</h2>
             wmg.N,  <span class="comment">// size of the preview window</span>
             0.261); <span class="comment">// height of the center of mass [meter]</span>
 
-
-    <span class="comment">// Initial double support</span>
-    <span class="keywordtype">double</span> d[4] = {0.09 , 0.075, 0.03, 0.025};
-    wmg.setFootstepDefaults(2, 1, d);
-    wmg.addFootstep(0.0, 0.0, 0.0, <a class="code" href="group__gWMG__API.html#gga45147e528b9243fa8842d38163498449ac92a7214504e35546f6bff550f2d07d0">FS_TYPE_DS</a>);
-    <span class="comment">// ZMP, CoM are at [0;0]</span>
-
     <span class="comment">// each step is defined relatively to the previous step</span>
     <span class="keywordtype">double</span> z = 5.0*M_PI/180.0;  <span class="comment">// relative angle</span>
     <span class="keywordtype">double</span> step_x = 0.035;      <span class="comment">// relative X position</span>
-    <span class="keywordtype">double</span> step_y = 0.1;        <span class="comment">// relative Y position</span>
+    <span class="keywordtype">double</span> step_y = wmg.def_constraints.support_distance_y; <span class="comment">// relative Y position</span>
+
+
+    <span class="comment">// Initial double support</span>
+    <span class="comment">// ZMP, CoM are at [0;0]</span>
+    wmg.setFootstepParameters (2, 1, 1);
+    wmg.addFootstep(0.0, 0.0, 0.0, <a class="code" href="group__gWMG__API.html#gga45147e528b9243fa8842d38163498449ac92a7214504e35546f6bff550f2d07d0">FS_TYPE_DS</a>);
 
     <span class="comment">// all subsequent steps have normal feet size</span>
-    d[0] = 0.09;
-    d[1] = 0.025;
-    d[2] = 0.03;
-    d[3] = 0.025;
     <span class="comment">// 2 reference ZMP positions in single support </span>
     <span class="comment">// 1 in double support</span>
-    wmg.setFootstepDefaults(2, 1, d);
     wmg.addFootstep(0.0   , -step_y/2, 0.0);
     wmg.addFootstep(step_x,  step_y, z);
     wmg.addFootstep(step_x, -step_y, z);
@@ -110,11 +104,7 @@ Define footsteps:</h2>
     <span class="comment">// here we give many reference points, since otherwise we </span>
     <span class="comment">// would not have enough steps in preview window to reach </span>
     <span class="comment">// the last footsteps</span>
-    d[0] = 0.09;
-    d[1] = 0.025;
-    d[2] = 0.03;
-    d[3] = 0.075;
-    wmg.setFootstepDefaults(30, 0, d);
+    wmg.setFootstepParameters (30, 0, 0);
     wmg.addFootstep(0.0   , -step_y/2, 0.0, <a class="code" href="group__gWMG__API.html#gga45147e528b9243fa8842d38163498449ac92a7214504e35546f6bff550f2d07d0">FS_TYPE_DS</a>);
     <span class="comment">//-----------------------------------------------------------</span>
 </pre></div></p>
@@ -122,11 +112,11 @@ Define footsteps:</h2>
 Setup solver:</h2>
 <p><div class="fragment"><pre class="fragment">
 
-    <a class="code" href="classsmpc_1_1solver.html" title="API of the sparse MPC solver.">smpc::solver</a> solver(
+    <a class="code" href="classsmpc_1_1solver__as.html" title="API of the sparse MPC solver.">smpc::solver_as</a> solver(
             wmg.N); <span class="comment">// size of the preview window</span>
                     <span class="comment">// other parameters are optional</span>
     <span class="comment">//-----------------------------------------------------------</span>
-</pre></div> The gains are defined <a class="el" href="pProblemDef.html#pGains">here</a>. The default values of optional parameters can be found here: smpc_solver::smpc_solver.</p>
+</pre></div> The gains are defined <a class="el" href="index.html#pGains">here</a>. The default values of optional parameters can be found here: <a class="el" href="classsmpc_1_1solver__as.html#aaa55c543737c7721ff5ce47c538a7f90" title="Constructor: initialize an active set method solver.">smpc::solver_as::solver_as</a>.</p>
 <h2><a class="anchor" id="pDemo4"></a>
 Start simulation:</h2>
 <p><div class="fragment"><pre class="fragment">
@@ -176,25 +166,25 @@ Initialize QP</h3>
                 param.X);
 
         <span class="comment">//------------------------------------------------------</span>
-</pre></div> See also smpc_solver::init. Note, that the current state must be given after <a class="el" href="pProblemDef.html#pX_tilde">first variable substitution</a>.</p>
+</pre></div> See also <a class="el" href="classsmpc_1_1solver__as.html#a6f9f3c849c58e4bdc42c7b278777e82e" title="These functions are documented in the definition of the base abstract class smpc::solver.">smpc::solver_as::set_parameters</a>. Note, that the current state must be given after <a class="el" href="index.html#pX_tilde">first variable substitution</a>.</p>
 <h3><a class="anchor" id="pDemo52"></a>
 Solve QP</h3>
 <p><div class="fragment"><pre class="fragment">
         <span class="comment">// solve quadratic problem</span>
         solver.solve();
         <span class="comment">//------------------------------------------------------</span>
-</pre></div> See also smpc_solver::solve.</p>
+</pre></div> See also <a class="el" href="classsmpc_1_1solver.html#a73c64d42a5432ead97d350f35d6189aa" title="Solve QP problem.">smpc::solver::solve</a>.</p>
 <h3><a class="anchor" id="pDemo53"></a>
 Obtain the next state</h3>
 <p><div class="fragment"><pre class="fragment">
         <span class="comment">// obtain the next state</span>
-        param.init_state.get_next_state (solver);
+        solver.get_next_state(param.init_state);
     }
 
     <span class="keywordflow">return</span> 0;
 }
 <span class="comment">//---------------------------------------------------------------</span>
-</pre></div> See also smpc_solver::get_next_state_tilde. </p>
+</pre></div> See also <a class="el" href="classsmpc_1_1solver.html#a30b5b3b33ff3a2701874c593f4a90c92" title="Returns the next state.">smpc::solver::get_next_state</a>. </p>
 </div></div><!-- contents -->
 
 

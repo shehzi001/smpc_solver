@@ -66,20 +66,65 @@
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:ace1f521bb3caac6e4f4b2ea053e23b5b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__handling.html#ace1f521bb3caac6e4f4b2ea053e23b5b">tilde_to_bar</a> (const double sinA, const double cosA, double *state)</td></tr>
+<tr class="memdesc:ace1f521bb3caac6e4f4b2ea053e23b5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts state from <a class="el" href="index.html#pX_tilde">X_tilde</a> to <a class="el" href="index.html#pX_bar">X_bar</a>.  <a href="#ace1f521bb3caac6e4f4b2ea053e23b5b"></a><br/></td></tr>
+<tr class="memitem:a69960d3947b12aa4f525b82508c91868"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__handling.html#a69960d3947b12aa4f525b82508c91868">bar_to_tilde</a> (const double sinA, const double cosA, double *state)</td></tr>
+<tr class="memdesc:a69960d3947b12aa4f525b82508c91868"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts state from <a class="el" href="index.html#pX_tilde">X_tilde</a> to <a class="el" href="index.html#pX_bar">X_bar</a>.  <a href="#a69960d3947b12aa4f525b82508c91868"></a><br/></td></tr>
 <tr class="memitem:a44e8698f1054f74680b6668038142d0a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__handling.html#a44e8698f1054f74680b6668038142d0a">tilde_to_orig</a> (const double h, double *state)</td></tr>
-<tr class="memdesc:a44e8698f1054f74680b6668038142d0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts state from <a class="el" href="pProblemDef.html#pX_tilde">X_tilde</a> to original variables.  <a href="#a44e8698f1054f74680b6668038142d0a"></a><br/></td></tr>
+<tr class="memdesc:a44e8698f1054f74680b6668038142d0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts state from <a class="el" href="index.html#pX_tilde">X_tilde</a> to original variables.  <a href="#a44e8698f1054f74680b6668038142d0a"></a><br/></td></tr>
 <tr class="memitem:a03d1a6dcc577f1264b8f5cd46bb2ef1d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__handling.html#a03d1a6dcc577f1264b8f5cd46bb2ef1d">orig_to_tilde</a> (const double h, double *state)</td></tr>
-<tr class="memdesc:a03d1a6dcc577f1264b8f5cd46bb2ef1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts state from original variables to <a class="el" href="pProblemDef.html#pX_tilde">X_tilde</a>.  <a href="#a03d1a6dcc577f1264b8f5cd46bb2ef1d"></a><br/></td></tr>
-<tr class="memitem:a404a227e866f132d52b9792a861317e2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__handling.html#a404a227e866f132d52b9792a861317e2">get_state_tilde</a> (const <a class="el" href="classproblem__parameters.html">problem_parameters</a> &amp;sp, const double *X, const int ind, double *state)</td></tr>
-<tr class="memdesc:a404a227e866f132d52b9792a861317e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the next state as <a class="el" href="pProblemDef.html#pX_tilde">X_tilde</a>.  <a href="#a404a227e866f132d52b9792a861317e2"></a><br/></td></tr>
-<tr class="memitem:a5c9e8282469e77f533a485256fe10ff0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__handling.html#a5c9e8282469e77f533a485256fe10ff0">get_state</a> (const <a class="el" href="classproblem__parameters.html">problem_parameters</a> &amp;sp, const double *X, const int ind, double *state)</td></tr>
-<tr class="memdesc:a5c9e8282469e77f533a485256fe10ff0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the next state represented by original variables.  <a href="#a5c9e8282469e77f533a485256fe10ff0"></a><br/></td></tr>
+<tr class="memdesc:a03d1a6dcc577f1264b8f5cd46bb2ef1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts state from original variables to <a class="el" href="index.html#pX_tilde">X_tilde</a>.  <a href="#a03d1a6dcc577f1264b8f5cd46bb2ef1d"></a><br/></td></tr>
 <tr class="memitem:ae76779b010bc9d20dc0b768ff7a822a4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__handling.html#ae76779b010bc9d20dc0b768ff7a822a4">get_controls</a> (const int preview_window_size, const double *X, const int ind, double *controls)</td></tr>
 <tr class="memdesc:ae76779b010bc9d20dc0b768ff7a822a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the controls,that must be applied to reach the next state.  <a href="#ae76779b010bc9d20dc0b768ff7a822a4"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Various operations on the vector of states. </p>
 </div><hr/><h2>Function Documentation</h2>
+<a class="anchor" id="a69960d3947b12aa4f525b82508c91868"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="namespacestate__handling.html#a69960d3947b12aa4f525b82508c91868">state_handling::bar_to_tilde</a> </td>
+          <td>(</td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>sinA</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>cosA</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>state</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Converts state from <a class="el" href="index.html#pX_tilde">X_tilde</a> to <a class="el" href="index.html#pX_bar">X_bar</a>. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">sinA</td><td>sin of the rotation angle. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">cosA</td><td>cos of the rotation angle. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">state</td><td>the state (<a class="el" href="index.html#pX_bar">X_bar</a>). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="state__handling_8cpp_source.html#l00042">42</a> of file <a class="el" href="state__handling_8cpp_source.html">state_handling.cpp</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="ae76779b010bc9d20dc0b768ff7a822a4"></a>
 <div class="memitem">
 <div class="memproto">
@@ -128,111 +173,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="state__handling_8cpp_source.html#l00107">107</a> of file <a class="el" href="state__handling_8cpp_source.html">state_handling.cpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a5c9e8282469e77f533a485256fe10ff0"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="namespacestate__handling.html#a5c9e8282469e77f533a485256fe10ff0">state_handling::get_state</a> </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classproblem__parameters.html">problem_parameters</a> &amp;&#160;</td>
-          <td class="paramname"><em>sp</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const double *&#160;</td>
-          <td class="paramname"><em>X</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const int&#160;</td>
-          <td class="paramname"><em>ind</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double *&#160;</td>
-          <td class="paramname"><em>state</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Returns the next state represented by original variables. </p>
-<dl class="params"><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">sp</td><td>parameters. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">X</td><td>a solution. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">ind</td><td>index of the state. </td></tr>
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">state</td><td>the state (<a class="el" href="group__gAPI.html#gab7984838b079762f5087b37a731e0b79" title="Number of state variables.">SMPC_NUM_STATE_VAR</a> elements). </td></tr>
-  </table>
-  </dd>
-</dl>
-
 <p>Definition at line <a class="el" href="state__handling_8cpp_source.html#l00083">83</a> of file <a class="el" href="state__handling_8cpp_source.html">state_handling.cpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a404a227e866f132d52b9792a861317e2"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="namespacestate__handling.html#a404a227e866f132d52b9792a861317e2">state_handling::get_state_tilde</a> </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classproblem__parameters.html">problem_parameters</a> &amp;&#160;</td>
-          <td class="paramname"><em>sp</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const double *&#160;</td>
-          <td class="paramname"><em>X</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const int&#160;</td>
-          <td class="paramname"><em>ind</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double *&#160;</td>
-          <td class="paramname"><em>state</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Returns the next state as <a class="el" href="pProblemDef.html#pX_tilde">X_tilde</a>. </p>
-<dl class="params"><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">sp</td><td>parameters. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">X</td><td>a solution. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">ind</td><td>index of the state. </td></tr>
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">state</td><td>the state (<a class="el" href="group__gAPI.html#gab7984838b079762f5087b37a731e0b79" title="Number of state variables.">SMPC_NUM_STATE_VAR</a> elements). </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="state__handling_8cpp_source.html#l00056">56</a> of file <a class="el" href="state__handling_8cpp_source.html">state_handling.cpp</a>.</p>
 
 </div>
 </div>
@@ -261,16 +202,61 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Converts state from original variables to <a class="el" href="pProblemDef.html#pX_tilde">X_tilde</a>. </p>
+<p>Converts state from original variables to <a class="el" href="index.html#pX_tilde">X_tilde</a>. </p>
 <dl class="params"><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">h</td><td><a class="el" href="pProblemDef.html#ph">hCoM/gravity</a>. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">h</td><td><a class="el" href="index.html#ph">hCoM/gravity</a>. </td></tr>
     <tr><td class="paramdir">[in,out]</td><td class="paramname">state</td><td>the state (position, velocity and acceleration of CoM). </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="state__handling_8cpp_source.html#l00041">41</a> of file <a class="el" href="state__handling_8cpp_source.html">state_handling.cpp</a>.</p>
+<p>Definition at line <a class="el" href="state__handling_8cpp_source.html#l00068">68</a> of file <a class="el" href="state__handling_8cpp_source.html">state_handling.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ace1f521bb3caac6e4f4b2ea053e23b5b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="namespacestate__handling.html#ace1f521bb3caac6e4f4b2ea053e23b5b">state_handling::tilde_to_bar</a> </td>
+          <td>(</td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>sinA</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>cosA</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>state</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Converts state from <a class="el" href="index.html#pX_tilde">X_tilde</a> to <a class="el" href="index.html#pX_bar">X_bar</a>. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">sinA</td><td>sin of the rotation angle. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">cosA</td><td>cos of the rotation angle. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">state</td><td>the state (<a class="el" href="index.html#pX_tilde">X_tilde</a>). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="state__handling_8cpp_source.html#l00028">28</a> of file <a class="el" href="state__handling_8cpp_source.html">state_handling.cpp</a>.</p>
 
 </div>
 </div>
@@ -299,16 +285,16 @@ Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Converts state from <a class="el" href="pProblemDef.html#pX_tilde">X_tilde</a> to original variables. </p>
+<p>Converts state from <a class="el" href="index.html#pX_tilde">X_tilde</a> to original variables. </p>
 <dl class="params"><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">h</td><td><a class="el" href="pProblemDef.html#ph">hCoM/gravity</a>. </td></tr>
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">state</td><td>the state (<a class="el" href="pProblemDef.html#pX_tilde">X_tilde</a>). </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">h</td><td><a class="el" href="index.html#ph">hCoM/gravity</a>. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">state</td><td>the state (<a class="el" href="index.html#pX_tilde">X_tilde</a>). </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="state__handling_8cpp_source.html#l00029">29</a> of file <a class="el" href="state__handling_8cpp_source.html">state_handling.cpp</a>.</p>
+<p>Definition at line <a class="el" href="state__handling_8cpp_source.html#l00056">56</a> of file <a class="el" href="state__handling_8cpp_source.html">state_handling.cpp</a>.</p>
 
 </div>
 </div>

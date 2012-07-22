@@ -83,10 +83,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a701dbae63454074379439ac51a3c9c27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Jerk along Y axis.  <a href="#a701dbae63454074379439ac51a3c9c27"></a><br/></td></tr>
 <tr class="memitem:ace54643e094c0e7185ae001f57273a17"><td class="memItemLeft" align="right" valign="top">double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc_1_1control.html#ace54643e094c0e7185ae001f57273a17">jy</a> ()</td></tr>
 <tr class="memdesc:ace54643e094c0e7185ae001f57273a17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Jerk along Y axis.  <a href="#ace54643e094c0e7185ae001f57273a17"></a><br/></td></tr>
-<tr class="memitem:aaa69ce86f8d754f6b1e698e322db5c0f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc_1_1control.html#aaa69ce86f8d754f6b1e698e322db5c0f">get_first_controls</a> (const <a class="el" href="classsmpc_1_1solver.html">solver</a> &amp;smpc_solver)</td></tr>
-<tr class="memdesc:aaa69ce86f8d754f6b1e698e322db5c0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the controls that must be applied to reach the next state.  <a href="#aaa69ce86f8d754f6b1e698e322db5c0f"></a><br/></td></tr>
-<tr class="memitem:a9c1ad11017ba1b67a25dab5f9e0fc898"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc_1_1control.html#a9c1ad11017ba1b67a25dab5f9e0fc898">get_controls</a> (const <a class="el" href="classsmpc_1_1solver.html">solver</a> &amp;smpc_solver, const int ind)</td></tr>
-<tr class="memdesc:a9c1ad11017ba1b67a25dab5f9e0fc898"><td class="mdescLeft">&#160;</td><td class="mdescRight">The same as <a class="el" href="classsmpc_1_1control.html#aaa69ce86f8d754f6b1e698e322db5c0f" title="Returns the controls that must be applied to reach the next state.">get_first_controls</a>, but takes an additional parameter - the index of the control inputs. Control[ind] is applied to State[ind-1] to reach State[ind].  <a href="#a9c1ad11017ba1b67a25dab5f9e0fc898"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a02ee6d6f510ea2248b4a6e762dfe538a"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsmpc_1_1control.html#a02ee6d6f510ea2248b4a6e762dfe538a">control_vector</a> [<a class="el" href="group__gAPI.html#ga7ac5a60c7c00a69bad741e5f1973ab45">SMPC_NUM_CONTROL_VAR</a>]</td></tr>
@@ -94,7 +90,7 @@ Public Attributes</h2></td></tr>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>A container for a control vector. </p>
 
-<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00187">187</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
+<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00169">169</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="af170b7be71770a83e9d49efb10b3cfe3"></a>
 <div class="memitem">
@@ -110,76 +106,11 @@ Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00179">179</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
+<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00407">407</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
 
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="a9c1ad11017ba1b67a25dab5f9e0fc898"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="classsmpc_1_1control.html#a9c1ad11017ba1b67a25dab5f9e0fc898">smpc::control::get_controls</a> </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classsmpc_1_1solver.html">solver</a> &amp;&#160;</td>
-          <td class="paramname"><em>smpc_solver</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const int&#160;</td>
-          <td class="paramname"><em>ind</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>The same as <a class="el" href="classsmpc_1_1control.html#aaa69ce86f8d754f6b1e698e322db5c0f" title="Returns the controls that must be applied to reach the next state.">get_first_controls</a>, but takes an additional parameter - the index of the control inputs. Control[ind] is applied to State[ind-1] to reach State[ind]. </p>
-<dl class="params"><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">smpc_solver</td><td>initialized solver </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">ind</td><td>index of control inputs [0 : N-1]. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00192">192</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aaa69ce86f8d754f6b1e698e322db5c0f"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="classsmpc_1_1control.html#aaa69ce86f8d754f6b1e698e322db5c0f">smpc::control::get_first_controls</a> </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classsmpc_1_1solver.html">solver</a> &amp;&#160;</td>
-          <td class="paramname"><em>smpc_solver</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Returns the controls that must be applied to reach the next state. </p>
-<dl class="params"><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">smpc_solver</td><td>initialized solver </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="smpc__solver_8cpp_source.html#l00186">186</a> of file <a class="el" href="smpc__solver_8cpp_source.html">smpc_solver.cpp</a>.</p>
-
-</div>
-</div>
 <a class="anchor" id="a701dbae63454074379439ac51a3c9c27"></a>
 <div class="memitem">
 <div class="memproto">
@@ -196,7 +127,7 @@ Public Attributes</h2></td></tr>
 
 <p>Jerk along Y axis. </p>
 
-<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00207">207</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
+<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00189">189</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
 
 </div>
 </div>
@@ -216,7 +147,7 @@ Public Attributes</h2></td></tr>
 
 <p>Jerk along Y axis. </p>
 
-<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00211">211</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
+<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00193">193</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
 
 </div>
 </div>
@@ -233,7 +164,7 @@ Public Attributes</h2></td></tr>
 <div class="memdoc">
 <div class="fragment"><pre class="fragment">                control[0] - jerk along x axis
                 control[1] - jerk along y axis</pre></div> 
-<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00196">196</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
+<p>Definition at line <a class="el" href="smpc__solver_8h_source.html#l00178">178</a> of file <a class="el" href="smpc__solver_8h_source.html">smpc_solver.h</a>.</p>
 
 </div>
 </div>

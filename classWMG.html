@@ -74,28 +74,30 @@
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aca7ea0fd6165db1a75f23c4fba4347f3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#aca7ea0fd6165db1a75f23c4fba4347f3">WMG</a> (const unsigned int, const unsigned int, const double step_height_=0.0135, double bezier_weight_1_=1.0, double bezier_weight_2_=2.0, double bezier_inclination_1_=0.01, double bezier_inclination_2_=0.008)</td></tr>
-<tr class="memdesc:aca7ea0fd6165db1a75f23c4fba4347f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a <a class="el" href="classWMG.html" title="Defines the parameters of the Walking Pattern Generator.">WMG</a> object.  <a href="#aca7ea0fd6165db1a75f23c4fba4347f3"></a><br/></td></tr>
+<tr class="memitem:ae0ddd277842071669fa42310ca9c7b2a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#ae0ddd277842071669fa42310ca9c7b2a">WMG</a> (const unsigned int N_, const unsigned int T_, const double step_height_=0.0135, double bezier_weight_1_=1.0, double bezier_weight_2_=2.0, double bezier_inclination_1_=0.01, double bezier_inclination_2_=0.008, bool use_fsr_constraints=false)</td></tr>
+<tr class="memdesc:ae0ddd277842071669fa42310ca9c7b2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a <a class="el" href="classWMG.html" title="Defines the parameters of the Walking Pattern Generator.">WMG</a> object.  <a href="#ae0ddd277842071669fa42310ca9c7b2a"></a><br/></td></tr>
 <tr class="memitem:a9c401ba3687308b65cffbff340142b3f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a9c401ba3687308b65cffbff340142b3f">~WMG</a> ()</td></tr>
-<tr class="memdesc:a9c401ba3687308b65cffbff340142b3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default destructor.  <a href="#a9c401ba3687308b65cffbff340142b3f"></a><br/></td></tr>
-<tr class="memitem:a95e85052e43f64c5d2f7dde39f2588f6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a95e85052e43f64c5d2f7dde39f2588f6">setFootstepDefaults</a> (const unsigned int, const unsigned int, const double *constraints=NULL)</td></tr>
-<tr class="memdesc:a95e85052e43f64c5d2f7dde39f2588f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set default parameters of footsteps.  <a href="#a95e85052e43f64c5d2f7dde39f2588f6"></a><br/></td></tr>
-<tr class="memitem:af4a67e60426c8d0d59488b7ccb78e602"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#af4a67e60426c8d0d59488b7ccb78e602">setFootstepDefaults</a> (const unsigned int, const unsigned int, const unsigned int, const double *constraints=NULL)</td></tr>
-<tr class="memdesc:af4a67e60426c8d0d59488b7ccb78e602"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set default parameters of footsteps.  <a href="#af4a67e60426c8d0d59488b7ccb78e602"></a><br/></td></tr>
+<tr class="memdesc:a9c401ba3687308b65cffbff340142b3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a9c401ba3687308b65cffbff340142b3f"></a><br/></td></tr>
+<tr class="memitem:a7bea3cf166577710726b1ca544c05ce2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a7bea3cf166577710726b1ca544c05ce2">setFootstepParameters</a> (const unsigned int def_periods, const unsigned int ds_periods, const unsigned int ds_number, bool use_user_constraints_=false)</td></tr>
+<tr class="memdesc:a7bea3cf166577710726b1ca544c05ce2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set default parameters of footsteps, a wrapper around not so safe <a class="el" href="classWMG.html#abbfd13b412daf0243721ecea4bb842a0" title="Set default parameters of footsteps.">setFootstepParametersMS</a> function.  <a href="#a7bea3cf166577710726b1ca544c05ce2"></a><br/></td></tr>
+<tr class="memitem:abbfd13b412daf0243721ecea4bb842a0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#abbfd13b412daf0243721ecea4bb842a0">setFootstepParametersMS</a> (const unsigned int def_time_ms_, const unsigned int ds_time_ms_, const unsigned int ds_number, bool use_user_constraints_=false)</td></tr>
+<tr class="memdesc:abbfd13b412daf0243721ecea4bb842a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set default parameters of footsteps.  <a href="#abbfd13b412daf0243721ecea4bb842a0"></a><br/></td></tr>
 <tr class="memitem:a74bae72edfa4402ba19f360e5b1582dc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a74bae72edfa4402ba19f360e5b1582dc">addFootstep</a> (const double, const double, const double, <a class="el" href="group__gWMG__API.html#ga45147e528b9243fa8842d38163498449">fs_type</a> type=<a class="el" href="group__gWMG__API.html#gga45147e528b9243fa8842d38163498449a8fde2d0cdecdd9eb8caf0bede2665815">FS_TYPE_AUTO</a>)</td></tr>
 <tr class="memdesc:a74bae72edfa4402ba19f360e5b1582dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a footstep to FS.  <a href="#a74bae72edfa4402ba19f360e5b1582dc"></a><br/></td></tr>
-<tr class="memitem:a6c99fd7d1402125cd58563fd6fb1d691"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a6c99fd7d1402125cd58563fd6fb1d691">isSupportSwitchNeeded</a> ()</td></tr>
-<tr class="memdesc:a6c99fd7d1402125cd58563fd6fb1d691"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the support foot switch is needed.  <a href="#a6c99fd7d1402125cd58563fd6fb1d691"></a><br/></td></tr>
 <tr class="memitem:ac9fb2acae0b398c5ad1fb9c5109b0b1e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__gWMG__API.html#ga4bb1652524cdb17807ce1b82df68d50a">WMGret</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#ac9fb2acae0b398c5ad1fb9c5109b0b1e">formPreviewWindow</a> (<a class="el" href="classsmpc__parameters.html">smpc_parameters</a> &amp;)</td></tr>
 <tr class="memdesc:ac9fb2acae0b398c5ad1fb9c5109b0b1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forms a preview window.  <a href="#ac9fb2acae0b398c5ad1fb9c5109b0b1e"></a><br/></td></tr>
-<tr class="memitem:a2033e4afd56590aff6df834613993c82"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a2033e4afd56590aff6df834613993c82">FS2file</a> (const std::string, const bool plot_ds=true)</td></tr>
-<tr class="memdesc:a2033e4afd56590aff6df834613993c82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Outputs the footsteps in FS to a file, that can be executed in Matlab/Octave to get a figure of the steps.  <a href="#a2033e4afd56590aff6df834613993c82"></a><br/></td></tr>
-<tr class="memitem:a631e75e8be9136e382942db838a33490"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a631e75e8be9136e382942db838a33490">getFeetPositions</a> (const unsigned int, double *, double *)</td></tr>
-<tr class="memdesc:a631e75e8be9136e382942db838a33490"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine position and orientation of feet.  <a href="#a631e75e8be9136e382942db838a33490"></a><br/></td></tr>
-<tr class="memitem:a804fa71ec0d14ffa344cda92fc626bc3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a804fa71ec0d14ffa344cda92fc626bc3">getFootsteps</a> (std::vector&lt; double &gt; &amp;, std::vector&lt; double &gt; &amp;, std::vector&lt; double &gt; &amp;)</td></tr>
-<tr class="memdesc:a804fa71ec0d14ffa344cda92fc626bc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return coordinates of footstep reference points and rotation angles of footsteps (only for SS).  <a href="#a804fa71ec0d14ffa344cda92fc626bc3"></a><br/></td></tr>
-<tr class="memitem:a96d65fb431a5a347c769de939f18acd9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a96d65fb431a5a347c769de939f18acd9">changeNextSSPosition</a> (const double *, const bool)</td></tr>
-<tr class="memdesc:a96d65fb431a5a347c769de939f18acd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes position of the next SS.  <a href="#a96d65fb431a5a347c769de939f18acd9"></a><br/></td></tr>
+<tr class="memitem:ac48c71f30fc07739307fdc248047b36e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#ac48c71f30fc07739307fdc248047b36e">getFeetPositions</a> (const unsigned int shift_from_current_ms, double *left_foot_pos, double *right_foot_pos)</td></tr>
+<tr class="memdesc:ac48c71f30fc07739307fdc248047b36e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine position and orientation of feet.  <a href="#ac48c71f30fc07739307fdc248047b36e"></a><br/></td></tr>
+<tr class="memitem:a6c99fd7d1402125cd58563fd6fb1d691"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a6c99fd7d1402125cd58563fd6fb1d691">isSupportSwitchNeeded</a> ()</td></tr>
+<tr class="memdesc:a6c99fd7d1402125cd58563fd6fb1d691"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the support foot switch is needed.  <a href="#a6c99fd7d1402125cd58563fd6fb1d691"></a><br/></td></tr>
+<tr class="memitem:afebffbfc587e4ef5f4f2315929e80880"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#afebffbfc587e4ef5f4f2315929e80880">changeNextSSPosition</a> (const double *posture, const bool zero_z_coordinate)</td></tr>
+<tr class="memdesc:afebffbfc587e4ef5f4f2315929e80880"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes position of the next SS.  <a href="#afebffbfc587e4ef5f4f2315929e80880"></a><br/></td></tr>
+<tr class="memitem:aa56b2799cda321269c926a464800c8dd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#aa56b2799cda321269c926a464800c8dd">repositionFootsteps</a> (const double diff_x, const double diff_y)</td></tr>
+<tr class="memdesc:aa56b2799cda321269c926a464800c8dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reposition all subsequent footsteps that are not fixed at the current moment.  <a href="#aa56b2799cda321269c926a464800c8dd"></a><br/></td></tr>
+<tr class="memitem:aa5eb12e2f98607ae481b28bf141b53c4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#aa5eb12e2f98607ae481b28bf141b53c4">FS2file</a> (const std::string filename, const bool plot_ds=true)</td></tr>
+<tr class="memdesc:aa5eb12e2f98607ae481b28bf141b53c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Outputs the footsteps in FS to a Matlab/Octave script for plotting.  <a href="#aa5eb12e2f98607ae481b28bf141b53c4"></a><br/></td></tr>
+<tr class="memitem:a9162c8e1d18c8ef178db3f0608c1c141"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a9162c8e1d18c8ef178db3f0608c1c141">getFootsteps</a> (std::vector&lt; double &gt; &amp;x_coord, std::vector&lt; double &gt; &amp;y_coord, std::vector&lt; double &gt; &amp;angle_rot)</td></tr>
+<tr class="memdesc:a9162c8e1d18c8ef178db3f0608c1c141"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return coordinates of footstep reference points and rotation angles of footsteps (only for SS).  <a href="#a9162c8e1d18c8ef178db3f0608c1c141"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:af4d5bb54feae52be9356e0f0003294ae"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classfootstep.html">footstep</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#af4d5bb54feae52be9356e0f0003294ae">FS</a></td></tr>
@@ -105,12 +107,20 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a08afde28cf03ff4f5766d45ce80b3dcc"><td class="memItemLeft" align="right" valign="top">unsigned int *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a08afde28cf03ff4f5766d45ce80b3dcc">T_ms</a></td></tr>
 <tr class="memitem:aeba3ee738cc30f84d8690aebd6c7c2e6"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#aeba3ee738cc30f84d8690aebd6c7c2e6">sampling_period</a></td></tr>
 <tr class="memitem:a6770fc44d46e4fdda9ad584c02516ce5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a6770fc44d46e4fdda9ad584c02516ce5">current_step_number</a></td></tr>
+<tr class="memdesc:a6770fc44d46e4fdda9ad584c02516ce5"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the step in FS that is at the start of the current preview window.  <a href="#a6770fc44d46e4fdda9ad584c02516ce5"></a><br/></td></tr>
 <tr class="memitem:a824a169f37fc3df8a6ceaa55a3e698a9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a824a169f37fc3df8a6ceaa55a3e698a9">first_preview_step</a></td></tr>
 <tr class="memdesc:a824a169f37fc3df8a6ceaa55a3e698a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The first step in the current preview window.  <a href="#a824a169f37fc3df8a6ceaa55a3e698a9"></a><br/></td></tr>
 <tr class="memitem:aa73c2b69c254fbae2950889a8d72bca6"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#aa73c2b69c254fbae2950889a8d72bca6">step_height</a></td></tr>
 <tr class="memdesc:aa73c2b69c254fbae2950889a8d72bca6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum height, that can be reached by a swing foot.  <a href="#aa73c2b69c254fbae2950889a8d72bca6"></a><br/></td></tr>
-<tr class="memitem:aa722a357e7b0d26863c9fcb1940b51ca"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#aa722a357e7b0d26863c9fcb1940b51ca">def_ss_constraint</a> [4]</td></tr>
-<tr class="memitem:a3c8c594db7e76a4a0b4feb013ad3cfad"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a3c8c594db7e76a4a0b4feb013ad3cfad">def_auto_ds_constraint</a> [4]</td></tr>
+<tr class="memitem:af81217246e178ec09b13e7914934b706"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdefConstraints.html">defConstraints</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#af81217246e178ec09b13e7914934b706">def_constraints</a></td></tr>
+<tr class="memdesc:af81217246e178ec09b13e7914934b706"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default SS and DS constraints.  <a href="#af81217246e178ec09b13e7914934b706"></a><br/></td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:ae362c448257f98876c8a914c69a6db71"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#ae362c448257f98876c8a914c69a6db71">user_constraints</a> [4]</td></tr>
+<tr class="memdesc:ae362c448257f98876c8a914c69a6db71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constraints given by the user, initialized to the default values on initialization.  <a href="#ae362c448257f98876c8a914c69a6db71"></a><br/></td></tr>
+<tr class="memitem:abc0b9add28aec20eaf2ad6cb79592c58"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#abc0b9add28aec20eaf2ad6cb79592c58">user_constraints_auto_ds</a> [4]</td></tr>
+<tr class="memdesc:abc0b9add28aec20eaf2ad6cb79592c58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constraints given by the user, initialized to the default values on initialization.  <a href="#abc0b9add28aec20eaf2ad6cb79592c58"></a><br/></td></tr>
+<tr class="memitem:a2595564c7a71c1c7790c43ec7a064852"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a2595564c7a71c1c7790c43ec7a064852">use_user_constraints</a></td></tr>
+<tr class="memdesc:a2595564c7a71c1c7790c43ec7a064852"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constraints given by the user, initialized to the default values on initialization.  <a href="#a2595564c7a71c1c7790c43ec7a064852"></a><br/></td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:ae00d3839fb167823358529ec03b55785"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#ae00d3839fb167823358529ec03b55785">bezier_weight_1</a></td></tr>
 <tr class="memitem:a942fd5fb0aad8e74bff7d80844bb8652"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a942fd5fb0aad8e74bff7d80844bb8652">bezier_weight_2</a></td></tr>
@@ -130,7 +140,6 @@ Private Member Functions</h2></td></tr>
 <tr class="memdesc:a02edb351fa39c4530b6d4c9e8aa29311"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns index of the previous SS.  <a href="#a02edb351fa39c4530b6d4c9e8aa29311"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:aeae0e43b50428938f2343ae65f43a8ae"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#aeae0e43b50428938f2343ae65f43a8ae">addstep_constraint</a> [4]</td></tr>
 <tr class="memitem:a58e51214c674db9bb2d680558d38b520"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a58e51214c674db9bb2d680558d38b520">def_time_ms</a></td></tr>
 <tr class="memitem:a6a1d2969003c2a1a5ab2b6776fcccf5c"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a6a1d2969003c2a1a5ab2b6776fcccf5c">ds_time_ms</a></td></tr>
 <tr class="memitem:a73f6a84e442ae0546c1f53ec7f3f877c"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWMG.html#a73f6a84e442ae0546c1f53ec7f3f877c">ds_num</a></td></tr>
@@ -139,14 +148,14 @@ Private Attributes</h2></td></tr>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Defines the parameters of the Walking Pattern Generator. </p>
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00120">120</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00240">240</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="aca7ea0fd6165db1a75f23c4fba4347f3"></a>
+<a class="anchor" id="ae0ddd277842071669fa42310ca9c7b2a"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classWMG.html#aca7ea0fd6165db1a75f23c4fba4347f3">WMG::WMG</a> </td>
+          <td class="memname"><a class="el" href="classWMG.html#ae0ddd277842071669fa42310ca9c7b2a">WMG::WMG</a> </td>
           <td>(</td>
           <td class="paramtype">const unsigned int&#160;</td>
           <td class="paramname"><em>N_</em>, </td>
@@ -185,7 +194,13 @@ Private Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>bezier_inclination_2_</em> = <code>0.008</code>&#160;</td>
+          <td class="paramname"><em>bezier_inclination_2_</em> = <code>0.008</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>use_fsr_constraints</em> = <code>false</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -206,12 +221,13 @@ Private Attributes</h2></td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">bezier_weight_2_</td><td>see <a class="el" href="classWMG.html#a942fd5fb0aad8e74bff7d80844bb8652">bezier_weight_2</a> </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">bezier_inclination_1_</td><td>see <a class="el" href="classWMG.html#a457a29a6e3e86091798863a8733654a9">bezier_inclination_1</a> </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">bezier_inclination_2_</td><td>see <a class="el" href="classWMG.html#ab0f4120aab9dc08ec6b16b2ba7557a13">bezier_inclination_2</a> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">use_fsr_constraints</td><td>Use constraints determined by positions of FSR sensors.</td></tr>
   </table>
   </dd>
 </dl>
-<p>NAO constraint with safety margin. </p>
+<dl class="section note"><dt>Note:</dt><dd>The 'CenterOfPressure' value of the NAO robot can be computed correctly only when CoP lies within the polygon determined by force sensitive resistors (FSR) located on each foot. From the documentation: "If the real center of pressure go outside the 4 FSR parallelogram, the value of weight and centre of pressure could become bad, due to internal mechanical constraint". The rectanle that fits within the FSR polygon is smaller than our default constraint rectangle, which was selected based on the measurements of the feet. See also <a class="el" href="classdefConstraints.html" title="Default footstep constraints.">defConstraints</a>. </dd></dl>
 
-<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00027">27</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00015">15</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
 
 </div>
 </div>
@@ -229,9 +245,9 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Default destructor. </p>
+<p>Destructor. </p>
 
-<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00079">79</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00065">65</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
 
 </div>
 </div>
@@ -285,16 +301,16 @@ Private Attributes</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note:</dt><dd>Coordinates and angle are treated as absolute for the first step in the preview window. </dd></dl>
 
-<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00157">157</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00102">102</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a96d65fb431a5a347c769de939f18acd9"></a>
+<a class="anchor" id="afebffbfc587e4ef5f4f2315929e80880"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classWMG.html#a96d65fb431a5a347c769de939f18acd9">WMG::changeNextSSPosition</a> </td>
+          <td class="memname">void <a class="el" href="classWMG.html#afebffbfc587e4ef5f4f2315929e80880">WMG::changeNextSSPosition</a> </td>
           <td>(</td>
           <td class="paramtype">const double *&#160;</td>
           <td class="paramname"><em>posture</em>, </td>
@@ -322,9 +338,9 @@ Private Attributes</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>DS must be adjusted as well. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>DS must be adjusted as well. </dd></dl>
 
-<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00356">356</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00300">300</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
 
 </div>
 </div>
@@ -346,16 +362,16 @@ Private Attributes</h2></td></tr>
 <p>Forms a preview window. </p>
 <dl class="section return"><dt>Returns:</dt><dd>WMG_OK or WMG_HALT (simulation must be stopped) </dd></dl>
 
-<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00368">368</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00331">331</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a2033e4afd56590aff6df834613993c82"></a>
+<a class="anchor" id="aa5eb12e2f98607ae481b28bf141b53c4"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classWMG.html#a2033e4afd56590aff6df834613993c82">WMG::FS2file</a> </td>
+          <td class="memname">void <a class="el" href="classWMG.html#aa5eb12e2f98607ae481b28bf141b53c4">WMG::FS2file</a> </td>
           <td>(</td>
           <td class="paramtype">const std::string&#160;</td>
           <td class="paramname"><em>filename</em>, </td>
@@ -375,7 +391,7 @@ Private Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Outputs the footsteps in FS to a file, that can be executed in Matlab/Octave to get a figure of the steps. </p>
+<p>Outputs the footsteps in FS to a Matlab/Octave script for plotting. </p>
 <dl class="params"><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">filename</td><td>output file name. </td></tr>
@@ -384,7 +400,7 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00467">467</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00423">423</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
 
 </div>
 </div>
@@ -433,12 +449,12 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a631e75e8be9136e382942db838a33490"></a>
+<a class="anchor" id="ac48c71f30fc07739307fdc248047b36e"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classWMG.html#a631e75e8be9136e382942db838a33490">WMG::getFeetPositions</a> </td>
+          <td class="memname">void <a class="el" href="classWMG.html#ac48c71f30fc07739307fdc248047b36e">WMG::getFeetPositions</a> </td>
           <td>(</td>
           <td class="paramtype">const unsigned int&#160;</td>
           <td class="paramname"><em>shift_from_current_ms</em>, </td>
@@ -477,16 +493,16 @@ Private Attributes</h2></td></tr>
 <dd>
 Cannot be called on the first or last SS =&gt; must be called after FormPreviewWindow(). </dd></dl>
 
-<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00273">273</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00230">230</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a804fa71ec0d14ffa344cda92fc626bc3"></a>
+<a class="anchor" id="a9162c8e1d18c8ef178db3f0608c1c141"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classWMG.html#a804fa71ec0d14ffa344cda92fc626bc3">WMG::getFootsteps</a> </td>
+          <td class="memname">void <a class="el" href="classWMG.html#a9162c8e1d18c8ef178db3f0608c1c141">WMG::getFootsteps</a> </td>
           <td>(</td>
           <td class="paramtype">std::vector&lt; double &gt; &amp;&#160;</td>
           <td class="paramname"><em>x_coord</em>, </td>
@@ -522,7 +538,7 @@ Cannot be called on the first or last SS =&gt; must be called after FormPreviewW
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00540">540</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00488">488</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
 
 </div>
 </div>
@@ -725,31 +741,25 @@ Cannot be called on the first or last SS =&gt; must be called after FormPreviewW
 <p>Checks if the support foot switch is needed. </p>
 <dl class="section return"><dt>Returns:</dt><dd>true if the support foot must be switched. </dd></dl>
 
-<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00321">321</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00273">273</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a95e85052e43f64c5d2f7dde39f2588f6"></a>
+<a class="anchor" id="aa56b2799cda321269c926a464800c8dd"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classWMG.html#a95e85052e43f64c5d2f7dde39f2588f6">WMG::setFootstepDefaults</a> </td>
+          <td class="memname">void <a class="el" href="classWMG.html#aa56b2799cda321269c926a464800c8dd">WMG::repositionFootsteps</a> </td>
           <td>(</td>
-          <td class="paramtype">const unsigned int&#160;</td>
-          <td class="paramname"><em>def_num_</em>, </td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>diff_x</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const unsigned int&#160;</td>
-          <td class="paramname"><em>ds_num_</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const double *&#160;</td>
-          <td class="paramname"><em>constraints</em> = <code>NULL</code>&#160;</td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>diff_y</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -760,27 +770,77 @@ Cannot be called on the first or last SS =&gt; must be called after FormPreviewW
 </div>
 <div class="memdoc">
 
-<p>Set default parameters of footsteps. </p>
+<p>Reposition all subsequent footsteps that are not fixed at the current moment. </p>
 <dl class="params"><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">def_num_</td><td>default time in ms (for SS or DS depending on the type of added footstep) </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">ds_num_</td><td>number of DS to be generated automatically. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">constraints</td><td>Vector of the PoS constraints (assumed to be [4 x 1], can be NULL).</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">diff_x</td><td>change in position along x axis </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">diff_y</td><td>change in position along y axis </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note:</dt><dd>length of one automatically generated DS is assumed to be equal to sampling_period. </dd></dl>
 
-<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00098">98</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00306">306</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="af4a67e60426c8d0d59488b7ccb78e602"></a>
+<a class="anchor" id="a7bea3cf166577710726b1ca544c05ce2"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classWMG.html#a95e85052e43f64c5d2f7dde39f2588f6">WMG::setFootstepDefaults</a> </td>
+          <td class="memname">void <a class="el" href="classWMG.html#a7bea3cf166577710726b1ca544c05ce2">WMG::setFootstepParameters</a> </td>
+          <td>(</td>
+          <td class="paramtype">const unsigned int&#160;</td>
+          <td class="paramname"><em>def_periods</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned int&#160;</td>
+          <td class="paramname"><em>ds_periods</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned int&#160;</td>
+          <td class="paramname"><em>ds_number</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>use_user_constraints_</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Set default parameters of footsteps, a wrapper around not so safe <a class="el" href="classWMG.html#abbfd13b412daf0243721ecea4bb842a0" title="Set default parameters of footsteps.">setFootstepParametersMS</a> function. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">def_periods</td><td>default number of sampling periods in a support (SS or DS depending on the type of added footstep) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">ds_periods</td><td>default number of sampling periods in an automatically generated DS. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">ds_number</td><td>number of DS to be generated automatically. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">use_user_constraints_</td><td>use <a class="el" href="classWMG.html#ae362c448257f98876c8a914c69a6db71" title="Constraints given by the user, initialized to the default values on initialization.">user_constraints</a> and <a class="el" href="classWMG.html#abc0b9add28aec20eaf2ad6cb79592c58" title="Constraints given by the user, initialized to the default values on initialization.">user_constraints_auto_ds</a> instead of the default constraints. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00075">75</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="abbfd13b412daf0243721ecea4bb842a0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classWMG.html#abbfd13b412daf0243721ecea4bb842a0">WMG::setFootstepParametersMS</a> </td>
           <td>(</td>
           <td class="paramtype">const unsigned int&#160;</td>
           <td class="paramname"><em>def_time_ms_</em>, </td>
@@ -795,13 +855,13 @@ Cannot be called on the first or last SS =&gt; must be called after FormPreviewW
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const unsigned int&#160;</td>
-          <td class="paramname"><em>ds_num_</em>, </td>
+          <td class="paramname"><em>ds_number</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const double *&#160;</td>
-          <td class="paramname"><em>constraints</em> = <code>NULL</code>&#160;</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>use_user_constraints_</em> = <code>false</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -815,34 +875,19 @@ Cannot be called on the first or last SS =&gt; must be called after FormPreviewW
 <p>Set default parameters of footsteps. </p>
 <dl class="params"><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">def_time_ms_</td><td>default time in ms (for SS or DS depending on the type of added footstep) </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">ds_time_ms_</td><td>length of one automatically generated DS [ms.] </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">ds_num_</td><td>number of DS to be generated automatically. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">constraints</td><td>Vector of the PoS constraints (assumed to be [4 x 1], can be NULL). </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">def_time_ms_</td><td>default time spent in a support (SS or DS depending on the type of added footstep) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">ds_time_ms_</td><td>default time spent in an automatically generated DS. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">ds_number</td><td>number of DS to be generated automatically. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">use_user_constraints_</td><td>use <a class="el" href="classWMG.html#ae362c448257f98876c8a914c69a6db71" title="Constraints given by the user, initialized to the default values on initialization.">user_constraints</a> and <a class="el" href="classWMG.html#abc0b9add28aec20eaf2ad6cb79592c58" title="Constraints given by the user, initialized to the default values on initialization.">user_constraints_auto_ds</a> instead of the default constraints. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00126">126</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8cpp_source.html#l00089">89</a> of file <a class="el" href="WMG_8cpp_source.html">WMG.cpp</a>.</p>
 
 </div>
 </div>
 <hr/><h2>Member Data Documentation</h2>
-<a class="anchor" id="aeae0e43b50428938f2343ae65f43a8ae"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double <a class="el" href="classWMG.html#aeae0e43b50428938f2343ae65f43a8ae">WMG::addstep_constraint</a>[4]<code> [private]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00223">223</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
-
-</div>
-</div>
 <a class="anchor" id="a457a29a6e3e86091798863a8733654a9"></a>
 <div class="memitem">
 <div class="memproto">
@@ -858,7 +903,7 @@ Cannot be called on the first or last SS =&gt; must be called after FormPreviewW
 <p>The control points have weights, the weights of the first and the last points are always equal to 1.0. The weights of other two points can be given by the user.</p>
 <p>The 1 and 2 points also have inclination, i.e. the shift along y axis (in the frame fixed in the step reference point). The values of inclinations are given in meters. </p>
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00211">211</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00472">472</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -877,7 +922,7 @@ Cannot be called on the first or last SS =&gt; must be called after FormPreviewW
 <p>The control points have weights, the weights of the first and the last points are always equal to 1.0. The weights of other two points can be given by the user.</p>
 <p>The 1 and 2 points also have inclination, i.e. the shift along y axis (in the frame fixed in the step reference point). The values of inclinations are given in meters. </p>
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00212">212</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00473">473</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -896,7 +941,7 @@ Cannot be called on the first or last SS =&gt; must be called after FormPreviewW
 <p>The control points have weights, the weights of the first and the last points are always equal to 1.0. The weights of other two points can be given by the user.</p>
 <p>The 1 and 2 points also have inclination, i.e. the shift along y axis (in the frame fixed in the step reference point). The values of inclinations are given in meters. </p>
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00209">209</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00470">470</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -915,7 +960,7 @@ Cannot be called on the first or last SS =&gt; must be called after FormPreviewW
 <p>The control points have weights, the weights of the first and the last points are always equal to 1.0. The weights of other two points can be given by the user.</p>
 <p>The 1 and 2 points also have inclination, i.e. the shift along y axis (in the frame fixed in the step reference point). The values of inclinations are given in meters. </p>
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00210">210</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00471">471</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -929,39 +974,27 @@ Cannot be called on the first or last SS =&gt; must be called after FormPreviewW
       </table>
 </div>
 <div class="memdoc">
+
 <p>This is the step in FS that is at the start of the current preview window. </p>
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00180">180</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00431">431</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a3c8c594db7e76a4a0b4feb013ad3cfad"></a>
+<a class="anchor" id="af81217246e178ec09b13e7914934b706"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">double <a class="el" href="classWMG.html#a3c8c594db7e76a4a0b4feb013ad3cfad">WMG::def_auto_ds_constraint</a>[4]</td>
+          <td class="memname"><a class="el" href="classdefConstraints.html">defConstraints</a> <a class="el" href="classWMG.html#af81217246e178ec09b13e7914934b706">WMG::def_constraints</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00189">189</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Default SS and DS constraints. </p>
 
-</div>
-</div>
-<a class="anchor" id="aa722a357e7b0d26863c9fcb1940b51ca"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double <a class="el" href="classWMG.html#aa722a357e7b0d26863c9fcb1940b51ca">WMG::def_ss_constraint</a>[4]</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00188">188</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00441">441</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -976,7 +1009,7 @@ Cannot be called on the first or last SS =&gt; must be called after FormPreviewW
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00225">225</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00483">483</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -991,7 +1024,7 @@ Cannot be called on the first or last SS =&gt; must be called after FormPreviewW
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00227">227</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00485">485</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -1006,7 +1039,7 @@ Cannot be called on the first or last SS =&gt; must be called after FormPreviewW
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00226">226</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00484">484</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -1023,7 +1056,7 @@ Cannot be called on the first or last SS =&gt; must be called after FormPreviewW
 
 <p>The first step in the current preview window. </p>
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00183">183</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00434">434</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -1040,7 +1073,7 @@ Cannot be called on the first or last SS =&gt; must be called after FormPreviewW
 
 <p>A vector of footsteps. </p>
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00169">169</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00420">420</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -1055,7 +1088,7 @@ Cannot be called on the first or last SS =&gt; must be called after FormPreviewW
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00229">229</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00487">487</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -1072,7 +1105,7 @@ Cannot be called on the first or last SS =&gt; must be called after FormPreviewW
 
 <p>Number of iterations in a preview window. </p>
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00173">173</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00424">424</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -1087,7 +1120,7 @@ Cannot be called on the first or last SS =&gt; must be called after FormPreviewW
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00176">176</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00427">427</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -1104,7 +1137,7 @@ Cannot be called on the first or last SS =&gt; must be called after FormPreviewW
 
 <p>The maximum height, that can be reached by a swing foot. </p>
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00186">186</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00437">437</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>
@@ -1119,7 +1152,58 @@ Cannot be called on the first or last SS =&gt; must be called after FormPreviewW
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="WMG_8h_source.html#l00175">175</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00426">426</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2595564c7a71c1c7790c43ec7a064852"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classWMG.html#a2595564c7a71c1c7790c43ec7a064852">WMG::use_user_constraints</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Constraints given by the user, initialized to the default values on initialization. </p>
+
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00447">447</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ae362c448257f98876c8a914c69a6db71"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double <a class="el" href="classWMG.html#ae362c448257f98876c8a914c69a6db71">WMG::user_constraints</a>[4]</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Constraints given by the user, initialized to the default values on initialization. </p>
+
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00445">445</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="abc0b9add28aec20eaf2ad6cb79592c58"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double <a class="el" href="classWMG.html#abc0b9add28aec20eaf2ad6cb79592c58">WMG::user_constraints_auto_ds</a>[4]</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Constraints given by the user, initialized to the default values on initialization. </p>
+
+<p>Definition at line <a class="el" href="WMG_8h_source.html#l00446">446</a> of file <a class="el" href="WMG_8h_source.html">WMG.h</a>.</p>
 
 </div>
 </div>

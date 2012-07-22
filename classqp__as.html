@@ -57,6 +57,7 @@
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a>  </div>
   <div class="headertitle">
@@ -74,8 +75,7 @@ Inheritance diagram for qp_as:</div>
  <div class="center">
   <img src="classqp__as.png" usemap="#qp_as_map" alt=""/>
   <map id="qp_as_map" name="qp_as_map">
-<area href="classqp__solver.html" title="Solve a quadratic program with a specific structure." alt="qp_solver" shape="rect" coords="0,56,127,80"/>
-<area href="classproblem__parameters.html" title="A set of problem parameters." alt="problem_parameters" shape="rect" coords="0,0,127,24"/>
+<area href="classAS_1_1problem__parameters.html" title="A set of problem parameters." alt="AS::problem_parameters" shape="rect" coords="0,0,150,24"/>
 </map>
  </div></div>
 
@@ -83,46 +83,58 @@ Inheritance diagram for qp_as:</div>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:acef0afc62e99e171f957c911ca34f475"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#acef0afc62e99e171f957c911ca34f475">qp_as</a> (const int N_, const double, const double, const double, const double, const double)</td></tr>
-<tr class="memdesc:acef0afc62e99e171f957c911ca34f475"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor: initialization of the constant parameters.  <a href="#acef0afc62e99e171f957c911ca34f475"></a><br/></td></tr>
+<tr class="memitem:ab0b002a46a4cdb99e5ee4171f97ed64a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#ab0b002a46a4cdb99e5ee4171f97ed64a">qp_as</a> (const int N_, const double, const double, const double, const double, const double, const bool, const unsigned int, const bool)</td></tr>
+<tr class="memdesc:ab0b002a46a4cdb99e5ee4171f97ed64a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor: initialization of the constant parameters.  <a href="#ab0b002a46a4cdb99e5ee4171f97ed64a"></a><br/></td></tr>
 <tr class="memitem:ad45c27014c328627ca3dc662fb45743a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#ad45c27014c328627ca3dc662fb45743a">~qp_as</a> ()</td></tr>
 <tr class="memitem:a4bd0c46eda2dc4ba4d5a31ca628f0ada"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#a4bd0c46eda2dc4ba4d5a31ca628f0ada">set_parameters</a> (const double *, const double *, const double, const double *, const double *, const double *, const double *, const double *)</td></tr>
 <tr class="memdesc:a4bd0c46eda2dc4ba4d5a31ca628f0ada"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes quadratic problem.  <a href="#a4bd0c46eda2dc4ba4d5a31ca628f0ada"></a><br/></td></tr>
-<tr class="memitem:af0386f027f77a8ee54f13df9ee2c9f84"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#af0386f027f77a8ee54f13df9ee2c9f84">solve</a> ()</td></tr>
-<tr class="memdesc:af0386f027f77a8ee54f13df9ee2c9f84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solve QP problem.  <a href="#af0386f027f77a8ee54f13df9ee2c9f84"></a><br/></td></tr>
+<tr class="memitem:a9d6a87d4f44efa9a458e6d54a8b48800"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#a9d6a87d4f44efa9a458e6d54a8b48800">solve</a> (vector&lt; double &gt; &amp;)</td></tr>
+<tr class="memdesc:a9d6a87d4f44efa9a458e6d54a8b48800"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solve QP problem.  <a href="#a9d6a87d4f44efa9a458e6d54a8b48800"></a><br/></td></tr>
+<tr class="memitem:a4e90d6d940af02e868fa84fd52cd40e8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#a4e90d6d940af02e868fa84fd52cd40e8">form_init_fp</a> (const double *, const double *, const double *, const bool, double *)</td></tr>
+<tr class="memdesc:a4e90d6d940af02e868fa84fd52cd40e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates an initial feasible point.  <a href="#a4e90d6d940af02e868fa84fd52cd40e8"></a><br/></td></tr>
+<tr><td colspan="2"><h2><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:afc3e9ed1c081763d05f5f8d1decca8f3"><td class="memItemLeft" align="right" valign="top">double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#afc3e9ed1c081763d05f5f8d1decca8f3">X</a></td></tr>
+<tr class="memitem:ad173c7c26438f6451952cbc5bc84a299"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#ad173c7c26438f6451952cbc5bc84a299">added_constraints_num</a></td></tr>
+<tr class="memitem:a8e00926c36168b0773b37b1c95eb93e8"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#a8e00926c36168b0773b37b1c95eb93e8">removed_constraints_num</a></td></tr>
+<tr class="memitem:a0b041943c324c1bb12e0a88634662d5a"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#a0b041943c324c1bb12e0a88634662d5a">active_set_size</a></td></tr>
+<tr class="memitem:a00315103f48768dd2f63315a9e277874"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#a00315103f48768dd2f63315a9e277874">constraint_removal_on</a></td></tr>
+<tr class="memitem:aaaa42b8794f6c3ddf3ad0ced9e562c4d"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#aaaa42b8794f6c3ddf3ad0ced9e562c4d">max_added_constraints_num</a></td></tr>
 <tr><td colspan="2"><h2><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:a812a93d46943d6244d03447e879ee145"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#a812a93d46943d6244d03447e879ee145">form_iHg</a> (const double *, const double *)</td></tr>
-<tr class="memdesc:a812a93d46943d6244d03447e879ee145"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forms inv(2*H) * g.  <a href="#a812a93d46943d6244d03447e879ee145"></a><br/></td></tr>
-<tr class="memitem:a94e44543ba3f12ac535289ee042566d9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#a94e44543ba3f12ac535289ee042566d9">form_constraints</a> (const double *, const double *, const double *)</td></tr>
-<tr class="memdesc:a94e44543ba3f12ac535289ee042566d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forms the upper and lower constraints.  <a href="#a94e44543ba3f12ac535289ee042566d9"></a><br/></td></tr>
 <tr class="memitem:a359f655daa1aafe510623eeacb4aaed7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#a359f655daa1aafe510623eeacb4aaed7">check_blocking_constraints</a> ()</td></tr>
 <tr class="memdesc:a359f655daa1aafe510623eeacb4aaed7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks for blocking constraints.  <a href="#a359f655daa1aafe510623eeacb4aaed7"></a><br/></td></tr>
 <tr class="memitem:a18a148f7356ff3f09060a095a648a80d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#a18a148f7356ff3f09060a095a648a80d">choose_excl_constr</a> (const double *)</td></tr>
 <tr class="memdesc:a18a148f7356ff3f09060a095a648a80d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Selects a constraint for removal from active set.  <a href="#a18a148f7356ff3f09060a095a648a80d"></a><br/></td></tr>
+<tr class="memitem:a0409e88c50c0ca274c420e4a8d75ba00"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#a0409e88c50c0ca274c420e4a8d75ba00">compute_obj</a> ()</td></tr>
+<tr class="memdesc:a0409e88c50c0ca274c420e4a8d75ba00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute value of the objective function.  <a href="#a0409e88c50c0ca274c420e4a8d75ba00"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:a875cbe7a59ff89a72cf69c2b799e2566"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classchol__solve__as.html">chol_solve_as</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#a875cbe7a59ff89a72cf69c2b799e2566">chol</a></td></tr>
-<tr class="memdesc:a875cbe7a59ff89a72cf69c2b799e2566"><td class="mdescLeft">&#160;</td><td class="mdescRight">An instance of <a class="el" href="classchol__solve__as.html" title="Solves KKT system using Cholesky decomposition.">chol_solve_as</a> class.  <a href="#a875cbe7a59ff89a72cf69c2b799e2566"></a><br/></td></tr>
-<tr class="memitem:a0ce9bd78fbd4e9b8d02c0f7e970833cc"><td class="memItemLeft" align="right" valign="top">double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#a0ce9bd78fbd4e9b8d02c0f7e970833cc">iHg</a></td></tr>
-<tr class="memdesc:a0ce9bd78fbd4e9b8d02c0f7e970833cc"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="pKKT.html#piHg">inv(H) * g</a>  <a href="#a0ce9bd78fbd4e9b8d02c0f7e970833cc"></a><br/></td></tr>
-<tr class="memitem:adb95e9cb39b791fad69e41b27497b951"><td class="memItemLeft" align="right" valign="top">int *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#adb95e9cb39b791fad69e41b27497b951">W</a></td></tr>
-<tr class="memitem:ad7ff73b80e9955bf99e1ef0765d4a850"><td class="memItemLeft" align="right" valign="top">int *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#ad7ff73b80e9955bf99e1ef0765d4a850">W_sign</a></td></tr>
-<tr class="memitem:a0b6f465d0de92c4aa47fcd4676795238"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#a0b6f465d0de92c4aa47fcd4676795238">nW</a></td></tr>
-<tr class="memitem:ad1384768b834fcb4cb2a511bc53431e1"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classconstraint.html">constraint</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#ad1384768b834fcb4cb2a511bc53431e1">constraints</a></td></tr>
-<tr class="memdesc:ad1384768b834fcb4cb2a511bc53431e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vector of constraints.  <a href="#ad1384768b834fcb4cb2a511bc53431e1"></a><br/></td></tr>
+<tr class="memitem:a12129a4a92c96b6154a106ad453bc2b4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classAS_1_1chol__solve.html">AS::chol_solve</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#a12129a4a92c96b6154a106ad453bc2b4">chol</a></td></tr>
+<tr class="memdesc:a12129a4a92c96b6154a106ad453bc2b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">An instance of <a class="el" href="classAS_1_1chol__solve.html" title="Solves KKT system using Cholesky decomposition.">AS::chol_solve</a> class.  <a href="#a12129a4a92c96b6154a106ad453bc2b4"></a><br/></td></tr>
+<tr class="memitem:a949cac77c89a85244fedca07911370e1"><td class="memItemLeft" align="right" valign="top">const double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#a949cac77c89a85244fedca07911370e1">zref_x</a></td></tr>
+<tr class="memitem:a770ff2bb6a1470bb416ae26d6a52377f"><td class="memItemLeft" align="right" valign="top">const double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#a770ff2bb6a1470bb416ae26d6a52377f">zref_y</a></td></tr>
+<tr class="memitem:af45d1d497ff63c59467f7c8c650b0158"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#af45d1d497ff63c59467f7c8c650b0158">tol</a></td></tr>
+<tr class="memdesc:af45d1d497ff63c59467f7c8c650b0158"><td class="mdescLeft">&#160;</td><td class="mdescRight">tolerance  <a href="#af45d1d497ff63c59467f7c8c650b0158"></a><br/></td></tr>
+<tr class="memitem:a4d999b8dc5c7538e49d8244c672c603b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#a4d999b8dc5c7538e49d8244c672c603b">obj_computation_on</a></td></tr>
+<tr class="memitem:af74b34e782f725c6c5e2be239e6b8616"><td class="memItemLeft" align="right" valign="top">vector&lt; <a class="el" href="classAS_1_1constraint.html">AS::constraint</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#af74b34e782f725c6c5e2be239e6b8616">active_set</a></td></tr>
+<tr class="memdesc:af74b34e782f725c6c5e2be239e6b8616"><td class="mdescLeft">&#160;</td><td class="mdescRight">A set of active constraints.  <a href="#af74b34e782f725c6c5e2be239e6b8616"></a><br/></td></tr>
+<tr class="memitem:a55ba1b86f5bad966679d3cc68c9338b0"><td class="memItemLeft" align="right" valign="top">vector&lt; <a class="el" href="classAS_1_1constraint.html">AS::constraint</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#a55ba1b86f5bad966679d3cc68c9338b0">constraints</a></td></tr>
+<tr class="memdesc:a55ba1b86f5bad966679d3cc68c9338b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vector of constraints.  <a href="#a55ba1b86f5bad966679d3cc68c9338b0"></a><br/></td></tr>
+<tr class="memitem:a40696d975ffb89c9f1e43f71f3207ac8"><td class="memItemLeft" align="right" valign="top">double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#a40696d975ffb89c9f1e43f71f3207ac8">dX</a></td></tr>
+<tr class="memitem:a0484715f0ba7d0c35f6b9c8183d958d4"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classqp__as.html#a0484715f0ba7d0c35f6b9c8183d958d4">alpha</a></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Solve a quadratic program with a specific structure. <a class="el" href="classqp__as.html" title="Solve a quadratic program with a specific structure. qp_as = Quadratic Programming / Active Set...">qp_as</a> = Quadratic Programming / Active Set. </p>
 
 <p>Definition at line <a class="el" href="qp__as_8h_source.html#l00037">37</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="acef0afc62e99e171f957c911ca34f475"></a>
+<a class="anchor" id="ab0b002a46a4cdb99e5ee4171f97ed64a"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classqp__as.html#acef0afc62e99e171f957c911ca34f475">qp_as::qp_as</a> </td>
+          <td class="memname"><a class="el" href="classqp__as.html#ab0b002a46a4cdb99e5ee4171f97ed64a">qp_as::qp_as</a> </td>
           <td>(</td>
           <td class="paramtype">const int&#160;</td>
           <td class="paramname"><em>N_</em>, </td>
@@ -131,31 +143,49 @@ Private Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const double&#160;</td>
-          <td class="paramname"><em>Alpha</em>, </td>
+          <td class="paramname"><em>gain_position</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const double&#160;</td>
-          <td class="paramname"><em>Beta</em>, </td>
+          <td class="paramname"><em>gain_velocity</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const double&#160;</td>
-          <td class="paramname"><em>Gamma</em>, </td>
+          <td class="paramname"><em>gain_acceleration</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const double&#160;</td>
-          <td class="paramname"><em>regularization</em>, </td>
+          <td class="paramname"><em>gain_jerk</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const double&#160;</td>
-          <td class="paramname"><em>tol_</em>&#160;</td>
+          <td class="paramname"><em>tol_</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const bool&#160;</td>
+          <td class="paramname"><em>obj_computation_on_</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned int&#160;</td>
+          <td class="paramname"><em>max_added_constraints_num_</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const bool&#160;</td>
+          <td class="paramname"><em>constraint_removal_on_</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -170,16 +200,19 @@ Private Attributes</h2></td></tr>
 <dl class="params"><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">N_</td><td>Number of sampling times in a preview window </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">Alpha</td><td>Velocity gain </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">Beta</td><td>Position gain </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">Gamma</td><td>Jerk gain </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">regularization</td><td>regularization </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">gain_position</td><td>Position gain </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">gain_velocity</td><td>Velocity gain </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">gain_acceleration</td><td>Acceleration gain </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">gain_jerk</td><td>Jerk gain </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">tol_</td><td>tolerance </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">obj_computation_on_</td><td>enable computation of the objective function </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">max_added_constraints_num_</td><td>limit on the number of the added constraints </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">constraint_removal_on_</td><td>enable constraint removal </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00031">31</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00036">36</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
 
 </div>
 </div>
@@ -198,7 +231,7 @@ Private Attributes</h2></td></tr>
 <div class="memdoc">
 <p>Destructor </p>
 
-<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00052">52</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00066">66</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
 
 </div>
 </div>
@@ -220,7 +253,7 @@ Private Attributes</h2></td></tr>
 <p>Checks for blocking constraints. </p>
 <dl class="section return"><dt>Returns:</dt><dd>sequential number of constraint to be added, -1 if no constraints. </dd></dl>
 
-<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00148">148</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00159">159</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
 
 </div>
 </div>
@@ -247,92 +280,89 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns:</dt><dd>index of constraint in the active set, -1 if no constraint can be removed.</dd></dl>
-<dl class="section attention"><dt>Attention:</dt><dd>If a constraint for removal is selected, then it is removed from the active set (<a class="el" href="classqp__as.html#adb95e9cb39b791fad69e41b27497b951">W</a>) and the number of constraints in active set (<a class="el" href="classqp__as.html#a0b6f465d0de92c4aa47fcd4676795238">nW</a>) is decremented. </dd></dl>
+<dl class="section attention"><dt>Attention:</dt><dd>If a constraint for removal is selected, then it is removed from the active set (<a class="el" href="classqp__as.html#af74b34e782f725c6c5e2be239e6b8616" title="A set of active constraints.">active_set</a>). </dd></dl>
 
-<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00216">216</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00226">226</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a94e44543ba3f12ac535289ee042566d9"></a>
+<a class="anchor" id="a0409e88c50c0ca274c420e4a8d75ba00"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classqp__as.html#a94e44543ba3f12ac535289ee042566d9">qp_as::form_constraints</a> </td>
+          <td class="memname">double <a class="el" href="classqp__as.html#a0409e88c50c0ca274c420e4a8d75ba00">qp_as::compute_obj</a> </td>
           <td>(</td>
-          <td class="paramtype">const double *&#160;</td>
-          <td class="paramname"><em>lb</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const double *&#160;</td>
-          <td class="paramname"><em>ub</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const double *&#160;</td>
-          <td class="paramname"><em>angle</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td><code> [private]</code></td>
+          <td class="paramname"></td><td>)</td>
+          <td><code> [private]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Forms the upper and lower constraints. </p>
-<dl class="params"><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">lb</td><td>array of lower constraints for z </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">ub</td><td>array of upper constraints for z </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">angle</td><td>Rotation angle for each state in the preview window </td></tr>
-  </table>
-  </dd>
-</dl>
+<p>Compute value of the objective function. </p>
+<dl class="section return"><dt>Returns:</dt><dd>value of the objective function. </dd></dl>
 
-<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00121">121</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00343">343</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a812a93d46943d6244d03447e879ee145"></a>
+<a class="anchor" id="a4e90d6d940af02e868fa84fd52cd40e8"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classqp__as.html#a812a93d46943d6244d03447e879ee145">qp_as::form_iHg</a> </td>
+          <td class="memname">void <a class="el" href="classqp__as.html#a4e90d6d940af02e868fa84fd52cd40e8">qp_as::form_init_fp</a> </td>
           <td>(</td>
           <td class="paramtype">const double *&#160;</td>
-          <td class="paramname"><em>zref_x</em>, </td>
+          <td class="paramname"><em>x_coord</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const double *&#160;</td>
-          <td class="paramname"><em>zref_y</em>&#160;</td>
+          <td class="paramname"><em>y_coord</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double *&#160;</td>
+          <td class="paramname"><em>init_state</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const bool&#160;</td>
+          <td class="paramname"><em>tilde_state</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>X_</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td><code> [private]</code></td>
+          <td></td><td></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Forms inv(2*H) * g. </p>
+<p>Generates an initial feasible point. </p>
 <dl class="params"><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">zref_x</td><td>reference values of z_x </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">zref_y</td><td>reference values of z_y </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">x_coord</td><td>x coordinates of points satisfying constraints </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">y_coord</td><td>y coordinates of points satisfying constraints </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">init_state</td><td>current state </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">tilde_state</td><td>if true the state is interpreted as <a class="el" href="index.html#pX_tilde">X_tilde</a>. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">X_</td><td>initial guess / solution of optimization problem </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00102">102</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00141">141</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
 
 </div>
 </div>
@@ -368,13 +398,13 @@ Private Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const double *&#160;</td>
-          <td class="paramname"><em>zref_x</em>, </td>
+          <td class="paramname"><em>zref_x_</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const double *&#160;</td>
-          <td class="paramname"><em>zref_y</em>, </td>
+          <td class="paramname"><em>zref_y_</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -391,7 +421,7 @@ Private Attributes</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td><code> [virtual]</code></td>
+          <td></td><td></td>
         </tr>
       </table>
 </div>
@@ -404,67 +434,148 @@ Private Attributes</h2></td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">h_</td><td>Height of the Center of Mass divided by gravity </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">h_initial_</td><td>current h </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">angle</td><td>Rotation angle for each state in the preview window </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">zref_x</td><td>reference values of z_x </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">zref_y</td><td>reference values of z_y </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">zref_x_</td><td>reference values of z_x </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">zref_y_</td><td>reference values of z_y </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">lb</td><td>array of lower constraints for z_x and z_y </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">ub</td><td>array of upper constraints for z_x and z_y </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="classqp__solver.html#a50c064ba4846350d9f1dcfd6abbfd946">qp_solver</a>.</p>
-
-<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00076">76</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00084">84</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="af0386f027f77a8ee54f13df9ee2c9f84"></a>
+<a class="anchor" id="a9d6a87d4f44efa9a458e6d54a8b48800"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int <a class="el" href="classqp__as.html#af0386f027f77a8ee54f13df9ee2c9f84">qp_as::solve</a> </td>
+          <td class="memname">void <a class="el" href="classqp__as.html#a9d6a87d4f44efa9a458e6d54a8b48800">qp_as::solve</a> </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td><code> [virtual]</code></td>
+          <td class="paramtype">vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>obj_log</em></td><td>)</td>
+          <td></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
 <p>Solve QP problem. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">obj_log</td><td>a vector of objective function values</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section return"><dt>Returns:</dt><dd>number of activated constraints </dd></dl>
 
-<p>Implements <a class="el" href="classqp__solver.html#a860bee98c0cb2e2ecaad8c5e617971d7">qp_solver</a>.</p>
-
-<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00251">251</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8cpp_source.html#l00258">258</a> of file <a class="el" href="qp__as_8cpp_source.html">qp_as.cpp</a>.</p>
 
 </div>
 </div>
 <hr/><h2>Member Data Documentation</h2>
-<a class="anchor" id="a875cbe7a59ff89a72cf69c2b799e2566"></a>
+<a class="anchor" id="af74b34e782f725c6c5e2be239e6b8616"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classchol__solve__as.html">chol_solve_as</a> <a class="el" href="classqp__as.html#a875cbe7a59ff89a72cf69c2b799e2566">qp_as::chol</a><code> [private]</code></td>
+          <td class="memname">vector&lt;<a class="el" href="classAS_1_1constraint.html">AS::constraint</a>&gt; <a class="el" href="classqp__as.html#af74b34e782f725c6c5e2be239e6b8616">qp_as::active_set</a><code> [private]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>An instance of <a class="el" href="classchol__solve__as.html" title="Solves KKT system using Cholesky decomposition.">chol_solve_as</a> class. </p>
+<p>A set of active constraints. </p>
 
-<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00074">74</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00111">111</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ad1384768b834fcb4cb2a511bc53431e1"></a>
+<a class="anchor" id="a0b041943c324c1bb12e0a88634662d5a"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;<a class="el" href="classconstraint.html">constraint</a>&gt; <a class="el" href="classqp__as.html#ad1384768b834fcb4cb2a511bc53431e1">qp_as::constraints</a><code> [private]</code></td>
+          <td class="memname">unsigned int <a class="el" href="classqp__as.html#a0b041943c324c1bb12e0a88634662d5a">qp_as::active_set_size</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00082">82</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad173c7c26438f6451952cbc5bc84a299"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int <a class="el" href="classqp__as.html#ad173c7c26438f6451952cbc5bc84a299">qp_as::added_constraints_num</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00080">80</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a0484715f0ba7d0c35f6b9c8183d958d4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double <a class="el" href="classqp__as.html#a0484715f0ba7d0c35f6b9c8183d958d4">qp_as::alpha</a><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>A number from 0 to 1, which controls depth of descent <a class="el" href="classqp__as.html#afc3e9ed1c081763d05f5f8d1decca8f3">X</a> = <a class="el" href="classqp__as.html#afc3e9ed1c081763d05f5f8d1decca8f3">X</a> + <a class="el" href="classqp__as.html#a0484715f0ba7d0c35f6b9c8183d958d4">alpha</a>*<a class="el" href="classqp__as.html#a40696d975ffb89c9f1e43f71f3207ac8">dX</a>. </p>
+
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00122">122</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a12129a4a92c96b6154a106ad453bc2b4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classAS_1_1chol__solve.html">AS::chol_solve</a> <a class="el" href="classqp__as.html#a12129a4a92c96b6154a106ad453bc2b4">qp_as::chol</a><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>An instance of <a class="el" href="classAS_1_1chol__solve.html" title="Solves KKT system using Cholesky decomposition.">AS::chol_solve</a> class. </p>
+
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00098">98</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a00315103f48768dd2f63315a9e277874"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classqp__as.html#a00315103f48768dd2f63315a9e277874">qp_as::constraint_removal_on</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00084">84</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a55ba1b86f5bad966679d3cc68c9338b0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">vector&lt;<a class="el" href="classAS_1_1constraint.html">AS::constraint</a>&gt; <a class="el" href="classqp__as.html#a55ba1b86f5bad966679d3cc68c9338b0">qp_as::constraints</a><code> [private]</code></td>
         </tr>
       </table>
 </div>
@@ -472,72 +583,131 @@ Private Attributes</h2></td></tr>
 
 <p>Vector of constraints. </p>
 
-<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00097">97</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00114">114</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a0ce9bd78fbd4e9b8d02c0f7e970833cc"></a>
+<a class="anchor" id="a40696d975ffb89c9f1e43f71f3207ac8"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">double* <a class="el" href="classqp__as.html#a0ce9bd78fbd4e9b8d02c0f7e970833cc">qp_as::iHg</a><code> [private]</code></td>
+          <td class="memname">double* <a class="el" href="classqp__as.html#a40696d975ffb89c9f1e43f71f3207ac8">qp_as::dX</a><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Feasible descent direction (to be used for updating <a class="el" href="classqp__as.html#afc3e9ed1c081763d05f5f8d1decca8f3">X</a>). </p>
+
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00119">119</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aaaa42b8794f6c3ddf3ad0ced9e562c4d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int <a class="el" href="classqp__as.html#aaaa42b8794f6c3ddf3ad0ced9e562c4d">qp_as::max_added_constraints_num</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p><a class="el" href="pKKT.html#piHg">inv(H) * g</a> </p>
-
-<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00078">78</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00085">85</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a0b6f465d0de92c4aa47fcd4676795238"></a>
+<a class="anchor" id="a4d999b8dc5c7538e49d8244c672c603b"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int <a class="el" href="classqp__as.html#a0b6f465d0de92c4aa47fcd4676795238">qp_as::nW</a><code> [private]</code></td>
+          <td class="memname">bool <a class="el" href="classqp__as.html#a4d999b8dc5c7538e49d8244c672c603b">qp_as::obj_computation_on</a><code> [private]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
-<p>Number of inequality constraints already included in <a class="el" href="classqp__as.html#adb95e9cb39b791fad69e41b27497b951">W</a>. <a class="el" href="classqp__as.html#adb95e9cb39b791fad69e41b27497b951">W</a>(<a class="el" href="classqp__as.html#a0b6f465d0de92c4aa47fcd4676795238">nW</a>-1) is the index of the last inequality constraint added to <a class="el" href="classqp__as.html#adb95e9cb39b791fad69e41b27497b951">W</a>. </p>
 
-<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00094">94</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00107">107</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="adb95e9cb39b791fad69e41b27497b951"></a>
+<a class="anchor" id="a8e00926c36168b0773b37b1c95eb93e8"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int* <a class="el" href="classqp__as.html#adb95e9cb39b791fad69e41b27497b951">qp_as::W</a><code> [private]</code></td>
+          <td class="memname">unsigned int <a class="el" href="classqp__as.html#a8e00926c36168b0773b37b1c95eb93e8">qp_as::removed_constraints_num</a></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
-<p>Working set (contains the indexes of only inequality constraints). </p>
 
-<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00083">83</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00081">81</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ad7ff73b80e9955bf99e1ef0765d4a850"></a>
+<a class="anchor" id="af45d1d497ff63c59467f7c8c650b0158"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int* <a class="el" href="classqp__as.html#ad7ff73b80e9955bf99e1ef0765d4a850">qp_as::W_sign</a><code> [private]</code></td>
+          <td class="memname">double <a class="el" href="classqp__as.html#af45d1d497ff63c59467f7c8c650b0158">qp_as::tol</a><code> [private]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
-<p>Since we do not distinguish lower/upper bounds of active constraints (&lt;= and =&gt; inequlities are treated in the same way), we have to adjust signs of lagrange multipliers before downdate. See also '<a class="el" href="pDetails.html#pBounds">Implementing bounds</a>'. </p>
 
-<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00090">90</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+<p>tolerance </p>
+
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00105">105</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="afc3e9ed1c081763d05f5f8d1decca8f3"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double* <a class="el" href="classqp__as.html#afc3e9ed1c081763d05f5f8d1decca8f3">qp_as::X</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Variables for the QP (contain the states + control variables). Initial feasible point with respect to the equality and inequality constraints. </p>
+
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00076">76</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a949cac77c89a85244fedca07911370e1"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const double* <a class="el" href="classqp__as.html#a949cac77c89a85244fedca07911370e1">qp_as::zref_x</a><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00101">101</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a770ff2bb6a1470bb416ae26d6a52377f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const double* <a class="el" href="classqp__as.html#a770ff2bb6a1470bb416ae26d6a52377f">qp_as::zref_y</a><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="qp__as_8h_source.html#l00102">102</a> of file <a class="el" href="qp__as_8h_source.html">qp_as.h</a>.</p>
 
 </div>
 </div>

@@ -55,17 +55,18 @@
 <div class="textblock"><dl class="section user"><dt>Contents &amp; links</b></dt><dd><ul>
 <li><a class="el" href="index.html#MainIntro">Introduction</a></li>
 <li><a class="el" href="index.html#MainLicense">License</a></li>
-<li><a class="el" href="index.html#MainRef">References</a></li>
 <li><a class="el" href="index.html#MainOverview">Purpose of the library</a></li>
 <li><a class="el" href="index.html#MainHowTo">API &amp; examples</a></li>
 <li><a class="el" href="index.html#MainFormulas">Derivations and algorithms</a></li>
 <li><a class="el" href="index.html#MainSrcDocs">Internal implementation of the libraries</a></li>
-<li><a class="el" href="index.html#MainNotes">Important notes</a> </li>
+<li><a class="el" href="index.html#MainNotes">Important notes</a></li>
+<li><a class="el" href="index.html#MainRef">References</a> </li>
 </ul>
 </dd></dl>
 <dl class="section user"><dt></b></dt><dd><ul>
 <li><a href="http://github.com/asherikov/smpc_solver/">Sources on GitHub</a></li>
 <li><a href="./v1/index.html">Old version of the solver</a></li>
+<li><a href="http://asherikov.github.com/Projects/naowalk.html">A walking module for Nao using this solver</a></li>
 </ul>
 </dd></dl>
 <p><br/>
@@ -139,14 +140,6 @@ OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 </pre></div><p> <br/>
 </p>
-<h2><a class="anchor" id="MainRef"></a>
-References</h2>
-<p>Dimitar Nikolaev Dimitrov, Alexander Sherikov, and Pierre-Brice Wieber<br/>
- <a href="http://www.aass.oru.se/Research/Learning/drdv_dir/publications/iros11/iros11_1.html">A sparse model predictive control formulation for walking motion generation</a><br/>
- IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS),<br/>
- September 25-30, 2011, San Francisco, California <br/>
-<br/>
-</p>
 <h2><a class="anchor" id="MainOverview"></a>
 Purpose of the library</h2>
 <p>Walk of a robot can be controlled using the following scheme:</p>
@@ -167,9 +160,9 @@ Purpose of the library</h2>
 <li>Single support -- a situation, when a robot stands on only one foot.</li>
 <li>Double support -- a situation, when a robot stands on both feet.</li>
 <li>Reference foot -- even when a robot is in double support, we use one foot as the reference.</li>
-<li>Reference ZMP coordinates -- the objective function contains term, that tries to minimize the difference between the solution an reference points. This is allows tuning of the solution.</li>
+<li>Reference ZMP coordinates -- the objective function contains term, that tries to minimize the difference between the solution and reference points. This is allows tuning of the solution.</li>
 </ul>
-<p>For more information refer to the papers listed in '<a class="el" href="index.html#MainRef">References</a>'. Also, the '<a class="el" href="pProblemDef.html">Problem definition</a>' section contains more detailed explanations. <br/>
+<p>For more information refer to the papers listed in '<a class="el" href="index.html#MainRef">References</a>'. Also, the '<a class="el" href="index.html#pProblemDef">pProblemDef</a>' section contains more detailed explanations. <br/>
 <br/>
 </p>
 <h2><a class="anchor" id="MainHowTo"></a>
@@ -184,45 +177,7 @@ API &amp; examples</h2>
 </p>
 <h2><a class="anchor" id="MainFormulas"></a>
 Derivations and algorithms</h2>
-<dl class="section user"><dt>Conventions &amp; definitions</b></dt><dd><ul>
-<li>All letters referencing matrices or vectors in formulas are typed in bold.</li>
-<li>Matrices and vectors are usually denoted by the upper case and lower case letters respectively.</li>
-<li>'N' denotes the size of the preview window. </li>
-</ul>
-</dd></dl>
-<dl class="section user"><dt>Further information can be found on the following pages</b></dt><dd><ul>
-<li><a class="el" href="pProblemDef.html">Problem definition</a><ul>
-<li><a class="el" href="pProblemDef.html#pPDModel">Model of the system</a></li>
-<li><a class="el" href="pProblemDef.html#pPDVarSub">Variable substitution</a></li>
-<li><a class="el" href="pProblemDef.html#pPDObj">Objective function</a></li>
-<li><a class="el" href="pProblemDef.html#pPD_EC">Equality constraints</a></li>
-<li><a class="el" href="pProblemDef.html#pPD_IC">Inequality constraints</a></li>
-</ul>
-</li>
-<li><a class="el" href="pKKT.html">KKT system</a></li>
-<li><a class="el" href="pInitGuess.html">Generation of an initial feasible point</a></li>
-<li><a class="el" href="pSchurComplement.html">Schur complement</a></li>
-<li><a class="el" href="pCholesky.html">Cholesky decomposition of Schur complement</a></li>
-<li>Active set method<ul>
-<li><a class="el" href="pAddIC.html">Adding inequality constraints</a><ul>
-<li><a class="el" href="pAddIC.html#pCholUp">Update of Cholesky factor</a></li>
-<li><a class="el" href="pAddIC.html#pAddICz">Update of z</a></li>
-</ul>
-</li>
-<li><a class="el" href="pRemoveIC.html">Removing inequality constraints</a><ul>
-<li><a class="el" href="pRemoveIC.html#pCholDown">Downdate of Cholesky factor</a></li>
-<li><a class="el" href="pRemoveIC.html#pRemoveICz">Downdate of z</a></li>
-</ul>
-</li>
-<li><a class="el" href="pDetails.html">Notes on implementation</a><ul>
-<li><a class="el" href="pDetails.html#pDetMatrices">Representation of matrices</a></li>
-<li><a class="el" href="pDetails.html#pBounds">Implementing bounds</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</dd></dl>
+<p><a class="anchor" id="pIP"></a> <a class="anchor" id="pIPSMPC"></a> <a class="anchor" id="pIPSchur"></a> <a class="anchor" id="pIPImplementation"></a> <a class="anchor" id="pIPChol"></a> <a class="anchor" id="pAddIC"></a> <a class="anchor" id="pCholUp"></a> <a class="anchor" id="pCholUpAlg"></a> <a class="anchor" id="pAddICz"></a> <a class="anchor" id="pg"></a> <a class="anchor" id="ph"></a> <a class="anchor" id="pz"></a> <a class="anchor" id="pRemoveIC"></a> <a class="anchor" id="pRemoveICz"></a> <a class="anchor" id="pDetails"></a> <a class="anchor" id="pBounds"></a> <a class="anchor" id="pCholDown"></a> <a class="anchor" id="pX_bar"></a> <a class="anchor" id="pProblemDef"></a> <a class="anchor" id="pPDModel"></a> <a class="anchor" id="pPDVarSub"></a> <a class="anchor" id="pX_tilde"></a> <a class="anchor" id="pPDObj"></a> <a class="anchor" id="pGains"></a> <a class="anchor" id="pPD_EC"></a> <a class="anchor" id="pPD_IC"></a> <a class="anchor" id="pKKT"></a> <a class="anchor" id="pInitGuess"></a> <a class="anchor" id="pSchurComplement"></a> <a class="anchor" id="pCholesky"></a> Refer to the masters thesis available on the project <a href="http://asherikov.github.com/Projects/naowalk.html">web-page</a> for detailed description.</p>
 <p><br/>
 </p>
 <h2><a class="anchor" id="MainSrcDocs"></a>
@@ -239,7 +194,15 @@ Internal implementation of the libraries</h2>
 </p>
 <h2><a class="anchor" id="MainNotes"></a>
 Important notes</h2>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>The library is not thoroughly tested with variable height of CoM. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>The library is not thoroughly tested with variable height of CoM.</dd></dl>
+<p><br/>
+</p>
+<h2><a class="anchor" id="MainRef"></a>
+References</h2>
+<p>Dimitar Nikolaev Dimitrov, Alexander Sherikov, and Pierre-Brice Wieber<br/>
+ <a href="http://www.aass.oru.se/Research/Learning/drdv_dir/publications/iros11/iros11_1.html">A sparse model predictive control formulation for walking motion generation</a><br/>
+ IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS),<br/>
+ September 25-30, 2011, San Francisco, California </p>
 </div></div><!-- contents -->
 
 
