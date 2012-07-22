@@ -15,6 +15,30 @@
 
 
 /****************************************
+ * DEFINES
+ ****************************************/
+
+/// @addtogroup gas
+/// @{
+
+/** 
+ * The number of elements in 3x3 matrix. 
+ * Note, that parts of state and control matrices corresponding to x and y 
+ * coordinates are identical. This property is preserved in all subsequent
+ * transformations, hence there is no need to compute and store all elements of 
+ * static matrices (Cholesky factor for example). Consequently, we mainly 
+ * operate on 3x3 matrices, which are stored in the following way:
+@verbatim
+  0   3   6
+  1   4   7
+  2   5   8
+@endverbatim
+ */
+#define MATRIX_SIZE_3x3 9
+/// @}
+
+
+/****************************************
  * FUNCTIONS 
  ****************************************/
 
@@ -29,6 +53,39 @@ namespace AS
 
         iQAT = new double[MATRIX_SIZE_3x3];
         ecL_diag = new double*[N];
+
+        /**
+            A constant and well structured 'upper' part of Cholesky factor, 
+            which corresponds to equality constraints is
+@verbatim
+           full L                           |   compressed L
+            a                               |
+            0   a                           |           a
+            b   0   c                   0   |           b   c
+            0   b   0   c                   |   ===>        d   e
+                    d   0   e               |   ===>            f   g
+                    0   d   0   e           |                       ...
+                0           f   0   g       |
+                            0   f   0   g   |
+                                    ....    |
+@endverbatim
+            Here a,c,e,g - lower diagonal 3x3 matrices; b,d,f - upper triangular
+            3x3 matrices. This matrix is reffered as ecL. It is stored as a 
+            sequence of vectors of 9 elements:
+@verbatim
+        0  3  6 
+        1  4  7
+        2  5  8
+
+        9  12 15  18 21 24
+        10 13 16  19 22 25
+        11 14 17  20 23 26
+
+                    ...         ...
+@endverbatim
+        */
+
+
         for (int i = 0; i < N; i++)
         {
             ecL_diag[i] = &ecL[i * MATRIX_SIZE_3x3 * 2];

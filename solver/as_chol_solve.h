@@ -67,10 +67,10 @@ namespace AS
             /// matrix of equality AS::constraints
             AS::matrix_E E;
 
-            /// L for equality AS::constraints, see '@ref pDetCholesky'
+            /// L for equality AS::constraints
             AS::matrix_ecL ecL;
 
-            /// L for inequality AS::constraints, see '@ref pDetCholesky'
+            /// L for inequality AS::constraints
             double **icL;   
 
             /// All lines of #icL are stored in one chunk of memory.

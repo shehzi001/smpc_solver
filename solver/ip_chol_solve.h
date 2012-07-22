@@ -45,7 +45,7 @@ namespace IP
             /// matrix of equality constraints
             matrix_E E;
 
-            /// L for equality constraints, see '@ref pDetCholesky'
+            /// L for equality constraints
             matrix_ecL ecL;
 
             /// Lagrange multipliers
