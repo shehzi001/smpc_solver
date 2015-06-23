@@ -12,6 +12,8 @@
  * INCLUDES 
  ****************************************/
 
+#define Eigen2Support
+#define EIGEN2_SUPPORT_STAGE10_FULL_EIGEN2_API
 #include <Eigen/Geometry>
 
 
