@@ -1,7 +1,7 @@
 CXX_WARN_FLAGS_EIGEN=-Wall -Wfloat-equal -std=c++98
 CXX_WARN_FLAGS=${CXX_WARN_FLAGS_EIGEN} -Wshadow -pedantic
 IFLAGS+=-I../include
-IFLAGS_EIGEN=${IFLAGS} -I/usr/local/include/eigen2/ -I/usr/include/eigen2/
+IFLAGS_EIGEN=${IFLAGS} -I/usr/local/include/eigen3/ -I/usr/include/eigen3/
 LDFLAGS+=-L../lib/ -lsmpc_solver -lwmg
 
 ifdef DEBUG
